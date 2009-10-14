@@ -1,0 +1,31 @@
+[
+    {"source": "app/models/database.js"},
+    {"source": "app/models/servers.js"},
+    {"source": "app/models/server.js"},
+    {"source": "app/models/channel.js"},
+    {"source": "app/assistants/app-assistant.js"},
+    {
+        "scenes": "server-list",
+        "source": "app/assistants/server-list-assistant.js"
+    },
+    {
+        "scenes": "server-info",
+        "source": "app/assistants/server-info-assistant.js"
+    },
+    {
+        "scenes": "server-status",
+        "source": "app/assistants/server-status-assistant.js"
+    },
+    {
+        "scenes": "identity",
+        "source": "app/assistants/identity-assistant.js"
+    },
+    {
+        "scenes": "channel-chat",
+        "source": "app/assistants/channel-chat-assistant.js"
+    },
+    {
+        "scenes": "channel-users",
+        "source": "app/assistants/channel-users-assistant.js"
+    }
+]
