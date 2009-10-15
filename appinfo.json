@@ -1,8 +1,8 @@
 {
 	"title": "wIRC",
-	"id": "org.webosinternals.wirc",
+	"id": "ws.junk.wirc",
 	"version": "0.0.1",
-	"vendor": "someone",
+	"vendor": "oil",
 	"type": "web",
 	"main": "index.html",
 	"icon": "icon.png",

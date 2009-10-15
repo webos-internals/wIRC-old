@@ -14,19 +14,34 @@ database.prototype.initialData = function()
 {
 	this.saveServer(
 	{
-		alias:			'freenode',
-		server:			'irc.freenode.net',
-		port:			6667,
-		autoConnect:	false
+		id:				false,
+		alias:			'Freenode',
+		address:		'irc.freenode.net',
+		port:			'',
+		autoConnect:	true
 	}, this.dumpResults.bind(this));
 	
 	this.saveServer(
 	{
-		alias:			'test',
-		server:			'irc.test.net',
-		port:			6667,
+		id:				false,
+		alias:			'',
+		address:		'irc.no.alias.com',
+		port:			'',
 		autoConnect:	false
 	}, this.dumpResults.bind(this));
+	
+	for (var x = 1; x <= 10; x++)
+	//for (var x = 1; x <= 2; x++)
+	{
+		this.saveServer(
+		{
+			id:				false,
+			alias:			'Test Server #' + x,
+			address:		'irc.test' + x + '.org',
+			port:			'',
+			autoConnect:	false
+		}, this.dumpResults.bind(this));
+	}
 }
 
 database.prototype.getServers = function(callback)
@@ -50,17 +65,38 @@ database.prototype.getServers = function(callback)
 		);
 	});
 }
+database.prototype.getServer = function(id, callback)
+{
+	this.db.transaction(function(tx)
+	{
+		tx.executeSql
+		(
+			"SELECT * FROM servers WHERE id=?;",
+			[id],
+			function(tx, result)
+			{
+				db.log('Got Server');
+				callback(result);
+			},
+			function(tx, error)
+			{
+				db.log('Error Getting Server');
+				callback(result);
+			}
+		);
+	});
+}
 database.prototype.saveServer = function(params, callback)
 {
-	if (params.id)
+	if (params.id === false)
 	{
-		var query = "UPDATE servers SET alias=?, server=?, port=?, autoConnect=? WHERE id=?";
-		var data = [params.alias, params.server, params.port, params.autoConnect, params.id];
+		var query = "INSERT INTO servers (alias, address, port, autoConnect) VALUES (?, ?, ?, ?)";
+		var data = [params.alias, params.address, params.port, params.autoConnect];
 	}
 	else
 	{
-		var query = "INSERT INTO servers (alias, server, port, autoConnect) VALUES (?, ?, ?, ?)";
-		var data = [params.alias, params.server, params.port, params.autoConnect];
+		var query = "UPDATE servers SET alias=?, address=?, port=?, autoConnect=? WHERE id=?";
+		var data = [params.alias, params.address, params.port, params.autoConnect, params.id];
 	}
 	
 	this.db.transaction(function(tx)
@@ -132,7 +168,7 @@ database.prototype.createTables = function()
 	{
 		tx.executeSql
 		(
-			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, server VARCHAR NOT NULL, port INTEGER NOT NULL, autoConnect BOOL);",
+			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, autoConnect BOOL);",
 			[], 
 			function(tx, result)
 			{

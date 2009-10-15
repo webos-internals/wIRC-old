@@ -1,7 +1,7 @@
 function ircServers()
 {
-	this.servers =			[];
-	this.listAssistant =	false;
+	this.servers =				[];
+	this.listAssistant =		false;
 	this.load();
 }
 
@@ -17,7 +17,10 @@ ircServers.prototype.getListObjects = function()
 	{
 		for (var s = 0; s < this.servers.length; s++)
 		{
-			returnArray.push(this.servers[s].getListObject());
+			if (this.servers[s]) 
+			{
+				returnArray.push(this.servers[s].getListObject());
+			}
 		}
 	}
 	return returnArray;
@@ -28,9 +31,23 @@ ircServers.prototype.getServerArrayKey = function(id)
 	{
 		for (var s = 0; s < this.servers.length; s++)
 		{
-			if (this.servers.id == id)
+			if (this.servers[s].id == id)
 			{
 				return s;
+			}
+		}
+	}
+	return false;
+}
+ircServers.prototype.getServerForId = function(id)
+{
+	if (this.servers.length > 0)
+	{
+		for (var s = 0; s < this.servers.length; s++)
+		{
+			if (this.servers[s].id == id)
+			{
+				return this.servers[s];
 			}
 		}
 	}
@@ -58,13 +75,36 @@ ircServers.prototype.loadResponse = function(results)
 		this.listAssistant.updateList();
 	}
 }
-
-ircServers.prototype.newServer = function(params)
+ircServers.prototype.loadServer = function(id)
 {
-	db.saveServer(params, ircServer.newServerResponse);
+	db.getServer(id, this.loadServerResponse.bind(this));
 }
-ircServers.prototype.newServerResponse = function(results)
+ircServers.prototype.loadServerResponse = function(results)
 {
 	var newServer = new ircServer(results.rows.item(0));
 	this.servers.push(newServer);
+	
+	if (this.listAssistant)
+	{
+		this.listAssistant.updateList();
+	}
+}
+
+ircServers.prototype.newServer = function(params, assistant)
+{
+	db.saveServer(params, this.newServerResponse.bind(this, assistant));
+}
+ircServers.prototype.newServerResponse = function(assistant, results)
+{
+	assistant.doneSaving();
+	this.loadServer(results.insertId);
+}
+
+ircServers.prototype.deleteServer = function(id)
+{
+	db.deleteServer(id, this.deleteServerResponse.bind(this, this.getServerArrayKey(id)));
+}
+ircServers.prototype.deleteServerResponse = function(key, results)
+{
+	this.servers[key] = false;
 }

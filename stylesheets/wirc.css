@@ -1,0 +1,113 @@
+
+/*
+ * Global Scene Styles
+ */
+ .scene-fade-top
+{
+	position: fixed; 
+	top: 0; 
+	z-index: 11000;
+	height: 30px; 
+	width: 100%;
+	background: url(../images/fade-top.png) top center repeat-x;
+	-webkit-palm-mouse-target: ignore;
+}
+.scene-fade-bottom
+{
+	position: fixed; 
+	bottom: 0; 
+	z-index: 11000;
+	height: 30px; 
+	width: 100%;
+	background: url(../images/fade-bottom.png) bottom center repeat-x;
+	-webkit-palm-mouse-target: ignore;
+}
+
+
+
+/*
+ * Server List Scene Styles
+ */
+.server-list .palm-list .palm-row-wrapper
+{
+	padding-right: 4px;
+}
+.server-list .palm-list .palm-row-wrapper .title.alias
+{
+	padding-top: 5px;
+	margin-top: 0px;
+}
+.server-list .palm-list .palm-row-wrapper .sub
+{
+	color: #999;
+	font-size: 14px;
+	padding-top: 0px;
+	margin-top: -16px;
+	padding-left: 16px;
+	padding-bottom: 8px;
+}
+.server-list .palm-list .palm-row-wrapper .title.address
+{
+	display: none;
+}
+.server-list .palm-list .palm-row-wrapper.address-title .sub,
+.server-list .palm-list .palm-row-wrapper.address-title .title.alias
+{
+	display: none;
+}
+.server-list .palm-list .palm-row-wrapper.address-title .title.address
+{
+	display: block;
+}
+
+.server-list .palm-list .palm-row-wrapper .button
+{
+	float: right;
+	width: 48px;
+	height: 49px;
+	margin: 0px;
+	padding: 0px;
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+.server-list .palm-list .palm-row-wrapper .button.prefs
+{
+	background-image: url(../images/list-button-prefs.png);
+}
+.server-list .palm-list .palm-row-wrapper.connected .button.status
+{
+	background-image: url(../images/list-button-connected.png);
+}
+.server-list .palm-list .palm-row-wrapper.disconnected .button.status
+{
+	background-image: url(../images/list-button-disconnected.png);
+}
+.server-list .palm-list .palm-row-wrapper .button.prefs.selected,
+.server-list .palm-list .palm-row-wrapper.connected .button.status.selected,
+.server-list .palm-list .palm-row-wrapper.disconnected .button.status.selected
+{
+	background-position: bottom center;
+}
+
+
+
+/*
+ * Server Info Scene Styles
+ */
+.server-info .palm-row-wrapper .label.left
+{
+	padding-left: 6px;
+	-webkit-palm-mouse-target: ignore;
+}
+.server-info .palm-list-selector .label
+{
+	float: left;
+}
+.server-info .palm-list-selector .title
+{
+	text-align: right;
+}
+.server-info .palm-group.disabled
+{
+	opacity: 0.35;
+}
