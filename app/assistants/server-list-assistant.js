@@ -80,16 +80,16 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	{
 		if (event.item.connected) 
 		{
-			alert('Disconnect Tap [' + event.item.id + ']');
+			servers.servers[event.item.key].disconnect();
 		}
 		else
 		{
-			alert('Connect Tap [' + event.item.id + ']');
+			servers.servers[event.item.key].connect();
 		}
 	}
 	else
 	{
-		alert('List Tap [' + event.item.id + ']');
+		servers.servers[event.item.key].popStatus();
 	}
 }
 ServerListAssistant.prototype.listDeleteHandler = function(event)

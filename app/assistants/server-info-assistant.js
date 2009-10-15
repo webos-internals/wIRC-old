@@ -51,7 +51,8 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				hintText: 'URL Or IP Address',
-				modelProperty: 'address'
+				modelProperty: 'address',
+				textCase: Mojo.Widget.steModeLowerCase
 			},
 			this.server
 		);
@@ -61,7 +62,8 @@ ServerInfoAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
-				modelProperty: 'port'
+				modelProperty: 'port',
+				charsAllow: Mojo.Char.isDigit
 			},
 			this.server
 		);

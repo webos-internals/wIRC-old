@@ -18,15 +18,33 @@ function ircServer(params)
 ircServer.prototype.connect = function()
 {
 	this.connected = true;
+	
+	if (servers.listAssistant)
+	{
+		servers.listAssistant.updateList();
+	}
 }
 ircServer.prototype.disconnect = function()
 {
 	this.connected = false;
+	
+	if (servers.listAssistant)
+	{
+		servers.listAssistant.updateList();
+	}
 }
 
 ircServer.prototype.setStatusAssistant = function(assistant)
 {
 	this.statusAssistant = assistant;
+}
+
+ircServer.prototype.popStatus = function()
+{
+	if (servers.listAssistant)
+	{
+		servers.listAssistant.controller.stageController.pushScene('server-status', this.id);
+	}
 }
 
 ircServer.prototype.joinChannel = function(name)

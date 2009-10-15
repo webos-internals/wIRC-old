@@ -102,7 +102,14 @@ ircServers.prototype.newServerResponse = function(assistant, results)
 
 ircServers.prototype.deleteServer = function(id)
 {
-	db.deleteServer(id, this.deleteServerResponse.bind(this, this.getServerArrayKey(id)));
+	var key = this.getServerArrayKey(id);
+	
+	if (this.servers[key].connected)
+	{
+		this.servers[key].disconnect();
+	}
+	
+	db.deleteServer(id, this.deleteServerResponse.bind(this, key));
 }
 ircServers.prototype.deleteServerResponse = function(key, results)
 {
