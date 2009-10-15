@@ -1,1 +1,21 @@
-Find me in app/views/server-status/server-status-scene.html.
+<div class="server-status">
+	
+	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
+	
+	<div class="palm-header left">
+		<div id="popButton" x-mojo-tap-highlight="momentary"><div class="icon"></div></div>
+		<span id="title"></span> - Server Messages
+	</div>
+	
+	<div class="palm-header-spacer"></div>
+	
+	<div id="list" x-mojo-element="List"></div>
+	
+	<div class="palm-row-wrapper textfield-group focused footer">
+		<div class="title">
+			<div id="inputWidget" x-mojo-element="TextField"></div>
+			<div id="sendButton" class="sendButton" x-mojo-tap-highlight="immediate"></div>
+		</div>
+	</div>
+	
+</div>

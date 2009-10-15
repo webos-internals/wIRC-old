@@ -5,7 +5,7 @@
  .scene-fade-top
 {
 	position: fixed; 
-	top: 0; 
+	top: 0px; 
 	z-index: 11000;
 	height: 30px; 
 	width: 100%;
@@ -15,7 +15,7 @@
 .scene-fade-bottom
 {
 	position: fixed; 
-	bottom: 0; 
+	bottom: 0px; 
 	z-index: 11000;
 	height: 30px; 
 	width: 100%;
@@ -111,3 +111,64 @@
 {
 	opacity: 0.35;
 }
+
+
+
+/*
+ * Server List Scene Styles
+ */
+.server-status #popButton
+{
+	position: absolute;
+	right: -16px;
+	bottom: 7px;
+	height: 35px;
+	width: 38px;
+	border-width: 0px 16px 0px 16px;
+	-webkit-box-sizing: border-box;
+	-webkit-border-image: url(../images/header-button-press.png);
+	-webkit-border-image: url(../images/header-button.png) 0 16 0 16 stretch stretch;
+}
+.server-status #popButton.selected
+{
+	-webkit-border-image: url(../images/header-button-press.png) 0 16 0 16 stretch stretch;
+}
+.server-status #popButton .icon
+{
+	margin: 0px;
+	padding: 0px;
+	margin-top: 5px;
+	margin-left: -8px;
+	width: 21px;
+	height: 23px;
+	background: url(../images/pop-icon.png) center center no-repeat;
+}
+.server-status .footer
+{
+	position: fixed;
+	bottom: 0px;
+	z-index: 11000;
+	width: 320px;
+}
+.server-status #inputWidget
+{
+	overflow: hidden; 
+	max-height: 200px;
+	padding-right: 66px;
+}
+.server-status .sendButton {
+	position: absolute;
+	width: 48px;
+	height: 48px;
+	padding: 0px;
+	margin: 0px;
+	right: 16px;
+	bottom: -13px;
+	background: url(../images/send-airplane-press.png) top left no-repeat;	
+	background: url(../images/send-airplane.png) top left no-repeat;
+}
+.server-status .sendButton.selected {
+	background: url(../images/send-airplane-press.png) top left no-repeat;	
+}
+
+

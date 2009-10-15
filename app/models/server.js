@@ -43,7 +43,7 @@ ircServer.prototype.popStatus = function()
 {
 	if (servers.listAssistant)
 	{
-		servers.listAssistant.controller.stageController.pushScene('server-status', this.id);
+		servers.listAssistant.controller.stageController.pushScene('server-status', this);
 	}
 }
 
