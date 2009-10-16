@@ -1,26 +1,25 @@
 function ServerInfoAssistant(id)
 {
+	this.serverKey =	false;
+	this.server =		false;
+	
 	if (id)
 	{
-		this.server = servers.getServerForId(id);
-	}
-	else
-	{
-		this.server = false;
+		this.serverKey = servers.getServerArrayKey(id);
+		this.server = servers.servers[this.serverKey].getEditObject();
 	}
 	
-	// if no server, we need defaults
 	if (!this.server)
 	{
-		this.server = 
-		{
-			id:				false,
-			alias:			'',
-			address:		'',
-			port:			6667,
-			autoConnect:	false
-		};
+		this.server = ircServer.getEmptyObject();
 	}
+	
+	this.aliasElement =			false;
+	this.addressElement =		false;
+	this.portElement =			false;
+	this.autoConnectElement =	false;
+	this.saveButtonElement =	false;
+	
 }
 
 ServerInfoAssistant.prototype.setup = function()
@@ -30,8 +29,15 @@ ServerInfoAssistant.prototype.setup = function()
 	{
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
 		
-		this.toggleChangeHandler =	this.toggleChanged.bindAsEventListener(this);
-		this.textChangeHandler =	this.textChanged.bindAsEventListener(this);
+		this.aliasElement =			this.controller.get('alias');
+		this.addressElement =		this.controller.get('address');
+		this.portElement =			this.controller.get('port');
+		this.autoConnectElement =	this.controller.get('autoConnect');
+		this.saveButtonElement =	this.controller.get('saveButton');
+		
+		this.textChanged =			this.textChanged.bindAsEventListener(this);
+		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
+		this.saveButtonPressed =	this.saveButtonPressed.bindAsEventListener(this);
 		
 		this.controller.setupWidget
 		(
@@ -63,7 +69,8 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				modelProperty: 'port',
-				charsAllow: Mojo.Char.isDigit
+				charsAllow: Mojo.Char.isDigit,
+				modifierState: Mojo.Widget.numLock
 			},
 			this.server
 		);
@@ -79,11 +86,10 @@ ServerInfoAssistant.prototype.setup = function()
 			this.server
 		);
 		
-		Mojo.Event.listen(this.controller.get('alias'),			Mojo.Event.propertyChange, this.textChangeHandler);
-		Mojo.Event.listen(this.controller.get('address'),		Mojo.Event.propertyChange, this.textChangeHandler);
-		Mojo.Event.listen(this.controller.get('port'),			Mojo.Event.propertyChange, this.textChangeHandler);
-		
-		Mojo.Event.listen(this.controller.get('autoConnect'),	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		Mojo.Event.listen(this.aliasElement,		Mojo.Event.propertyChange, this.textChanged);
+		Mojo.Event.listen(this.addressElement,		Mojo.Event.propertyChange, this.textChanged);
+		Mojo.Event.listen(this.portElement,			Mojo.Event.propertyChange, this.textChanged);
+		Mojo.Event.listen(this.autoConnectElement,	Mojo.Event.propertyChange, this.toggleChanged);
 		
 		if (this.server.id === false) 
 		{
@@ -100,9 +106,9 @@ ServerInfoAssistant.prototype.setup = function()
 					buttonClass: 'palm-button'
 				}
 			);
-			Mojo.Event.listen(this.controller.get('saveButton'), Mojo.Event.tap, this.saveButtonPressed.bindAsEventListener(this));
+			
+			Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
 		}
-		
 		
 	} 
 	catch (e) 
@@ -113,34 +119,50 @@ ServerInfoAssistant.prototype.setup = function()
 
 ServerInfoAssistant.prototype.toggleChanged = function(event)
 {
-	//alert('------');
-	//alert(event.target.id);
-	//alert(event.value);
+	// Nothing special here, The model is being changed automatically
 }
 ServerInfoAssistant.prototype.textChanged = function(event)
 {
-	//alert('------');
-	//alert(event.target.id);
-	//alert(event.value);
+	// test server validation
+	ircServer.validateNewServer(this.server, this, false);
 }
 
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 {
-	servers.newServer(this.server, this);
-}
-ServerInfoAssistant.prototype.doneSaving = function()
-{
-	this.controller.get('saveButton').mojo.deactivate();
-	this.controller.stageController.popScene();
+	if (ircServer.validateNewServer(this.server, this, true)) 
+	{
+		servers.newServer(this.server, this);
+	}
 }
 
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
-	if (this.server.id) 
+	if (this.server.id)
 	{
-		this.server.saveInfo();
+		servers.servers[this.serverKey].saveInfo(this.server);
 	}
 }
 
+ServerInfoAssistant.prototype.validationError = function(error)
+{
+	this.saveButtonElement.mojo.deactivate();
+	alert('Error: ' +  error);
+}
+ServerInfoAssistant.prototype.doneSaving = function()
+{
+	this.saveButtonElement.mojo.deactivate();
+	this.controller.stageController.popScene();
+}
+
 ServerInfoAssistant.prototype.activate = function(event) {}
-ServerInfoAssistant.prototype.cleanup = function(event) {}
+ServerInfoAssistant.prototype.cleanup = function(event)
+{
+	Mojo.Event.stopListening(this.aliasElement,			Mojo.Event.propertyChange, this.textChanged);
+	Mojo.Event.stopListening(this.addressElement,		Mojo.Event.propertyChange, this.textChanged);
+	Mojo.Event.stopListening(this.portElement,			Mojo.Event.propertyChange, this.textChanged);
+	Mojo.Event.stopListening(this.autoConnectElement,	Mojo.Event.propertyChange, this.toggleChanged);
+	if (this.server.id === false)
+	{
+		Mojo.Event.stopListening(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
+	}
+}

@@ -17,7 +17,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 		
 		if (!params)
 		{
-	        if (serverController) 
+	        if (serverController)
 			{
 				serverController.popScenesTo('server-list');
 				serverController.activate();

@@ -2,8 +2,14 @@ function ircChannel(params)
 {
 	this.name =				params.name;
 	this.server =			params.server;
-	this.stageName =		'channel-' + this.server.alias + '-' + this.name;
+	this.stageName =		'channel-' + this.server.id + '-' + this.name;
 	this.stageController =	false;
+	this.chatAssistant =	false;
+}
+
+ircServer.prototype.setChatAssistant = function(assistant)
+{
+	this.chatAssistant = assistant;
 }
 
 ircChannel.prototype.openStage = function()
@@ -14,20 +20,27 @@ ircChannel.prototype.openStage = function()
 	
         if (this.stageController) 
 		{
-			this.stageController.popScenesTo('channel-chat');
-			this.stageController.activate();
+			if (this.stageController.activeScene().sceneName == 'channel-chat') 
+			{
+				this.stageController.activate();
+			}
+			else
+			{
+				this.stageController.popScenesTo('channel-chat');
+				this.stageController.activate();
+			}
 		}
 		else
 		{
-			var f = function(controller)
-			{
-				controller.pushScene('channel-chat', this);
-			};
-			Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, f);
+			Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, this.openStageCallback.bind(this));
 		}
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, "ircChannel#openStage");
 	}
+}
+ircChannel.prototype.openStageCallback = function(controller)
+{
+	controller.pushScene('channel-chat', this);
 }

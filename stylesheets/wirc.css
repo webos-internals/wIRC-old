@@ -1,6 +1,6 @@
 
 /*
- * Global Scene Styles
+ * Global Styles
  */
  .scene-fade-top
 {
@@ -115,7 +115,7 @@
 
 
 /*
- * Server List Scene Styles
+ * Server Status Scene Styles
  */
 .server-status #popButton
 {
@@ -143,20 +143,24 @@
 	height: 23px;
 	background: url(../images/pop-icon.png) center center no-repeat;
 }
-.server-status .footer
+
+/*
+ * Input Styles - Scene Inspecific
+ */
+.inputFooter
 {
 	position: fixed;
 	bottom: 0px;
 	z-index: 11000;
 	width: 320px;
 }
-.server-status #inputWidget
+.inputFooter #inputWidget
 {
 	overflow: hidden; 
 	max-height: 200px;
 	padding-right: 66px;
 }
-.server-status .sendButton {
+.inputFooter .sendButton {
 	position: absolute;
 	width: 48px;
 	height: 48px;
@@ -167,7 +171,7 @@
 	background: url(../images/send-airplane-press.png) top left no-repeat;	
 	background: url(../images/send-airplane.png) top left no-repeat;
 }
-.server-status .sendButton.selected {
+.inputFooter .sendButton.selected {
 	background: url(../images/send-airplane-press.png) top left no-repeat;	
 }
 

@@ -10,6 +10,9 @@ function ServerListAssistant()
 		items: []
 	};
 	
+	this.versionElement =			false;
+	this.serverListElement =		false;
+	
 	servers.setListAssistant(this);
 }
 
@@ -19,8 +22,13 @@ ServerListAssistant.prototype.setup = function()
 	{
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
 		
-		this.serverList = this.controller.get('serverList');
-		this.controller.get('version').innerHTML = "- v" + Mojo.Controller.appInfo.version;
+		this.versionElement =		this.controller.get('version');
+		this.serverListElement =	this.controller.get('serverList');
+		
+		this.listTapHandler =		this.listTapHandler.bindAsEventListener(this);
+		this.listDeleteHandler =	this.listDeleteHandler.bindAsEventListener(this);
+		
+		this.versionElement.innerHTML = "- v" + Mojo.Controller.appInfo.version;
 		
 		this.updateList(true);
 		this.controller.setupWidget('serverList', 
@@ -29,8 +37,8 @@ ServerListAssistant.prototype.setup = function()
 			swipeToDelete: true,
 			reorderable: false
 		}, this.serverListModel);
-		Mojo.Event.listen(this.serverList, Mojo.Event.listTap, this.listTapHandler.bindAsEventListener(this));
-		Mojo.Event.listen(this.serverList, Mojo.Event.listDelete, this.listDeleteHandler.bindAsEventListener(this));
+		Mojo.Event.listen(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
+		Mojo.Event.listen(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 		
 		this.updateCommandMenu(true);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
@@ -61,8 +69,8 @@ ServerListAssistant.prototype.updateList = function(skipUpdate)
 		
 		if (!skipUpdate) 
 		{
-			this.serverList.mojo.noticeUpdatedItems(0, this.serverListModel.items);
-			this.serverList.mojo.setLength(this.serverListModel.items.length);
+			this.serverListElement.mojo.noticeUpdatedItems(0, this.serverListModel.items);
+			this.serverListElement.mojo.setLength(this.serverListModel.items.length);
 		}
 	}
 	catch (e)
@@ -89,7 +97,7 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else
 	{
-		servers.servers[event.item.key].popStatus();
+		servers.servers[event.item.key].showStatusScene(false);
 	}
 }
 ServerListAssistant.prototype.listDeleteHandler = function(event)
@@ -131,4 +139,8 @@ ServerListAssistant.prototype.handleCommand = function(event)
 }
 
 ServerListAssistant.prototype.deactivate = function(event) {}
-ServerListAssistant.prototype.cleanup = function(event) {}
+ServerListAssistant.prototype.cleanup = function(event)
+{
+	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
+	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
+}

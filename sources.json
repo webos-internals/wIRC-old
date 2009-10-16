@@ -17,6 +17,10 @@
         "source": "app/assistants/server-status-assistant.js"
     },
     {
+        "scenes": "preferences",
+        "source": "app/assistants/preferences-assistant.js"
+    },
+    {
         "scenes": "identity",
         "source": "app/assistants/identity-assistant.js"
     },
