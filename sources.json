@@ -3,6 +3,8 @@
     {"source": "app/models/servers.js"},
     {"source": "app/models/server.js"},
     {"source": "app/models/channel.js"},
+    {"source": "app/models/nick.js"},
+    {"source": "app/models/message.js"},
     {"source": "app/assistants/app-assistant.js"},
     {
         "scenes": "server-list",

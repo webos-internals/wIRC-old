@@ -7,6 +7,8 @@ function ircServer(params)
 	this.autoConnect =		(params.autoConnect=='true'?true:false);
 	this.connected =		false;
 	this.channels =			[];
+	this.nicks =			[];
+	this.statusMessages =	[];
 	
 	this.stageName =		'status-' + this.id;
 	this.stageController =	false;
@@ -16,6 +18,51 @@ function ircServer(params)
 	{
 		this.connect();
 	}
+	
+	// temp
+	this.loadStatusMessages();
+}
+
+ircServer.prototype.loadStatusMessages = function()
+{
+	var n = new ircNick({name:'test'});
+	this.nicks.push(n);
+	var n = new ircNick({name:'tester'});
+	this.nicks.push(n);
+	var n = new ircNick({name:'really_long_name'});
+	this.nicks.push(n);
+	
+	
+	this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'channel-message'});
+	this.newMessage({type: 'channel-action', nick: this.nicks[1], message: 'is action-message'});
+	this.newMessage({type: 'channel-event', message: 'channel-event'});
+	this.newMessage({type: 'status', message: 'status'});
+	this.newMessage({type: 'channel-message', nick: this.nicks[2], message: 'channel-message'});
+	
+	for (var m = 1; m <= 40; m++) 
+	{
+		this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'message #' + m});
+	}
+}
+ircServer.prototype.newMessage = function(params)
+{
+	var m = new ircMessage(params);
+	this.statusMessages.push(m);
+}
+ircServer.prototype.getStatusMessages = function(start)
+{
+	var returnArray = [];
+	if (!start) start = 0;
+	
+	if (this.statusMessages.length > 0 && start < this.statusMessages.length)
+	{
+		for (var m = start; m < this.statusMessages.length; m++)
+		{
+			returnArray.push(this.statusMessages[m].getListObject());
+		}
+	}
+	
+	return returnArray;
 }
 
 ircServer.prototype.connect = function()
@@ -46,9 +93,23 @@ ircServer.prototype.showStatusScene = function(popit)
 {
 	try
 	{
+		this.stageController = Mojo.Controller.appController.getStageController(this.stageName);
+		
 		if (!popit && (servers.listAssistant && servers.listAssistant.controller))
 		{
-			servers.listAssistant.controller.stageController.pushScene('server-status', this, false);
+	        if (this.stageController && this.stageController.activeScene().sceneName == 'server-status') 
+			{
+				this.stageController.activate();
+			}
+			else if (this.stageController && this.stageController.activeScene().sceneName != 'server-status') 
+			{
+				this.stageController.popScenesTo('server-status');
+				this.stageController.activate();
+			}
+			else 
+			{
+				servers.listAssistant.controller.stageController.pushScene('server-status', this, false);
+			}
 		}
 		else
 		{
@@ -60,19 +121,14 @@ ircServer.prototype.showStatusScene = function(popit)
 				}
 			}
 			
-			this.stageController = Mojo.Controller.appController.getStageController(this.stageName);
-			
-	        if (this.stageController)
+	        if (this.stageController && this.stageController.activeScene().sceneName == 'server-status')
 			{
-				if (this.stageController.activeScene().sceneName == 'server-status') 
-				{
-					this.stageController.activate();
-				}
-				else
-				{
-					this.stageController.popScenesTo('server-status');
-					this.stageController.activate();
-				}
+				this.stageController.activate();
+			}
+			else if (this.stageController && this.stageController.activeScene().sceneName != 'server-status')
+			{
+				this.stageController.popScenesTo('server-status');
+				this.stageController.activate();
 			}
 			else
 			{

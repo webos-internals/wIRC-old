@@ -134,7 +134,6 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 		servers.newServer(this.server, this);
 	}
 }
-
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
 	if (this.server.id)

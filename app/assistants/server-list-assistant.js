@@ -49,7 +49,6 @@ ServerListAssistant.prototype.setup = function()
 	}
 }
 
-
 ServerListAssistant.prototype.activate = function(event)
 {
 	if (this.alreadyActivated)
@@ -60,12 +59,10 @@ ServerListAssistant.prototype.activate = function(event)
 }
 ServerListAssistant.prototype.updateList = function(skipUpdate)
 {
-	try 
+	try
 	{
 		this.serverListModel.items = [];
 		this.serverListModel.items = servers.getListObjects();
-		
-		//alert('Update:' + this.serverListModel.items.length + '-' + skipUpdate);
 		
 		if (!skipUpdate) 
 		{

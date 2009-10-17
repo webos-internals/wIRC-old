@@ -2,7 +2,7 @@
 /*
  * Global Styles
  */
- .scene-fade-top
+.scene-fade-top
 {
 	position: fixed; 
 	top: 0px; 
@@ -117,6 +117,19 @@
 /*
  * Server Status Scene Styles
  */
+#mojo-scene-server-status-scene-scroller
+{
+	background-color: #fcfcfc;
+}
+#mojo-scene-server-status-scene-scroller .scene-fade-top
+{
+	background-image: url(../images/fade-top-white.png);
+}
+#mojo-scene-server-status-scene-scroller .scene-fade-bottom
+{
+	bottom: 55px; 
+	background-image: url(../images/fade-bottom-white.png);
+}
 .server-status #popButton
 {
 	position: absolute;
@@ -143,6 +156,17 @@
 	height: 23px;
 	background: url(../images/pop-icon.png) center center no-repeat;
 }
+.server-status #messageList
+{
+	height: 100%;
+	padding-bottom: 58px;
+}
+/*.server-status #messageList .palm-row
+{
+	min-height: 35px;
+	background: none;
+}*/
+
 
 /*
  * Input Styles - Scene Inspecific
@@ -154,11 +178,16 @@
 	z-index: 11000;
 	width: 320px;
 }
+.inputFooter .bevel
+{
+	height: 4px;
+	background: url(../images/input-top-bevel.png) top center repeat-x;
+}
 .inputFooter #inputWidget
 {
 	overflow: hidden; 
 	max-height: 200px;
-	padding-right: 66px;
+	padding-right: 40px;
 }
 .inputFooter .sendButton {
 	position: absolute;
@@ -166,8 +195,8 @@
 	height: 48px;
 	padding: 0px;
 	margin: 0px;
-	right: 16px;
-	bottom: -13px;
+	right: 2px;
+	bottom: 2px;
 	background: url(../images/send-airplane-press.png) top left no-repeat;	
 	background: url(../images/send-airplane.png) top left no-repeat;
 }
@@ -175,4 +204,74 @@
 	background: url(../images/send-airplane-press.png) top left no-repeat;	
 }
 
+
+/*
+ * Message Styles - Scene Inspecific
+ */
+.message-row
+{
+	/*min-height: 22px;
+	line-height: 22px;*/
+	font-size: 16px;
+	clear: both;
+	
+	/* left-aligned */
+	padding: 1px 5px 2px 8px;
+	
+	/* center-break */
+	/*padding: 1px 0px 2px 0px;*/
+}
+.message-row .nick
+{
+	/* left-aligned */
+	display: inline;
+	
+	/* center-break */
+	/*display: block;
+	float: left;
+	padding-left: 2px;
+	padding-right: 3px; 
+	text-align: right;
+	width: 95px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;*/
+}
+.message-row .message
+{
+	color: #222;
+	word-wrap: break-word !important;
+	
+	/* left-aligned */
+	display: inline;
+	
+	/* center-break */
+	/*display: block;
+	float: left;
+	padding-left: 3px; 
+	padding-right: 5px; 
+	width: 212px;*/
+	
+}
+.message-row.action-message .nick,
+.message-row.action-message .message
+{
+	color: purple; /*navy;*/
+}
+.message-row.event-message .nick,
+.message-row.event-message .message
+{
+	color: green;
+}
+.message-row.status-message .nick,
+.message-row.status-message .message
+{
+	color: red; /*maroon;*/
+}
+.message-row.action-message .nick .seperator,
+.message-row.event-message .nick .seperator,
+.message-row.status-message .nick .seperator
+{
+	display: none;
+}
 
