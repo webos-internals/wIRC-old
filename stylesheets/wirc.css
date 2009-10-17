@@ -119,16 +119,19 @@
  */
 #mojo-scene-server-status-scene-scroller
 {
-	background-color: #fcfcfc;
+	/*background-color: #fcfcfc;*/
 }
 #mojo-scene-server-status-scene-scroller .scene-fade-top
 {
-	background-image: url(../images/fade-top-white.png);
+	/*background-image: url(../images/fade-top-white.png);*/
 }
 #mojo-scene-server-status-scene-scroller .scene-fade-bottom
 {
-	bottom: 55px; 
+	bottom: 52px; 
+	/*
+	bottom: 55px;
 	background-image: url(../images/fade-bottom-white.png);
+	*/
 }
 .server-status #popButton
 {
@@ -178,16 +181,42 @@
 	z-index: 11000;
 	width: 320px;
 }
+.inputFooter #inputWidget
+{
+	overflow: hidden;
+	max-height: 200px;
+	padding-right: 40px;
+}
+/* better footer? idk
 .inputFooter .bevel
 {
 	height: 4px;
 	background: url(../images/input-top-bevel.png) top center repeat-x;
 }
-.inputFooter #inputWidget
+.inputFooter .palm-row-wrapper.textfield-group
 {
-	overflow: hidden; 
-	max-height: 200px;
-	padding-right: 40px;
+	min-height: 22px;
+	padding-bottom: 0px;
+	border-width: 8px 25px 25px 25px;
+	-webkit-border-image: url(../images/input-shadow.png) 8 25 25 25 stretch stretch;
+}
+.inputFooter #inputWidget textarea.text-edit
+{
+	margin: 0px;
+	padding: 0px;
+	padding-top: 4px;
+}
+.inputFooter #inputWidget div.multiline-text
+{
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: -8px;
+	margin-top: 16px;
+}*/
+.inputFooter #inputWidget div.multiline-text
+{
+	margin-top: -1px;
+	margin-bottom: -2px;
 }
 .inputFooter .sendButton {
 	position: absolute;

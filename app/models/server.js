@@ -19,7 +19,7 @@ function ircServer(params)
 		this.connect();
 	}
 	
-	// temp
+	// for testing
 	this.loadStatusMessages();
 }
 
