@@ -4,13 +4,12 @@ function ServerStatusAssistant(server, popped)
 	this.popped = popped;
 	this.inputModel = {value:''};
 	
-	this.titleElement =			false;
-	this.popButtonElement =		false;
-	this.messageListElement =	false;
-	this.inputWidgetElement =	false;
-	this.sendButtonElement =	false;
-	
-	this.listOffset = 0;
+	this.titleElement =				false;
+	this.popButtonElement =			false;
+	this.messageListElement =		false;
+	this.inputContainerElement =	false;
+	this.inputWidgetElement =		false;
+	this.sendButtonElement =		false;
 	
 	this.listModel =
 	{
@@ -24,11 +23,12 @@ ServerStatusAssistant.prototype.setup = function()
 {
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
 	
-	this.titleElement =			this.controller.get('title');
-	this.popButtonElement =		this.controller.get('popButton');
-	this.messageListElement =	this.controller.get('messageList');
-	this.inputWidgetElement =	this.controller.get('inputWidget');
-	this.sendButtonElement =	this.controller.get('sendButton');
+	this.titleElement =				this.controller.get('title');
+	this.popButtonElement =			this.controller.get('popButton');
+	this.messageListElement =		this.controller.get('messageList');
+	this.inputContainerElement =	this.controller.get('inputFooter');
+	this.inputWidgetElement =		this.controller.get('inputWidget');
+	this.sendButtonElement =		this.controller.get('sendButton');
 	
 	this.popButtonPressed =		this.popButtonPressed.bindAsEventListener(this);
 	this.inputChanged =			this.inputChanged.bindAsEventListener(this);
@@ -40,18 +40,17 @@ ServerStatusAssistant.prototype.setup = function()
 	else				Mojo.Event.listen(this.popButtonElement, Mojo.Event.tap, this.popButtonPressed);
 	
 	this.updateList(true);
-	/*
 	this.controller.setupWidget
 	(
 		'messageList', 
 		{
 			itemTemplate: "message/message-row",
 			swipeToDelete: false,
-			reorderable: false
+			reorderable: false,
+			renderLimit: 50
 		},
 		this.listModel
 	);
-	*/
 	this.revealBottom();
 	
 	this.controller.setupWidget
@@ -95,31 +94,16 @@ ServerStatusAssistant.prototype.updateList = function(initial)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
 				{
-					//this.listModel.items.push(newMessages[m]);	
-					this.messageListElement.innerHTML += Mojo.View.render({object: newMessages[m], template: 'message/message-row'});
+					this.listModel.items.push(newMessages[m]);	
 				}
 			}
 		}
 		else
 		{
-			/*
 			var start = this.messageListElement.mojo.getLength();
 			var newMessages = this.server.getStatusMessages(start);
 			this.messageListElement.mojo.noticeUpdatedItems(start, newMessages);
 			this.messageListElement.mojo.setLength(start + newMessages.length);
-			*/
-			var start = this.listOffset;
-			var newMessages = this.server.getStatusMessages(start);
-			if (newMessages.length > 0)
-			{
-				for (var m = 0; m < newMessages.length; m++) 
-				{
-					//this.listModel.items.push(newMessages[m]);	
-					this.messageListElement.innerHTML += Mojo.View.render({object: newMessages[m], template: 'message/message-row'});
-				}
-				this.listOffset += newMessages.length;
-			}
-			
 			this.revealBottom();
 		}
 		
@@ -132,6 +116,9 @@ ServerStatusAssistant.prototype.updateList = function(initial)
 
 ServerStatusAssistant.prototype.revealBottom = function()
 {
+	var height = this.inputContainerElement.clientHeight;
+	this.messageListElement.style.paddingBottom = height + 'px';
+	
 	// palm does this twice in the messaging app to make sure it always reveals the very very bottom
 	this.controller.sceneScroller.mojo.revealBottom();
 	this.controller.sceneScroller.mojo.revealBottom();
@@ -160,7 +147,7 @@ ServerStatusAssistant.prototype.inputChanged = function(event)
 	{
 		this.sendButtonPressed();
 	}
-	else 
+	else
 	{
 		if (event.value == '') 
 		{

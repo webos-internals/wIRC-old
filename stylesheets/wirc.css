@@ -117,22 +117,6 @@
 /*
  * Server Status Scene Styles
  */
-#mojo-scene-server-status-scene-scroller
-{
-	/*background-color: #fcfcfc;*/
-}
-#mojo-scene-server-status-scene-scroller .scene-fade-top
-{
-	/*background-image: url(../images/fade-top-white.png);*/
-}
-#mojo-scene-server-status-scene-scroller .scene-fade-bottom
-{
-	bottom: 52px; 
-	/*
-	bottom: 55px;
-	background-image: url(../images/fade-bottom-white.png);
-	*/
-}
 .server-status #popButton
 {
 	position: absolute;
@@ -162,13 +146,19 @@
 .server-status #messageList
 {
 	height: 100%;
-	padding-bottom: 58px;
+	margin-bottom: 6px;
 }
-/*.server-status #messageList .palm-row
+
+
+
+/*
+ * Channel Chat Scene Styles
+ */
+.channel-chat #messageList
 {
-	min-height: 35px;
-	background: none;
-}*/
+	height: 100%;
+	margin-bottom: 6px;
+}
 
 
 /*
@@ -187,32 +177,6 @@
 	max-height: 200px;
 	padding-right: 40px;
 }
-/* better footer? idk
-.inputFooter .bevel
-{
-	height: 4px;
-	background: url(../images/input-top-bevel.png) top center repeat-x;
-}
-.inputFooter .palm-row-wrapper.textfield-group
-{
-	min-height: 22px;
-	padding-bottom: 0px;
-	border-width: 8px 25px 25px 25px;
-	-webkit-border-image: url(../images/input-shadow.png) 8 25 25 25 stretch stretch;
-}
-.inputFooter #inputWidget textarea.text-edit
-{
-	margin: 0px;
-	padding: 0px;
-	padding-top: 4px;
-}
-.inputFooter #inputWidget div.multiline-text
-{
-	padding: 0px;
-	margin: 0px;
-	margin-bottom: -8px;
-	margin-top: 16px;
-}*/
 .inputFooter #inputWidget div.multiline-text
 {
 	margin-top: -1px;
@@ -239,9 +203,9 @@
  */
 .message-row
 {
-	/*min-height: 22px;
-	line-height: 22px;*/
-	font-size: 16px;
+	min-height: 8px;
+	line-height: 16px;
+	font-size: 15px;
 	clear: both;
 	
 	/* left-aligned */

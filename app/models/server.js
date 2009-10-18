@@ -39,7 +39,7 @@ ircServer.prototype.loadStatusMessages = function()
 	this.newMessage({type: 'status', message: 'status'});
 	this.newMessage({type: 'channel-message', nick: this.nicks[2], message: 'channel-message'});
 	
-	for (var m = 1; m <= 40; m++) 
+	for (var m = 1; m <= 100; m++) 
 	{
 		this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'message #' + m});
 	}

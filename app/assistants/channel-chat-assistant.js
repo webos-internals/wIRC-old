@@ -3,9 +3,16 @@ function ChannelChatAssistant(channel)
 	this.channel = channel;
 	this.inputModel = {value:''};
 	
-	this.titleElement =			false;
-	this.inputWidgetElement =	false;
-	this.sendButtonElement =	false;
+	this.titleElement =				false;
+	this.messageListElement =		false;
+	this.inputContainerElement =	false;
+	this.inputWidgetElement =		false;
+	this.sendButtonElement =		false;
+	
+	this.listModel =
+	{
+		items: []
+	};
 	
 	this.channel.setChatAssistant(this);
 }
@@ -14,14 +21,30 @@ ChannelChatAssistant.prototype.setup = function()
 {
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
 	
-	this.titleElement =			this.controller.get('title');
-	this.inputWidgetElement =	this.controller.get('inputWidget');
-	this.sendButtonElement =	this.controller.get('sendButton');
+	this.titleElement =				this.controller.get('title');
+	this.messageListElement =		this.controller.get('messageList');
+	this.inputContainerElement =	this.controller.get('inputFooter');
+	this.inputWidgetElement =		this.controller.get('inputWidget');
+	this.sendButtonElement =		this.controller.get('sendButton');
 	
 	this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 	this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 	
 	this.titleElement.innerHTML = this.channel.name;
+	
+	this.updateList(true);
+	this.controller.setupWidget
+	(
+		'messageList', 
+		{
+			itemTemplate: "message/message-row",
+			swipeToDelete: false,
+			reorderable: false,
+			renderLimit: 50
+		},
+		this.listModel
+	);
+	this.revealBottom();
 	
 	this.controller.setupWidget
 	(
@@ -32,7 +55,8 @@ ChannelChatAssistant.prototype.setup = function()
 			focus: false,
 			multiline: true,
 			enterSubmits: true,
-			changeOnKeyPress: true
+			changeOnKeyPress: true,
+			textCase: Mojo.Widget.steModeLowerCase
 		},
 		this.inputModel
 	);
@@ -40,17 +64,76 @@ ChannelChatAssistant.prototype.setup = function()
 	
 	this.sendButtonElement.style.display = 'none';
 	Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+}
+
+ChannelChatAssistant.prototype.activate = function(event)
+{
+	if (this.alreadyActivated)
+	{
+		this.updateList();
+	}
+	this.alreadyActivated = true;
+	this.revealBottom();
+}
+ChannelChatAssistant.prototype.updateList = function(initial)
+{
+	try
+	{
+		if (initial) 
+		{
+			/*
+			var newMessages = this.server.getStatusMessages(0);
+			if (newMessages.length > 0)
+			{
+				for (var m = 0; m < newMessages.length; m++) 
+				{
+					this.listModel.items.push(newMessages[m]);	
+				}
+			}
+			*/
+		}
+		else
+		{
+			/*
+			var start = this.messageListElement.mojo.getLength();
+			var newMessages = this.server.getStatusMessages(start);
+			this.messageListElement.mojo.noticeUpdatedItems(start, newMessages);
+			this.messageListElement.mojo.setLength(start + newMessages.length);
+			this.revealBottom();
+			*/
+		}
+		
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'channel-chat#updateList');
+	}
+}
+
+ChannelChatAssistant.prototype.revealBottom = function()
+{
+	var height = this.inputContainerElement.clientHeight;
+	this.messageListElement.style.paddingBottom = height + 'px';
 	
+	// palm does this twice in the messaging app to make sure it always reveals the very very bottom
+	this.controller.sceneScroller.mojo.revealBottom();
+	this.controller.sceneScroller.mojo.revealBottom();
 }
 
 ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 {
 	alert('Send: ' + this.inputModel.value);
 	
+	//this.server.newMessage({type:'channel-message', nick:this.server.nicks[0], message:this.inputModel.value});
+	
 	this.inputWidgetElement.mojo.setValue('');
+	
+	this.updateList();
 }
 ChannelChatAssistant.prototype.inputChanged = function(event)
 {
+	this.revealBottom();
+	
 	if (event.originalEvent && Mojo.Char.isEnterKey(event.originalEvent.keyCode) &&
 		event.value != '') 
 	{
@@ -69,7 +152,6 @@ ChannelChatAssistant.prototype.inputChanged = function(event)
 	}
 }
 
-ChannelChatAssistant.prototype.activate = function(event) {}
 ChannelChatAssistant.prototype.deactivate = function(event) {}
 ChannelChatAssistant.prototype.cleanup = function(event)
 {

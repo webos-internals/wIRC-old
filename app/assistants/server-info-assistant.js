@@ -11,7 +11,7 @@ function ServerInfoAssistant(id)
 	
 	if (!this.server)
 	{
-		this.server = ircServer.getEmptyObject();
+		this.server = ircServer.getBlankServerObject();
 	}
 	
 	this.aliasElement =			false;
