@@ -32,7 +32,7 @@ ircServer.prototype.loadStatusMessages = function()
 	var n = new ircNick({name:'really_long_name'});
 	this.nicks.push(n);
 	
-	
+	/*
 	this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'channel-message'});
 	this.newMessage({type: 'channel-action', nick: this.nicks[1], message: 'is action-message'});
 	this.newMessage({type: 'channel-event', message: 'channel-event'});
@@ -43,6 +43,7 @@ ircServer.prototype.loadStatusMessages = function()
 	{
 		this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'message #' + m});
 	}
+	*/
 }
 ircServer.prototype.newMessage = function(params)
 {

@@ -97,6 +97,13 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 			/*
 			var start = this.messageListElement.mojo.getLength();
 			var newMessages = this.server.getStatusMessages(start);
+			if (newMessages.length > 0)
+			{
+				for (var m = 0; m < newMessages.length; m++) 
+				{
+					this.listModel.items.push(newMessages[m]);	
+				}
+			}
 			this.messageListElement.mojo.noticeUpdatedItems(start, newMessages);
 			this.messageListElement.mojo.setLength(start + newMessages.length);
 			this.revealBottom();

@@ -28,7 +28,7 @@ function ircMessage(params)
 			
 		case 'channel-event':
 			this.rowStyle =		'event-message';
-			this.nickDisplay =	'***';
+			this.nickDisplay =	'**';
 			this.message =		params.message;
 			break;
 			
