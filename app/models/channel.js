@@ -2,12 +2,69 @@ function ircChannel(params)
 {
 	this.name =				params.name;
 	this.server =			params.server;
+	
+	this.nicks =			[];
+	this.messages =			[];
+	
 	this.stageName =		'channel-' + this.server.id + '-' + this.name;
 	this.stageController =	false;
 	this.chatAssistant =	false;
 }
 
-ircServer.prototype.setChatAssistant = function(assistant)
+ircChannel.prototype.newCommand = function(message)
+{
+	var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+	var match = cmdRegExp.exec(message);
+	if (match)
+	{
+		var cmd = match[1];
+		var msg = match[2];
+		
+		switch(cmd)
+		{
+			case 'nick':
+			case 'join':
+				// forward these messages to the server object
+				this.server.newCommand(message);
+				break;
+				
+			default: // this could probably be left out later
+				this.newStatusMessage('Unknown Command: ' + cmd);
+				break;
+		}
+	}
+	else
+	{
+		// no command match does nothing in status window
+	}
+}
+
+ircChannel.prototype.newMessage = function(message)
+{
+	
+}
+ircChannel.prototype.newStatusMessage = function(message)
+{
+	var m = new ircMessage({type:'status', message:message});
+	this.messages.push(m);
+}
+ircChannel.prototype.getMessages = function(start)
+{
+	var returnArray = [];
+	if (!start) start = 0;
+	
+	if (this.messages.length > 0 && start < this.messages.length)
+	{
+		for (var m = start; m < this.messages.length; m++)
+		{
+			returnArray.push(this.messages[m].getListObject());
+		}
+	}
+	
+	return returnArray;
+}
+
+ircChannel.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
 }

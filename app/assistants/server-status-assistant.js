@@ -137,9 +137,7 @@ ServerStatusAssistant.prototype.popButtonPressed = function(event)
 }
 ServerStatusAssistant.prototype.sendButtonPressed = function(event)
 {
-	alert('Send: ' + this.inputModel.value);
-	
-	this.server.newMessage({type:'channel-message', nick:this.server.nicks[0], message:this.inputModel.value});
+	this.server.newCommand(this.inputModel.value);
 	
 	this.inputWidgetElement.mojo.setValue('');
 	

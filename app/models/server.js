@@ -18,36 +18,42 @@ function ircServer(params)
 	{
 		this.connect();
 	}
-	
-	// for testing
-	this.loadStatusMessages();
 }
 
-ircServer.prototype.loadStatusMessages = function()
+ircServer.prototype.newCommand = function(message)
 {
-	var n = new ircNick({name:'test'});
-	this.nicks.push(n);
-	var n = new ircNick({name:'tester'});
-	this.nicks.push(n);
-	var n = new ircNick({name:'really_long_name'});
-	this.nicks.push(n);
-	
-	/*
-	this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'channel-message'});
-	this.newMessage({type: 'channel-action', nick: this.nicks[1], message: 'is action-message'});
-	this.newMessage({type: 'channel-event', message: 'channel-event'});
-	this.newMessage({type: 'status', message: 'status'});
-	this.newMessage({type: 'channel-message', nick: this.nicks[2], message: 'channel-message'});
-	
-	for (var m = 1; m <= 100; m++) 
+	var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+	var match = cmdRegExp.exec(message);
+	if (match)
 	{
-		this.newMessage({type: 'channel-message', nick: this.nicks[1], message: 'message #' + m});
+		var cmd = match[1];
+		var msg = match[2];
+		
+		switch(cmd)
+		{
+			case 'nick':
+				this.newStatusMessage('Set Nick To: ' + msg);
+				break;
+				
+			case 'join':
+				this.newStatusMessage('Joining: ' + msg);
+				this.joinChannel(msg);
+				break;
+				
+			default: // this could probably be left out later
+				this.newStatusMessage('Unknown Command: ' + cmd);
+				break;
+		}
 	}
-	*/
+	else
+	{
+		// no command match does nothing in status window
+	}
 }
-ircServer.prototype.newMessage = function(params)
+
+ircServer.prototype.newStatusMessage = function(message)
 {
-	var m = new ircMessage(params);
+	var m = new ircMessage({type:'status', message:message});
 	this.statusMessages.push(m);
 }
 ircServer.prototype.getStatusMessages = function(start)

@@ -81,8 +81,7 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 	{
 		if (initial) 
 		{
-			/*
-			var newMessages = this.server.getStatusMessages(0);
+			var newMessages = this.channel.getMessages(0);
 			if (newMessages.length > 0)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
@@ -90,13 +89,11 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 					this.listModel.items.push(newMessages[m]);	
 				}
 			}
-			*/
 		}
 		else
 		{
-			/*
 			var start = this.messageListElement.mojo.getLength();
-			var newMessages = this.server.getStatusMessages(start);
+			var newMessages = this.channel.getMessages(start);
 			if (newMessages.length > 0)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
@@ -107,7 +104,6 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 			this.messageListElement.mojo.noticeUpdatedItems(start, newMessages);
 			this.messageListElement.mojo.setLength(start + newMessages.length);
 			this.revealBottom();
-			*/
 		}
 		
 	}
@@ -129,9 +125,7 @@ ChannelChatAssistant.prototype.revealBottom = function()
 
 ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 {
-	alert('Send: ' + this.inputModel.value);
-	
-	//this.server.newMessage({type:'channel-message', nick:this.server.nicks[0], message:this.inputModel.value});
+	this.channel.newCommand(this.inputModel.value);
 	
 	this.inputWidgetElement.mojo.setValue('');
 	
