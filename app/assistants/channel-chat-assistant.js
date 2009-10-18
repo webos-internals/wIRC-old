@@ -126,9 +126,9 @@ ChannelChatAssistant.prototype.revealBottom = function()
 ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 {
 	this.channel.newCommand(this.inputModel.value);
-	
 	this.inputWidgetElement.mojo.setValue('');
 	
+	// this probably isn't needed
 	this.updateList();
 }
 ChannelChatAssistant.prototype.inputChanged = function(event)
@@ -153,7 +153,11 @@ ChannelChatAssistant.prototype.inputChanged = function(event)
 	}
 }
 
-ChannelChatAssistant.prototype.deactivate = function(event) {}
+ChannelChatAssistant.prototype.deactivate = function(event)
+{
+	// put something here to part a channel
+}
+
 ChannelChatAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);

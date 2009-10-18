@@ -7,7 +7,7 @@ function ircServer(params)
 	this.autoConnect =		(params.autoConnect=='true'?true:false);
 	this.connected =		false;
 	this.channels =			[];
-	this.nicks =			[];
+	this.nick =				false;
 	this.statusMessages =	[];
 	
 	this.stageName =		'status-' + this.id;
@@ -27,17 +27,18 @@ ircServer.prototype.newCommand = function(message)
 	if (match)
 	{
 		var cmd = match[1];
-		var msg = match[2];
+		var val = match[2];
 		
 		switch(cmd)
 		{
 			case 'nick':
-				this.newStatusMessage('Set Nick To: ' + msg);
+				this.newStatusMessage('You are now known as [' + val + ']');
+				this.nick = new ircNick({name:val});
 				break;
 				
 			case 'join':
-				this.newStatusMessage('Joining: ' + msg);
-				this.joinChannel(msg);
+				this.newStatusMessage('Joining ' + val);
+				this.joinChannel(val);
 				break;
 				
 			default: // this could probably be left out later
@@ -55,6 +56,11 @@ ircServer.prototype.newStatusMessage = function(message)
 {
 	var m = new ircMessage({type:'status', message:message});
 	this.statusMessages.push(m);
+	
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateList();
+	}
 }
 ircServer.prototype.getStatusMessages = function(start)
 {
@@ -75,8 +81,9 @@ ircServer.prototype.getStatusMessages = function(start)
 ircServer.prototype.connect = function()
 {
 	this.connected = true;
+	this.newStatusMessage('Connected');
 	
-	if (servers.listAssistant)
+	if (servers.listAssistant && servers.listAssistant.controller)
 	{
 		servers.listAssistant.updateList();
 	}
@@ -84,8 +91,9 @@ ircServer.prototype.connect = function()
 ircServer.prototype.disconnect = function()
 {
 	this.connected = false;
+	this.newStatusMessage('Disconnected');
 	
-	if (servers.listAssistant)
+	if (servers.listAssistant && servers.listAssistant.controller)
 	{
 		servers.listAssistant.updateList();
 	}

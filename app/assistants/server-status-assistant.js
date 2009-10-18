@@ -138,9 +138,9 @@ ServerStatusAssistant.prototype.popButtonPressed = function(event)
 ServerStatusAssistant.prototype.sendButtonPressed = function(event)
 {
 	this.server.newCommand(this.inputModel.value);
-	
 	this.inputWidgetElement.mojo.setValue('');
 	
+	// this probably isn't needed
 	this.updateList();
 }
 ServerStatusAssistant.prototype.inputChanged = function(event)

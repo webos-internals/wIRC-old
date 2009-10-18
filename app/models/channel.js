@@ -18,7 +18,7 @@ ircChannel.prototype.newCommand = function(message)
 	if (match)
 	{
 		var cmd = match[1];
-		var msg = match[2];
+		var val = match[2];
 		
 		switch(cmd)
 		{
@@ -28,6 +28,10 @@ ircChannel.prototype.newCommand = function(message)
 				this.server.newCommand(message);
 				break;
 				
+			case 'me':
+				this.newAction(val);
+				break;
+				
 			default: // this could probably be left out later
 				this.newStatusMessage('Unknown Command: ' + cmd);
 				break;
@@ -35,13 +39,20 @@ ircChannel.prototype.newCommand = function(message)
 	}
 	else
 	{
-		// no command match does nothing in status window
+		// normal message
+		this.newMessage(message);
 	}
 }
 
+ircChannel.prototype.newAction = function(message)
+{
+	var m = new ircMessage({type:'channel-action', nick:this.server.nick, message:message});
+	this.messages.push(m);
+}
 ircChannel.prototype.newMessage = function(message)
 {
-	
+	var m = new ircMessage({type:'channel-message', nick:this.server.nick, message:message});
+	this.messages.push(m);
 }
 ircChannel.prototype.newStatusMessage = function(message)
 {
