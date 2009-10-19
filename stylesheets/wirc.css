@@ -9,7 +9,7 @@
 	z-index: 11000;
 	height: 30px; 
 	width: 100%;
-	background: url(../images/fade-top.png) top center repeat-x;
+	background: url(../images/palm-default/fade-top.png) top center repeat-x;
 	-webkit-palm-mouse-target: ignore;
 }
 .scene-fade-bottom
@@ -19,8 +19,16 @@
 	z-index: 11000;
 	height: 30px; 
 	width: 100%;
-	background: url(../images/fade-bottom.png) bottom center repeat-x;
+	background: url(../images/palm-default/fade-bottom.png) bottom center repeat-x;
 	-webkit-palm-mouse-target: ignore;
+}
+body.palm-dark .scene-fade-top
+{
+	background: url(../images/palm-dark/fade-top.png) top center repeat-x;
+}
+body.palm-dark .scene-fade-bottom
+{
+	background: url(../images/palm-dark/fade-bottom.png) bottom center repeat-x;
 }
 
 
@@ -87,6 +95,41 @@
 .server-list .palm-list .palm-row-wrapper.disconnected .button.status.selected
 {
 	background-position: bottom center;
+}
+
+
+
+/*
+ * Preference Scene Styles
+ */
+.prefs .palm-row-wrapper .label.left
+{
+	padding-left: 6px;
+	-webkit-palm-mouse-target: ignore;
+}
+.prefs .palm-row-wrapper #fontSizeTest
+{
+	padding-right: 22px;
+	line-height: 26px;
+	height: 26px;
+	vertical-align: middle;
+}
+.prefs .palm-row-wrapper .slider
+{
+	margin-top: -6px;
+	margin-bottom: 18px;
+}
+.prefs .palm-list-selector .label
+{
+	float: left;
+}
+.prefs .palm-list-selector .title
+{
+	text-align: right;
+}
+.prefs .palm-group.disabled
+{
+	opacity: 0.35;
 }
 
 
@@ -201,26 +244,31 @@
 /*
  * Message Styles - Scene Inspecific
  */
-.message-row
+.lefta .message-row
 {
 	min-height: 8px;
-	line-height: 16px;
-	font-size: 15px;
 	clear: both;
-	
-	/* left-aligned */
 	padding: 1px 5px 2px 8px;
-	
-	/* center-break */
-	/*padding: 1px 0px 2px 0px;*/
 }
-.message-row .nick
+.lefta .message-row .nick
 {
-	/* left-aligned */
 	display: inline;
-	
-	/* center-break */
-	/*display: block;
+}
+.lefta .message-row .message
+{
+	color: #222;
+	word-wrap: break-word !important;
+	display: inline;
+}
+.fixed .message-row
+{
+	min-height: 8px;
+	clear: both;
+	padding: 1px 0px 2px 0px;
+}
+.fixed .message-row .nick
+{
+	display: block;
 	float: left;
 	padding-left: 2px;
 	padding-right: 3px; 
@@ -228,24 +276,35 @@
 	width: 95px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	overflow: hidden;*/
+	overflow: hidden;
 }
-.message-row .message
+.fixed .message-row .message
 {
 	color: #222;
 	word-wrap: break-word !important;
-	
-	/* left-aligned */
-	display: inline;
-	
-	/* center-break */
-	/*display: block;
+	display: block;
 	float: left;
-	padding-left: 3px; 
-	padding-right: 5px; 
-	width: 212px;*/
+	padding-left: 3px;
+	padding-right: 5px;
+	width: 212px;
 	
 }
+
+.font-9  .message-row { font-size:  9px; line-height: 10px; }
+.font-10 .message-row { font-size: 10px; line-height: 11px; }
+.font-11 .message-row { font-size: 11px; line-height: 12px; }
+.font-12 .message-row { font-size: 12px; line-height: 13px; }
+.font-13 .message-row { font-size: 13px; line-height: 14px; }
+.font-14 .message-row { font-size: 14px; line-height: 15px; }
+.font-15 .message-row { font-size: 15px; line-height: 16px; }
+.font-16 .message-row { font-size: 16px; line-height: 17px; }
+.font-17 .message-row { font-size: 17px; line-height: 18px; }
+.font-18 .message-row { font-size: 18px; line-height: 19px; }
+.font-19 .message-row { font-size: 19px; line-height: 20px; }
+.font-20 .message-row { font-size: 20px; line-height: 21px; }
+.font-21 .message-row { font-size: 21px; line-height: 22px; }
+.font-22 .message-row { font-size: 22px; line-height: 23px; }
+
 .message-row.action-message .nick,
 .message-row.action-message .message
 {

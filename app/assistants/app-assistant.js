@@ -6,6 +6,9 @@ var serverStage = 'serverStage';
 // load our database object
 var db = new database();
 
+// holds the preferences cookie
+var prefs = new prefCookie();
+
 // holds the servers
 var servers = new ircServers();
 

@@ -15,17 +15,33 @@ function ChannelChatAssistant(channel)
 	};
 	
 	this.channel.setChatAssistant(this);
+	
+	// setup menu
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			}
+		]
+	}
 }
 
 ChannelChatAssistant.prototype.setup = function()
 {
-	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
+	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.titleElement =				this.controller.get('title');
 	this.messageListElement =		this.controller.get('messageList');
 	this.inputContainerElement =	this.controller.get('inputFooter');
 	this.inputWidgetElement =		this.controller.get('inputWidget');
 	this.sendButtonElement =		this.controller.get('sendButton');
+	
+	this.messageListElement.className = prefs.get().messagesStyle;
+	this.messageListElement.style.fontSize = prefs.get().fontSize + 'px';
 	
 	this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 	this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
@@ -68,6 +84,9 @@ ChannelChatAssistant.prototype.setup = function()
 
 ChannelChatAssistant.prototype.activate = function(event)
 {
+	// load prefs
+	this.messageListElement.className = prefs.get().messagesStyle + ' ' + 'font-' + prefs.get().fontSize;
+	
 	if (this.alreadyActivated)
 	{
 		this.updateList();
@@ -149,6 +168,19 @@ ChannelChatAssistant.prototype.inputChanged = function(event)
 		else 
 		{
 			this.sendButtonElement.style.display = '';
+		}
+	}
+}
+
+ChannelChatAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type == Mojo.Event.command)
+	{
+		switch (event.command)
+		{
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences');
+				break;
 		}
 	}
 }

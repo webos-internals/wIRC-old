@@ -17,11 +17,24 @@ function ServerStatusAssistant(server, popped)
 	};
 	
 	this.server.setStatusAssistant(this);
+	
+	// setup menu
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			}
+		]
+	}
 }
 
 ServerStatusAssistant.prototype.setup = function()
 {
-	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
+	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.titleElement =				this.controller.get('title');
 	this.popButtonElement =			this.controller.get('popButton');
@@ -76,6 +89,9 @@ ServerStatusAssistant.prototype.setup = function()
 
 ServerStatusAssistant.prototype.activate = function(event)
 {
+	// load prefs
+	this.messageListElement.className = prefs.get().messagesStyle + ' ' + 'font-' + prefs.get().fontSize;
+	
 	if (this.alreadyActivated)
 	{
 		this.updateList();
@@ -161,6 +177,19 @@ ServerStatusAssistant.prototype.inputChanged = function(event)
 		else 
 		{
 			this.sendButtonElement.style.display = '';
+		}
+	}
+}
+
+ServerStatusAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type == Mojo.Event.command)
+	{
+		switch (event.command)
+		{
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences');
+				break;
 		}
 	}
 }

@@ -14,13 +14,28 @@ function ServerListAssistant()
 	this.serverListElement =		false;
 	
 	servers.setListAssistant(this);
+	
+	// setup menu
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			}
+		]
+	}
 }
 
 ServerListAssistant.prototype.setup = function()
 {
-	try 
+	try
 	{
-		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
+		this.controller.document.body.className = prefs.get().theme;
+		
+		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.versionElement =		this.controller.get('version');
 		this.serverListElement =	this.controller.get('serverList');
@@ -94,7 +109,7 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else
 	{
-		servers.servers[event.item.key].showStatusScene(false);
+		servers.servers[event.item.key].showStatusScene(prefs.get().statusPop);
 	}
 }
 ServerListAssistant.prototype.listDeleteHandler = function(event)
@@ -104,7 +119,7 @@ ServerListAssistant.prototype.listDeleteHandler = function(event)
 
 ServerListAssistant.prototype.updateCommandMenu = function(skipUpdate)
 {
-	try 
+	try
 	{
 		this.cmdMenuModel.items = [];
 		this.cmdMenuModel.items.push({});
@@ -128,6 +143,10 @@ ServerListAssistant.prototype.handleCommand = function(event)
 	{
 		switch (event.command)
 		{
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences');
+				break;
+				
 			case 'new-server':
 				this.controller.stageController.pushScene('server-info');
 				break;

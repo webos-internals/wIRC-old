@@ -1,1 +1,76 @@
-Find me in app/views/preferences/preferences-scene.html.
+<div class="prefs">
+	
+	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
+	
+	<div class="palm-page-header multi-line">
+		<div class="palm-page-header-wrapper">
+			<div class="icon"></div>
+			<div class="title">Preferences</div>
+		</div>
+	</div>
+	
+	<div class="palm-group disabled">
+		<div class="palm-group-title">Global</div>
+		<div class="palm-list">
+			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper">
+					<div id="theme" x-mojo-element="ListSelector"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Server Status</div>
+		<div class="palm-list">
+			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper">
+					<div class="label left">Default In New Card</div>
+					<div id="statusPop" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Messages</div>
+		<div class="palm-list">
+			
+			<div class="palm-row first">
+				<div class="palm-row-wrapper">
+					<div id="messagesStyle" x-mojo-element="ListSelector"></div>
+				</div>
+			</div>
+			
+			<div class="palm-row last">
+				<div class="palm-row-wrapper">
+					<div class="label left">Font Size</div>
+					<div class="title right" id="fontSizeTest"></div>
+					<div id="fontSize" x-mojo-element="Slider" class="slider"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group" id="secretPreferences">
+		<div class="palm-group-title">Secret Stuff</div>
+		<div class="palm-list">
+			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper">
+					<div class="label left">asdf</div>
+					<div id="asdf" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>
+	
+</div>

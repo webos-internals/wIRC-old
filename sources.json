@@ -1,5 +1,6 @@
 [
     {"source": "app/models/database.js"},
+    {"source": "app/models/prefCookie.js"},
     {"source": "app/models/servers.js"},
     {"source": "app/models/server.js"},
     {"source": "app/models/channel.js"},
