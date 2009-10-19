@@ -84,6 +84,8 @@ ircServer.prototype.connect = function()
 	this.connected = true;
 	this.newStatusMessage('Connected');
 	
+	this.newCommand('/nick ' + prefs.get().nick1);
+	
 	if (servers.listAssistant && servers.listAssistant.controller)
 	{
 		servers.listAssistant.updateList();

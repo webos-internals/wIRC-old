@@ -28,7 +28,7 @@ prefCookie.prototype.get = function(reload)
 				fontSize: '15',
 				
 				// Identity Scene
-				nick1: '',
+				nick1: 'wIRCer',
 				nick2: '',
 				nick3: ''
 			};

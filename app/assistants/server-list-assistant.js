@@ -22,6 +22,10 @@ function ServerListAssistant()
 		items:
 		[
 			{
+				label: "Identity",
+				command: 'do-ident'
+			},
+			{
 				label: "Preferences",
 				command: 'do-prefs'
 			}
@@ -144,6 +148,10 @@ ServerListAssistant.prototype.handleCommand = function(event)
 	{
 		switch (event.command)
 		{
+			case 'do-ident':
+				this.controller.stageController.pushScene('identity');
+				break;
+				
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences');
 				break;

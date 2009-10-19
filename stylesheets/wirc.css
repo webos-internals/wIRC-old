@@ -100,57 +100,34 @@ body.palm-dark .scene-fade-bottom
 
 
 /*
- * Preference Scene Styles
+ * Form Styles - Scene Inspecific
  */
-.prefs .palm-row-wrapper .label.left
+.form .palm-row-wrapper .label.left
 {
 	padding-left: 6px;
 	-webkit-palm-mouse-target: ignore;
 }
-.prefs .palm-row-wrapper .sliderTitle
+.form .palm-row-wrapper .sliderTitle
 {
 	padding-right: 22px;
 	line-height: 26px;
 	height: 26px;
 	vertical-align: middle;
 }
-.prefs .palm-row-wrapper .slider
+.form .palm-row-wrapper .slider
 {
 	margin-top: -6px;
 	padding-bottom: 18px;
 }
-.prefs .palm-list-selector .label
+.form .palm-list-selector .label
 {
 	float: left;
 }
-.prefs .palm-list-selector .title
+.form .palm-list-selector .title
 {
 	text-align: right;
 }
-.prefs .palm-group.disabled
-{
-	opacity: 0.35;
-}
-
-
-
-/*
- * Server Info Scene Styles
- */
-.server-info .palm-row-wrapper .label.left
-{
-	padding-left: 6px;
-	-webkit-palm-mouse-target: ignore;
-}
-.server-info .palm-list-selector .label
-{
-	float: left;
-}
-.server-info .palm-list-selector .title
-{
-	text-align: right;
-}
-.server-info .palm-group.disabled
+.form .palm-group.disabled
 {
 	opacity: 0.35;
 }
