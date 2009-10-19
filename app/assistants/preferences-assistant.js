@@ -82,6 +82,32 @@ PreferencesAssistant.prototype.setup = function()
 		// Messages Group
 		this.controller.setupWidget
 		(
+			'autoCap',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+	  			fieldName:  'autoCap'
+			},
+			{
+				value : this.prefs.autoCap,
+	 			disabled: false
+			}
+		);
+		this.controller.setupWidget
+		(
+			'autoReplace',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+	  			fieldName:  'autoReplace'
+			},
+			{
+				value : this.prefs.autoReplace,
+	 			disabled: false
+			}
+		);
+		this.controller.setupWidget
+		(
 			'messagesStyle',
 			{
 				label: 'Message Style',
@@ -107,6 +133,8 @@ PreferencesAssistant.prototype.setup = function()
 		);
 		this.fontSizeChanged({value:this.prefs.fontSize});
 		
+		this.controller.listen('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+		this.controller.listen('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('messagesStyle',	Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('fontSize',		Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
 		

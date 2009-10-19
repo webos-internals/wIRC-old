@@ -76,7 +76,8 @@ ServerStatusAssistant.prototype.setup = function()
 			multiline: true,
 			enterSubmits: true,
 			changeOnKeyPress: true,
-			textCase: Mojo.Widget.steModeLowerCase
+			autoReplace: prefs.get().autoReplace,
+			textCase: (prefs.get().autoCap?Mojo.Widget.steModeSentenceCase:Mojo.Widget.steModeLowerCase)
 		},
 		this.inputModel
 	);

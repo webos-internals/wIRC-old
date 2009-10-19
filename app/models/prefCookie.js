@@ -21,6 +21,8 @@ prefCookie.prototype.get = function(reload)
 				statusPop: false,
 				
 				// Messages Group
+				autoCap: true,
+				autoReplace: true,
 				messagesStyle: 'lefta',
 				fontSize: '15',
 				
