@@ -34,6 +34,7 @@ PreferencesAssistant.prototype.setup = function()
 		
 		// setup handlers for preferences
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
+		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
 		
 		// Global Group
@@ -49,11 +50,7 @@ PreferencesAssistant.prototype.setup = function()
 				],
 				modelProperty: 'theme'
 			},
-			//this.prefs
-			{
-				theme: 'palm-default',
-        		disabled: true
-			}
+			this.prefs
 		);
 		
 		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
@@ -122,20 +119,45 @@ PreferencesAssistant.prototype.setup = function()
 		);
 		this.controller.setupWidget
 		(
-			'fontSize',
+			'messageSplit',
 			{
-				minValue: 9,
-				maxValue: 22,
-				round: true,
-				modelProperty: 'fontSize'
+				label: 'Fixed Split',
+				choices:
+				[
+					{label:'15% / 85%',	value:'15'},
+					{label:'20% / 80%',	value:'20'},
+					{label:'25% / 75%',	value:'25'},
+					{label:'30% / 70%',	value:'30'},
+					{label:'35% / 65%',	value:'35'},
+					{label:'40% / 60%',	value:'40'},
+					{label:'45% / 55%',	value:'45'},
+					{label:'50% / 50%',	value:'50'},
+				],
+				modelProperty: 'messageSplit'
 			},
 			this.prefs
 		);
-		this.fontSizeChanged({value:this.prefs.fontSize});
+		this.controller.setupWidget
+		(
+			'fontSize',
+			{
+				minValue: 0,
+				maxValue: 1,
+				round: false,
+				modelProperty: 'value'
+			},
+			{
+				value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)
+			}
+		);
+		
+		this.messageStyleChanged();
+		this.fontSizeChanged({value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)});
 		
 		this.controller.listen('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-		this.controller.listen('messagesStyle',	Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
+		this.controller.listen('messageSplit',	Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('fontSize',		Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
 		
 		
@@ -151,6 +173,15 @@ PreferencesAssistant.prototype.setup = function()
 
 }
 
+PreferencesAssistant.prototype.toggleChanged = function(event)
+{
+	this.prefs[event.target.id] = event.value;
+	this.cookie.put(this.prefs);
+}
+PreferencesAssistant.prototype.sliderChanged = function(event)
+{
+	this.cookie.put(this.prefs);
+}
 PreferencesAssistant.prototype.listChanged = function(event)
 {
 	this.cookie.put(this.prefs);
@@ -160,21 +191,42 @@ PreferencesAssistant.prototype.themeChanged = function(event)
 {
 	// set the theme right away with the body class
 	this.controller.document.body.className = event.value;
-	this.cookie.put(this.prefs);
+	this.listChanged();
+}
+PreferencesAssistant.prototype.messageStyleChanged = function(event)
+{
+	if (event) 
+	{
+		this.listChanged();
+	}
+	if (this.prefs['messagesStyle'] == 'lefta')
+	{
+		this.controller.get('messageFixedSplit').style.display = 'none';
+	}
+	else
+	{
+		this.controller.get('messageFixedSplit').style.display = '';
+	}
 }
 
-PreferencesAssistant.prototype.toggleChanged = function(event)
+PreferencesAssistant.prototype.sliderGetPrefValue = function(min, max, slider)
 {
-	this.prefs[event.target.id] = event.value;
-	this.cookie.put(this.prefs);
+	return Math.round(min + (slider * (max - min)));
+}
+PreferencesAssistant.prototype.sliderGetSlideValue = function(min, max, pref)
+{
+	return ((pref - min) / (max - min));
 }
 
 PreferencesAssistant.prototype.fontSizeChanged = function(event)
 {
-	// set the font size of the preview message
-	this.controller.get('fontSizeTest').innerHTML = 'Size ' + event.value + ' Preview';
-	this.controller.get('fontSizeTest').style.fontSize = event.value + 'px';
-	this.cookie.put(this.prefs);
+	var value = this.sliderGetPrefValue(9, 22, event.value);
+	
+	this.controller.get('fontSizeTest').innerHTML = 'Size ' + value + ' Preview';
+	this.controller.get('fontSizeTest').style.fontSize = value + 'px';
+	
+	this.prefs['fontSize'] = value;
+	this.sliderChanged();
 }
 
 PreferencesAssistant.prototype.handleCommand = function(event)
@@ -226,6 +278,9 @@ PreferencesAssistant.prototype.cleanup = function(event)
 {
 	this.controller.stopListening('theme',			Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 	this.controller.stopListening('statusPop',		Mojo.Event.propertyChange, this.toggleChangeHandler);
-	this.controller.stopListening('messagesStyle',	Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
+	this.controller.stopListening('messageSplit',	Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('fontSize',		Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
 }

@@ -23,6 +23,7 @@ ircChannel.prototype.newCommand = function(message)
 		switch(cmd)
 		{
 			case 'nick':
+			case 'j':
 			case 'join':
 				// forward these messages to the server object
 				this.server.newCommand(message);

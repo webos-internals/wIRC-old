@@ -32,61 +32,68 @@ function ChannelChatAssistant(channel)
 
 ChannelChatAssistant.prototype.setup = function()
 {
-	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
-	
-	this.titleElement =				this.controller.get('title');
-	this.messageListElement =		this.controller.get('messageList');
-	this.inputContainerElement =	this.controller.get('inputFooter');
-	this.inputWidgetElement =		this.controller.get('inputWidget');
-	this.sendButtonElement =		this.controller.get('sendButton');
-	
-	this.messageListElement.className = prefs.get().messagesStyle;
-	this.messageListElement.style.fontSize = prefs.get().fontSize + 'px';
-	
-	this.inputChanged =			this.inputChanged.bindAsEventListener(this);
-	this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
-	
-	this.titleElement.innerHTML = this.channel.name;
-	
-	this.updateList(true);
-	this.controller.setupWidget
-	(
-		'messageList', 
-		{
-			itemTemplate: "message/message-row",
-			swipeToDelete: false,
-			reorderable: false,
-			renderLimit: 50
-		},
-		this.listModel
-	);
-	this.revealBottom();
-	
-	this.controller.setupWidget
-	(
-		'inputWidget',
-		{
-			modelProperty: 'value',
-			//hintText: $L('Message...'),
-			focus: false,
-			multiline: true,
-			enterSubmits: true,
-			changeOnKeyPress: true,
-			autoReplace: prefs.get().autoReplace,
-			textCase: (prefs.get().autoCap?Mojo.Widget.steModeSentenceCase:Mojo.Widget.steModeLowerCase)
-		},
-		this.inputModel
-	);
-	Mojo.Event.listen(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
-	
-	this.sendButtonElement.style.display = 'none';
-	Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+	try
+	{
+		// set theme
+		this.controller.document.body.className = prefs.get().theme;
+		
+		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
+		
+		this.titleElement =				this.controller.get('title');
+		this.messageListElement =		this.controller.get('messageList');
+		this.inputContainerElement =	this.controller.get('inputFooter');
+		this.inputWidgetElement =		this.controller.get('inputWidget');
+		this.sendButtonElement =		this.controller.get('sendButton');
+		
+		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
+		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
+		
+		this.titleElement.innerHTML = this.channel.name;
+		
+		this.updateList(true);
+		this.controller.setupWidget
+		(
+			'messageList',
+			{
+				itemTemplate: "message/message-row",
+				swipeToDelete: false,
+				reorderable: false,
+				renderLimit: 50
+			},
+			this.listModel
+		);
+		this.revealBottom();
+		
+		this.controller.setupWidget
+		(
+			'inputWidget',
+			{
+				modelProperty: 'value',
+				//hintText: $L('Message...'),
+				focus: false,
+				multiline: true,
+				enterSubmits: true,
+				changeOnKeyPress: true,
+				autoReplace: prefs.get().autoReplace,
+				textCase: (prefs.get().autoCap ? Mojo.Widget.steModeSentenceCase : Mojo.Widget.steModeLowerCase)
+			},
+			this.inputModel
+		);
+		Mojo.Event.listen(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
+		
+		this.sendButtonElement.style.display = 'none';
+		Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'channel-chat#setup');
+	}
 }
 
 ChannelChatAssistant.prototype.activate = function(event)
 {
 	// load prefs
-	this.messageListElement.className = prefs.get().messagesStyle + ' ' + 'font-' + prefs.get().fontSize;
+	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 	
 	if (this.alreadyActivated)
 	{

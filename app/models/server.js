@@ -36,6 +36,7 @@ ircServer.prototype.newCommand = function(message)
 				this.nick = new ircNick({name:val});
 				break;
 				
+			case 'j':
 			case 'join':
 				this.newStatusMessage('Joining ' + val);
 				this.joinChannel(val);

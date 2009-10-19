@@ -107,7 +107,7 @@ body.palm-dark .scene-fade-bottom
 	padding-left: 6px;
 	-webkit-palm-mouse-target: ignore;
 }
-.prefs .palm-row-wrapper #fontSizeTest
+.prefs .palm-row-wrapper .sliderTitle
 {
 	padding-right: 22px;
 	line-height: 26px;
@@ -117,7 +117,7 @@ body.palm-dark .scene-fade-bottom
 .prefs .palm-row-wrapper .slider
 {
 	margin-top: -6px;
-	margin-bottom: 18px;
+	padding-bottom: 18px;
 }
 .prefs .palm-list-selector .label
 {
@@ -204,6 +204,7 @@ body.palm-dark .scene-fade-bottom
 }
 
 
+
 /*
  * Input Styles - Scene Inspecific
  */
@@ -225,6 +226,10 @@ body.palm-dark .scene-fade-bottom
 	margin-top: -1px;
 	margin-bottom: -2px;
 }
+body.palm-dark .inputFooter #inputWidget *
+{
+	color: #fff;
+}
 .inputFooter .sendButton {
 	position: absolute;
 	width: 48px;
@@ -239,6 +244,7 @@ body.palm-dark .scene-fade-bottom
 .inputFooter .sendButton.selected {
 	background: url(../images/send-airplane-press.png) top left no-repeat;	
 }
+
 
 
 /*
@@ -287,8 +293,28 @@ body.palm-dark .scene-fade-bottom
 	padding-left: 3px;
 	padding-right: 5px;
 	width: 212px;
-	
 }
+body.palm-dark .message-row .message
+{
+	color: #e4e4e4;
+}
+
+.fixed.fixed-15 .message-row .nick { width:  46px; }
+.fixed.fixed-20 .message-row .nick { width:  61px; }
+.fixed.fixed-25 .message-row .nick { width:  76px; }
+.fixed.fixed-30 .message-row .nick { width:  92px; }
+.fixed.fixed-35 .message-row .nick { width: 107px; }
+.fixed.fixed-40 .message-row .nick { width: 122px; }
+.fixed.fixed-45 .message-row .nick { width: 138px; }
+.fixed.fixed-50 .message-row .nick { width: 153px; }
+.fixed.fixed-15 .message-row .message { width: 261px; }
+.fixed.fixed-20 .message-row .message { width: 246px; }
+.fixed.fixed-25 .message-row .message { width: 231px; }
+.fixed.fixed-30 .message-row .message { width: 215px; }
+.fixed.fixed-35 .message-row .message { width: 200px; }
+.fixed.fixed-40 .message-row .message { width: 185px; }
+.fixed.fixed-45 .message-row .message { width: 169px; }
+.fixed.fixed-50 .message-row .message { width: 154px; }
 
 .font-9  .message-row { font-size:  9px; line-height: 10px; }
 .font-10 .message-row { font-size: 10px; line-height: 11px; }

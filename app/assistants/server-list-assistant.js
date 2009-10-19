@@ -33,6 +33,7 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
+		// set theme
 		this.controller.document.body.className = prefs.get().theme;
 		
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);

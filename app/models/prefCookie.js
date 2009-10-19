@@ -24,6 +24,7 @@ prefCookie.prototype.get = function(reload)
 				autoCap: true,
 				autoReplace: true,
 				messagesStyle: 'lefta',
+				messageSplit: '30',
 				fontSize: '15',
 				
 				// Identity Scene
