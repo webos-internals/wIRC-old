@@ -2,7 +2,6 @@ function ServerStatusAssistant(server, popped)
 {
 	this.server = server;
 	this.popped = popped;
-	this.inputModel = {value:''};
 	
 	this.titleElement =				false;
 	this.popButtonElement =			false;
@@ -14,6 +13,10 @@ function ServerStatusAssistant(server, popped)
 	this.listModel =
 	{
 		items: []
+	};
+	this.inputModel =
+	{
+		value:''
 	};
 	
 	this.server.setStatusAssistant(this);
@@ -53,6 +56,7 @@ ServerStatusAssistant.prototype.setup = function()
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
 		this.titleElement.innerHTML = this.server.alias;
+		this.loadPrefs(true);
 		
 		if (this.popped)	this.popButtonElement.style.display = 'none';
 		else				Mojo.Event.listen(this.popButtonElement, Mojo.Event.tap, this.popButtonPressed);
@@ -97,13 +101,16 @@ ServerStatusAssistant.prototype.setup = function()
 	}
 }
 
+ServerStatusAssistant.prototype.loadPrefs = function(initial)
+{
+	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
+}
+
 ServerStatusAssistant.prototype.activate = function(event)
 {
-	// load prefs
-	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
-	
 	if (this.alreadyActivated)
 	{
+		this.loadPrefs();
 		this.updateList();
 	}
 	this.alreadyActivated = true;

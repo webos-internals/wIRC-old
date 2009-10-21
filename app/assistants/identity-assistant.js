@@ -38,9 +38,13 @@ IdentityAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
+				//changeOnKeyPress: true,
 				hintText: '',
 				modelProperty: 'nick1',
-				textCase: Mojo.Widget.steModeLowerCase
+				charsAllow: this.validChars,
+				maxLength: 16,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.prefs
 		);
@@ -50,9 +54,13 @@ IdentityAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
+				//changeOnKeyPress: true,
 				hintText: '',
 				modelProperty: 'nick2',
-				textCase: Mojo.Widget.steModeLowerCase
+				charsAllow: this.validChars,
+				maxLength: 16,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.prefs
 		);
@@ -62,9 +70,13 @@ IdentityAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
+				//changeOnKeyPress: true,
 				hintText: '',
 				modelProperty: 'nick3',
-				textCase: Mojo.Widget.steModeLowerCase
+				charsAllow: this.validChars,
+				maxLength: 16,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.prefs
 		);
@@ -80,8 +92,23 @@ IdentityAssistant.prototype.setup = function()
 
 }
 
+IdentityAssistant.prototype.validChars = function(test)
+{
+	if (String.fromCharCode(test).match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) 
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 IdentityAssistant.prototype.textChanged = function(event)
 {
+	//var error = false;
+	//if (!event.value.match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) error = true;
+	
 	this.cookie.put(this.prefs);
 }
 

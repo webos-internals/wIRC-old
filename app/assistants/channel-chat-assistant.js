@@ -1,7 +1,6 @@
 function ChannelChatAssistant(channel)
 {
 	this.channel = channel;
-	this.inputModel = {value:''};
 	
 	this.titleElement =				false;
 	this.messageListElement =		false;
@@ -12,6 +11,10 @@ function ChannelChatAssistant(channel)
 	this.listModel =
 	{
 		items: []
+	};
+	this.inputModel =
+	{
+		value:''
 	};
 	
 	this.channel.setChatAssistant(this);
@@ -49,6 +52,7 @@ ChannelChatAssistant.prototype.setup = function()
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
 		this.titleElement.innerHTML = this.channel.name;
+		this.loadPrefs(true);
 		
 		this.updateList(true);
 		this.controller.setupWidget
@@ -90,11 +94,15 @@ ChannelChatAssistant.prototype.setup = function()
 	}
 }
 
+
+ChannelChatAssistant.prototype.loadPrefs = function(initial)
+{
+	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
+}
+
 ChannelChatAssistant.prototype.activate = function(event)
 {
-	// load prefs
-	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
-	
+	this.loadPrefs();
 	if (this.alreadyActivated)
 	{
 		this.updateList();

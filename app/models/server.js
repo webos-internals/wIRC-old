@@ -29,7 +29,7 @@ ircServer.prototype.newCommand = function(message)
 		var cmd = match[1];
 		var val = match[2];
 		
-		switch(cmd)
+		switch(cmd.toLowerCase())
 		{
 			case 'nick':
 				this.newStatusMessage('You are now known as [' + val + ']');
@@ -38,7 +38,6 @@ ircServer.prototype.newCommand = function(message)
 				
 			case 'j':
 			case 'join':
-				this.newStatusMessage('Joining ' + val);
 				this.joinChannel(val);
 				break;
 				
@@ -166,6 +165,19 @@ ircServer.prototype.showStatusStageCallback = function(controller)
 
 ircServer.prototype.joinChannel = function(name)
 {
+	if (this.channels.length > 0)
+	{
+		for (var c = 0; c < this.channels.length; c++)
+		{
+			if (this.channels[c].name == name)
+			{
+				this.channels[c].openStage();
+				return;
+			}
+		}
+	}
+	
+	this.newStatusMessage('Joining ' + name);
 	var newChannel = new ircChannel(
 	{
 		name:	name,

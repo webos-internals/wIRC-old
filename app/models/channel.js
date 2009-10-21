@@ -20,7 +20,7 @@ ircChannel.prototype.newCommand = function(message)
 		var cmd = match[1];
 		var val = match[2];
 		
-		switch(cmd)
+		switch(cmd.toLowerCase())
 		{
 			case 'nick':
 			case 'j':

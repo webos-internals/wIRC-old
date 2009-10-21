@@ -46,7 +46,8 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				hintText: 'Name Of Connection',
-				modelProperty: 'alias'
+				modelProperty: 'alias',
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
 		);
@@ -58,7 +59,8 @@ ServerInfoAssistant.prototype.setup = function()
 				enterSubmits: false,
 				hintText: 'URL Or IP Address',
 				modelProperty: 'address',
-				textCase: Mojo.Widget.steModeLowerCase
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
 		);
@@ -70,7 +72,8 @@ ServerInfoAssistant.prototype.setup = function()
 				enterSubmits: false,
 				modelProperty: 'port',
 				charsAllow: Mojo.Char.isDigit,
-				modifierState: Mojo.Widget.numLock
+				modifierState: Mojo.Widget.numLock,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
 		);
