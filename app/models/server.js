@@ -37,7 +37,9 @@ ircServer.prototype.newCommand = function(message)
 			switch (cmd.toLowerCase())
 			{
 				case 'nick':
-					//this.newStatusMessage('You are now known as [' + val + ']');
+					this.newStatusMessage('You are now known as [' + val + ']');
+          this.nick.name = val;
+          this.changeNick(val);
 					//this.nick = new ircNick({name:val});
 					break;
 					
@@ -296,6 +298,22 @@ ircServer.prototype.showStatusScene = function(popit)
 ircServer.prototype.showStatusStageCallback = function(controller)
 {
 	controller.pushScene('server-status', this, true);
+}
+
+ircServer.prototype.changeNick = function(name)
+{
+  if (!this.nick) 
+  {
+    this.nick = new ircNick({name:val});
+  }
+  else 
+  {
+    wIRCd.nick(this.nickChanged.bindAsEventListener(this), this.sessionToken, name)
+  }
+}
+ircServer.prototype.nickChanged = function(payload)
+{
+  // Verify?
 }
 
 ircServer.prototype.joinChannel = function(name)
