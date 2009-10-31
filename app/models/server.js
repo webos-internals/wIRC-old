@@ -66,6 +66,17 @@ ircServer.prototype.newCommand = function(message)
 	}
 }
 
+ircServer.prototype.newGenericMessage = function(type,message)
+{
+	var m = new ircMessage({type:type, message:message});
+	this.statusMessages.push(m);
+	
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateList();
+	}
+}
+
 ircServer.prototype.newDebugMessage = function(message)
 {
 	var m = new ircMessage({type:'debug', message:message});
@@ -168,12 +179,17 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
-				case '324':
+				case '324': // CHANNEL MODE
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan)
 					{
 						tmpChan.channel_mode(payload.params[2]);
 					}
+					break;
+					
+				case '372': // MOTD
+					this.newGenericMessage('action',payload.params[1]);
+					break;
 					
 				default:
 					for (p in payload) 
