@@ -25,37 +25,44 @@ function ircServer(params)
 
 ircServer.prototype.newCommand = function(message)
 {
-	var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
-	var match = cmdRegExp.exec(message);
-	if (match)
+	if (this.connected) 
 	{
-		var cmd = match[1];
-		var val = match[2];
-		
-		switch(cmd.toLowerCase())
+		var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+		var match = cmdRegExp.exec(message);
+		if (match) 
 		{
-			case 'nick':
-				//this.newStatusMessage('You are now known as [' + val + ']');
-				//this.nick = new ircNick({name:val});
-				break;
-				
-			case 'j':
-			case 'join':
-				this.joinChannel(val);
-				break;
+			var cmd = match[1];
+			var val = match[2];
 			
-			case 'quit':
-				this.disconnect();
-				break;
-				
-			default: // this could probably be left out later
-				this.newStatusMessage('Unknown Command: ' + cmd);
-				break;
+			switch (cmd.toLowerCase())
+			{
+				case 'nick':
+					//this.newStatusMessage('You are now known as [' + val + ']');
+					//this.nick = new ircNick({name:val});
+					break;
+					
+				case 'j':
+				case 'join':
+					this.joinChannel(val);
+					break;
+					
+				case 'quit':
+					this.disconnect();
+					break;
+					
+				default: // this could probably be left out later
+					this.newStatusMessage('Unknown Command: ' + cmd);
+					break;
+			}
+		}
+		else 
+		{
+			// no command match does nothing in status window
 		}
 	}
 	else
 	{
-		// no command match does nothing in status window
+		this.newStatusMessage('Not Connected.');
 	}
 }
 
@@ -113,10 +120,33 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.nick = new ircNick({name:payload.params[0]});
 					
 					this.connected = true;
+					this.newStatusMessage(payload.params[1]);
 					
 					if (servers.listAssistant && servers.listAssistant.controller)
 					{
 						servers.listAssistant.updateList();
+					}
+					break;
+					
+				case 'NOTICE':
+					this.newStatusMessage(payload.params[1]);
+					break;
+					
+				case 'JOIN':
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan) 
+					{
+						var tmpNick = tmpChan.getNick(payload.origin);
+						tmpChan.newEventMessage(tmpNick.name + ' has joined ' + tmpChan.name);
+					}
+					break;
+					
+				case 'PART':
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan) 
+					{
+						var tmpNick = tmpChan.getNick(payload.origin);
+						tmpChan.newEventMessage(tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
 					
@@ -146,6 +176,10 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 			}
+		}
+		else
+		{
+			// hmm
 		}
 	}
 	catch (e)

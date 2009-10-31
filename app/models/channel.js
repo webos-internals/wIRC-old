@@ -30,6 +30,10 @@ ircChannel.prototype.newCommand = function(message)
 				this.server.newCommand(message);
 				break;
 				
+			case 'part':
+				this.part();
+				break;
+				
 			case 'me':
 				this.me(val);
 				break;
@@ -88,11 +92,31 @@ ircChannel.prototype.newStatusMessage = function(message)
 {
 	var m = new ircMessage({type:'status', message:message});
 	this.messages.push(m);
+	
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateList();
+	}
+}
+ircChannel.prototype.newEventMessage = function(message)
+{
+	var m = new ircMessage({type:'channel-event', message:message});
+	this.messages.push(m);
+	
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateList();
+	}
 }
 ircChannel.prototype.newDebugMessage = function(message)
 {
 	var m = new ircMessage({type:'debug', message:message});
 	this.messages.push(m);
+	
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateList();
+	}
 }
 ircChannel.prototype.getMessages = function(start)
 {
@@ -162,6 +186,18 @@ ircChannel.prototype.joinHandler = function(payload)
 	if (payload.returnValue == 0)
 	{
 		this.openStage();
+	}
+}
+
+ircChannel.prototype.part = function()
+{
+	wIRCd.part(this.partHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
+}
+ircChannel.prototype.partHandler = function(payload)
+{
+	if (payload.returnValue == 0)
+	{
+		// disconnected from channel
 	}
 }
 
