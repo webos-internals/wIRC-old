@@ -323,9 +323,15 @@ body.palm-dark .message-row .message
 {
 	color: red; /*maroon;*/
 }
+.message-row.debug-message .nick,
+.message-row.debug-message .message
+{
+	color: gray;
+}
 .message-row.action-message .nick .seperator,
 .message-row.event-message .nick .seperator,
-.message-row.status-message .nick .seperator
+.message-row.status-message .nick .seperator,
+.message-row.debug-message .nick .seperator
 {
 	display: none;
 }

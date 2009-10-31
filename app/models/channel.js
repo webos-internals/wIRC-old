@@ -25,6 +25,7 @@ ircChannel.prototype.newCommand = function(message)
 			case 'nick':
 			case 'j':
 			case 'join':
+			case 'quit':
 				// forward these messages to the server object
 				this.server.newCommand(message);
 				break;
@@ -41,23 +42,46 @@ ircChannel.prototype.newCommand = function(message)
 	else
 	{
 		// normal message
-		this.newMessage(message);
+		this.msg(message);
 	}
 }
 
-ircChannel.prototype.newAction = function(message)
+ircChannel.prototype.me = function(message)
 {
-	var m = new ircMessage({type:'channel-action', nick:this.server.nick, message:message});
+	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
+	this.newAction(this.server.nick, message);
+}
+ircChannel.prototype.meHandler = function(payload)
+{
+	// this apparently doesn't return anything of importance
+}
+ircChannel.prototype.newAction = function(nick, message)
+{
+	var m = new ircMessage({type:'channel-action', nick:nick, message:message});
 	this.messages.push(m);
 }
-ircChannel.prototype.newMessage = function(message)
+ircChannel.prototype.msg = function(message)
 {
-	var m = new ircMessage({type:'channel-message', nick:this.server.nick, message:message});
+	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
+	this.newMessage(this.server.nick, message)
+}
+ircChannel.prototype.msgHandler = function(payload)
+{
+	// this apparently doesn't return anything of importance
+}
+ircChannel.prototype.newMessage = function(nick, message)
+{
+	var m = new ircMessage({type:'channel-message', nick:nick, message:message});
 	this.messages.push(m);
 }
 ircChannel.prototype.newStatusMessage = function(message)
 {
 	var m = new ircMessage({type:'status', message:message});
+	this.messages.push(m);
+}
+ircChannel.prototype.newDebugMessage = function(message)
+{
+	var m = new ircMessage({type:'debug', message:message});
 	this.messages.push(m);
 }
 ircChannel.prototype.getMessages = function(start)
@@ -79,6 +103,18 @@ ircChannel.prototype.getMessages = function(start)
 ircChannel.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
+}
+
+ircChannel.prototype.join = function()
+{
+	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
+}
+ircChannel.prototype.joinHandler = function(payload)
+{
+	if (payload.returnValue == 0)
+	{
+		this.openStage();
+	}
 }
 
 ircChannel.prototype.openStage = function()

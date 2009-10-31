@@ -37,6 +37,12 @@ function ircMessage(params)
 			this.nickDisplay =	'***';
 			this.message =		params.message;
 			break;
+			
+		case 'debug':
+			this.rowStyle =		'debug-message';
+			this.nickDisplay =	'---';
+			this.message =		params.message;
+			break;
 	}
 	
 }

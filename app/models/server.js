@@ -10,6 +10,9 @@ function ircServer(params)
 	this.nick =				false;
 	this.statusMessages =	[];
 	
+	this.sessionToken =		false;
+	this.subscription =		false;
+	
 	this.stageName =		'status-' + this.id;
 	this.stageController =	false;
 	this.statusAssistant =	false;
@@ -32,13 +35,17 @@ ircServer.prototype.newCommand = function(message)
 		switch(cmd.toLowerCase())
 		{
 			case 'nick':
-				this.newStatusMessage('You are now known as [' + val + ']');
-				this.nick = new ircNick({name:val});
+				//this.newStatusMessage('You are now known as [' + val + ']');
+				//this.nick = new ircNick({name:val});
 				break;
 				
 			case 'j':
 			case 'join':
 				this.joinChannel(val);
+				break;
+			
+			case 'quit':
+				this.disconnect();
 				break;
 				
 			default: // this could probably be left out later
@@ -52,6 +59,16 @@ ircServer.prototype.newCommand = function(message)
 	}
 }
 
+ircServer.prototype.newDebugMessage = function(message)
+{
+	var m = new ircMessage({type:'debug', message:message});
+	this.statusMessages.push(m);
+	
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateList();
+	}
+}
 ircServer.prototype.newStatusMessage = function(message)
 {
 	var m = new ircMessage({type:'status', message:message});
@@ -80,24 +97,52 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {
-	this.connected = true;
-	this.newStatusMessage('Connected');
-	
-	this.newCommand('/nick ' + prefs.get().nick1);
-	
-	if (servers.listAssistant && servers.listAssistant.controller)
+	// connecting...
+	this.subscription = wIRCd.connect(this.connectionHandler.bindAsEventListener(this), this.address, prefs.get().nick1);
+}
+ircServer.prototype.connectionHandler = function(payload)
+{
+	if (!payload.returnValue) 
 	{
-		servers.listAssistant.updateList();
+		switch(payload.event)
+		{
+			case 'CONNECT':
+				this.sessionToken = payload.sessionToken;
+				this.nick = new ircNick({name:payload.params[0]});
+				
+				this.connected = true;
+				
+				if (servers.listAssistant && servers.listAssistant.controller)
+				{
+					servers.listAssistant.updateList();
+				}
+				break;
+				
+			default:
+				for (p in payload) 
+				{
+					//alert(p + ': ' + payload[p]);
+					this.newDebugMessage(p + ': ' + payload[p]);
+				}
+				break;
+		}
 	}
 }
 ircServer.prototype.disconnect = function()
 {
-	this.connected = false;
-	this.newStatusMessage('Disconnected');
-	
-	if (servers.listAssistant && servers.listAssistant.controller)
+	// disconnecting...
+	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, 'wIRC FTW');
+}
+ircServer.prototype.disconnectHandler = function(payload)
+{
+	if (payload.returnValue == 0)
 	{
-		servers.listAssistant.updateList();
+		this.connected = false;
+		this.subscription.cancel();
+		if (servers.listAssistant && servers.listAssistant.controller)
+		{
+			servers.listAssistant.updateList();
+		}
 	}
 }
 
@@ -177,13 +222,13 @@ ircServer.prototype.joinChannel = function(name)
 		}
 	}
 	
-	this.newStatusMessage('Joining ' + name);
+	//this.newStatusMessage('Joining ' + name);
 	var newChannel = new ircChannel(
 	{
 		name:	name,
 		server:	this
 	});
-	newChannel.openStage();
+	newChannel.join();
 	this.channels.push(newChannel);
 }
 
