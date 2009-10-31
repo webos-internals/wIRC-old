@@ -190,7 +190,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.newGenericMessage('action',payload.params[1]);
 					break;
 					
-				case '253':		// LUSERUNKNOWN					
+				case '253':		// LUSERUNKNOWN
 				case '252':		// LUSEROP
 				case '254':		// LUSERCHANNELS
 				case '256':		// ADMINME

@@ -190,7 +190,10 @@ ircChannel.prototype.partHandler = function(payload)
 {
 	if (payload.returnValue == 0)
 	{
-		// disconnected from channel
+		if (this.chatAssistant && this.chatAssistant.controller)
+		{
+			this.chatAssistant.controller.window.close();
+		}
 	}
 }
 
