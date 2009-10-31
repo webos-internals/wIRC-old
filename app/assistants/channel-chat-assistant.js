@@ -109,6 +109,7 @@ ChannelChatAssistant.prototype.activate = function(event)
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
+	this.inputWidgetElement.mojo.focus();
 }
 
 ChannelChatAssistant.prototype.updateTitle = function()
