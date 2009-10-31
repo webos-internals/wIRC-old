@@ -179,17 +179,25 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
-				case '324': // CHANNEL MODE
+				case '324': // CHANNELMODEIS
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan)
 					{
 						tmpChan.channel_mode(payload.params[2]);
 					}
 					break;
+
+				case '375': // MOTDSTART
+					//this.newGenericMessage('action',payload.params[1]);
+					break;
 					
 				case '372': // MOTD
 					this.newGenericMessage('action',payload.params[1]);
 					break;
+					
+				case '376': // ENDOFMOTD
+					//this.newGenericMessage('action',payload.params[1]);
+					break;					
 					
 				default:
 					for (p in payload) 
