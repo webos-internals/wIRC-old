@@ -131,7 +131,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.nick = new ircNick({name:payload.params[0]});
 					
 					this.connected = true;
-					this.newStatusMessage(payload.params[1]);
+					//this.newStatusMessage(payload.params[1]);
 					
 					if (servers.listAssistant && servers.listAssistant.controller)
 					{
