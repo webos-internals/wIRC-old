@@ -94,7 +94,9 @@ IdentityAssistant.prototype.setup = function()
 
 IdentityAssistant.prototype.validChars = function(test)
 {
-	if (String.fromCharCode(test).match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) 
+//	if (String.fromCharCode(test).match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) 
+//	Allow 0(x30)-9(x39), A(x41)-Z(x5A), [(x5B), ](x5D), ^(x5E), _(x5F), `(x60), a(x61)-z(x7A), {(x7B), |(x7C), }(x7D), ~(x7E), -(x2D)
+	if (String.fromCharCode(test).match(/^[\x30-\x39\x41-\x5B\x5D-\x7E\x2D]*$/))
 	{
 		return true;
 	}
@@ -106,8 +108,8 @@ IdentityAssistant.prototype.validChars = function(test)
 
 IdentityAssistant.prototype.textChanged = function(event)
 {
-	//var error = false;
-	//if (!event.value.match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) error = true;
+//	var error = false;
+//	if (!event.value.match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) error = true;
 	
 	this.cookie.put(this.prefs);
 }
