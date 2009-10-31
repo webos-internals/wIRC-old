@@ -61,9 +61,10 @@ ircChannel.prototype.meHandler = function(payload)
 {
 	// this apparently doesn't return anything of importance
 }
-ircChannel.prototype.updateMode = function(mode)
+ircChannel.prototype.channel_mode = function(mode)
 {
 	this.mode = mode;
+	this.chatAssistant.updateTitle();
 }
 ircChannel.prototype.newAction = function(nick, message)
 {
@@ -185,21 +186,21 @@ ircChannel.prototype.setChatAssistant = function(assistant)
 
 ircChannel.prototype.join = function()
 {
-	wIRCd.channel_mode(this.channel_modeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
 	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
-}
-ircChannel.prototype.channel_modeHandler = function(payload)
-{
-	if (payload.returnValue == 0)
-	{
-		// Do something ?
-	}
+	wIRCd.channel_mode(this.channel_modeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
 }
 ircChannel.prototype.joinHandler = function(payload)
 {
 	if (payload.returnValue == 0)
 	{
 		this.openStage();
+	}
+}
+ircChannel.prototype.channel_modeHandler = function(payload)
+{
+	if (payload.returnValue == 0)
+	{
+		// Do something ?
 	}
 }
 

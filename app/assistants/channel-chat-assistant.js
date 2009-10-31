@@ -51,7 +51,7 @@ ChannelChatAssistant.prototype.setup = function()
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
-		this.titleElement.innerHTML = this.channel.name + ' (' + this.channel.mode + ')';
+		this.titleElement.innerHTML = this.channel.name;
 		this.loadPrefs(true);
 		
 		this.updateList(true);
@@ -110,6 +110,12 @@ ChannelChatAssistant.prototype.activate = function(event)
 	this.alreadyActivated = true;
 	this.revealBottom();
 }
+
+ChannelChatAssistant.prototype.updateTitle = function()
+{
+	this.titleElement.update(this.channel.name + ' (' + this.channel.mode + ')');
+}
+
 ChannelChatAssistant.prototype.updateList = function(initial)
 {
 	try

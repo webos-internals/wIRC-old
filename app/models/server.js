@@ -172,7 +172,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan)
 					{
-						tmpChan.updateMode(payload.params[2]);
+						tmpChan.channel_mode(payload.params[2]);
 					}
 					
 				default:
