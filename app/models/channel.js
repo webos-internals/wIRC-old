@@ -6,6 +6,8 @@ function ircChannel(params)
 	this.nicks =			[];
 	this.messages =			[];
 	
+	this.mode = 			'';
+	
 	this.stageName =		'channel-' + this.server.id + '-' + this.name;
 	this.stageController =	false;
 	this.chatAssistant =	false;
@@ -179,7 +181,15 @@ ircChannel.prototype.setChatAssistant = function(assistant)
 
 ircChannel.prototype.join = function()
 {
+	wIRCd.channel_mode(this.channel_modeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
 	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
+}
+ircChannel.prototype.channel_modeHandler = function(payload)
+{
+	if (payload.returnValue == 0)
+	{
+		// Do something ?
+	}
 }
 ircChannel.prototype.joinHandler = function(payload)
 {

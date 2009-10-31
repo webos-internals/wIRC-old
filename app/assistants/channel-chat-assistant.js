@@ -51,7 +51,7 @@ ChannelChatAssistant.prototype.setup = function()
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
-		this.titleElement.innerHTML = this.channel.name;
+		this.titleElement.innerHTML = this.channel.name + ' (' + this.channel.mode + ')';
 		this.loadPrefs(true);
 		
 		this.updateList(true);
