@@ -210,7 +210,7 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 
 ChannelChatAssistant.prototype.deactivate = function(event)
 {
-	// put something here to part a channel
+	this.channel.part();
 }
 
 ChannelChatAssistant.prototype.cleanup = function(event)
