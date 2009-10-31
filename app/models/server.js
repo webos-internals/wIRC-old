@@ -38,8 +38,8 @@ ircServer.prototype.newCommand = function(message)
 			{
 				case 'nick':
 					this.newStatusMessage('You are now known as [' + val + ']');
-          this.nick.name = val;
-          this.changeNick(val);
+					this.nick.name = val;
+					this.changeNick(val);
 					//this.nick = new ircNick({name:val});
 					break;
 					
@@ -68,36 +68,23 @@ ircServer.prototype.newCommand = function(message)
 	}
 }
 
-ircServer.prototype.newGenericMessage = function(type,message)
+ircServer.prototype.newGenericMessage = function(type, message)
 {
 	var m = new ircMessage({type:type, message:message});
 	this.statusMessages.push(m);
-	
-	if (this.statusAssistant && this.statusAssistant.controller)
-	{
-		this.statusAssistant.updateList();
-	}
+	this.updateStatusList();
 }
-
 ircServer.prototype.newDebugMessage = function(message)
 {
 	var m = new ircMessage({type:'debug', message:message});
 	this.statusMessages.push(m);
-	
-	if (this.statusAssistant && this.statusAssistant.controller)
-	{
-		this.statusAssistant.updateList();
-	}
+	this.updateStatusList();
 }
 ircServer.prototype.newStatusMessage = function(message)
 {
 	var m = new ircMessage({type:'status', message:message});
 	this.statusMessages.push(m);
-	
-	if (this.statusAssistant && this.statusAssistant.controller)
-	{
-		this.statusAssistant.updateList();
-	}
+	this.updateStatusList();
 }
 ircServer.prototype.getStatusMessages = function(start)
 {
@@ -210,8 +197,17 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.newGenericMessage('action',payload.params[1]+' '+payload.params[2]);
 					break;
 					
-				case '375':	// MOTDSTART
-				case '376':	// ENDOFMOTD
+				case '328':		// ???
+				case '329':		// ???
+				case '331':		// NO TOPIC
+				case '332':		// TOPIC
+				case '333':		// ???
+				case '353':		// NAMREPLY
+				case '366':		// ENDOFNAMES
+					break;
+					
+				case '375':		// MOTDSTART
+				case '376':		// ENDOFMOTD
 					break;
 					
 				default:
@@ -233,6 +229,7 @@ ircServer.prototype.connectionHandler = function(payload)
 		Mojo.Log.logException(e, "ircServer#connectionHandler");
 	}
 }
+
 ircServer.prototype.disconnect = function()
 {
 	// disconnecting...
@@ -249,11 +246,6 @@ ircServer.prototype.disconnectHandler = function(payload)
 			servers.listAssistant.updateList();
 		}
 	}
-}
-
-ircServer.prototype.setStatusAssistant = function(assistant)
-{
-	this.statusAssistant = assistant;
 }
 
 ircServer.prototype.showStatusScene = function(popit)
@@ -312,21 +304,32 @@ ircServer.prototype.showStatusStageCallback = function(controller)
 {
 	controller.pushScene('server-status', this, true);
 }
+ircServer.prototype.setStatusAssistant = function(assistant)
+{
+	this.statusAssistant = assistant;
+}
+ircServer.prototype.updateStatusList = function()
+{
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateList();
+	}
+}
 
 ircServer.prototype.changeNick = function(name)
 {
-  if (!this.nick) 
-  {
-    this.nick = new ircNick({name:val});
-  }
-  else 
-  {
-    wIRCd.nick(this.nickChanged.bindAsEventListener(this), this.sessionToken, name)
-  }
+	if (!this.nick) 
+	{
+		this.nick = new ircNick({name:name});
+	}
+	else 
+	{
+		wIRCd.nick(this.nickChanged.bindAsEventListener(this), this.sessionToken, name)
+	}
 }
 ircServer.prototype.nickChanged = function(payload)
 {
-  // Verify?
+	// Verify?
 }
 
 ircServer.prototype.joinChannel = function(name)
@@ -366,8 +369,6 @@ ircServer.prototype.getChannel = function(name)
 	}
 	return false;
 }
-
-
 
 ircServer.prototype.getListObject = function()
 {

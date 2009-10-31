@@ -61,21 +61,7 @@ ircChannel.prototype.meHandler = function(payload)
 {
 	// this apparently doesn't return anything of importance
 }
-ircChannel.prototype.channel_mode = function(mode)
-{
-	this.mode = mode;
-	this.chatAssistant.updateTitle();
-}
-ircChannel.prototype.newAction = function(nick, message)
-{
-	var m = new ircMessage({type:'channel-action', nick:nick, message:message});
-	this.messages.push(m);
-	
-	if (this.chatAssistant && this.chatAssistant.controller)
-	{
-		this.chatAssistant.updateList();
-	}
-}
+
 ircChannel.prototype.msg = function(message)
 {
 	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
@@ -85,45 +71,36 @@ ircChannel.prototype.msgHandler = function(payload)
 {
 	// this apparently doesn't return anything of importance
 }
+
 ircChannel.prototype.newMessage = function(nick, message)
 {
 	var m = new ircMessage({type:'channel-message', nick:nick, message:message});
 	this.messages.push(m);
-	
-	if (this.chatAssistant && this.chatAssistant.controller)
-	{
-		this.chatAssistant.updateList();
-	}
+	this.updateChatList();
+}
+ircChannel.prototype.newAction = function(nick, message)
+{
+	var m = new ircMessage({type:'channel-action', nick:nick, message:message});
+	this.messages.push(m);
+	this.updateChatList();
 }
 ircChannel.prototype.newStatusMessage = function(message)
 {
 	var m = new ircMessage({type:'status', message:message});
 	this.messages.push(m);
-	
-	if (this.chatAssistant && this.chatAssistant.controller)
-	{
-		this.chatAssistant.updateList();
-	}
+	this.updateChatList();
 }
 ircChannel.prototype.newEventMessage = function(message)
 {
 	var m = new ircMessage({type:'channel-event', message:message});
 	this.messages.push(m);
-	
-	if (this.chatAssistant && this.chatAssistant.controller)
-	{
-		this.chatAssistant.updateList();
-	}
+	this.updateChatList();
 }
 ircChannel.prototype.newDebugMessage = function(message)
 {
 	var m = new ircMessage({type:'debug', message:message});
 	this.messages.push(m);
-	
-	if (this.chatAssistant && this.chatAssistant.controller)
-	{
-		this.chatAssistant.updateList();
-	}
+	this.updateChatList();
 }
 ircChannel.prototype.getMessages = function(start)
 {
@@ -179,15 +156,10 @@ ircChannel.prototype.getNick = function(nick)
 	}
 }
 
-ircChannel.prototype.setChatAssistant = function(assistant)
-{
-	this.chatAssistant = assistant;
-}
-
 ircChannel.prototype.join = function()
 {
 	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
-	wIRCd.channel_mode(this.channel_modeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
+	wIRCd.channel_mode(this.channelModeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
 }
 ircChannel.prototype.joinHandler = function(payload)
 {
@@ -196,7 +168,13 @@ ircChannel.prototype.joinHandler = function(payload)
 		this.openStage();
 	}
 }
-ircChannel.prototype.channel_modeHandler = function(payload)
+
+ircChannel.prototype.channelMode = function(mode)
+{
+	this.mode = mode;
+	this.chatAssistant.updateTitle();
+}
+ircChannel.prototype.channelModeHandler = function(payload)
 {
 	if (payload.returnValue == 0)
 	{
@@ -247,4 +225,15 @@ ircChannel.prototype.openStage = function()
 ircChannel.prototype.openStageCallback = function(controller)
 {
 	controller.pushScene('channel-chat', this);
+}
+ircChannel.prototype.setChatAssistant = function(assistant)
+{
+	this.chatAssistant = assistant;
+}
+ircChannel.prototype.updateChatList = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateList();
+	}
 }
