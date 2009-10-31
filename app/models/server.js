@@ -66,6 +66,17 @@ ircServer.prototype.newCommand = function(message)
 	}
 }
 
+ircServer.prototype.newGenericMessage = function(type,message)
+{
+	var m = new ircMessage({type:type, message:message});
+	this.statusMessages.push(m);
+	
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateList();
+	}
+}
+
 ircServer.prototype.newDebugMessage = function(message)
 {
 	var m = new ircMessage({type:'debug', message:message});
@@ -120,7 +131,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.nick = new ircNick({name:payload.params[0]});
 					
 					this.connected = true;
-					this.newStatusMessage(payload.params[1]);
+					//this.newStatusMessage(payload.params[1]);
 					
 					if (servers.listAssistant && servers.listAssistant.controller)
 					{
@@ -129,7 +140,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				case 'NOTICE':
-					this.newStatusMessage(payload.params[1]);
+					//this.newStatusMessage(payload.params[1]);
 					break;
 					
 				case 'JOIN':
@@ -168,12 +179,38 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
-				case '324':
+				case '324': // CHANNELMODEIS
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan)
 					{
 						tmpChan.channel_mode(payload.params[2]);
 					}
+					break;
+
+				case '1':		// WELCOME
+				case '2':		// YOURHOST
+				case '3':		// CREATED
+				case '4':		// MYINFO
+				case '5':		// BOUNCE
+				case '251':		// LUSERCLIENT
+				case '255':		// LUSERME
+				case '265':		// ???
+				case '266':		// ???
+				case '250':		// ???
+				case '372':		// MOTD
+					this.newGenericMessage('action',payload.params[1]);
+					break;
+					
+				case '253':		// LUSERUNKNOWN					
+				case '252':		// LUSEROP
+				case '254':		// LUSERCHANNELS
+				case '256':		// ADMINME
+					this.newGenericMessage('action',payload.params[1]+' '+payload.params[2]);
+					break;
+					
+				case '375':	// MOTDSTART
+				case '376':	// ENDOFMOTD
+					break;
 					
 				default:
 					for (p in payload) 

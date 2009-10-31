@@ -31,6 +31,12 @@ function ircMessage(params)
 			this.nickDisplay =	'**';
 			this.message =		params.message;
 			break;
+
+		case 'action':
+			this.rowStyle =		'status-message';
+			this.nickDisplay =	'*';
+			this.message =		params.message;
+			break;
 			
 		case 'status':
 			this.rowStyle =		'status-message';
