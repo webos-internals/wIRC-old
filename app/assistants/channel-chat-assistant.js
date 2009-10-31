@@ -164,7 +164,7 @@ ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 	this.inputWidgetElement.mojo.setValue('');
 	
 	// this probably isn't needed
-	this.updateList();
+	//this.updateList();
 }
 ChannelChatAssistant.prototype.inputChanged = function(event)
 {

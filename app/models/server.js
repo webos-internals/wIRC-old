@@ -102,30 +102,55 @@ ircServer.prototype.connect = function()
 }
 ircServer.prototype.connectionHandler = function(payload)
 {
-	if (!payload.returnValue) 
+	try
 	{
-		switch(payload.event)
+		if (!payload.returnValue) 
 		{
-			case 'CONNECT':
-				this.sessionToken = payload.sessionToken;
-				this.nick = new ircNick({name:payload.params[0]});
-				
-				this.connected = true;
-				
-				if (servers.listAssistant && servers.listAssistant.controller)
-				{
-					servers.listAssistant.updateList();
-				}
-				break;
-				
-			default:
-				for (p in payload) 
-				{
-					//alert(p + ': ' + payload[p]);
-					this.newDebugMessage(p + ': ' + payload[p]);
-				}
-				break;
+			switch(payload.event)
+			{
+				case 'CONNECT':
+					this.sessionToken = payload.sessionToken;
+					this.nick = new ircNick({name:payload.params[0]});
+					
+					this.connected = true;
+					
+					if (servers.listAssistant && servers.listAssistant.controller)
+					{
+						servers.listAssistant.updateList();
+					}
+					break;
+					
+				case 'PRIVMSG':
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan) 
+					{
+						var tmpNick = tmpChan.getNick(payload.origin);
+						tmpChan.newMessage(tmpNick, payload.params[1]);
+					}
+					break;
+					
+				case 'ACTION':
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan)
+					{
+						var tmpNick = tmpChan.getNick(payload.origin);
+						tmpChan.newAction(tmpNick, payload.params[1]);
+					}
+					break;
+					
+				default:
+					for (p in payload) 
+					{
+						//alert(p + ': ' + payload[p]);
+						this.newDebugMessage(p + ': ' + payload[p]);
+					}
+					break;
+			}
 		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#connectionHandler");
 	}
 }
 ircServer.prototype.disconnect = function()
@@ -231,6 +256,22 @@ ircServer.prototype.joinChannel = function(name)
 	newChannel.join();
 	this.channels.push(newChannel);
 }
+ircServer.prototype.getChannel = function(name)
+{
+	if (this.channels.length > 0)
+	{
+		for (var c = 0; c < this.channels.length; c++)
+		{
+			if (this.channels[c].name == name)
+			{
+				return this.channels[c];
+			}
+		}
+	}
+	return false;
+}
+
+
 
 ircServer.prototype.getListObject = function()
 {

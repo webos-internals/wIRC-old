@@ -31,7 +31,7 @@ ircChannel.prototype.newCommand = function(message)
 				break;
 				
 			case 'me':
-				this.newAction(val);
+				this.me(val);
 				break;
 				
 			default: // this could probably be left out later
@@ -59,11 +59,16 @@ ircChannel.prototype.newAction = function(nick, message)
 {
 	var m = new ircMessage({type:'channel-action', nick:nick, message:message});
 	this.messages.push(m);
+	
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateList();
+	}
 }
 ircChannel.prototype.msg = function(message)
 {
 	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
-	this.newMessage(this.server.nick, message)
+	this.newMessage(this.server.nick, message);
 }
 ircChannel.prototype.msgHandler = function(payload)
 {
@@ -73,6 +78,11 @@ ircChannel.prototype.newMessage = function(nick, message)
 {
 	var m = new ircMessage({type:'channel-message', nick:nick, message:message});
 	this.messages.push(m);
+	
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateList();
+	}
 }
 ircChannel.prototype.newStatusMessage = function(message)
 {
@@ -98,6 +108,44 @@ ircChannel.prototype.getMessages = function(start)
 	}
 	
 	return returnArray;
+}
+
+ircChannel.prototype.getNick = function(nick)
+{
+	try
+	{
+		var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
+		var match = cmdRegExp.exec(nick);
+		if (match) 
+		{
+			var getNick = match[1];
+		}
+		else
+		{
+			var getNick = nick;
+		}
+		
+		if (this.nicks.length > 0)
+		{
+			for (var n = 0; n < this.nicks.length; n++)
+			{
+				if (this.nicks[n].name == getNick)
+				{
+					//alert('got ' + this.nick[n].name);
+					return this.nicks[n];
+				}
+			}
+		}
+		
+		var tmpNick = new ircNick({name:getNick});
+		this.nicks.push(tmpNick);
+		//alert('got ' + tmpNick.name);
+		return tmpNick;
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircChannel#getNick");
+	}
 }
 
 ircChannel.prototype.setChatAssistant = function(assistant)
