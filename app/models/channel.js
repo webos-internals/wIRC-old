@@ -61,6 +61,10 @@ ircChannel.prototype.meHandler = function(payload)
 {
 	// this apparently doesn't return anything of importance
 }
+ircChannel.prototype.updateMode = function(mode)
+{
+	this.mode = mode;
+}
 ircChannel.prototype.newAction = function(nick, message)
 {
 	var m = new ircMessage({type:'channel-action', nick:nick, message:message});

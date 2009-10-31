@@ -168,6 +168,13 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
+				case '324':
+					var tmpChan = this.getChannel(payload.params[1]);
+					if (tmpChan)
+					{
+						tmpChan.updateMode(payload.params[2]);
+					}
+					
 				default:
 					for (p in payload) 
 					{
