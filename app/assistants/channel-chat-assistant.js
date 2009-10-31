@@ -210,11 +210,11 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 
 ChannelChatAssistant.prototype.deactivate = function(event)
 {
-	this.channel.part();
 }
 
 ChannelChatAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
 	Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+	this.channel.part();
 }
