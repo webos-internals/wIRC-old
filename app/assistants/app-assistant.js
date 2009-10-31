@@ -41,4 +41,12 @@ AppAssistant.prototype.handleLaunch = function(params)
 	}
 }
 
-AppAssistant.prototype.cleanup = function() {}
+AppAssistant.prototype.cleanup = function()
+{
+  if (servers.servers)
+  {
+    servers.servers.each(function(s){
+        s && s.disconnect();
+    });
+  }
+}
