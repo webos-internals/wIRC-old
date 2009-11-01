@@ -3,7 +3,6 @@ function ircChannel(params)
 	this.name =				params.name;
 	this.server =			params.server;
 	
-	this.nicks =			[];
 	this.messages =			[];
 	
 	this.mode = 			'';
@@ -118,6 +117,7 @@ ircChannel.prototype.getMessages = function(start)
 	return returnArray;
 }
 
+/*
 ircChannel.prototype.getNick = function(nick)
 {
 	try
@@ -155,6 +155,7 @@ ircChannel.prototype.getNick = function(nick)
 		Mojo.Log.logException(e, "ircChannel#getNick");
 	}
 }
+*/
 
 ircChannel.prototype.join = function()
 {

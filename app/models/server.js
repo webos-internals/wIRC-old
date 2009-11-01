@@ -170,7 +170,8 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
-						var tmpNick = this.getNick(payload.origin).addChannel(tmpChan);
+						var tmpNick = this.getNick(payload.origin);
+						tmpNick.addChannel(tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has joined ' + tmpChan.name);
 					}
 					break;
@@ -189,7 +190,8 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
-					  var tmpNick = this.getNick(payload.origin).addChannel(tmpChan);
+						var tmpNick = this.getNick(payload.origin);
+						tmpNick.removeChannel(tmpChan);
 						tmpChan.newMessage(tmpNick, payload.params[1]);
 					}
 					break;
@@ -198,7 +200,8 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan)
 					{
-					  var tmpNick = this.getNick(payload.origin).addChannel(tmpChan);
+						var tmpNick = this.getNick(payload.origin);
+						tmpNick.removeChannel(tmpChan);
 						tmpChan.newAction(tmpNick, payload.params[1]);
 					}
 					break;
@@ -208,7 +211,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					tmpNick.name = payload.params[0];
 					if (tmpNick === this.nick)
 					{
-					  this.newStatusMessage('You are now known as [' + newNick + ']');
+						this.newStatusMessage('You are now known as [' + newNick + ']');
 					}
 					break;
 					
@@ -216,7 +219,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan)
 					{
-						tmpChan.channel_mode(payload.params[2]);
+						tmpChan.channelMode(payload.params[2]);
 					}
 					break;
 
@@ -253,17 +256,17 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpNick;
 					if (tmpChan)
 					{
-					  for (var i = 0; i < nicks.length; i++)
-					  {
+						for (var i = 0; i < nicks.length; i++)
+						{
 							if (nicks[i])
 							{
-							  tmpNick = this.getNick(nicks[i]);
-							  if (tmpNick)
-							  {
-						      tmpNick.addChannel(tmpChan);
-							  }
+								tmpNick = this.getNick(nicks[i]);
+								if (tmpNick)
+								{
+									tmpNick.addChannel(tmpChan);
+								}
 							}
-					  }
+						}
 					}
 					break;
 				case '366':		// ENDOFNAMES
