@@ -36,7 +36,20 @@ AppAssistant.prototype.handleLaunch = function(params)
 		}
 		else if (params.type == 'query')
 		{
-			
+			var tmpServer = servers.getServerForId(params.server);
+			if (tmpServer)
+			{
+				var tmpNick = tmpServer.getNick(params.nick);
+				if (tmpNick) 
+				{
+					var tmpQuery = tmpServer.getQuery(tmpNick);
+					if (tmpQuery)
+					{
+						tmpQuery.closeDash();
+						tmpQuery.openStage();
+					}
+				}
+			}
 		}
 		else
 		{

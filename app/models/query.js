@@ -113,7 +113,7 @@ ircQuery.prototype.getLastMessage = function()
 ircQuery.prototype.openDash = function()
 {
 	var lastMessage = this.getLastMessage();
-	Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', nick: this.nick.name});
+	Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', server: this.server.id, nick: this.nick.name}, 'query-' + this.nick.name);
 	
 	this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
     if (this.dashController) 
@@ -128,6 +128,11 @@ ircQuery.prototype.openDash = function()
 ircQuery.prototype.openDashCallback = function(controller)
 {
 	controller.pushScene('query-dashboard', this);
+}
+ircQuery.prototype.closeDash = function()
+{
+	Mojo.Controller.appController.removeBanner('query-' + this.nick.name);
+	Mojo.Controller.appController.closeStage(this.dashName);
 }
 
 ircQuery.prototype.openStage = function()
