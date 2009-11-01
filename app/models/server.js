@@ -480,12 +480,11 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 			else if (messageType == 'action') tmpQuery.me(message);
 			tmpQuery.openStage();
 		}
-		else 
+		else
 		{
 			if (messageType == 'message') tmpQuery.newMessage(nick, message);
 			else if (messageType == 'action') tmpQuery.newMessage(nick, message);
-			tmpQuery.openStage();
-			//tmpQuery.openDash(); // no dash support yet
+			tmpQuery.openDash();
 		}
 		return;
 	}
@@ -505,8 +504,7 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 	{
 		if (messageType == 'message') newQuery.newMessage(nick, message);
 		else if (messageType == 'action') newQuery.newMessage(nick, message);
-		newQuery.openStage();
-		newQuery.openDash(); // no dash support yet
+		newQuery.openDash();
 	}
 	this.queries.push(newQuery);
 }

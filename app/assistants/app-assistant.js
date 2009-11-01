@@ -34,6 +34,21 @@ AppAssistant.prototype.handleLaunch = function(params)
 				this.controller.createStageWithCallback({name: serverStage, lightweight: true}, f);
 			}
 		}
+		else if (params.type == 'query')
+		{
+			
+		}
+		else
+		{
+			// for debug
+			/*
+			alert('---');
+			for (var p in params)
+			{
+				alert(p + ': ' + params[p]);
+			}
+			*/
+		}
 	}
 	catch (e)
 	{

@@ -5,6 +5,8 @@ function ircQuery(params)
 	
 	this.messages =			[];
 	
+	this.dashName =			'querydash-' + this.server.id + '-' + this.nick.name;
+	this.dashController =	false;
 	this.stageName =		'query-' + this.server.id + '-' + this.nick.name;
 	this.stageController =	false;
 	this.chatAssistant =	false;
@@ -103,10 +105,29 @@ ircQuery.prototype.getMessages = function(start)
 	
 	return returnArray;
 }
+ircQuery.prototype.getLastMessage = function()
+{
+	return this.messages[this.messages.length-1].getListObject();
+}
 
 ircQuery.prototype.openDash = function()
 {
+	var lastMessage = this.getLastMessage();
+	Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', nick: this.nick.name});
 	
+	this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
+    if (this.dashController) 
+	{
+		//dashController.delegateToSceneAssistant("update", this.message, new Date(), target);
+	}
+	else
+	{
+		Mojo.Controller.appController.createStageWithCallback({name: this.dashName, lightweight: true}, this.openDashCallback.bind(this), "dashboard");
+	}
+}
+ircQuery.prototype.openDashCallback = function(controller)
+{
+	controller.pushScene('query-dashboard', this);
 }
 
 ircQuery.prototype.openStage = function()
