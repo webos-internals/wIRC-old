@@ -129,7 +129,7 @@ ircChannel.prototype.getNicks = function()
 			{
 				if (this.server.nicks[n].channels.indexOf(this) > -1) 
 				{
-					returnArray.push(this.server.nicks[n]);
+					returnArray.push(this.server.nicks[n].getListObject(this));
 				}
 			}
 		}

@@ -61,6 +61,22 @@ ChannelUsersAssistant.prototype.updateList = function(skipUpdate)
 		this.listModel.items = [];
 		this.listModel.items = this.channel.getNicks();
 		
+		this.listModel.items.sort(function(a, b)
+		{
+			var toReturn = 0;
+			
+			toReturn = ircNick.getModeNum(a.mode) - ircNick.getModeNum(b.mode);
+			
+			if (toReturn == 0)
+			{	// if mode is the same, sort by date
+				aName = a.name.toLowerCase();
+				bName = b.name.toLowerCase();
+				toReturn = ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+			}
+			
+			return toReturn
+		});
+		
 		if (!skipUpdate) 
 		{
 			this.listElement.mojo.noticeUpdatedItems(0, this.listModel.items);

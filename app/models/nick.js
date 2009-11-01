@@ -2,36 +2,36 @@ function ircNick(params)
 {
 	ircNick.num++;
 	
-	this.num =		ircNick.num;
-	this.name =		params.name;
-	this.colorHex =	'#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6); // random color
-	this.channels = [];
-	this.me = false;
+	this.num =			ircNick.num;
+	this.name =			params.name;
+	this.colorHex =		this.getRandomColor();
+	this.channels =		[];
+	this.channelModes =	[];
+	this.me =			false;
 	
 }
 
-ircNick.num = 0;
-
-ircNick.prototype.addChannel = function(channel)
+ircNick.prototype.addChannel = function(channel, mode)
 { 
 	if (channel) 
 	{ 
 		if (this.channels.indexOf(channel) === -1) 
 		{ 
-			this.channels.push(channel); 
+			this.channels.push(channel);
+			this.channelModes[channel.name] = mode;
 		} 
 	}
 }
-
 ircNick.prototype.removeChannel = function(channel)
 {
 	if (channel)
 	{
-		this.channels = this.channels.without(channel); 
+		this.channels = this.channels.without(channel);
+		this.channelModes[channel.name] = '';
 	}
 }
 
-ircNick.prototype.updateNick = function(newName)
+ircNick.prototype.updateNickName = function(newName)
 {
 	var oldName = this.name;
 	this.name = newName;
@@ -49,5 +49,38 @@ ircNick.prototype.updateNick = function(newName)
 	for (var i = 0; i < this.channels.length; i++)
 	{
 		this.channels[i].newStatusMessage(msg);
+	}
+}
+ircNick.prototype.updateNickMode = function(newMode, channel)
+{
+	this.channelModes[channel.name] = newMode;
+}
+
+ircNick.prototype.getListObject = function(channel)
+{
+	var obj =
+	{
+		name:	this.name,
+		mode:	(channel.name ? this.channelModes[channel.name] : '')
+	};
+	
+	return obj;
+}
+
+ircNick.prototype.getRandomColor = function()
+{
+	return '#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6);
+}
+
+ircNick.num = 0;
+
+ircNick.getModeNum = function(mode)
+{
+	switch(mode)
+	{
+		case '@':	return 1;
+		case '%':	return 2;
+		case '+':	return 3; 
+		default:	return 999;
 	}
 }

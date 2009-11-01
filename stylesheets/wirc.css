@@ -209,6 +209,18 @@ body.palm-dark .scene-fade-bottom
 
 
 /*
+ * Channel Users Scene Styles
+ */
+.channel-users #userList .palm-row-wrapper .title .mode
+{
+	float: left;
+	width: 20px;
+	color: #BBB;
+}
+
+
+
+/*
  * Input Styles - Scene Inspecific
  */
 .inputFooter

@@ -136,7 +136,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					if (tmpChan) 
 					{
 						var tmpNick = this.getNick(payload.origin);
-						tmpNick.addChannel(tmpChan);
+						tmpNick.addChannel(tmpChan, '');
 						tmpChan.newEventMessage(tmpNick.name + ' has joined ' + tmpChan.name);
 					}
 					break;
@@ -177,7 +177,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						this.newStatusMessage('You are now known as [' + tmpNick.name + ']');
 					}
-					tmpNick.updateNick(payload.params[0]);
+					tmpNick.updateNickName(payload.params[0]);
 					break;
 					
 				case '324': // CHANNELMODEIS
@@ -199,14 +199,14 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '266':		// ???
 				case '250':		// ???
 				case '372':		// MOTD
-					this.newGenericMessage('action',payload.params[1]);
+					this.newGenericMessage('action', payload.params[1]);
 					break;
 					
 				case '253':		// LUSERUNKNOWN
 				case '252':		// LUSEROP
 				case '254':		// LUSERCHANNELS
 				case '256':		// ADMINME
-					this.newGenericMessage('action',payload.params[1]+' '+payload.params[2]);
+					this.newGenericMessage('action', payload.params[1] + ' ' + payload.params[2]);
 					break;
 					
 				case '328':		// ???
@@ -225,10 +225,23 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							if (nicks[i])
 							{
-								tmpNick = this.getNick(nicks[i]);
+								var onlyNick = nicks[i];
+								var modeNick = nicks[i].substr(0, 1);
+								if (modeNick == '@' ||	// op
+									modeNick == '%' ||	// hop
+									modeNick == '+')		// v
+								{
+									onlyNick = nicks[i].substr(1);
+								}
+								else
+								{
+									modeNick = '';
+								}
+								
+								tmpNick = this.getNick(onlyNick);
 								if (tmpNick)
 								{
-									tmpNick.addChannel(tmpChan);
+									tmpNick.addChannel(tmpChan, modeNick);
 								}
 							}
 						}
