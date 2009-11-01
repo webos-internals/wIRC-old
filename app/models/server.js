@@ -139,7 +139,19 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				case 'NOTICE':
-					//this.newStatusMessage(payload.params[1]);
+					if (payload.params[0].substr(0, 1) == '#') // it's a channel
+					{
+						var tmpChan = this.getChannel(payload.params[0]);
+						if (tmpChan) 
+						{
+							var tmpNick = this.getNick(payload.origin);
+							tmpChan.newNotice(tmpNick, payload.params[1]);
+						}
+					}
+					else
+					{
+						this.newGenericMessage('notice', payload.params);
+					}
 					break;
 					
 				case 'JOIN':

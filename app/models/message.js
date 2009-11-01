@@ -38,6 +38,18 @@ function ircMessage(params)
 			this.message =		params.message;
 			break;
 			
+		case 'notice':
+			this.rowStyle =		'status-message';
+			this.nickDisplay =	'[' + params.message[0] + ']';
+			this.message =		params.message[1];
+			break;
+			
+		case 'channel-notice':
+			this.rowStyle =		'status-message';
+			this.nickDisplay =	'[' + params.nick + ']';
+			this.message =		params.message;
+			break;
+			
 		case 'status':
 			this.rowStyle =		'status-message';
 			this.nickDisplay =	'***';
