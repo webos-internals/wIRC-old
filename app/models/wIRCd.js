@@ -2,7 +2,7 @@ wIRCd.identifier = 'palm://us.ryanhope.wIRCd';
 
 function wIRCd() {}
 
-wIRCd.connect = function(callback, server, nick)
+wIRCd.connect = function(callback, server, nick, realname)
 {
 	var request = new Mojo.Service.Request(wIRCd.identifier,
 	{
@@ -10,7 +10,8 @@ wIRCd.connect = function(callback, server, nick)
 		parameters: {
 			"subscribe": true,
 			"server": server,
-			"nick": nick
+			"nick": nick,
+			"realname": realname,
 		},
 		onSuccess: callback,
 		onFailure: callback

@@ -31,7 +31,22 @@ IdentityAssistant.prototype.setup = function()
 		// setup handler
 		this.textChanged = this.textChanged.bindAsEventListener(this);
 		
-		
+		this.controller.setupWidget
+		(
+			'realname',
+			{
+				multiline: false,
+				enterSubmits: false,
+				//changeOnKeyPress: true,
+				hintText: '',
+				modelProperty: 'realname',
+				charsAllow: this.validChars,
+				maxLength: 128,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.prefs
+		);		
 		this.controller.setupWidget
 		(
 			'nick1',
@@ -81,6 +96,7 @@ IdentityAssistant.prototype.setup = function()
 			this.prefs
 		);
 		
+		this.controller.listen('realname', Mojo.Event.propertyChange, this.textChanged);
 		this.controller.listen('nick1', Mojo.Event.propertyChange, this.textChanged);
 		this.controller.listen('nick2', Mojo.Event.propertyChange, this.textChanged);
 		this.controller.listen('nick3', Mojo.Event.propertyChange, this.textChanged);
@@ -122,6 +138,7 @@ IdentityAssistant.prototype.deactivate = function(event)
 }
 IdentityAssistant.prototype.cleanup = function(event)
 {
+	this.controller.stopListening('realname', Mojo.Event.propertyChange, this.textChanged);
 	this.controller.stopListening('nick1', Mojo.Event.propertyChange, this.textChanged);
 	this.controller.stopListening('nick2', Mojo.Event.propertyChange, this.textChanged);
 	this.controller.stopListening('nick3', Mojo.Event.propertyChange, this.textChanged);
