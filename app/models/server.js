@@ -24,7 +24,7 @@ function ircServer(params)
 	}
 }
 
-ircServer.prototype.addChannelToNick = function(nick,channel)
+ircServer.prototype.nickChannel = function(nick,channel)
 {
 	var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
 	var match = cmdRegExp.exec(nick);
@@ -41,9 +41,12 @@ ircServer.prototype.addChannelToNick = function(nick,channel)
 	{
 		if (this.nicks[i].name === name)
 		{
-			if (this.nicks[i].channels.indexOf(channel) === -1)
+			if (channel)
 			{
-				this.nicks[i].channels.push(channel);
+			  if (this.nicks[i].channels.indexOf(channel) === -1)
+		  	{
+		  		this.nicks[i].channels.push(channel);
+		  	}
 			}
 
 			return this.nicks[i];
@@ -51,13 +54,16 @@ ircServer.prototype.addChannelToNick = function(nick,channel)
 	}
 
 	var tmpNick = new ircNick({name:name});
-	tmpNick.channels.push(channel);
+	if (channel)
+	{
+	  tmpNick.channels.push(channel);
+	}
 	this.nicks.push(tmpNick);
 
 	return tmpNick;
 }
 
-ircServer.prototype.removeChannelFromNick = function(nick,channel)
+ircServer.prototype.removeNickChannel = function(nick,channel)
 {
 	var tmpNick = null;
 	var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
@@ -101,10 +107,7 @@ ircServer.prototype.newCommand = function(message)
 			switch (cmd.toLowerCase())
 			{
 				case 'nick':
-					this.newStatusMessage('You are now known as [' + val + ']');
-					this.nick.name = val;
-					this.changeNick(val);
-					//this.nick = new ircNick({name:val});
+					wIRCd.nick(null, this.sessionToken, val)
 					break;
 					
 				case 'j':
@@ -181,7 +184,7 @@ ircServer.prototype.connectionHandler = function(payload)
 			{
 				case 'CONNECT':
 					this.sessionToken = payload.sessionToken;
-					this.nick = new ircNick({name:payload.params[0]});
+					this.nick = this.nickChannel(payload.params[0]);
 					
 					this.connected = true;
 					//this.newStatusMessage(payload.params[1]);
@@ -203,7 +206,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						/*
 						var tmpNick = tmpChan.getNick(payload.origin);
 						*/
-						var tmpNick = this.addChannelToNick(payload.origin,tmpChan);
+						var tmpNick = this.nickChannel(payload.origin,tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has joined ' + tmpChan.name);
 					}
 					break;
@@ -215,7 +218,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						/*
 						var tmpNick = tmpChan.getNick(payload.origin);
 						*/
-						var tmpNick = this.removeChannelFromNick(payload.origin,tmpChan);
+						var tmpNick = this.removeNickChannel(payload.origin,tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
@@ -227,7 +230,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					/*
 						var tmpNick = tmpChan.getNick(payload.origin);
 						*/
-					  var tmpNick = this.addChannelToNick(payload.origin,tmpChan);
+					  var tmpNick = this.nickChannel(payload.origin,tmpChan);
 						tmpChan.newMessage(tmpNick, payload.params[1]);
 					}
 					break;
@@ -239,8 +242,17 @@ ircServer.prototype.connectionHandler = function(payload)
 					/*
 						var tmpNick = tmpChan.getNick(payload.origin);
 						*/
-					  var tmpNick = this.addChannelToNick(payload.origin,tmpChan);
+					  var tmpNick = this.nickChannel(payload.origin,tmpChan);
 						tmpChan.newAction(tmpNick, payload.params[1]);
+					}
+					break;
+					
+				case 'NICK':
+					var tmpNick = this.nickChannel(payload.origin);
+					tmpNick.name = payload.params[0];
+					if (tmpNick === this.nick)
+					{
+					  this.newStatusMessage('You are now known as [' + newNick + ']');
 					}
 					break;
 					
@@ -278,12 +290,20 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '331':		// NO TOPIC
 				case '332':		// TOPIC
 				case '333':		// ???
+					break;
 				case '353':		// NAMREPLY
+					// TODO: parse params:<mynick>,=,#chan,<nick> <nick> <nick> ... and for each nick:
+					// var tmpChan = this.getChannel(#chan);
+					// this.nickChannel(<nick>, tmpChan);
+					break;
 				case '366':		// ENDOFNAMES
 					break;
 					
 				case '375':		// MOTDSTART
 				case '376':		// ENDOFMOTD
+					break;
+				case '433':		// NAMEINUSE
+					//params: <currrent_nick>,<requested_nick>,Nickanme is already in use.
 					break;
 					
 				default:
@@ -390,22 +410,6 @@ ircServer.prototype.updateStatusList = function()
 	{
 		this.statusAssistant.updateList();
 	}
-}
-
-ircServer.prototype.changeNick = function(name)
-{
-	if (!this.nick) 
-	{
-		this.nick = new ircNick({name:name});
-	}
-	else 
-	{
-		wIRCd.nick(this.nickChanged.bindAsEventListener(this), this.sessionToken, name)
-	}
-}
-ircServer.prototype.nickChanged = function(payload)
-{
-	// Verify?
 }
 
 ircServer.prototype.joinChannel = function(name)
