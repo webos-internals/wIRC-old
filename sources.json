@@ -5,6 +5,7 @@
     {"source": "app/models/servers.js"},
     {"source": "app/models/server.js"},
     {"source": "app/models/channel.js"},
+    {"source": "app/models/query.js"},
     {"source": "app/models/nick.js"},
     {"source": "app/models/message.js"},
     {"source": "app/assistants/app-assistant.js"},
@@ -35,5 +36,9 @@
     {
         "scenes": "channel-users",
         "source": "app/assistants/channel-users-assistant.js"
+    },
+    {
+        "scenes": "query-chat",
+        "source": "app/assistants/query-chat-assistant.js"
     }
 ]

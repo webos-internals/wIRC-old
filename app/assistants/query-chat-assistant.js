@@ -1,9 +1,8 @@
-function ChannelChatAssistant(channel)
+function QueryChatAssistant(query)
 {
-	this.channel = channel;
+	this.query = query;
 	
 	this.titleElement =				false;
-	this.userButtonElement =		false;
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
@@ -18,7 +17,7 @@ function ChannelChatAssistant(channel)
 		value:''
 	};
 	
-	this.channel.setChatAssistant(this);
+	this.query.setChatAssistant(this);
 	
 	// setup menu
 	this.menuModel =
@@ -34,7 +33,7 @@ function ChannelChatAssistant(channel)
 	}
 }
 
-ChannelChatAssistant.prototype.setup = function()
+QueryChatAssistant.prototype.setup = function()
 {
 	try
 	{
@@ -44,20 +43,16 @@ ChannelChatAssistant.prototype.setup = function()
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.titleElement =				this.controller.get('title');
-		this.userButtonElement =		this.controller.get('userButton');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
-		this.userButtonPressed =	this.userButtonPressed.bindAsEventListener(this);
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
-		this.titleElement.innerHTML = this.channel.name;
+		this.titleElement.innerHTML = this.query.nick.name;
 		this.loadPrefs(true);
-		
-		Mojo.Event.listen(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
 		
 		this.updateList(true);
 		this.controller.setupWidget
@@ -95,17 +90,17 @@ ChannelChatAssistant.prototype.setup = function()
 	} 
 	catch (e) 
 	{
-		Mojo.Log.logException(e, 'channel-chat#setup');
+		Mojo.Log.logException(e, 'query-chat#setup');
 	}
 }
 
 
-ChannelChatAssistant.prototype.loadPrefs = function(initial)
+QueryChatAssistant.prototype.loadPrefs = function(initial)
 {
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 }
 
-ChannelChatAssistant.prototype.activate = function(event)
+QueryChatAssistant.prototype.activate = function(event)
 {
 	this.loadPrefs();
 	if (this.alreadyActivated)
@@ -117,18 +112,13 @@ ChannelChatAssistant.prototype.activate = function(event)
 	this.inputWidgetElement.mojo.focus();
 }
 
-ChannelChatAssistant.prototype.updateTitle = function()
-{
-	this.titleElement.update(this.channel.name + ' (' + this.channel.mode + ')');
-}
-
-ChannelChatAssistant.prototype.updateList = function(initial)
+QueryChatAssistant.prototype.updateList = function(initial)
 {
 	try
 	{
 		if (initial) 
 		{
-			var newMessages = this.channel.getMessages(0);
+			var newMessages = this.query.getMessages(0);
 			if (newMessages.length > 0)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
@@ -140,7 +130,7 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 		else
 		{
 			var start = this.messageListElement.mojo.getLength();
-			var newMessages = this.channel.getMessages(start);
+			var newMessages = this.query.getMessages(start);
 			if (newMessages.length > 0)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
@@ -156,11 +146,11 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 	}
 	catch (e)
 	{
-		Mojo.Log.logException(e, 'channel-chat#updateList');
+		Mojo.Log.logException(e, 'query-chat#updateList');
 	}
 }
 
-ChannelChatAssistant.prototype.revealBottom = function()
+QueryChatAssistant.prototype.revealBottom = function()
 {
 	var height = this.inputContainerElement.clientHeight;
 	this.messageListElement.style.paddingBottom = height + 'px';
@@ -170,15 +160,15 @@ ChannelChatAssistant.prototype.revealBottom = function()
 	this.controller.sceneScroller.mojo.revealBottom();
 }
 
-ChannelChatAssistant.prototype.sendButtonPressed = function(event)
+QueryChatAssistant.prototype.sendButtonPressed = function(event)
 {
-	this.channel.newCommand(this.inputModel.value);
+	this.query.newCommand(this.inputModel.value);
 	this.inputWidgetElement.mojo.setValue('');
 	
 	// this probably isn't needed
 	//this.updateList();
 }
-ChannelChatAssistant.prototype.inputChanged = function(event)
+QueryChatAssistant.prototype.inputChanged = function(event)
 {
 	this.revealBottom();
 	
@@ -200,12 +190,7 @@ ChannelChatAssistant.prototype.inputChanged = function(event)
 	}
 }
 
-ChannelChatAssistant.prototype.userButtonPressed = function(event)
-{
-	this.controller.stageController.pushScene('channel-users', this.channel);
-}
-
-ChannelChatAssistant.prototype.handleCommand = function(event)
+QueryChatAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
 	{
@@ -218,10 +203,8 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 	}
 }
 
-ChannelChatAssistant.prototype.cleanup = function(event)
+QueryChatAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
 	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
 	Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
-	this.channel.part();
 }

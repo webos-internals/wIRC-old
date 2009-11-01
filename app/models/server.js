@@ -7,8 +7,9 @@ function ircServer(params)
 	this.autoConnect =		(params.autoConnect=='true'?true:false);
 	this.connected =		false;
 	this.channels =			[];
+	this.queries =			[];
 	this.nick =				false;
-	this.nicks =		 [];
+	this.nicks =			[];
 	this.statusMessages =	[];
 	
 	this.sessionToken =		false;
@@ -26,9 +27,10 @@ function ircServer(params)
 
 ircServer.prototype.newCommand = function(message)
 {
-	if (this.connected) 
+	if (this.connected)
 	{
-		var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+		var cmdRegExp =		new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+		var twoValRegExp =	new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
 		var match = cmdRegExp.exec(message);
 		if (match) 
 		{
@@ -46,8 +48,17 @@ ircServer.prototype.newCommand = function(message)
 					this.joinChannel(val);
 					break;
 					
+				case 'msg':
+				case 'query':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						this.startQuery(this.getNick(tmpMatch[1]), true, 'message', tmpMatch[2]);
+					}
+					break;
+					
 				case 'quit':
-					this.disconnect();
+					this.disconnect(val);
 					break;
 					
 				default: // this could probably be left out later
@@ -152,22 +163,54 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				case 'PRIVMSG':
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan) 
+					if (payload.params[0].substr(0, 1) == '#') // it's a channel
+					{
+						var tmpChan = this.getChannel(payload.params[0]);
+						if (tmpChan) 
+						{
+							var tmpNick = this.getNick(payload.origin);
+							tmpNick.addChannel(tmpChan);
+							tmpChan.newMessage(tmpNick, payload.params[1]);
+						}
+					}
+					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
 					{
 						var tmpNick = this.getNick(payload.origin);
-						tmpNick.removeChannel(tmpChan);
-						tmpChan.newMessage(tmpNick, payload.params[1]);
+						var tmpQuery = this.getQuery(tmpNick);
+						if (tmpQuery)
+						{
+							tmpQuery.newMessage(tmpNick, payload.params[1]);
+						}
+						else
+						{
+							this.startQuery(tmpNick, false, 'message', payload.params[1]);
+						}
 					}
 					break;
 					
 				case 'ACTION':
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan)
+					if (payload.params[0].substr(0, 1) == '#') // it's a channel
+					{
+						var tmpChan = this.getChannel(payload.params[0]);
+						if (tmpChan)
+						{
+							var tmpNick = this.getNick(payload.origin);
+							tmpNick.addChannel(tmpChan);
+							tmpChan.newAction(tmpNick, payload.params[1]);
+						}
+					}
+					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
 					{
 						var tmpNick = this.getNick(payload.origin);
-						tmpNick.removeChannel(tmpChan);
-						tmpChan.newAction(tmpNick, payload.params[1]);
+						var tmpQuery = this.getQuery(tmpNick);
+						if (tmpQuery)
+						{
+							tmpQuery.newAction(tmpNick, payload.params[1]);
+						}
+						else
+						{
+							this.startQuery(tmpNick, false, 'action', payload.params[1]);
+						}
 					}
 					break;
 					
@@ -252,7 +295,9 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case '375':		// MOTDSTART
 				case '376':		// ENDOFMOTD
+					this.newGenericMessage('action', payload.params[1]);
 					break;
+					
 				case '433':		// NAMEINUSE
 					this.newDebugMessage(payload.params[1] + " : " + payload.params[2]);
 					break;
@@ -270,6 +315,16 @@ ircServer.prototype.connectionHandler = function(payload)
 		{
 			// hmm
 		}
+		
+		// for debugging
+		/*
+		alert('------');
+		for (p in payload) 
+		{
+			alert(p + ': ' + payload[p]);
+			//this.newDebugMessage(p + ': ' + payload[p]);
+		}
+		*/
 	}
 	catch (e)
 	{
@@ -277,10 +332,11 @@ ircServer.prototype.connectionHandler = function(payload)
 	}
 }
 
-ircServer.prototype.disconnect = function()
+ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
-	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, 'wIRC FTW');
+	if (!reason) reason = 'wIRC FTW';
+	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
 ircServer.prototype.disconnectHandler = function(payload)
 {
@@ -365,16 +421,11 @@ ircServer.prototype.updateStatusList = function()
 
 ircServer.prototype.joinChannel = function(name)
 {
-	if (this.channels.length > 0)
+	var tmpChannel = this.getChannel(name);
+	if (tmpChannel)
 	{
-		for (var c = 0; c < this.channels.length; c++)
-		{
-			if (this.channels[c].name == name)
-			{
-				this.channels[c].openStage();
-				return;
-			}
-		}
+		tmpChannel.openStage();
+		return;
 	}
 	
 	//this.newStatusMessage('Joining ' + name);
@@ -395,6 +446,65 @@ ircServer.prototype.getChannel = function(name)
 			if (this.channels[c].name == name)
 			{
 				return this.channels[c];
+			}
+		}
+	}
+	return false;
+}
+
+ircServer.prototype.startQuery = function(nick, started, messageType, message)
+{
+	// started is for if we initiated the query,
+	// it should just pop the stage instead of messign with dashboard
+	
+	var tmpQuery = this.getQuery(nick);
+	if (tmpQuery)
+	{
+		if (started) 
+		{
+			if (messageType == 'message') tmpQuery.msg(message);
+			else if (messageType == 'action') tmpQuery.me(message);
+			tmpQuery.openStage();
+		}
+		else 
+		{
+			if (messageType == 'message') tmpQuery.newMessage(nick, message);
+			else if (messageType == 'action') tmpQuery.newMessage(nick, message);
+			tmpQuery.openStage();
+			//tmpQuery.openDash(); // no dash support yet
+		}
+		return;
+	}
+	
+	var newQuery = new ircQuery(
+	{
+		nick:	nick,
+		server:	this
+	});
+	if (started) 
+	{
+		if (messageType == 'message') newQuery.msg(message);
+		else if (messageType == 'action') newQuery.me(message);
+		newQuery.openStage();
+	}
+	else 
+	{
+		if (messageType == 'message') newQuery.newMessage(nick, message);
+		else if (messageType == 'action') newQuery.newMessage(nick, message);
+		newQuery.openStage();
+		newQuery.openDash(); // no dash support yet
+	}
+	this.queries.push(newQuery);
+}
+ircServer.prototype.getQuery = function(nick)
+{
+	if (this.queries.length > 0)
+	{
+		for (var q = 0; q < this.queries.length; q++)
+		{
+			if (this.queries[q].nick.name == nick.name)
+			{
+				return this.queries[q];
 			}
 		}
 	}

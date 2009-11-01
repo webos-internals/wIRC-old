@@ -23,14 +23,6 @@ ircChannel.prototype.newCommand = function(message)
 		
 		switch(cmd.toLowerCase())
 		{
-			case 'nick':
-			case 'j':
-			case 'join':
-			case 'quit':
-				// forward these messages to the server object
-				this.server.newCommand(message);
-				break;
-				
 			case 'part':
 				this.part();
 				break;
@@ -39,8 +31,9 @@ ircChannel.prototype.newCommand = function(message)
 				this.me(val);
 				break;
 				
-			default: // this could probably be left out later
-				this.newStatusMessage('Unknown Command: ' + cmd);
+			default:
+				// forward unknown to the server object
+				this.server.newCommand(message);
 				break;
 		}
 	}
