@@ -117,45 +117,30 @@ ircChannel.prototype.getMessages = function(start)
 	return returnArray;
 }
 
-/*
-ircChannel.prototype.getNick = function(nick)
+ircChannel.prototype.getNicks = function()
 {
 	try
 	{
-		var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
-		var match = cmdRegExp.exec(nick);
-		if (match) 
-		{
-			var getNick = match[1];
-		}
-		else
-		{
-			var getNick = nick;
-		}
+		var returnArray = [];
 		
-		if (this.nicks.length > 0)
+		if (this.server.nicks.length > 0)
 		{
-			for (var n = 0; n < this.nicks.length; n++)
+			for (var n = 0; n < this.server.nicks.length; n++)
 			{
-				if (this.nicks[n].name == getNick)
+				if (this.server.nicks[n].channels.indexOf(this) > -1) 
 				{
-					//alert('got ' + this.nick[n].name);
-					return this.nicks[n];
+					returnArray.push(this.server.nicks[n]);
 				}
 			}
 		}
 		
-		var tmpNick = new ircNick({name:getNick});
-		this.nicks.push(tmpNick);
-		//alert('got ' + tmpNick.name);
-		return tmpNick;
+		return returnArray;
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, "ircChannel#getNick");
 	}
 }
-*/
 
 ircChannel.prototype.join = function()
 {

@@ -24,42 +24,6 @@ function ircServer(params)
 	}
 }
 
-ircServer.prototype.getNick = function(nick)
-{
-	try
-	{
-		var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
-		var match = cmdRegExp.exec(nick);
-		if (match) 
-		{
-			var getNick = match[1];
-		}
-		else
-		{
-			var getNick = nick;
-		}
-		
-		if (this.nicks.length > 0)
-		{
-			for (var n = 0; n < this.nicks.length; n++)
-			{
-				if (this.nicks[n].name == getNick)
-				{
-					return this.nicks[n];
-				}
-			}
-		}
-		
-		var tmpNick = new ircNick({name:getNick});
-		this.nicks.push(tmpNick);
-		return tmpNick;
-	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, "ircServer#getNick");
-	}
-}
-
 ircServer.prototype.newCommand = function(message)
 {
 	if (this.connected) 
@@ -421,6 +385,42 @@ ircServer.prototype.getChannel = function(name)
 		}
 	}
 	return false;
+}
+
+ircServer.prototype.getNick = function(nick)
+{
+	try
+	{
+		var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
+		var match = cmdRegExp.exec(nick);
+		if (match) 
+		{
+			var getNick = match[1];
+		}
+		else
+		{
+			var getNick = nick;
+		}
+		
+		if (this.nicks.length > 0)
+		{
+			for (var n = 0; n < this.nicks.length; n++)
+			{
+				if (this.nicks[n].name == getNick)
+				{
+					return this.nicks[n];
+				}
+			}
+		}
+		
+		var tmpNick = new ircNick({name:getNick});
+		this.nicks.push(tmpNick);
+		return tmpNick;
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#getNick");
+	}
 }
 
 ircServer.prototype.getListObject = function()

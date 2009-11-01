@@ -43,16 +43,20 @@ ChannelChatAssistant.prototype.setup = function()
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.titleElement =				this.controller.get('title');
+		this.userButtonElement =		this.controller.get('userButton');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
+		this.userButtonPressed =	this.userButtonPressed.bindAsEventListener(this);
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
 		this.titleElement.innerHTML = this.channel.name;
 		this.loadPrefs(true);
+		
+		Mojo.Event.listen(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
 		
 		this.updateList(true);
 		this.controller.setupWidget
@@ -195,6 +199,11 @@ ChannelChatAssistant.prototype.inputChanged = function(event)
 	}
 }
 
+ChannelChatAssistant.prototype.userButtonPressed = function(event)
+{
+	this.controller.stageController.pushScene('channel-users', this.channel);
+}
+
 ChannelChatAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -208,12 +217,9 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 	}
 }
 
-ChannelChatAssistant.prototype.deactivate = function(event)
-{
-}
-
 ChannelChatAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
 	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
 	Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
 	this.channel.part();
