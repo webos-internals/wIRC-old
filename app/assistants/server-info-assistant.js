@@ -19,6 +19,7 @@ function ServerInfoAssistant(id)
 	this.portElement =			false;
 	this.autoConnectElement =	false;
 	this.saveButtonElement =	false;
+	this.addOnConnectElement =	false; 
 	
 }
 
@@ -34,6 +35,7 @@ ServerInfoAssistant.prototype.setup = function()
 		this.portElement =			this.controller.get('port');
 		this.autoConnectElement =	this.controller.get('autoConnect');
 		this.saveButtonElement =	this.controller.get('saveButton');
+		this.addOnConnectElement =	this.controller.get('addOnConnect');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
 		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
@@ -88,6 +90,16 @@ ServerInfoAssistant.prototype.setup = function()
 			},
 			this.server
 		);
+		
+		this.controller.setupWidget
+		(
+			'addOnConnect',
+        	{
+            	label : 'Add',
+            	disabled: false
+            },
+            this.server
+        );
 		
 		Mojo.Event.listen(this.aliasElement,		Mojo.Event.propertyChange, this.textChanged);
 		Mojo.Event.listen(this.addressElement,		Mojo.Event.propertyChange, this.textChanged);
