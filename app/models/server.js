@@ -115,7 +115,8 @@ ircServer.prototype.connectionHandler = function(payload)
 			{
 				case 'CONNECT':
 					this.sessionToken = payload.sessionToken;
-					this.nick = this.getNick(payload.params[0]);
+					this.nick = this.getNick(payload.params[0]); 
+					this.nick.me = true;
 					
 					this.connected = true;
 					//this.newStatusMessage(payload.params[1]);
@@ -172,11 +173,11 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case 'NICK':
 					var tmpNick = this.getNick(payload.origin);
-					tmpNick.name = payload.params[0];
 					if (tmpNick === this.nick)
 					{
-						this.newStatusMessage('You are now known as [' + newNick + ']');
+						this.newStatusMessage('You are now known as [' + tmpNick.name + ']');
 					}
+					tmpNick.updateNick(payload.params[0]);
 					break;
 					
 				case '324': // CHANNELMODEIS
