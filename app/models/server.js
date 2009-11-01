@@ -49,6 +49,8 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'msg':
+					break; // msg are ddc chats, very different than queries
+										
 				case 'query':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
