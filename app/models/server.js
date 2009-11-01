@@ -8,6 +8,7 @@ function ircServer(params)
 	this.connected =		false;
 	this.channels =			[];
 	this.nick =				false;
+	this.nicks =		 [];
 	this.statusMessages =	[];
 	
 	this.sessionToken =		false;
@@ -21,6 +22,69 @@ function ircServer(params)
 	{
 		this.connect();
 	}
+}
+
+ircServer.prototype.addChannelToNick = function(nick,channel)
+{
+	var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
+	var match = cmdRegExp.exec(nick);
+	if (match) 
+	{
+		var name = match[1];
+	}
+	else
+	{
+		var name = nick;
+	}
+
+	for (var i = 0; i < this.nicks.length; i++)
+	{
+		if (this.nicks[i].name === name)
+		{
+			if (this.nicks[i].channels.indexOf(channel) === -1)
+			{
+				this.nicks[i].channels.push(channel);
+			}
+
+			return this.nicks[i];
+		}
+	}
+
+	var tmpNick = new ircNick({name:name});
+	tmpNick.channels.push(channel);
+	this.nicks.push(tmpNick);
+
+	return tmpNick;
+}
+
+ircServer.prototype.removeChannelFromNick = function(nick,channel)
+{
+	var tmpNick = null;
+	var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
+	var match = cmdRegExp.exec(nick);
+	if (match) 
+	{
+		var name = match[1];
+	}
+	else
+	{
+		var name = nick;
+	}
+
+
+	for (var i = 0; i < this.nicks.length; i++)
+	{
+		if (this.nicks[i].name === name)
+		{
+			this.nicks[i].channels = this.nicks[i].channels.without(channel);
+			if (this.nicks[i].channels.length === 0) {
+				tmpNick = this.nicks[i];
+				this.nicks = this.nicks.without(tmpNick);
+			}
+		}
+	}
+
+	return tmpNick;
 }
 
 ircServer.prototype.newCommand = function(message)
@@ -136,7 +200,10 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
+						/*
 						var tmpNick = tmpChan.getNick(payload.origin);
+						*/
+						var tmpNick = this.addChannelToNick(payload.origin,tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has joined ' + tmpChan.name);
 					}
 					break;
@@ -145,7 +212,10 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
+						/*
 						var tmpNick = tmpChan.getNick(payload.origin);
+						*/
+						var tmpNick = this.removeChannelFromNick(payload.origin,tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
@@ -154,7 +224,10 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
+					/*
 						var tmpNick = tmpChan.getNick(payload.origin);
+						*/
+					  var tmpNick = this.addChannelToNick(payload.origin,tmpChan);
 						tmpChan.newMessage(tmpNick, payload.params[1]);
 					}
 					break;
@@ -163,7 +236,10 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan)
 					{
+					/*
 						var tmpNick = tmpChan.getNick(payload.origin);
+						*/
+					  var tmpNick = this.addChannelToNick(payload.origin,tmpChan);
 						tmpChan.newAction(tmpNick, payload.params[1]);
 					}
 					break;
