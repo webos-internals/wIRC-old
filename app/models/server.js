@@ -3,6 +3,8 @@ function ircServer(params)
 	this.id =				params.id;
 	this.alias =			params.alias;
 	this.address =			params.address;
+	this.serverUser =		params.serverUser;
+	this.serverPassword =	params.serverPassword;
 	this.port =				params.port;
 	this.autoConnect =		(params.autoConnect=='true'?true:false);
 	this.autoIdentify =		(params.autoIdentify=='true'?true:false);
@@ -115,7 +117,16 @@ ircServer.prototype.getStatusMessages = function(start)
 ircServer.prototype.connect = function()
 {
 	// connecting...
-	this.subscription = wIRCd.connect(this.connectionHandler.bindAsEventListener(this), this.address, prefs.get().nick1, prefs.get().realname);
+	this.subscription = wIRCd.connect
+	(
+		this.connectionHandler.bindAsEventListener(this),
+		this.address,
+		this.port,
+		this.serverUser,
+		this.serverPassword,
+		prefs.get().nick1,
+		prefs.get().realname
+	);
 }
 ircServer.prototype.connectionHandler = function(payload)
 {
@@ -614,6 +625,8 @@ ircServer.prototype.getEditObject = function()
 		alias:				this.alias,
 		address:			this.address,
 		port:				this.port,
+		serverUser:			this.serverUser,
+		serverPassword:		this.serverPassword,
 		autoConnect:		this.autoConnect,
 		autoIdentify:		this.autoIdentify,
 		identifyService:	this.identifyService,
@@ -630,6 +643,8 @@ ircServer.prototype.saveInfo = function(params)
 		this.id =				params.id;
 		this.alias =			params.alias;
 		this.address =			params.address;
+		this.serverUser =		params.serverUser;
+		this.serverPassword =	params.serverPassword;
 		this.port =				params.port;
 		this.autoConnect =		params.autoConnect;
 		this.autoIdentify =		params.autoIdentify;
@@ -649,6 +664,8 @@ ircServer.getBlankServerObject = function()
 		id:					false,
 		alias:				'',
 		address:			'',
+		serverUser:			'wIRCuser',
+		serverPassword:		'',
 		port:				6667,
 		autoConnect:		false,
 		autoIdentify:		false,

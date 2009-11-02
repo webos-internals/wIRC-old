@@ -14,16 +14,18 @@ function ServerInfoAssistant(id)
 		this.server = ircServer.getBlankServerObject();
 	}
 	
-	this.aliasElement =			false;
-	this.addressElement =		false;
-	this.portElement =			false;
-	this.autoConnectElement =	false;
-	this.autoIdentifyWrapper =	false;
-	this.autoIdentifyElement =	false;
-	this.identifyService =		false;
-	this.identifyPassword =		false;
-	this.saveButtonElement =	false;
-	this.onConnectList =		false;
+	this.aliasElement =				false;
+	this.addressElement =			false;
+	this.portElement =				false;
+	this.serverUserElement =		false;
+	this.serverPasswordElement =	false;
+	this.autoConnectElement =		false;
+	this.autoIdentifyWrapper =		false;
+	this.autoIdentifyElement =		false;
+	this.identifyService =			false;
+	this.identifyPassword =			false;
+	this.saveButtonElement =		false;
+	this.onConnectList =			false;
 	
 	this.onConnectModel =	{items:[]};
 	this.onConnectData =	[];
@@ -53,6 +55,8 @@ ServerInfoAssistant.prototype.setup = function()
 		this.aliasElement =				this.controller.get('alias');
 		this.addressElement =			this.controller.get('address');
 		this.portElement =				this.controller.get('port');
+		this.serverUserElement =		this.controller.get('serverUser');
+		this.serverPasswordElement =	this.controller.get('serverPassword');
 		this.autoConnectElement =		this.controller.get('autoConnect');
 		this.autoIdentifyWrapper =		this.controller.get('autoIdentifyWrapper');
 		this.autoIdentifyElement =		this.controller.get('autoIdentify');
@@ -106,6 +110,30 @@ ServerInfoAssistant.prototype.setup = function()
 			},
 			this.server
 		);
+		this.controller.setupWidget
+		(
+			'serverUser',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'serverUser',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.server
+		);
+		this.controller.setupWidget
+		(
+			'serverPassword',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'serverPassword',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.server
+		);
 		
 		this.controller.setupWidget
 		(
@@ -121,6 +149,8 @@ ServerInfoAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 		
 		
@@ -391,6 +421,8 @@ ServerInfoAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.aliasElement,				Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 	
 	Mojo.Event.stopListening(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
