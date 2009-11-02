@@ -50,7 +50,7 @@ ircNick.prototype.updateNickName = function(newName)
 
 	for (var i = 0; i < this.channels.length; i++)
 	{
-		this.channels[i].newStatusMessage(msg);
+		this.channels[i].newMessage('status', false, msg);
 	}
 }
 ircNick.prototype.updateNickMode = function(newMode, channel)
