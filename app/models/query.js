@@ -184,6 +184,10 @@ ircQuery.prototype.updateChatList = function()
 	if (this.chatAssistant && this.chatAssistant.controller)
 	{
 		this.chatAssistant.updateList();
+		if (!this.chatAssistant.isVisible)
+		{
+			this.openDash();
+		}
 	}
 	else // if there is no window to update, push/update banner/dash
 	{

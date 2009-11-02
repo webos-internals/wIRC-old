@@ -8,6 +8,8 @@ function QueryChatAssistant(query)
 	this.inputWidgetElement =		false;
 	this.sendButtonElement =		false;
 	
+	this.isVisible = false;
+	
 	this.listModel =
 	{
 		items: []
@@ -42,14 +44,21 @@ QueryChatAssistant.prototype.setup = function()
 		
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
+		this.documentElement =			this.controller.stageController.document;
 		this.titleElement =				this.controller.get('title');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
-		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
-		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
+		this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
+		this.invisibleWindowHandler =	this.invisibleWindow.bindAsEventListener(this);
+		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
+		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
+		
+		this.controller.listen(this.documentElement, Mojo.Event.stageActivate,   this.visibleWindowHandler);
+		this.controller.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
+		this.isVisible = true;
 		
 		this.titleElement.innerHTML = this.query.nick.name;
 		this.loadPrefs(true);
@@ -177,7 +186,7 @@ QueryChatAssistant.prototype.inputChanged = function(event)
 	{
 		this.sendButtonPressed();
 	}
-	else 
+	else
 	{
 		if (event.value == '') 
 		{
@@ -203,8 +212,23 @@ QueryChatAssistant.prototype.handleCommand = function(event)
 	}
 }
 
+QueryChatAssistant.prototype.visibleWindow = function(event)
+{
+	if (!this.isVisible)
+	{
+		this.isVisible = true;
+	}
+	this.query.closeDash();
+}
+QueryChatAssistant.prototype.invisibleWindow = function(event)
+{
+	this.isVisible = false;
+}
+
 QueryChatAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
-	Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageActivate,   this.visibleWindowHandler);
+	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
+	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
+	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
 }
