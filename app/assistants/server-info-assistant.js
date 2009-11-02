@@ -275,13 +275,14 @@ ServerInfoAssistant.prototype.onConnectReorder = function(event)
 }
 ServerInfoAssistant.prototype.onConnectDelete = function(event)
 {
+	var newData = [];
 	if (this.onConnectData.length > 0) 
 	{
 		for (var d = 0; d < this.onConnectData.length; d++) 
 		{
 			if (this.onConnectData[d].id == event.item.id) 
 			{
-				this.onConnectData[d] = null;
+				// ignore
 			}
 			else 
 			{
@@ -289,20 +290,24 @@ ServerInfoAssistant.prototype.onConnectDelete = function(event)
 				{
 					this.onConnectData[d].index--;
 				}
+				newData.push(this.onConnectData[d]);
 			}
 		}
-		this.onConnectData.compact();
 	}
+	this.onConnectData = newData;
 	this.onConenctSave();
 }
 ServerInfoAssistant.prototype.onConenctSave = function()
 {
 	if (this.onConnectData.length > 0) 
 	{
-		this.onConnectData.sort(function(a, b)
+		if (this.onConnectData.length > 1) 
 		{
-			return a.index - b.index;
-		});
+			this.onConnectData.sort(function(a, b)
+			{
+				return a.index - b.index;
+			});
+		}
 		
 		for (var i = 0; i < this.onConnectModel.items.length; i++) 
 		{
@@ -317,15 +322,12 @@ ServerInfoAssistant.prototype.onConenctSave = function()
 	}
 	
 	this.server.onConnect = '';
-	alert('---');
 	if (this.onConnectData.length > 0) 
 	{
 		for (var d = 0; d < this.onConnectData.length; d++) 
 		{
 			if (this.server.onConnect != '') this.server.onConnect += ';';
 			this.server.onConnect += this.onConnectData[d].value;
-			
-			alert(this.onConnectData[d].id + ' - ' + this.onConnectData[d].value);
 		}
 	}
 }
