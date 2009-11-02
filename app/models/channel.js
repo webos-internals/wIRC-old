@@ -13,58 +13,6 @@ function ircChannel(params)
 	this.chatAssistant =	false;
 }
 
-ircChannel.prototype.addNick = function(nick)
-{
-	if (this.nicks.indexOf(nick) === -1)
-	{
-		this.nicks.push(nick);
-	}
-}
-
-ircChannel.prototype.removeNick = function(nick)
-{
-	if (this.nicks.indexOf(nick) !== -1)
-	{
-		this.nicks = this.nicks.without(nick);
-	}
-}
-
-ircChannel.prototype.containsNick = function(nick)
-{
-	return (this.nicks.indexOf(nick) !== -1);
-}
-
-ircChannel.prototype.tabNick = function(tabText, nick)
-{
-	var start = this.nicks.indexOf(nick) + 1;
-	
-	if (!tabText)
-	{
-		return nick;
-	}
-
-	for (var i = start; i < this.nicks.length; i++)
-	{
-		if (this.nicks[i].name.toLowerCase().startsWith(tabText.toLowerCase()))
-		{
-			return this.nicks[i];
-		}
-	}
-
-	if (start > 0)
-	{
-		for (var i = 0; i < start; i++)
-		{
-			if (this.nicks[i].name.toLowerCase().startsWith(tabText.toLowerCase()))
-			{
-				return this.nicks[i]
-			}
-		}
-	}
-
-	return false;
-}
-
 ircChannel.prototype.newCommand = function(message)
 {
 	var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
@@ -175,6 +123,24 @@ ircChannel.prototype.getMessages = function(start)
 	return returnArray;
 }
 
+ircChannel.prototype.addNick = function(nick)
+{
+	if (this.nicks.indexOf(nick) === -1)
+	{
+		this.nicks.push(nick);
+	}
+}
+ircChannel.prototype.removeNick = function(nick)
+{
+	if (this.nicks.indexOf(nick) !== -1)
+	{
+		this.nicks = this.nicks.without(nick);
+	}
+}
+ircChannel.prototype.containsNick = function(nick)
+{
+	return (this.nicks.indexOf(nick) !== -1);
+}
 ircChannel.prototype.getNicks = function()
 {
 	try
@@ -198,6 +164,36 @@ ircChannel.prototype.getNicks = function()
 	{
 		Mojo.Log.logException(e, "ircChannel#getNick");
 	}
+}
+ircChannel.prototype.tabNick = function(tabText, nick)
+{
+	var start = this.nicks.indexOf(nick) + 1;
+	
+	if (!tabText)
+	{
+		return nick;
+	}
+
+	for (var i = start; i < this.nicks.length; i++)
+	{
+		if (this.nicks[i].name.toLowerCase().startsWith(tabText.toLowerCase()))
+		{
+			return this.nicks[i];
+		}
+	}
+
+	if (start > 0)
+	{
+		for (var i = 0; i < start; i++)
+		{
+			if (this.nicks[i].name.toLowerCase().startsWith(tabText.toLowerCase()))
+			{
+				return this.nicks[i]
+			}
+		}
+	}
+
+	return false;
 }
 
 ircChannel.prototype.join = function()
