@@ -18,6 +18,9 @@ function ServerInfoAssistant(id)
 	this.addressElement =		false;
 	this.portElement =			false;
 	this.autoConnectElement =	false;
+	this.autoIdentifyElement =	false;
+	this.identifyService =		false;
+	this.identifyPassword =		false;
 	this.saveButtonElement =	false;
 	this.onConnectList =		false;
 	
@@ -46,12 +49,15 @@ ServerInfoAssistant.prototype.setup = function()
 	{
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
 		
-		this.aliasElement =			this.controller.get('alias');
-		this.addressElement =		this.controller.get('address');
-		this.portElement =			this.controller.get('port');
-		this.autoConnectElement =	this.controller.get('autoConnect');
-		this.saveButtonElement =	this.controller.get('saveButton');
-		this.onConnectList =		this.controller.get('onConnect');
+		this.aliasElement =				this.controller.get('alias');
+		this.addressElement =			this.controller.get('address');
+		this.portElement =				this.controller.get('port');
+		this.autoConnectElement =		this.controller.get('autoConnect');
+		this.autoIdentifyElement =		this.controller.get('autoIdentify');
+		this.identifyServiceElement =	this.controller.get('identifyService');
+		this.identifyPasswordElement =	this.controller.get('identifyPassword');
+		this.saveButtonElement =		this.controller.get('saveButton');
+		this.onConnectList =			this.controller.get('onConnect');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
 		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
@@ -103,6 +109,41 @@ ServerInfoAssistant.prototype.setup = function()
 	  			trueLabel:  'Yes',
 	 			falseLabel: 'No',
 				modelProperty: 'autoConnect'
+			},
+			this.server
+		);
+		
+		this.controller.setupWidget
+		(
+			'autoIdentify',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+				modelProperty: 'autoIdentify'
+			},
+			this.server
+		);
+		this.controller.setupWidget
+		(
+			'identifyService',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'identifyService',
+				modifierState: Mojo.Widget.numLock,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.server
+		);
+		this.controller.setupWidget
+		(
+			'identifyPassword',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'identifyPassword',
+				modifierState: Mojo.Widget.numLock,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
 		);
