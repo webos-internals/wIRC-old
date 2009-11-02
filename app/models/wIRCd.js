@@ -12,6 +12,7 @@ wIRCd.connect = function(callback, server, port, username, password, nick, realn
 			"username": username,
 			"server_password": password,
 			"nick": nick,
+			"port": port,
 			"realname": realname,
 		},
 		onSuccess: callback,
