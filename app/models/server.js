@@ -168,6 +168,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case 'PART':
 					var tmpChan = this.getChannel(payload.params[0]);
+					this.removeChannel(tmpChan);
 					if (tmpChan) 
 					{
 						var tmpNick = this.getNick(payload.origin);
@@ -464,6 +465,11 @@ ircServer.prototype.getChannel = function(name)
 		}
 	}
 	return false;
+}
+
+ircServer.prototype.removeChannel = function(channel)
+{
+	this.channels = this.channels.without(channel);
 }
 
 ircServer.prototype.startQuery = function(nick, started, messageType, message)
