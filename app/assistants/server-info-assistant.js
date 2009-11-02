@@ -241,8 +241,7 @@ ServerInfoAssistant.prototype.onConnectDelete = function(event)
 		{
 			if (this.onConnectData[d].id == event.item.id) 
 			{
-				//alert('remove ' + event.item.id);
-				//this.onConnectData[d] = null;
+				// ignore
 			}
 			else 
 			{
@@ -250,12 +249,10 @@ ServerInfoAssistant.prototype.onConnectDelete = function(event)
 				{
 					this.onConnectData[d].index--;
 				}
-				//alert('push ' + this.onConnectData[d].id);
 				newData.push(this.onConnectData[d]);
 			}
 		}
 	}
-	//this.onConnectData.compact();
 	this.onConnectData = newData;
 	this.onConenctSave();
 }
@@ -284,12 +281,10 @@ ServerInfoAssistant.prototype.onConenctSave = function()
 	}
 	
 	this.server.onConnect = '';
-	//alert('---');
 	if (this.onConnectData.length > 0) 
 	{
 		for (var d = 0; d < this.onConnectData.length; d++) 
 		{
-			//alert(this.onConnectData[d].id + ' - ' + this.onConnectData[d].index + ' - ' + this.onConnectData[d].value);
 			if (this.server.onConnect != '') this.server.onConnect += ';';
 			this.server.onConnect += this.onConnectData[d].value;
 		}
