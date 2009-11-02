@@ -5,6 +5,8 @@ function ircServer(params)
 	this.address =			params.address;
 	this.port =				params.port;
 	this.autoConnect =		(params.autoConnect=='true'?true:false);
+	this.onConnect =		params.onConnect;
+	
 	this.connected =		false;
 	this.channels =			[];
 	this.queries =			[];
@@ -592,7 +594,8 @@ ircServer.prototype.getEditObject = function()
 		alias:			this.alias,
 		address:		this.address,
 		port:			this.port,
-		autoConnect:	this.autoConnect
+		autoConnect:	this.autoConnect,
+		onConnect:		this.onConnect
 	};
 	return obj;
 }
@@ -606,6 +609,7 @@ ircServer.prototype.saveInfo = function(params)
 		this.address =		params.address;
 		this.port =			params.port;
 		this.autoConnect =	params.autoConnect;
+		this.onConnect =	params.onConnect;		
 		
 		db.saveServer(this, this.saveInfoResponse.bind(this));
 	}
@@ -620,7 +624,8 @@ ircServer.getBlankServerObject = function()
 		alias:			'',
 		address:		'',
 		port:			6667,
-		autoConnect:	false
+		autoConnect:	false,
+		onConnect:		''
 	};
 	return obj;
 }
@@ -639,4 +644,3 @@ ircServer.validateNewServer = function(params, assistant, verbose)
 	// for now, we don't really care about you... don't screw it up!
 	return true;
 }
-

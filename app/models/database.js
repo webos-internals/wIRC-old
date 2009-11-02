@@ -12,6 +12,7 @@ function database()
 
 database.prototype.initialData = function()
 {
+	/*
 	this.saveServer(
 	{
 		id:				false,
@@ -42,6 +43,7 @@ database.prototype.initialData = function()
 			autoConnect:	false
 		}, this.dumpResults.bind(this));
 	}
+	*/
 }
 
 database.prototype.getServers = function(callback)
@@ -90,13 +92,13 @@ database.prototype.saveServer = function(params, callback)
 {
 	if (params.id === false)
 	{
-		var query = "INSERT INTO servers (alias, address, port, autoConnect) VALUES (?, ?, ?, ?)";
-		var data = [params.alias, params.address, params.port, params.autoConnect];
+		var query = "INSERT INTO servers (alias, address, port, autoConnect, onConnect) VALUES (?, ?, ?, ?, ?)";
+		var data = [params.alias, params.address, params.port, params.autoConnect, params.onConnect];
 	}
 	else
 	{
-		var query = "UPDATE servers SET alias=?, address=?, port=?, autoConnect=? WHERE id=?";
-		var data = [params.alias, params.address, params.port, params.autoConnect, params.id];
+		var query = "UPDATE servers SET alias=?, address=?, port=?, autoConnect=?, onConnect=? WHERE id=?";
+		var data = [params.alias, params.address, params.port, params.autoConnect, params.onConnect, params.id];
 	}
 	
 	this.db.transaction(function(tx)
@@ -141,34 +143,13 @@ database.prototype.deleteServer = function(id, callback)
 	});
 }
 
-database.prototype.savePref = function(name, value)
-{
-	this.db.transaction(function(tx)
-	{
-		tx.executeSql
-		(
-			"REPLACE INTO ", 
-			[name, value],
-			function(tx, result)
-			{
-				db.log('Pref Saved: ' + name + '=>[' + value + ']');
-			},
-			function(tx, error)
-			{
-				db.log('Error Saving Pref: ' + name + '=>[' + value + ']');
-			}
-			
-		);
-	});
-}
-
 database.prototype.createTables = function()
 {
 	this.db.transaction(function (tx)
 	{
 		tx.executeSql
 		(
-			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, autoConnect BOOL);",
+			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, autoConnect BOOL, onConnect TEXT);",
 			[], 
 			function(tx, result)
 			{
@@ -177,19 +158,6 @@ database.prototype.createTables = function()
 			function(tx, error)
 			{
 				db.log('Table Create Failed [servers]');
-			}
-		);
-		tx.executeSql
-		(
-			"CREATE TABLE IF NOT EXISTS preferences (name VARCHAR NOT NULL PRIMARY KEY, value VARCHAR);",
-			[], 
-			function(tx, result)
-			{
-				db.log('Table Created [preferences]');
-			},
-			function(tx, error)
-			{
-				db.log('Table Create Failed [preferences]');
 			}
 		);
 	});
@@ -209,19 +177,6 @@ database.prototype.dropTables = function()
 			function(tx, error)
 			{
 				db.log('Table Drop Failed [servers]');
-			}
-		);
-		tx.executeSql
-		(
-			"DROP TABLE preferences;",
-			[], 
-			function(tx, result)
-			{
-				db.log('Table Dropped [preferences]');
-			},
-			function(tx, error)
-			{
-				db.log('Table Drop Failed [preferences]');
 			}
 		);
 	});
