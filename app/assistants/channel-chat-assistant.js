@@ -1,6 +1,9 @@
 function ChannelChatAssistant(channel)
 {
 	this.channel = channel;
+	this.nick = false;
+	this.tabText = false;
+	this.action = false;
 	
 	this.titleElement =				false;
 	this.userButtonElement =		false;
@@ -53,6 +56,10 @@ ChannelChatAssistant.prototype.setup = function()
 		this.userButtonPressed =	this.userButtonPressed.bindAsEventListener(this);
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
+		
+		this.keyHandler = this.keyHandler.bindAsEventListener(this);
+		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
+		Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
 		
 		this.titleElement.innerHTML = this.channel.name;
 		this.loadPrefs(true);
@@ -178,6 +185,57 @@ ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 	// this probably isn't needed
 	//this.updateList();
 }
+
+ChannelChatAssistant.prototype.keyHandler = function(event)
+{
+	var isActionKey = (event.keyCode === Mojo.Char.metaKey);
+	var isTabKey = (event.altKey);
+
+	if (event.type === 'keydown' && isActionKey)
+	{
+		this.action = true;
+	}
+	else if (event.type === 'keyup' && isActionKey)
+	{
+		console.log("set tab false");
+		this.action = false;
+	}
+
+	if (this.action && event.type === 'keyup' && isTabKey)
+	{
+		if (!this.tabText)
+		{
+			var tmpText = event.target.value.match(/^(.*)[\s]{1}(.*)$/);
+			this.tabText = event.target.value;
+			if (tmpText)
+			{
+				this.text = tmpText[1];
+				this.tabText = tmpText[2];
+			}
+		}
+
+		this.nick = this.channel.getNick(this.tabText, this.nick);
+
+		if (this.nick)
+		{
+			if (this.text)
+			{
+				event.target.value = this.text + " " + this.nick.name;
+			}
+			else
+			{
+				event.target.value = this.nick.name;
+			}
+		}
+	}
+	else if (!isActionKey && !isTabKey)
+	{
+		this.tabText = false;
+		this.text = false;
+		this.nick = false;
+	}
+}
+
 ChannelChatAssistant.prototype.inputChanged = function(event)
 {
 	this.revealBottom();

@@ -17,6 +17,7 @@ ircNick.prototype.addChannel = function(channel, mode)
 	{ 
 		if (this.channels.indexOf(channel) === -1) 
 		{ 
+			channel.addNick(this);
 			this.channels.push(channel);
 			this.channelModes[channel.name] = mode;
 		} 
@@ -26,6 +27,7 @@ ircNick.prototype.removeChannel = function(channel)
 {
 	if (channel)
 	{
+		channel.removeNick(this);
 		this.channels = this.channels.without(channel);
 		this.channelModes[channel.name] = '';
 	}
