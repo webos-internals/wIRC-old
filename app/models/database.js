@@ -67,6 +67,7 @@ database.prototype.getServers = function(callback)
 		);
 	});
 }
+
 database.prototype.getServer = function(id, callback)
 {
 	this.db.transaction(function(tx)
@@ -181,6 +182,7 @@ database.prototype.dropTables = function()
 		);
 	});
 }
+
 database.prototype.openDB = function()
 {
 	this.db = openDatabase

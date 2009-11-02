@@ -103,7 +103,6 @@ QueryChatAssistant.prototype.setup = function()
 	}
 }
 
-
 QueryChatAssistant.prototype.loadPrefs = function(initial)
 {
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;

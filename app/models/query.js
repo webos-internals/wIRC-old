@@ -179,6 +179,7 @@ ircQuery.prototype.openStageCallback = function(controller)
 {
 	controller.pushScene('query-chat', this);
 }
+
 ircQuery.prototype.setDashAssistant = function(assistant)
 {
 	this.dashAssistant = assistant;
@@ -187,6 +188,7 @@ ircQuery.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
 }
+
 ircQuery.prototype.updateChatList = function()
 {
 	if (this.chatAssistant && this.chatAssistant.controller)

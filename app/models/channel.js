@@ -274,10 +274,12 @@ ircChannel.prototype.openStageCallback = function(controller)
 {
 	controller.pushScene('channel-chat', this);
 }
+
 ircChannel.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
 }
+
 ircChannel.prototype.updateChatList = function()
 {
 	if (this.chatAssistant && this.chatAssistant.controller)

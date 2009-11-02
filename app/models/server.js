@@ -497,7 +497,6 @@ ircServer.prototype.getChannel = function(name)
 	}
 	return false;
 }
-
 ircServer.prototype.removeChannel = function(channel)
 {
 	this.channels = this.channels.without(channel);
@@ -556,6 +555,10 @@ ircServer.prototype.getQuery = function(nick)
 		}
 	}
 	return false;
+}
+ircServer.prototype.removeQuery = function(query)
+{
+	this.queries = this.queries.without(query);
 }
 
 ircServer.prototype.getNick = function(nick)
