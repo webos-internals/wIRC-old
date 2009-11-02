@@ -5,6 +5,7 @@ function ircMessage(params)
 	this.num =			ircMessage.num;
 	this.type =			params.type;
 	this.rowStyle =		'';
+	this.rowSpanStyle =	'';
 	this.nick =			false;
 	this.nickDisplay =	'';
 	this.nickStyle =	'';
@@ -12,6 +13,8 @@ function ircMessage(params)
 	
 	switch(this.type)
 	{
+		case 'personal-message':
+			this.rowSpanStyle = 'background-color: ' + prefs.get().highlight;
 		case 'channel-message':
 			this.nick =			params.nick;
 			this.nickDisplay =	this.nick.name;
@@ -69,10 +72,11 @@ ircMessage.prototype.getListObject = function()
 {
 	var obj =
 	{
-		rowStyle:	this.rowStyle,
-		nick:		this.nickDisplay,
-		nickStyle:	this.nickStyle,
-		message:	this.message
+		rowStyle:		this.rowStyle,
+		rowSpanStyle:	this.rowSpanStyle,
+		nick:			this.nickDisplay,
+		nickStyle:		this.nickStyle,
+		message:		this.message
 	};
 	
 	return obj;

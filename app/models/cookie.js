@@ -29,6 +29,7 @@ prefCookie.prototype.get = function(reload)
 				messagesStyle: 'lefta',
 				messageSplit: '30',
 				fontSize: '15',
+				highlight: 'orange',
 				
 				// Identity Scene
 				realname: 'wIRCer',

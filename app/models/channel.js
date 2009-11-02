@@ -29,7 +29,12 @@ ircChannel.prototype.removeNick = function(nick)
 	}
 }
 
-ircChannel.prototype.getNick = function(tabText, nick)
+ircChannel.prototype.containsNick = function(nick)
+{
+	return (this.nicks.indexOf(nick) !== -1);
+}
+
+ircChannel.prototype.tabNick = function(tabText, nick)
 {
 	var start = this.nicks.indexOf(nick) + 1;
 	
@@ -115,6 +120,12 @@ ircChannel.prototype.msgHandler = function(payload)
 ircChannel.prototype.newMessage = function(nick, message)
 {
 	var m = new ircMessage({type:'channel-message', nick:nick, message:message});
+	this.messages.push(m);
+	this.updateChatList();
+}
+ircChannel.prototype.newPersonalMessage = function(nick, message)
+{
+	var m = new ircMessage({type:'personal-message', nick:nick, message:message});
 	this.messages.push(m);
 	this.updateChatList();
 }
@@ -223,10 +234,15 @@ ircChannel.prototype.partHandler = function(payload)
 {
 	if (payload.returnValue == 0)
 	{
-		if (this.chatAssistant && this.chatAssistant.controller)
-		{
-			this.chatAssistant.controller.window.close();
-		}
+		this.close();
+	}
+}
+
+ircChannel.prototype.close = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.controller.window.close();
 	}
 }
 

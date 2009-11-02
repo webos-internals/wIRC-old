@@ -168,13 +168,23 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
+				case 'KICK':
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan) 
+					{
+						this.nick.removeChannel(tmpChan); 
+						this.removeChannel(tmpChan);
+						this.newStatusMessage("You have been kicked from " + tmpChan.name);
+						tmpChan.close();
+					}
+					break;
 				case 'PART':
 					var tmpChan = this.getChannel(payload.params[0]);
-					this.removeChannel(tmpChan);
 					if (tmpChan) 
 					{
 						var tmpNick = this.getNick(payload.origin);
 						tmpNick.removeChannel(tmpChan);
+						this.removeChannel(tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
@@ -187,7 +197,10 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							var tmpNick = this.getNick(payload.origin);
 							tmpNick.addChannel(tmpChan);
-							tmpChan.newMessage(tmpNick, payload.params[1]);
+							if (payload.params[1].include(this.nick.name))
+								tmpChan.newPersonalMessage(tmpNick, payload.params[1]);
+							else
+								tmpChan.newMessage(tmpNick, payload.params[1]);
 						}
 					}
 					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
