@@ -166,13 +166,23 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
+				case 'KICK':
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan) 
+					{
+						this.nick.removeChannel(tmpChan); 
+						this.removeChannel(tmpChan);
+						this.newStatusMessage("You have been kicked from " + tmpChan.name);
+						tmpChan.close();
+					}
+					break;
 				case 'PART':
 					var tmpChan = this.getChannel(payload.params[0]);
-					this.removeChannel(tmpChan);
 					if (tmpChan) 
 					{
 						var tmpNick = this.getNick(payload.origin);
 						tmpNick.removeChannel(tmpChan);
+						this.removeChannel(tmpChan);
 						tmpChan.newEventMessage(tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
