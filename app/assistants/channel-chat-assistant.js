@@ -213,7 +213,7 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 			}
 		}
 
-		this.nick = this.channel.getNick(this.tabText, this.nick);
+		this.nick = this.channel.tabNick(this.tabText, this.nick);
 
 		if (this.nick)
 		{
@@ -280,5 +280,8 @@ ChannelChatAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
 	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
 	Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
-	this.channel.part();
+	if (this.channel.containsNick(this.channel.server.nick))
+	{
+		this.channel.part();
+	}
 }
