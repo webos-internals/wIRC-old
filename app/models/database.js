@@ -92,13 +92,13 @@ database.prototype.saveServer = function(params, callback)
 {
 	if (params.id === false)
 	{
-		var query = "INSERT INTO servers (alias, address, port, autoConnect, onConnect) VALUES (?, ?, ?, ?, ?)";
-		var data = [params.alias, params.address, params.port, params.autoConnect, params.onConnect];
+		var query = "INSERT INTO servers (alias, address, port, autoConnect, autoIdentify, identifyService, identifyPassword, onConnect) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		var data = [params.alias, params.address, params.port, params.autoConnect, params.autoIdentify, params.identifyService, params.identifyPassword, params.onConnect];
 	}
 	else
 	{
-		var query = "UPDATE servers SET alias=?, address=?, port=?, autoConnect=?, onConnect=? WHERE id=?";
-		var data = [params.alias, params.address, params.port, params.autoConnect, params.onConnect, params.id];
+		var query = "UPDATE servers SET alias=?, address=?, port=?, autoConnect=?, autoIdentify=?, identifyService=?, identifyPassword=?, onConnect=? WHERE id=?";
+		var data = [params.alias, params.address, params.port, params.autoConnect, params.autoIdentify, params.identifyService, params.identifyPassword, params.onConnect, params.id];
 	}
 	
 	this.db.transaction(function(tx)

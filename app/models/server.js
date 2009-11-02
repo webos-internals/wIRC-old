@@ -5,6 +5,9 @@ function ircServer(params)
 	this.address =			params.address;
 	this.port =				params.port;
 	this.autoConnect =		(params.autoConnect=='true'?true:false);
+	this.autoIdentify =		(params.autoIdentify=='true'?true:false);
+	this.identifyService =	params.identifyService;
+	this.identifyPassword =	params.identifyPassword;
 	this.onConnect =		params.onConnect;
 	
 	this.connected =		false;
@@ -617,12 +620,15 @@ ircServer.prototype.getEditObject = function()
 {
 	var obj = 
 	{
-		id:				this.id,
-		alias:			this.alias,
-		address:		this.address,
-		port:			this.port,
-		autoConnect:	this.autoConnect,
-		onConnect:		this.onConnect
+		id:					this.id,
+		alias:				this.alias,
+		address:			this.address,
+		port:				this.port,
+		autoConnect:		this.autoConnect,
+		autoIdentify:		this.autoIdentify,
+		identifyService:	this.identifyService,
+		identifyPassword:	this.identifyPassword,
+		onConnect:			this.onConnect
 	};
 	return obj;
 }
@@ -631,12 +637,15 @@ ircServer.prototype.saveInfo = function(params)
 {
 	if (ircServer.validateNewServer(params, false, false)) 
 	{
-		this.id =			params.id;
-		this.alias =		params.alias;
-		this.address =		params.address;
-		this.port =			params.port;
-		this.autoConnect =	params.autoConnect;
-		this.onConnect =	params.onConnect;		
+		this.id =				params.id;
+		this.alias =			params.alias;
+		this.address =			params.address;
+		this.port =				params.port;
+		this.autoConnect =		params.autoConnect;
+		this.autoIdentify =		params.autoIdentify;
+		this.identifyService =	params.identifyService;
+		this.identifyPassword =	params.identifyPassword;
+		this.onConnect =		params.onConnect;		
 		
 		db.saveServer(this, this.saveInfoResponse.bind(this));
 	}
@@ -647,12 +656,15 @@ ircServer.getBlankServerObject = function()
 {
 	var obj = 
 	{
-		id:				false,
-		alias:			'',
-		address:		'',
-		port:			6667,
-		autoConnect:	false,
-		onConnect:		''
+		id:					false,
+		alias:				'',
+		address:			'',
+		port:				6667,
+		autoConnect:		false,
+		autoIdentify:		false,
+		identifyService:	'NickServ',
+		identifyPassword:	'',
+		onConnect:			''
 	};
 	return obj;
 }

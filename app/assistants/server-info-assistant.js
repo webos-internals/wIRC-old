@@ -18,6 +18,7 @@ function ServerInfoAssistant(id)
 	this.addressElement =		false;
 	this.portElement =			false;
 	this.autoConnectElement =	false;
+	this.autoIdentifyWrapper =	false;
 	this.autoIdentifyElement =	false;
 	this.identifyService =		false;
 	this.identifyPassword =		false;
@@ -53,6 +54,7 @@ ServerInfoAssistant.prototype.setup = function()
 		this.addressElement =			this.controller.get('address');
 		this.portElement =				this.controller.get('port');
 		this.autoConnectElement =		this.controller.get('autoConnect');
+		this.autoIdentifyWrapper =		this.controller.get('autoIdentifyWrapper');
 		this.autoIdentifyElement =		this.controller.get('autoIdentify');
 		this.identifyServiceElement =	this.controller.get('identifyService');
 		this.identifyPasswordElement =	this.controller.get('identifyPassword');
@@ -116,6 +118,13 @@ ServerInfoAssistant.prototype.setup = function()
 			this.server
 		);
 		
+		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
+		
+		
+		
 		this.controller.setupWidget
 		(
 			'autoIdentify',
@@ -133,7 +142,7 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				modelProperty: 'identifyService',
-				modifierState: Mojo.Widget.numLock,
+				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
@@ -145,18 +154,17 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				modelProperty: 'identifyPassword',
-				modifierState: Mojo.Widget.numLock,
+				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
 		);
 		
-		Mojo.Event.listen(this.aliasElement,		Mojo.Event.propertyChange, this.textChanged);
-		Mojo.Event.listen(this.addressElement,		Mojo.Event.propertyChange, this.textChanged);
-		Mojo.Event.listen(this.portElement,			Mojo.Event.propertyChange, this.textChanged);
-		Mojo.Event.listen(this.autoConnectElement,	Mojo.Event.propertyChange, this.toggleChanged);
+		Mojo.Event.listen(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
+		Mojo.Event.listen(this.identifyServiceElement,	Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.identifyPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		
-		Mojo.Event.listen(this.autoIdentifyElement,	Mojo.Event.propertyChange, this.autoIdentifyChanged);
+				
 		
 		this.onConnectBuildList();
 		this.controller.setupWidget
@@ -221,13 +229,15 @@ ServerInfoAssistant.prototype.textChanged = function(event)
 
 ServerInfoAssistant.prototype.autoIdentifyChanged = function(event)
 {
-	if (this.autoIdentifyElement.value)
+	if (this.server.autoIdentify)
 	{
-		this.controller.get('identifyInfo').style.display = 'none';
+		this.autoIdentifyWrapper.className = 'palm-row first';
+		this.controller.get('identifyInfo').style.display = '';
 	}
 	else
 	{
-		this.controller.get('identifyInfo').style.display = '';
+		this.autoIdentifyWrapper.className = 'palm-row single';
+		this.controller.get('identifyInfo').style.display = 'none';
 	}
 }
 
@@ -378,15 +388,19 @@ ServerInfoAssistant.prototype.doneSaving = function()
 ServerInfoAssistant.prototype.activate = function(event) {}
 ServerInfoAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.addressElement,		Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.portElement,			Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.autoConnectElement,	Mojo.Event.propertyChange,	this.toggleChanged);
+	Mojo.Event.stopListening(this.aliasElement,				Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 	
-	Mojo.Event.stopListening(this.onConnectList,		Mojo.Event.listAdd,			this.onConnectAdd.bindAsEventListener(this));
-	Mojo.Event.stopListening(this.onConnectList,		Mojo.Event.propertyChanged,	this.onConnectChange.bindAsEventListener(this));
-	Mojo.Event.stopListening(this.onConnectList,		Mojo.Event.listReorder,		this.onConnectReorder.bindAsEventListener(this));
-	Mojo.Event.stopListening(this.onConnectList,		Mojo.Event.listDelete,		this.onConnectDelete.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
+	Mojo.Event.stopListening(this.identifyServiceElement,	Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.identifyPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
+	
+	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listAdd,			this.onConnectAdd.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.propertyChanged,	this.onConnectChange.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listReorder,		this.onConnectReorder.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listDelete,		this.onConnectDelete.bindAsEventListener(this));
 	
 	if (this.server.id === false)
 	{
