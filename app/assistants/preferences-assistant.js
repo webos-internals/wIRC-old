@@ -76,23 +76,38 @@ PreferencesAssistant.prototype.setup = function()
 		
 		
 		
-		// Messages Group
+		// Input Group
 		this.controller.setupWidget
 		(
 			'tabSuffix',
 			{
-				multiline: false,
-				enterSubmits: false,
-				//changeOnKeyPress: true,
-				hintText: '',
-				modelProperty: 'tabSuffix',
-				//charsAllow: this.validChars,
-				maxLength: 1,
-				textCase: Mojo.Widget.steModeLowerCase,
-				focusMode: Mojo.Widget.focusSelectMode
+				label: 'Tab Complete',
+				choices:
+				[
+					{label:':',	value:':'},
+					{label:'-',	value:'-'},
+					{label:'+',	value:'+'},
+					{label:'>',	value:'>'},
+					{label:'|',	value:'|'},
+					{label:',',	value:','},
+					{label:'~',	value:'~'},
+					{label:'=',	value:'='},
+					{label:'?',	value:'?'},
+					{label:'*',	value:'*'},
+					{label:'^',	value:'^'},
+					{label:'`',	value:'`'},
+					{label:'"',	value:'"'},
+					{label:"'",	value:"'"},
+					{label:'#',	value:'#'},
+					{label:'@',	value:'@'},
+					{label:'/',	value:'/'},
+					{label:'!',	value:'!'},
+					{label:'\\',value:'\\'}
+				],
+				modelProperty: 'tabSuffix'
 			},
 			this.prefs
-		);		
+		);
 		this.controller.setupWidget
 		(
 			'autoCap',
@@ -119,6 +134,14 @@ PreferencesAssistant.prototype.setup = function()
 	 			disabled: false
 			}
 		);
+		
+		this.controller.listen('tabSuffix',		Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+		this.controller.listen('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		
+		
+		
+		// Messages Group
 		this.controller.setupWidget
 		(
 			'messagesStyle',
@@ -170,9 +193,6 @@ PreferencesAssistant.prototype.setup = function()
 		this.messageStyleChanged();
 		this.fontSizeChanged({value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)});
 		
-		this.controller.listen('tabSuffix',		Mojo.Event.propertyChange, this.toggleChangeHandler);
-		this.controller.listen('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
-		this.controller.listen('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
 		this.controller.listen('messageSplit',	Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('fontSize',		Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));

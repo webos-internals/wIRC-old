@@ -9,6 +9,8 @@ function QueryDashboardAssistant(query)
 	this.dashboardTextElement =		false;
 	this.iconActionElement =		false;
 	this.textActionElement =		false;
+	
+	this.query.setDashAssistant(this);
 }
 
 QueryDashboardAssistant.prototype.setup = function()
@@ -28,11 +30,16 @@ QueryDashboardAssistant.prototype.setup = function()
 	
 	// put last mesage into fields
 	var lastMessage = this.query.getLastMessage();
-	this.dashboardTitleElement.innerHTML = lastMessage.nick;
-	this.dashboardTextElement.innerHTML = lastMessage.message;
+	this.updateMessage(lastMessage.nick, lastMessage.message);
 	
 	// to whole thing for tap
 	Mojo.Event.listen(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
+}
+
+QueryDashboardAssistant.prototype.updateMessage = function(nick, message)
+{
+	this.dashboardTitleElement.innerHTML = nick;
+	this.dashboardTextElement.innerHTML = message;
 }
 
 QueryDashboardAssistant.prototype.dashTapped = function(event)
