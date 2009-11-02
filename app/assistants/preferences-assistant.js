@@ -170,6 +170,7 @@ PreferencesAssistant.prototype.setup = function()
 		this.messageStyleChanged();
 		this.fontSizeChanged({value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)});
 		
+		this.controller.listen('tabSuffix',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
@@ -294,6 +295,7 @@ PreferencesAssistant.prototype.cleanup = function(event)
 {
 	this.controller.stopListening('theme',			Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 	this.controller.stopListening('statusPop',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('tabSuffix',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
