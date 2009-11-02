@@ -3,7 +3,6 @@ function ChannelChatAssistant(channel)
 	this.channel = channel;
 	this.nick = false;
 	this.tabText = false;
-	this.tabSuffix = prefs.get().tabSuffix || ':';
 	this.action = false;
 	
 	this.titleElement =				false;
@@ -224,7 +223,7 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 			}
 			else
 			{
-				event.target.mojo.setText(this.nick.name + this.tabSuffix + " ");
+				event.target.mojo.setText(this.nick.name + prefs.get().tabSuffix + " ");
 			}
 		}
 	}
