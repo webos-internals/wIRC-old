@@ -54,8 +54,7 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'msg':
-					break; // msg are ddc chats, very different than queries
-										
+					//break; // msg are ddc chats, very different than queries, but we're making it msg anyways :)
 				case 'query':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
@@ -522,7 +521,6 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 		{
 			if (messageType == 'message') tmpQuery.newMessage(nick, message);
 			else if (messageType == 'action') tmpQuery.newMessage(nick, message);
-			tmpQuery.openDash();
 		}
 		return;
 	}
@@ -542,7 +540,6 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 	{
 		if (messageType == 'message') newQuery.newMessage(nick, message);
 		else if (messageType == 'action') newQuery.newMessage(nick, message);
-		newQuery.openDash();
 	}
 	this.queries.push(newQuery);
 }

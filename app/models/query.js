@@ -113,20 +113,28 @@ ircQuery.prototype.getLastMessage = function()
 
 ircQuery.prototype.openDash = function()
 {
-	var lastMessage = this.getLastMessage();
-	if (lastMessage.nick !== this.server.nick.name) // if its not from us, do dash junk
+	alert('openDash');
+	try
 	{
-		Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', server: this.server.id, nick: this.nick.name}, 'query-' + this.nick.name);
-		
-		this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
-	    if (this.dashController) 
+		var lastMessage = this.getLastMessage();
+		if (lastMessage.nick !== this.server.nick.name) // if its not from us, do dash junk
 		{
-			this.dashController.delegateToSceneAssistant("updateMessage", lastMessage.nick, lastMessage.message);
+			Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', server: this.server.id, nick: this.nick.name}, 'query-' + this.nick.name);
+			
+			this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
+		    if (this.dashController) 
+			{
+				this.dashController.delegateToSceneAssistant("updateMessage", lastMessage.nick, lastMessage.message);
+			}
+			else
+			{
+				Mojo.Controller.appController.createStageWithCallback({name: this.dashName, lightweight: true}, this.openDashCallback.bind(this), "dashboard");
+			}
 		}
-		else
-		{
-			Mojo.Controller.appController.createStageWithCallback({name: this.dashName, lightweight: true}, this.openDashCallback.bind(this), "dashboard");
-		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircQuery#openDash");
 	}
 }
 ircQuery.prototype.openDashCallback = function(controller)
