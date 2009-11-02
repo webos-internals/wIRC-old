@@ -48,7 +48,7 @@ ircChannel.prototype.newCommand = function(message)
 ircChannel.prototype.me = function(message)
 {
 	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
-	this.newAction(this.server.nick, message);
+	this.newMessage('channel-action', this.server.nick, message);
 }
 ircChannel.prototype.meHandler = function(payload)
 {
@@ -58,53 +58,24 @@ ircChannel.prototype.meHandler = function(payload)
 ircChannel.prototype.msg = function(message)
 {
 	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
-	this.newMessage(this.server.nick, message);
+	this.newMessage('channel-message', this.server.nick, message);
 }
 ircChannel.prototype.msgHandler = function(payload)
 {
 	// this apparently doesn't return anything of importance
 }
 
-ircChannel.prototype.newMessage = function(nick, message)
+ircChannel.prototype.newMessage = function(type, nick, message)
 {
-	var m = new ircMessage({type:'channel-message', nick:nick, message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircChannel.prototype.newPersonalMessage = function(nick, message)
-{
-	var m = new ircMessage({type:'personal-message', nick:nick, message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircChannel.prototype.newNotice = function(nick, message)
-{
-	var m = new ircMessage({type:'channel-notice', nick:nick, message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircChannel.prototype.newAction = function(nick, message)
-{
-	var m = new ircMessage({type:'channel-action', nick:nick, message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircChannel.prototype.newStatusMessage = function(message)
-{
-	var m = new ircMessage({type:'status', message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircChannel.prototype.newEventMessage = function(message)
-{
-	var m = new ircMessage({type:'channel-event', message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircChannel.prototype.newDebugMessage = function(message)
-{
-	var m = new ircMessage({type:'debug', message:message});
-	this.messages.push(m);
+	var obj =
+	{
+		type:		type,
+		nick:		nick,
+		message:	message,
+		me:			this.server.nick.name
+	};
+	var newMsg = new ircMessage(obj);
+	this.messages.push(newMsg);
 	this.updateChatList();
 }
 ircChannel.prototype.getMessages = function(start)

@@ -44,7 +44,7 @@ ircQuery.prototype.newCommand = function(message)
 ircQuery.prototype.me = function(message)
 {
 	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.nick.name, message);
-	this.newAction(this.server.nick, message);
+	this.newMessage('channel-action', this.server.nick, message);
 }
 ircQuery.prototype.meHandler = function(payload)
 {
@@ -54,41 +54,24 @@ ircQuery.prototype.meHandler = function(payload)
 ircQuery.prototype.msg = function(message)
 {
 	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.nick.name, message);
-	this.newMessage(this.server.nick, message);
+	this.newMessage('channel-message', this.server.nick, message);
 }
 ircQuery.prototype.msgHandler = function(payload)
 {
 	// this apparently doesn't return anything of importance
 }
 
-ircQuery.prototype.newMessage = function(nick, message)
+ircQuery.prototype.newMessage = function(type, nick, message)
 {
-	var m = new ircMessage({type:'channel-message', nick:nick, message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircQuery.prototype.newAction = function(nick, message)
-{
-	var m = new ircMessage({type:'channel-action', nick:nick, message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircQuery.prototype.newStatusMessage = function(message)
-{
-	var m = new ircMessage({type:'status', message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircQuery.prototype.newEventMessage = function(message)
-{
-	var m = new ircMessage({type:'channel-event', message:message});
-	this.messages.push(m);
-	this.updateChatList();
-}
-ircQuery.prototype.newDebugMessage = function(message)
-{
-	var m = new ircMessage({type:'debug', message:message});
-	this.messages.push(m);
+	var obj =
+	{
+		type:		type,
+		nick:		nick,
+		message:	message,
+		me:			this.server.nick.name
+	};
+	var newMsg = new ircMessage(obj);
+	this.messages.push(newMsg);
 	this.updateChatList();
 }
 ircQuery.prototype.getMessages = function(start)

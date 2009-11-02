@@ -68,7 +68,7 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				default: // this could probably be left out later
-					this.newStatusMessage('Unknown Command: ' + cmd);
+					this.newMessage('status', false, 'Unknown Command: ' + cmd);
 					break;
 			}
 		}
@@ -79,26 +79,21 @@ ircServer.prototype.newCommand = function(message)
 	}
 	else
 	{
-		this.newStatusMessage('Not Connected.');
+		this.newMessage('status', false, 'Not Connected.');
 	}
 }
 
-ircServer.prototype.newGenericMessage = function(type, message)
+ircServer.prototype.newMessage = function(type, nick, message)
 {
-	var m = new ircMessage({type:type, message:message});
-	this.statusMessages.push(m);
-	this.updateStatusList();
-}
-ircServer.prototype.newDebugMessage = function(message)
-{
-	var m = new ircMessage({type:'debug', message:message});
-	this.statusMessages.push(m);
-	this.updateStatusList();
-}
-ircServer.prototype.newStatusMessage = function(message)
-{
-	var m = new ircMessage({type:'status', message:message});
-	this.statusMessages.push(m);
+	var obj =
+	{
+		type:		type,
+		nick:		nick,
+		message:	message,
+		me:			this.nick.name
+	};
+	var newMsg = new ircMessage(obj);
+	this.statusMessages.push(newMsg);
 	this.updateStatusList();
 }
 ircServer.prototype.getStatusMessages = function(start)
@@ -136,7 +131,6 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.nick.me = true;
 					
 					this.connected = true;
-					//this.newStatusMessage(payload.params[1]);
 					
 					if (servers.listAssistant && servers.listAssistant.controller)
 					{
@@ -170,7 +164,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					else
 					{
-						this.newGenericMessage('notice', payload.params);
+						this.newMessage('notice', false, payload.params);
 					}
 					break;
 					
@@ -180,7 +174,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						var tmpNick = this.getNick(payload.origin);
 						tmpNick.addChannel(tmpChan, '');
-						tmpChan.newEventMessage(tmpNick.name + ' has joined ' + tmpChan.name);
+						tmpChan.newMessage('channel-event', false, tmpNick.name + ' has joined ' + tmpChan.name);
 					}
 					break;
 					
@@ -190,7 +184,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						this.nick.removeChannel(tmpChan); 
 						this.removeChannel(tmpChan);
-						this.newStatusMessage("You have been kicked from " + tmpChan.name);
+						this.newMessage('status', false, "You have been kicked from " + tmpChan.name);
 						tmpChan.close();
 					}
 					break;
@@ -201,7 +195,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						var tmpNick = this.getNick(payload.origin);
 						tmpNick.removeChannel(tmpChan);
 						this.removeChannel(tmpChan);
-						tmpChan.newEventMessage(tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
+						tmpChan.newMessage('channel-event', false, tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
 					
@@ -213,10 +207,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							var tmpNick = this.getNick(payload.origin);
 							tmpNick.addChannel(tmpChan);
-							if (payload.params[1].include(this.nick.name))
-								tmpChan.newPersonalMessage(tmpNick, payload.params[1]);
-							else
-								tmpChan.newMessage(tmpNick, payload.params[1]);
+							tmpChan.newMessage('channel-message', tmpNick, payload.params[1]);
 						}
 					}
 					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
@@ -225,7 +216,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						var tmpQuery = this.getQuery(tmpNick);
 						if (tmpQuery)
 						{
-							tmpQuery.newMessage(tmpNick, payload.params[1]);
+							tmpQuery.newMessage('channel-message', tmpNick, payload.params[1]);
 						}
 						else
 						{
@@ -242,7 +233,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							var tmpNick = this.getNick(payload.origin);
 							tmpNick.addChannel(tmpChan);
-							tmpChan.newAction(tmpNick, payload.params[1]);
+							tmpChan.newMessage('channel-action', tmpNick, payload.params[1]);
 						}
 					}
 					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
@@ -251,7 +242,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						var tmpQuery = this.getQuery(tmpNick);
 						if (tmpQuery)
 						{
-							tmpQuery.newAction(tmpNick, payload.params[1]);
+							tmpQuery.newMessage('channel-action', tmpNick, payload.params[1]);
 						}
 						else
 						{
@@ -264,7 +255,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpNick = this.getNick(payload.origin);
 					if (tmpNick === this.nick)
 					{
-						this.newStatusMessage('You are now known as [' + tmpNick.name + ']');
+						this.newMessage('status', false, 'You are now known as [' + tmpNick.name + ']');
 					}
 					tmpNick.updateNickName(payload.params[0]);
 					break;
@@ -288,14 +279,14 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '266':		// ???
 				case '250':		// ???
 				case '372':		// MOTD
-					this.newGenericMessage('action', payload.params[1]);
+					this.newMessage('action', false, payload.params[1]);
 					break;
 					
 				case '253':		// LUSERUNKNOWN
 				case '252':		// LUSEROP
 				case '254':		// LUSERCHANNELS
 				case '256':		// ADMINME
-					this.newGenericMessage('action', payload.params[1] + ' ' + payload.params[2]);
+					this.newMessage('action', false, payload.params[1] + ' ' + payload.params[2]);
 					break;
 					
 				case '328':		// ???
@@ -341,18 +332,18 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case '375':		// MOTDSTART
 				case '376':		// ENDOFMOTD
-					this.newGenericMessage('action', payload.params[1]);
+					this.newMessage('action', false, payload.params[1]);
 					break;
 					
 				case '433':		// NAMEINUSE
-					this.newDebugMessage(payload.params[1] + " : " + payload.params[2]);
+					this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
 					break;
 					
 				default:
 					for (p in payload) 
 					{
 						//alert(p + ': ' + payload[p]);
-						this.newDebugMessage(p + ': ' + payload[p]);
+						this.newMessage('debug', false, p + ': ' + payload[p]);
 					}
 					break;
 			}
@@ -368,7 +359,7 @@ ircServer.prototype.connectionHandler = function(payload)
 		for (p in payload) 
 		{
 			alert(p + ': ' + payload[p]);
-			//this.newDebugMessage(p + ': ' + payload[p]);
+			//this.newMessage('debug', false, p + ': ' + payload[p]);
 		}
 		*/
 	}
@@ -474,7 +465,6 @@ ircServer.prototype.joinChannel = function(name)
 		return;
 	}
 	
-	//this.newStatusMessage('Joining ' + name);
 	var newChannel = new ircChannel(
 	{
 		name:	name,
@@ -518,8 +508,8 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 		}
 		else
 		{
-			if (messageType == 'message') tmpQuery.newMessage(nick, message);
-			else if (messageType == 'action') tmpQuery.newMessage(nick, message);
+			if (messageType == 'message') tmpQuery.newMessage('channel-message', nick, message);
+			else if (messageType == 'action') tmpQuery.newMessage('channel-action', nick, message);
 		}
 		return;
 	}
@@ -537,8 +527,8 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 	}
 	else 
 	{
-		if (messageType == 'message') newQuery.newMessage(nick, message);
-		else if (messageType == 'action') newQuery.newMessage(nick, message);
+		if (messageType == 'message') newQuery.newMessage('channel-message', nick, message);
+		else if (messageType == 'action') newQuery.newMessage('channel-action', nick, message);
 	}
 	this.queries.push(newQuery);
 }
