@@ -20,10 +20,12 @@ prefCookie.prototype.get = function(reload)
 				// Server Status Group
 				statusPop: false,
 				
-				// Messages Group
+				// Input Group
 				tabSuffix: ':',
 				autoCap: true,
 				autoReplace: true,
+				
+				// Messages Group
 				messagesStyle: 'lefta',
 				messageSplit: '30',
 				fontSize: '15',
