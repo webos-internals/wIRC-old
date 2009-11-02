@@ -185,7 +185,10 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							var tmpNick = this.getNick(payload.origin);
 							tmpNick.addChannel(tmpChan);
-							tmpChan.newMessage(tmpNick, payload.params[1]);
+							if (payload.params[1].include(this.nick.name))
+								tmpChan.newPersonalMessage(tmpNick, payload.params[1]);
+							else
+								tmpChan.newMessage(tmpNick, payload.params[1]);
 						}
 					}
 					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query

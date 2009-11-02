@@ -118,6 +118,12 @@ ircChannel.prototype.newMessage = function(nick, message)
 	this.messages.push(m);
 	this.updateChatList();
 }
+ircChannel.prototype.newPersonalMessage = function(nick, message)
+{
+	var m = new ircMessage({type:'personal-message', nick:nick, message:message});
+	this.messages.push(m);
+	this.updateChatList();
+}
 ircChannel.prototype.newNotice = function(nick, message)
 {
 	var m = new ircMessage({type:'channel-notice', nick:nick, message:message});
