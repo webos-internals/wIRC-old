@@ -77,7 +77,7 @@ ircNick.prototype.getRandomColor = function()
 ircNick.num = 0;
 
 ircNick.getModeNum = function(mode)
-{
+{	// this is for sorting hte nick list
 	switch(mode)
 	{
 		case '@':	return 1;

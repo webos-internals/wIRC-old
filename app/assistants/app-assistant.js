@@ -34,6 +34,34 @@ AppAssistant.prototype.handleLaunch = function(params)
 				this.controller.createStageWithCallback({name: serverStage, lightweight: true}, f);
 			}
 		}
+		else if (params.type == 'query')
+		{
+			var tmpServer = servers.getServerForId(params.server);
+			if (tmpServer)
+			{
+				var tmpNick = tmpServer.getNick(params.nick);
+				if (tmpNick) 
+				{
+					var tmpQuery = tmpServer.getQuery(tmpNick);
+					if (tmpQuery)
+					{
+						tmpQuery.closeDash();
+						tmpQuery.openStage();
+					}
+				}
+			}
+		}
+		else
+		{
+			// for debug
+			/*
+			alert('---');
+			for (var p in params)
+			{
+				alert(p + ': ' + params[p]);
+			}
+			*/
+		}
 	}
 	catch (e)
 	{

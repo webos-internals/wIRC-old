@@ -49,6 +49,8 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'msg':
+					break; // msg are ddc chats, very different than queries
+										
 				case 'query':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
@@ -114,7 +116,7 @@ ircServer.prototype.getStatusMessages = function(start)
 ircServer.prototype.connect = function()
 {
 	// connecting...
-	this.subscription = wIRCd.connect(this.connectionHandler.bindAsEventListener(this), this.address, prefs.get().nick1);
+	this.subscription = wIRCd.connect(this.connectionHandler.bindAsEventListener(this), this.address, prefs.get().nick1, prefs.get().realname);
 }
 ircServer.prototype.connectionHandler = function(payload)
 {
@@ -478,12 +480,11 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 			else if (messageType == 'action') tmpQuery.me(message);
 			tmpQuery.openStage();
 		}
-		else 
+		else
 		{
 			if (messageType == 'message') tmpQuery.newMessage(nick, message);
 			else if (messageType == 'action') tmpQuery.newMessage(nick, message);
-			tmpQuery.openStage();
-			//tmpQuery.openDash(); // no dash support yet
+			tmpQuery.openDash();
 		}
 		return;
 	}
@@ -503,8 +504,7 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 	{
 		if (messageType == 'message') newQuery.newMessage(nick, message);
 		else if (messageType == 'action') newQuery.newMessage(nick, message);
-		newQuery.openStage();
-		newQuery.openDash(); // no dash support yet
+		newQuery.openDash();
 	}
 	this.queries.push(newQuery);
 }

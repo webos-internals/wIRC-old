@@ -40,5 +40,9 @@
     {
         "scenes": "query-chat",
         "source": "app/assistants/query-chat-assistant.js"
+    },
+    {
+        "scenes": "query-dashboard",
+        "source": "app/assistants/query-dashboard-assistant.js"
     }
 ]

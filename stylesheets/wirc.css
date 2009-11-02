@@ -221,6 +221,16 @@ body.palm-dark .scene-fade-bottom
 
 
 /*
+ * Query Dashboard Scene Styles
+ */
+.query-dashboard .palm-dashboard-icon
+{
+	background: url(../icon.png) center center no-repeat;
+	-webkit-background-size: 48px 48px;
+}
+
+
+/*
  * Input Styles - Scene Inspecific
  */
 .inputFooter
