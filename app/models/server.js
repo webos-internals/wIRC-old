@@ -140,6 +140,20 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						servers.listAssistant.updateList();
 					}
+					
+					// perform onconnect
+					if (this.onConnect)
+					{
+						var tmpSplit = this.onConnect.split(';');
+						if (tmpSplit.length > 0)
+						{
+							for (var s = 0; s < tmpSplit.length; s++)
+							{
+								this.newCommand(tmpSplit[s]);
+							}
+						}
+					}
+					
 					break;
 					
 				case 'NOTICE':
