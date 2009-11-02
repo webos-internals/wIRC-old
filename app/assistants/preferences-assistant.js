@@ -79,6 +79,22 @@ PreferencesAssistant.prototype.setup = function()
 		// Messages Group
 		this.controller.setupWidget
 		(
+			'tabSuffix',
+			{
+				multiline: false,
+				enterSubmits: false,
+				//changeOnKeyPress: true,
+				hintText: '',
+				modelProperty: 'tabSuffix',
+				//charsAllow: this.validChars,
+				maxLength: 1,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.prefs
+		);		
+		this.controller.setupWidget
+		(
 			'autoCap',
 			{
 	  			trueLabel:  'Yes',
