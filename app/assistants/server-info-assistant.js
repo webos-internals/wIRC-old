@@ -276,15 +276,14 @@ ServerInfoAssistant.prototype.onConenctSave = function()
 	}
 	
 	this.server.onConnect = '';
-	alert('---');
+	//alert('---');
 	if (this.onConnectData.length > 0) 
 	{
 		for (var d = 0; d < this.onConnectData.length; d++) 
 		{
+			//alert(this.onConnectData[d].id + ' - ' + this.onConnectData[d].value);
 			if (this.server.onConnect != '') this.server.onConnect += ';';
 			this.server.onConnect += this.onConnectData[d].value;
-			
-			alert(this.onConnectData[d].id + ' - ' + this.onConnectData[d].value);
 		}
 	}
 }
