@@ -149,7 +149,7 @@ database.prototype.createTables = function()
 	{
 		tx.executeSql
 		(
-			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, autoConnect BOOL, onConnect TEXT);",
+			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, autoConnect BOOL, autoIdentify BOOL, identifyService VARCHAR, identifyPassword VARCHAR, onConnect TEXT);",
 			[], 
 			function(tx, result)
 			{

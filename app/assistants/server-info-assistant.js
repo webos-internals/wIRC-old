@@ -63,6 +63,9 @@ ServerInfoAssistant.prototype.setup = function()
 		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
 		this.saveButtonPressed =	this.saveButtonPressed.bindAsEventListener(this);
 		
+		this.autoIdentifyChanged();
+		this.autoIdentifyChanged =	this.autoIdentifyChanged.bindAsEventListener(this);
+		
 		this.controller.setupWidget
 		(
 			'alias',
@@ -153,7 +156,7 @@ ServerInfoAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.portElement,			Mojo.Event.propertyChange, this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,	Mojo.Event.propertyChange, this.toggleChanged);
 		
-		
+		Mojo.Event.listen(this.autoIdentifyElement,	Mojo.Event.propertyChange, this.autoIdentifyChanged);
 		
 		this.onConnectBuildList();
 		this.controller.setupWidget
@@ -214,6 +217,18 @@ ServerInfoAssistant.prototype.textChanged = function(event)
 {
 	// test server validation
 	ircServer.validateNewServer(this.server, this, false);
+}
+
+ServerInfoAssistant.prototype.autoIdentifyChanged = function(event)
+{
+	if (this.autoIdentifyElement.value)
+	{
+		this.controller.get('identifyInfo').style.display = 'none';
+	}
+	else
+	{
+		this.controller.get('identifyInfo').style.display = '';
+	}
 }
 
 ServerInfoAssistant.prototype.onConnectBuildList = function()
