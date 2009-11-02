@@ -3,6 +3,7 @@ function ChannelChatAssistant(channel)
 	this.channel = channel;
 	this.nick = false;
 	this.tabText = false;
+	this.tabSuffix = prefs.get().tabSuffix || ':';
 	this.action = false;
 	
 	this.titleElement =				false;
@@ -197,7 +198,6 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 	}
 	else if (event.type === 'keyup' && isActionKey)
 	{
-		console.log("set tab false");
 		this.action = false;
 	}
 
@@ -220,11 +220,11 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 		{
 			if (this.text)
 			{
-				event.target.value = this.text + " " + this.nick.name;
+				event.target.mojo.setText(this.text + " " + this.nick.name + " ");
 			}
 			else
 			{
-				event.target.value = this.nick.name;
+				event.target.mojo.setText(this.nick.name + this.tabSuffix + " ");
 			}
 		}
 	}
