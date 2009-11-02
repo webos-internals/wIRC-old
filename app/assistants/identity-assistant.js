@@ -40,7 +40,6 @@ IdentityAssistant.prototype.setup = function()
 				//changeOnKeyPress: true,
 				hintText: '',
 				modelProperty: 'realname',
-				charsAllow: this.validChars,
 				maxLength: 128,
 				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
