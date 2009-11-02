@@ -7,6 +7,7 @@ function ircQuery(params)
 	
 	this.dashName =			'querydash-' + this.server.id + '-' + this.nick.name;
 	this.dashController =	false;
+	this.dashAssistant =	false;
 	this.stageName =		'query-' + this.server.id + '-' + this.nick.name;
 	this.stageController =	false;
 	this.chatAssistant =	false;
@@ -113,16 +114,19 @@ ircQuery.prototype.getLastMessage = function()
 ircQuery.prototype.openDash = function()
 {
 	var lastMessage = this.getLastMessage();
-	Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', server: this.server.id, nick: this.nick.name}, 'query-' + this.nick.name);
-	
-	this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
-    if (this.dashController) 
+	if (lastMessage.nick !== this.server.nick.name) // if its not from us, do dash junk
 	{
-		//dashController.delegateToSceneAssistant("update", this.message, new Date(), target);
-	}
-	else
-	{
-		Mojo.Controller.appController.createStageWithCallback({name: this.dashName, lightweight: true}, this.openDashCallback.bind(this), "dashboard");
+		Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', server: this.server.id, nick: this.nick.name}, 'query-' + this.nick.name);
+		
+		this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
+	    if (this.dashController) 
+		{
+			this.dashController.delegateToSceneAssistant("updateMessage", lastMessage.nick, lastMessage.message);
+		}
+		else
+		{
+			Mojo.Controller.appController.createStageWithCallback({name: this.dashName, lightweight: true}, this.openDashCallback.bind(this), "dashboard");
+		}
 	}
 }
 ircQuery.prototype.openDashCallback = function(controller)
@@ -167,6 +171,10 @@ ircQuery.prototype.openStageCallback = function(controller)
 {
 	controller.pushScene('query-chat', this);
 }
+ircQuery.prototype.setDashAssistant = function(assistant)
+{
+	this.dashAssistant = assistant;
+}
 ircQuery.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
@@ -176,5 +184,9 @@ ircQuery.prototype.updateChatList = function()
 	if (this.chatAssistant && this.chatAssistant.controller)
 	{
 		this.chatAssistant.updateList();
+	}
+	else // if there is no window to update, push/update banner/dash
+	{
+		this.openDash();
 	}
 }
