@@ -180,7 +180,7 @@ body.palm-dark .scene-fade-bottom
 	right: -16px;
 	bottom: 7px;
 	height: 35px;
-	width: 38px;
+	width: 60px;
 	border-width: 0px 16px 0px 16px;
 	-webkit-box-sizing: border-box;
 	-webkit-border-image: url(../images/header-button-press.png);
@@ -192,13 +192,21 @@ body.palm-dark .scene-fade-bottom
 }
 .channel-chat #userButton .icon
 {
+	display: inline;
+	float: left;
 	margin: 0px;
 	padding: 0px;
 	margin-top: 5px;
 	margin-left: -8px;
+	margin-left: 2px;
 	width: 21px;
 	height: 23px;
 	background: url(../images/user-icon.png) center center no-repeat;
+}
+.channel-chat #userButton .userCount
+{
+	right: -8px;
+	font-size: 8pt;
 }
 .channel-chat #messageList
 {

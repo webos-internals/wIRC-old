@@ -7,6 +7,7 @@ function ChannelChatAssistant(channel)
 	
 	this.titleElement =				false;
 	this.userButtonElement =		false;
+	this.userCountElement =			false;
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
@@ -48,6 +49,7 @@ ChannelChatAssistant.prototype.setup = function()
 		
 		this.titleElement =				this.controller.get('title');
 		this.userButtonElement =		this.controller.get('userButton');
+		this.userCountElement =			this.controller.get('userCount');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
@@ -62,6 +64,7 @@ ChannelChatAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
 		
 		this.titleElement.innerHTML = this.channel.name;
+		this.userCountElement.innerHTML = this.channel.getNicks().length;
 		this.loadPrefs(true);
 		
 		Mojo.Event.listen(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
