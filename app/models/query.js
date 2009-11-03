@@ -96,13 +96,24 @@ ircQuery.prototype.getLastMessage = function()
 
 ircQuery.prototype.openDash = function()
 {
-	alert('openDash');
 	try
 	{
 		var lastMessage = this.getLastMessage();
 		if (lastMessage.nick !== this.server.nick.name) // if its not from us, do dash junk
 		{
-			Mojo.Controller.appController.showBanner({messageText: lastMessage.nick + ': ' + lastMessage.message}, {type: 'query', server: this.server.id, nick: this.nick.name}, 'query-' + this.nick.name);
+			Mojo.Controller.appController.showBanner
+			(
+				{
+					messageText: lastMessage.nick + ': ' + lastMessage.message,
+					soundClass: "alerts"
+				},
+				{
+					type: 'query',
+					server: this.server.id,
+					nick: this.nick.name
+				},
+				'query-' + this.nick.name
+			);
 			
 			this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
 		    if (this.dashController) 
