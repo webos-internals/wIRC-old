@@ -298,6 +298,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '331':		// NO TOPIC
 				case '332':		// TOPIC
 				case '333':		// ???
+					this.debugPayload(payload, false);
 					break;
 				case '353':		// NAMREPLY
 					var nicks = payload.params[3].split(" ");
@@ -332,6 +333,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 				case '366':		// ENDOFNAMES
+					this.debugPayload(payload, false);
 					break;
 					
 				case '375':		// MOTDSTART
@@ -344,11 +346,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				default:
-					for (p in payload) 
-					{
-						//alert(p + ': ' + payload[p]);
-						this.newMessage('debug', false, p + ': ' + payload[p]);
-					}
+					this.debugPayload(payload, true);
 					break;
 			}
 		}
@@ -357,19 +355,24 @@ ircServer.prototype.connectionHandler = function(payload)
 			// hmm
 		}
 		
-		// for debugging
-		/*
-		alert('------');
-		for (p in payload) 
-		{
-			alert(p + ': ' + payload[p]);
-			//this.newMessage('debug', false, p + ': ' + payload[p]);
-		}
-		*/
+		// for debugging all messages
+		//this.debugPayload(payload, false);
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, "ircServer#connectionHandler");
+	}
+}
+ircServer.prototype.debugPayload = function(payload, visible)
+{
+	alert('------');
+	for (p in payload) 
+	{
+		alert(p + ': ' + payload[p]);
+		if (visible) 
+		{
+			this.newMessage('debug', false, p + ': ' + payload[p]);
+		}
 	}
 }
 ircServer.prototype.runOnConnect = function()
