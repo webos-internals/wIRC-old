@@ -39,7 +39,7 @@ ircServer.prototype.newCommand = function(message)
 		var cmdRegExp =		new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
 		var twoValRegExp =	new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
 		var match = cmdRegExp.exec(message);
-		if (match) 
+		if (match)
 		{
 			var cmd = match[1];
 			var val = match[2];
@@ -148,18 +148,8 @@ ircServer.prototype.connectionHandler = function(payload)
 						servers.listAssistant.updateList();
 					}
 					
-					// perform onconnect
-					if (this.onConnect)
-					{
-						var tmpSplit = this.onConnect.split(';');
-						if (tmpSplit.length > 0)
-						{
-							for (var s = 0; s < tmpSplit.length; s++)
-							{
-								this.newCommand(tmpSplit[s]);
-							}
-						}
-					}
+					// perform onconnect when mojo isn't busy
+					this.runOnConnect.bind(this).defer();
 					
 					break;
 					
@@ -380,6 +370,21 @@ ircServer.prototype.connectionHandler = function(payload)
 	catch (e)
 	{
 		Mojo.Log.logException(e, "ircServer#connectionHandler");
+	}
+}
+ircServer.prototype.runOnConnect = function()
+{
+	if (this.onConnect)
+	{
+		var tmpSplit = this.onConnect.split(';');
+		if (tmpSplit.length > 0)
+		{
+			for (var s = 0; s < tmpSplit.length; s++)
+			{
+				// also defer these commands to run one after another when its not busy
+				this.newCommand.bind(this).defer(tmpSplit[s]);
+			}
+		}
 	}
 }
 
