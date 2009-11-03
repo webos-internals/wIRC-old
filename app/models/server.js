@@ -205,7 +205,10 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						var tmpNick = this.getNick(payload.origin);
 						tmpNick.removeChannel(tmpChan);
-						this.removeChannel(tmpChan);
+						if (tmpNick.me)
+						{
+							this.removeChannel(tmpChan);
+						}
 						tmpChan.newMessage('channel-event', false, tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;

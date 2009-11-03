@@ -107,7 +107,10 @@ ircChannel.prototype.removeNick = function(nick)
 	if (this.nicks.indexOf(nick) !== -1)
 	{
 		this.nicks = this.nicks.without(nick);
-		this.chatAssistant.updateUserCount();
+		if (!nick.me)
+		{
+			this.chatAssistant.updateUserCount();
+		}
 	}
 }
 ircChannel.prototype.containsNick = function(nick)
