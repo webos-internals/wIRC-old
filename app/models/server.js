@@ -64,6 +64,14 @@ ircServer.prototype.newCommand = function(message)
 					}
 					break;
 					
+				case 'topic':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						this.topic(tmpMatch[1], tmpMatch[2]);
+					}
+					break;
+					
 				case 'quit':
 					this.disconnect(val);
 					break;
@@ -390,6 +398,14 @@ ircServer.prototype.runOnConnect = function()
 	}
 }
 
+ircServer.prototype.topic = function(channel, topic)
+{
+	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic?topic:null); 
+}
+ircServer.prototype.topicHandler = function(payload)
+{
+	// IDK what to do yet
+}
 ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
