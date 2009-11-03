@@ -22,14 +22,14 @@ prefCookie.prototype.get = function(reload)
 				
 				// Input Group
 				tabSuffix: ':',
-				autoCap: true,
+				autoCap: false,
 				autoReplace: true,
 				
 				// Messages Group
 				messagesStyle: 'lefta',
-				messageSplit: '30',
+				messageSplit: '25',
 				fontSize: '15',
-				highlight: 'orange',
+				highlight: 'lightpink',
 				
 				// Identity Scene
 				realname: 'wIRCer',

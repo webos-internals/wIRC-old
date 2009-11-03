@@ -122,8 +122,8 @@ ircServer.prototype.connect = function()
 		this.connectionHandler.bindAsEventListener(this),
 		this.address,
 		this.port,
-		this.serverUser,
-		this.serverPassword,
+		(this.serverUser?this.serverUser:null),
+		(this.serverPassword?this.serverPassword:null),
 		prefs.get().nick1,
 		prefs.get().realname
 	);
