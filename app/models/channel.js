@@ -117,6 +117,30 @@ ircChannel.prototype.containsNick = function(nick)
 {
 	return (this.nicks.indexOf(nick) !== -1);
 }
+ircChannel.prototype.getListNicks = function()
+{
+	try
+	{
+		var returnArray = [];
+		
+		if (this.server.nicks.length > 0)
+		{
+			for (var n = 0; n < this.server.nicks.length; n++)
+			{
+				if (this.server.nicks[n].channels.indexOf(this) > -1) 
+				{
+					returnArray.push(this.server.nicks[n].getListObject(this));
+				}
+			}
+		}
+		
+		return returnArray;
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircChannel#getNick");
+	}
+}
 ircChannel.prototype.tabNick = function(tabText, nick)
 {
 	var start = this.nicks.indexOf(nick) + 1;
