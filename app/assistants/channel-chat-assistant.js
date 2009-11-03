@@ -64,7 +64,6 @@ ChannelChatAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
 		
 		this.titleElement.innerHTML = this.channel.name;
-		this.userCountElement.innerHTML = this.channel.getNicks().length;
 		this.loadPrefs(true);
 		
 		Mojo.Event.listen(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
@@ -125,6 +124,11 @@ ChannelChatAssistant.prototype.activate = function(event)
 	this.alreadyActivated = true;
 	this.revealBottom();
 	this.inputWidgetElement.mojo.focus();
+}
+
+ChannelChatAssistant.prototype.updateUserCount = function()
+{
+	this.userCountElement.update(this.channel.nicks.length);
 }
 
 ChannelChatAssistant.prototype.updateTitle = function()

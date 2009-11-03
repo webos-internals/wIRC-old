@@ -99,6 +99,7 @@ ircChannel.prototype.addNick = function(nick)
 	if (this.nicks.indexOf(nick) === -1)
 	{
 		this.nicks.push(nick);
+		this.chatAssistant.updateUserCount();
 	}
 }
 ircChannel.prototype.removeNick = function(nick)
@@ -106,35 +107,12 @@ ircChannel.prototype.removeNick = function(nick)
 	if (this.nicks.indexOf(nick) !== -1)
 	{
 		this.nicks = this.nicks.without(nick);
+		this.chatAssistant.updateUserCount();
 	}
 }
 ircChannel.prototype.containsNick = function(nick)
 {
 	return (this.nicks.indexOf(nick) !== -1);
-}
-ircChannel.prototype.getNicks = function()
-{
-	try
-	{
-		var returnArray = [];
-		
-		if (this.server.nicks.length > 0)
-		{
-			for (var n = 0; n < this.server.nicks.length; n++)
-			{
-				if (this.server.nicks[n].channels.indexOf(this) > -1) 
-				{
-					returnArray.push(this.server.nicks[n].getListObject(this));
-				}
-			}
-		}
-		
-		return returnArray;
-	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, "ircChannel#getNick");
-	}
 }
 ircChannel.prototype.tabNick = function(tabText, nick)
 {

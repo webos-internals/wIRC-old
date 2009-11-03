@@ -59,7 +59,7 @@ ChannelUsersAssistant.prototype.updateList = function(skipUpdate)
 	try
 	{
 		this.listModel.items = [];
-		this.listModel.items = this.channel.getNicks();
+		this.listModel.items = this.channel.nicks;
 		
 		this.listModel.items.sort(function(a, b)
 		{
