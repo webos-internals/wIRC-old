@@ -15,27 +15,32 @@ prefCookie.prototype.get = function(reload)
 			this.prefs = 
 			{
 				// Global Group
-				theme: 'palm-default',
+				theme:				'palm-default',
 				
 				// Server Status Group
-				statusPop: false,
+				statusPop:			false,
 				
 				// Input Group
-				tabSuffix: ':',
-				autoCap: false,
-				autoReplace: true,
+				tabSuffix:			':',
+				autoCap:			false,
+				autoReplace:		true,
 				
 				// Messages Group
-				messagesStyle: 'lefta',
-				messageSplit: '25',
-				fontSize: '15',
-				highlight: 'lightpink',
+				messagesStyle:		'lefta',
+				messageSplit:		'25',
+				fontSize:			'15',
+				
+				// Highlight Group
+				highlightStyle:		'color',
+				highlightPart:		'all',
+				highlightColorOf:	'background',
+				highlightColor:		'lightpink',
 				
 				// Identity Scene
-				realname: 'wIRCer',
-				nick1: 'wIRCer',
-				nick2: '',
-				nick3: ''
+				realname:			'wIRCer',
+				nick1:				'wIRCer',
+				nick2:				'',
+				nick3:				''
 			};
 			
 			var cookieData = this.cookie.get();

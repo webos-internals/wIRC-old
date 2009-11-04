@@ -190,11 +190,66 @@ PreferencesAssistant.prototype.setup = function()
 				value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)
 			}
 		);
+		
+		this.messageStyleChanged();
+		this.fontSizeChanged({value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)});
+		
+		this.controller.listen('messagesStyle',		Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
+		this.controller.listen('messageSplit',		Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('fontSize',			Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
+		
+		
+		// Highlight Group
 		this.controller.setupWidget
 		(
-			'highlight',
+			'highlightStyle',
 			{
-				label: 'Highlight',
+				label: 'Style',
+				choices:
+				[
+					{label:'Color', value:'color'},
+					{label:'Bold', value:'bold'},
+					{label:'Bold & Color', value:'boldcolor'}
+				],
+				modelProperty: 'highlightStyle'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'highlightPart',
+			{
+				label: 'Part',
+				choices:
+				[
+					{label:'Whole Line', value:'all'},
+					{label:'Nick', value:'nick'},
+					{label:'Message', value:'message'},
+					{label:'Word', value:'word'}
+				],
+				modelProperty: 'highlightPart'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'highlightColorOf',
+			{
+				label: 'Color Of',
+				choices:
+				[
+					{label:'Foreground', value:'foreground'},
+					{label:'Background', value:'background'}
+				],
+				modelProperty: 'highlightColorOf'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'highlightColor',
+			{
+				label: 'Color',
 				choices:
 				[
 					{label:'aliceblue', value:'aliceblue'},
@@ -337,18 +392,17 @@ PreferencesAssistant.prototype.setup = function()
 					{label:'yellow', value:'yellow'},
 					{label:'yellowgreen', value:'yellowgreen'}
 				],
-				modelProperty: 'highlight'
+				modelProperty: 'highlightColor'
 			},
 			this.prefs
 		);
 		
-		this.messageStyleChanged();
-		this.fontSizeChanged({value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)});
+		this.highlightStyleChanged();
+		this.controller.listen('highlightStyle',	Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 		
-		this.controller.listen('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
-		this.controller.listen('messageSplit',	Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('fontSize',		Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
-		this.controller.listen('highlight',		Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('highlightPart',		Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('highlightColorOf',	Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('highlightColor',	Mojo.Event.propertyChange, this.listChangedHandler);
 		
 		
 		
@@ -396,6 +450,23 @@ PreferencesAssistant.prototype.messageStyleChanged = function(event)
 	else
 	{
 		this.controller.get('messageFixedSplit').style.display = '';
+	}
+}
+PreferencesAssistant.prototype.highlightStyleChanged = function(event)
+{
+	if (event) 
+	{
+		this.listChanged();
+	}
+	if (this.prefs['highlightStyle'] == 'color' || this.prefs['highlightStyle'] == 'boldcolor')
+	{
+		this.controller.get('highlightPartContainer').className = 'palm-row';
+		this.controller.get('highlightColorOptions').style.display = '';
+	}
+	else
+	{
+		this.controller.get('highlightPartContainer').className = 'palm-row last';
+		this.controller.get('highlightColorOptions').style.display = 'none';
 	}
 }
 
@@ -466,13 +537,20 @@ PreferencesAssistant.prototype.deactivate = function(event)
 
 PreferencesAssistant.prototype.cleanup = function(event)
 {
-	this.controller.stopListening('theme',			Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
-	this.controller.stopListening('statusPop',		Mojo.Event.propertyChange, this.toggleChangeHandler);
-	this.controller.stopListening('tabSuffix',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('autoCap',		Mojo.Event.propertyChange, this.toggleChangeHandler);
-	this.controller.stopListening('autoReplace',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-	this.controller.stopListening('messagesStyle',	Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
-	this.controller.stopListening('messageSplit',	Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('fontSize',		Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
-	this.controller.stopListening('highlight',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('theme',				Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
+	
+	this.controller.stopListening('statusPop',			Mojo.Event.propertyChange, this.toggleChangeHandler);
+	
+	this.controller.stopListening('tabSuffix',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('autoCap',			Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('autoReplace',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+	
+	this.controller.stopListening('messagesStyle',		Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
+	this.controller.stopListening('messageSplit',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('fontSize',			Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
+	
+	this.controller.stopListening('highlightStyle',		Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
+	this.controller.stopListening('highlightPart',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('highlightColorOf',	Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('highlightColor',		Mojo.Event.propertyChange, this.listChangedHandler);
 }
