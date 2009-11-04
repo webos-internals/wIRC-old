@@ -37,11 +37,30 @@ function ircMessage(params)
 			}
 			break;
 			
+		case 'me-action':
+			this.rowClass =		'action-message';
+			this.nick =			params.nick;
+			this.nickDisplay =	'-*-';
+			this.message =		this.nick.name + ' ' + params.message;
+			break;			
+			
 		case 'channel-event':
 			this.rowClass =		'event-message';
 			this.nickDisplay =	'**';
 			this.message =		params.message;
 			break;
+			
+		case 'join-event':
+			this.rowClass =		'event-message';
+			this.nickDisplay =	'-->';
+			this.message =		params.message;
+			break;
+			
+		case 'part-event':
+			this.rowClass =		'event-message';
+			this.nickDisplay =	'<--';
+			this.message =		params.message;
+			break;						
 			
 		case 'action':
 			this.rowClass =		'status-message';

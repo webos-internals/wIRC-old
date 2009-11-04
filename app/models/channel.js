@@ -48,7 +48,7 @@ ircChannel.prototype.newCommand = function(message)
 ircChannel.prototype.me = function(message)
 {
 	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
-	this.newMessage('channel-action', this.server.nick, message);
+	this.newMessage('me-action', this.server.nick, message);
 }
 ircChannel.prototype.meHandler = function(payload)
 {
