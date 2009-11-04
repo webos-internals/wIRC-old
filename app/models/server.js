@@ -202,6 +202,19 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
+				case 'QUIT':
+					var tmpNick = this.getNick(payload.origin);
+					if (tmpNick)
+					{
+						for (var i = 0; i< this.channels.length; i++)
+						{
+							this.channels[i].newMessage('channel-event', false, tmpNick.name + ' has quit (' + payload.params + ')');
+						}
+
+						this.removeNick(tmpNick);
+					}
+				break;
+
 				case 'PRIVMSG':
 					if (payload.params[0].substr(0, 1) == '#') // it's a channel
 					{
@@ -390,9 +403,25 @@ ircServer.prototype.runOnConnect = function()
 	}
 }
 
+ircServer.prototype.removeNick = function(nick)
+{
+	if (nick)
+	{
+		// Remove nick from all the channels
+		for (var i = 0; i < this.channels.length; i++)
+		{
+			this.channels[i].removeNick(nick);
+		}
+
+		// Remove nick from server list
+		this.nicks = this.nicks.without(nick);
+	}
+}
+
 ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
+	// TODO: Jump to server status scene and display disconnecting
 	if (!reason) reason = 'wIRC FTW';
 	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
@@ -400,6 +429,7 @@ ircServer.prototype.disconnectHandler = function(payload)
 {
 	if (payload.returnValue == 0)
 	{
+		this.removeNick(this.nick);
 		this.connected = false;
 		this.subscription.cancel();
 		if (servers.listAssistant && servers.listAssistant.controller)
@@ -482,7 +512,13 @@ ircServer.prototype.joinChannel = function(name)
 	var tmpChannel = this.getChannel(name);
 	if (tmpChannel)
 	{
-		tmpChannel.openStage();
+		// Do nothing if already in this channel
+		if (!tmpChannel.containsNick(this.nick))
+		{
+			// Open the stage and join the channel
+			tmpChannel.openStage();
+			tmpChannel.join();
+		}
 		return;
 	}
 	
@@ -572,19 +608,19 @@ ircServer.prototype.removeQuery = function(query)
 	this.queries = this.queries.without(query);
 }
 
-ircServer.prototype.getNick = function(nick)
+ircServer.prototype.getNick = function(name)
 {
 	try
 	{
 		var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
-		var match = cmdRegExp.exec(nick);
+		var match = cmdRegExp.exec(name);
 		if (match) 
 		{
 			var getNick = match[1];
 		}
 		else
 		{
-			var getNick = nick;
+			var getNick = name;
 		}
 		
 		if (this.nicks.length > 0)
