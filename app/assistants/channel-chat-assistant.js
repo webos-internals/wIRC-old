@@ -5,6 +5,7 @@ function ChannelChatAssistant(channel)
 	this.tabText = false;
 	this.action = false;
 	
+	this.sceneScroller =			false;
 	this.titleElement =				false;
 	this.userButtonElement =		false;
 	this.userCountElement =			false;
@@ -12,6 +13,8 @@ function ChannelChatAssistant(channel)
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
 	this.sendButtonElement =		false;
+	
+	this.autoScroll =				true;
 	
 	this.listModel =
 	{
@@ -47,6 +50,7 @@ ChannelChatAssistant.prototype.setup = function()
 		
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
+		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
 		this.userButtonElement =		this.controller.get('userButton');
 		this.userCountElement =			this.controller.get('userCount');
@@ -55,11 +59,13 @@ ChannelChatAssistant.prototype.setup = function()
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
+		this.scrollHandler =		this.onScrollStarted.bindAsEventListener(this);
+		this.keyHandler =			this.keyHandler.bindAsEventListener(this);
 		this.userButtonPressed =	this.userButtonPressed.bindAsEventListener(this);
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
 		
-		this.keyHandler = this.keyHandler.bindAsEventListener(this);
+		Mojo.Event.listen(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
 		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
 		Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
 		
@@ -108,6 +114,21 @@ ChannelChatAssistant.prototype.setup = function()
 	}
 }
 
+ChannelChatAssistant.prototype.onScrollStarted = function(event)
+{
+	event.addListener(this);
+}
+ChannelChatAssistant.prototype.moved = function(stopped, position)
+{
+	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
+	{
+		this.autoScroll = false;
+	}
+	else
+	{
+		this.autoScroll = true;
+	}
+}
 
 ChannelChatAssistant.prototype.loadPrefs = function(initial)
 {
@@ -176,12 +197,15 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 
 ChannelChatAssistant.prototype.revealBottom = function()
 {
-	var height = this.inputContainerElement.clientHeight;
-	this.messageListElement.style.paddingBottom = height + 'px';
-	
-	// palm does this twice in the messaging app to make sure it always reveals the very very bottom
-	this.controller.sceneScroller.mojo.revealBottom();
-	this.controller.sceneScroller.mojo.revealBottom();
+	if (this.autoScroll) 
+	{
+		var height = this.inputContainerElement.clientHeight;
+		this.messageListElement.style.paddingBottom = height + 'px';
+		
+		// palm does this twice in the messaging app to make sure it always reveals the very very bottom
+		this.sceneScroller.mojo.revealBottom();
+		this.sceneScroller.mojo.revealBottom();
+	}
 }
 
 ChannelChatAssistant.prototype.sendButtonPressed = function(event)
@@ -284,9 +308,10 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 
 ChannelChatAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
-	Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
-	Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
+	Mojo.Event.stopListening(this.userButtonElement,	Mojo.Event.tap,				this.userButtonPressed);
+	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
+	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
 	if (this.channel.containsNick(this.channel.server.nick))
 	{
 		this.channel.part();

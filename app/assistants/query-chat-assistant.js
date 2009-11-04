@@ -2,11 +2,15 @@ function QueryChatAssistant(query)
 {
 	this.query = query;
 	
+	this.documentElement =			false;
+	this.sceneScroller =			false;
 	this.titleElement =				false;
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
 	this.sendButtonElement =		false;
+	
+	this.autoScroll =				true;
 	
 	this.isVisible = false;
 	
@@ -45,19 +49,22 @@ QueryChatAssistant.prototype.setup = function()
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.documentElement =			this.controller.stageController.document;
+		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
+		this.scrollHandler =			this.onScrollStarted.bindAsEventListener(this);
 		this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
 		this.invisibleWindowHandler =	this.invisibleWindow.bindAsEventListener(this);
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
 		
-		this.controller.listen(this.documentElement, Mojo.Event.stageActivate,   this.visibleWindowHandler);
-		this.controller.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
+		Mojo.Event.listen(this.sceneScroller,	Mojo.Event.scrollStarting,	this.scrollHandler);
+		Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate,   this.visibleWindowHandler);
+		Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
 		this.isVisible = true;
 		
 		this.titleElement.innerHTML = this.query.nick.name;
@@ -96,10 +103,26 @@ QueryChatAssistant.prototype.setup = function()
 		
 		this.sendButtonElement.style.display = 'none';
 		Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
-	} 
+	}
 	catch (e) 
 	{
 		Mojo.Log.logException(e, 'query-chat#setup');
+	}
+}
+
+QueryChatAssistant.prototype.onScrollStarted = function(event)
+{
+	event.addListener(this);
+}
+QueryChatAssistant.prototype.moved = function(stopped, position)
+{
+	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
+	{
+		this.autoScroll = false;
+	}
+	else
+	{
+		this.autoScroll = true;
 	}
 }
 
@@ -160,12 +183,15 @@ QueryChatAssistant.prototype.updateList = function(initial)
 
 QueryChatAssistant.prototype.revealBottom = function()
 {
-	var height = this.inputContainerElement.clientHeight;
-	this.messageListElement.style.paddingBottom = height + 'px';
-	
-	// palm does this twice in the messaging app to make sure it always reveals the very very bottom
-	this.controller.sceneScroller.mojo.revealBottom();
-	this.controller.sceneScroller.mojo.revealBottom();
+	if (this.autoScroll) 
+	{
+		var height = this.inputContainerElement.clientHeight;
+		this.messageListElement.style.paddingBottom = height + 'px';
+		
+		// palm does this twice in the messaging app to make sure it always reveals the very very bottom
+		this.sceneScroller.mojo.revealBottom();
+		this.sceneScroller.mojo.revealBottom();
+	}
 }
 
 QueryChatAssistant.prototype.sendButtonPressed = function(event)
@@ -226,6 +252,7 @@ QueryChatAssistant.prototype.invisibleWindow = function(event)
 
 QueryChatAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageActivate,   this.visibleWindowHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
