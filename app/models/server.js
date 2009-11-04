@@ -318,13 +318,27 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				case '332':		// TOPIC
-					this.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
+					var tmpChan = this.getChannel(payload.params[1]);
+					if (tmpChan) {
+						if (tmpChan.containsNick(this.nick)) {
+							tmpChan.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
+						}
+					} else {
+						this.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
+					}
 					break;
 				case '333':		// TOPIC SET TIME
 					var newDate = new Date();
 					newDate.setTime(payload.params[3]*1000);
 					dateString = newDate.toUTCString();
-					this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
+					var tmpChan = this.getChannel(payload.params[1]);
+					if (tmpChan) {
+						if (tmpChan.containsNick(this.nick)) {
+							tmpChan.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
+						}
+					} else {
+						this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
+					}
 					break;
 					
 				case '328':		// ???
@@ -425,7 +439,7 @@ ircServer.prototype.runOnConnect = function()
 
 ircServer.prototype.topic = function(channel, topic)
 {
-	wIRCd.topicSet(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
+	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
 }
 ircServer.prototype.topicHandler = function(payload)
 {

@@ -16,6 +16,7 @@ function ircChannel(params)
 ircChannel.prototype.newCommand = function(message)
 {
 	var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+	var twoValRegExp =	new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
 	var match = cmdRegExp.exec(message);
 	if (match)
 	{
@@ -31,6 +32,22 @@ ircChannel.prototype.newCommand = function(message)
 			case 'me':
 				this.me(val);
 				break;
+			
+			case 'topic':
+				if (val) {
+					tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) {
+						this.topic(tmpMatch[1],tmpMatch[2]);
+					} else {
+						if (val.substr(0, 1) == '#') {
+							this.topic(val,null);
+						} else {
+							this.topic(this.name,val);
+						}
+					}
+				} else {
+					this.topic(this.name,null);
+				}			
 				
 			default:
 				// forward unknown to the server object
@@ -43,6 +60,15 @@ ircChannel.prototype.newCommand = function(message)
 		// normal message
 		this.msg(message);
 	}
+}
+
+ircChannel.prototype.topic = function(channel, topic)
+{
+	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
+}
+ircChannel.prototype.topicHandler = function(payload)
+{
+	// idk what to do here if anything
 }
 
 ircChannel.prototype.me = function(message)
