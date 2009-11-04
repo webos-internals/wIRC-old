@@ -65,11 +65,8 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'topic':
-					var tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch) 
-					{
-						this.topic(tmpMatch[1], tmpMatch[2]);
-					}
+					//var tmpMatch = twoValRegExp.exec(val);
+					this.topicGet(val);
 					break;
 					
 				case 'quit':
@@ -398,13 +395,17 @@ ircServer.prototype.runOnConnect = function()
 	}
 }
 
-ircServer.prototype.topic = function(channel, topic)
+ircServer.prototype.topicSet = function(channel, topic)
 {
-	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic?topic:null); 
+	wIRCd.topicSet(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
+}
+ircServer.prototype.topic = function(channel)
+{
+	wIRCd.topicGet(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel);
 }
 ircServer.prototype.topicHandler = function(payload)
 {
-	// IDK what to do yet
+	this.newMessage('channel-message', false, payload.params[2]);
 }
 ircServer.prototype.disconnect = function(reason)
 {

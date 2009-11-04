@@ -212,7 +212,21 @@ wIRCd.kick = function(callback, sessionToken, channel, nick, reason)
 	});
 	return request;
 }
-wIRCd.topic = function(callback, sessionToken, channel, topic)
+wIRCd.topicGet = function(callback, sessionToken, channel)
+{
+	var request = new Mojo.Service.Request(wIRCd.identifier,
+	{
+		method: 'client_cmd_topic',
+		parameters: {
+			"sessionToken": sessionToken,
+			"channel": channel,
+		},
+		onSuccess: callback,
+		onFailure: callback
+	});
+	return request;
+}
+wIRCd.topicSet = function(callback, sessionToken, channel, topic)
 {
 	var request = new Mojo.Service.Request(wIRCd.identifier,
 	{
