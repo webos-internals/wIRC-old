@@ -30,7 +30,11 @@ body.palm-dark .scene-fade-bottom
 {
 	background: url(../images/palm-dark/fade-bottom.png) bottom center repeat-x;
 }
-
+br.clear
+{
+	clear: both;
+	height: 0px;
+}
 
 
 /*
@@ -174,6 +178,22 @@ body.palm-dark .scene-fade-bottom
 /*
  * Channel Chat Scene Styles
  */
+.channel-chat #topicContainer
+{
+	position: fixed;
+	z-index: 10000;
+	top: -5000px;
+	left: 0px;
+	width: 320px;
+}
+.channel-chat #topicContainer .topic
+{
+	padding-top: 53px;
+	padding-left: 15px;
+	padding-right: 10px;
+	margin-bottom: -27px;
+	font-size: 18px;
+}
 .channel-chat #userButton
 {
 	position: absolute;

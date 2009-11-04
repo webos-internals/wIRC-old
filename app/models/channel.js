@@ -7,6 +7,7 @@ function ircChannel(params)
 	this.messages =			[];
 	
 	this.mode = 			'';
+	this.topic =			'';
 	
 	this.stageName =		'channel-' + this.server.id + '-' + this.name;
 	this.stageController =	false;
@@ -62,6 +63,14 @@ ircChannel.prototype.newCommand = function(message)
 	}
 }
 
+ircChannel.prototype.topicUpdate = function(topic)
+{
+	this.topic = topic;
+	if (this.chatAssistant && this.chatAssistant.controller) 
+	{
+		this.chatAssistant.updateTopic();
+	}
+}
 ircChannel.prototype.topic = function(channel, topic)
 {
 	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
@@ -214,7 +223,10 @@ ircChannel.prototype.joinHandler = function(payload)
 ircChannel.prototype.channelMode = function(mode)
 {
 	this.mode = mode;
-	this.chatAssistant.updateTitle();
+	if (this.chatAssistant && this.chatAssistant.controller) 
+	{
+		this.chatAssistant.updateTitle();
+	}
 }
 ircChannel.prototype.channelModeHandler = function(payload)
 {

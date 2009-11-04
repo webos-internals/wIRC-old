@@ -6,15 +6,19 @@ function ChannelChatAssistant(channel)
 	this.action = false;
 	
 	this.sceneScroller =			false;
+	this.headerElement =			false;
 	this.titleElement =				false;
 	this.userButtonElement =		false;
 	this.userCountElement =			false;
+	this.topicContainerElement =	false;
+	this.topicElement =				false;
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
 	this.sendButtonElement =		false;
 	
 	this.autoScroll =				true;
+	this.topicVisible =				false;
 	
 	this.listModel =
 	{
@@ -51,9 +55,12 @@ ChannelChatAssistant.prototype.setup = function()
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.sceneScroller =			this.controller.sceneScroller;
+		this.headerElement =			this.controller.get('header');
 		this.titleElement =				this.controller.get('title');
 		this.userButtonElement =		this.controller.get('userButton');
 		this.userCountElement =			this.controller.get('userCount');
+		this.topicContainerElement =	this.controller.get('topicContainer');
+		this.topicElement =				this.controller.get('topic');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
@@ -61,6 +68,8 @@ ChannelChatAssistant.prototype.setup = function()
 		
 		this.scrollHandler =		this.onScrollStarted.bindAsEventListener(this);
 		this.keyHandler =			this.keyHandler.bindAsEventListener(this);
+		this.headerTapped =			this.headerTap.bindAsEventListener(this);
+		this.topicToggled =			this.topicToggle.bindAsEventListener(this);
 		this.userButtonPressed =	this.userButtonPressed.bindAsEventListener(this);
 		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
 		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
@@ -69,7 +78,9 @@ ChannelChatAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
 		Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
 		
-		this.titleElement.innerHTML = this.channel.name;
+		Mojo.Event.listen(this.headerElement, Mojo.Event.tap, this.headerTapped);
+		this.updateTitle();
+		this.updateTopic();
 		this.loadPrefs(true);
 		
 		Mojo.Event.listen(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
@@ -151,10 +162,44 @@ ChannelChatAssistant.prototype.updateUserCount = function()
 {
 	this.userCountElement.update(this.channel.nicks.length);
 }
-
 ChannelChatAssistant.prototype.updateTitle = function()
 {
-	this.titleElement.update(this.channel.name + ' (' + this.channel.mode + ')');
+	this.titleElement.update(this.channel.name + (this.channel.mode?' (' + this.channel.mode + ')':''));
+}
+ChannelChatAssistant.prototype.updateTopic = function()
+{
+	this.topicElement.update(this.channel.topic);
+}
+
+ChannelChatAssistant.prototype.headerTap = function()
+{
+	if (this.topicVisible)
+	{
+		var from = 0;
+		var to   = 0 - this.topicContainerElement.getHeight();
+	}
+	else
+	{
+		var from = 0 - this.topicContainerElement.getHeight();
+		var to   = 0;
+	}
+	
+	Mojo.Animation.animateStyle
+	(
+		this.topicContainerElement,
+		'top',
+		'zeno', // linear/bezier/zeno
+		{
+			from:       from,
+			to:         to,
+			duration:   0.5,
+			onComplete: this.topicToggled
+		}
+	);
+}
+ChannelChatAssistant.prototype.topicToggle = function()
+{
+	this.topicVisible = !this.topicVisible;
 }
 
 ChannelChatAssistant.prototype.updateList = function(initial)

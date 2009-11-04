@@ -320,6 +320,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '332':		// TOPIC
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan) {
+						tmpChan.topicUpdate(payload.params[2]);
 						if (tmpChan.containsNick(this.nick)) {
 							tmpChan.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
 						}
