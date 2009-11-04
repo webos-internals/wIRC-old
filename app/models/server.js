@@ -65,9 +65,15 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'topic':
-					//var tmpMatch = twoValRegExp.exec(val);
-					this.topicGet(val);
-					break;
+					if (val) {
+						var tmpMatch = twoValRegExp.exec(val);
+						if (tmpMatch) {
+							this.topic(tmpMatch[1],tmpMatch[2]);
+						} else {
+							this.topic(val,null);
+						}
+					}
+					break;					
 					
 				case 'quit':
 					this.disconnect(val);
@@ -297,11 +303,19 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.newMessage('action', false, payload.params[1] + ' ' + payload.params[2]);
 					break;
 					
+				case '332':		// TOPIC
+					this.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
+					break;
+				case '333':		// TOPIC SET TIME
+					var newDate = new Date();
+					newDate.setTime(payload.params[3]*1000);
+					dateString = newDate.toUTCString();
+					this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
+					break;
+					
 				case '328':		// ???
 				case '329':		// ???
 				case '331':		// NO TOPIC
-				case '332':		// TOPIC
-				case '333':		// ???
 					this.debugPayload(payload, false);
 					break;
 				case '353':		// NAMREPLY
@@ -395,17 +409,13 @@ ircServer.prototype.runOnConnect = function()
 	}
 }
 
-ircServer.prototype.topicSet = function(channel, topic)
+ircServer.prototype.topic = function(channel, topic)
 {
 	wIRCd.topicSet(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
 }
-ircServer.prototype.topic = function(channel)
-{
-	wIRCd.topicGet(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel);
-}
 ircServer.prototype.topicHandler = function(payload)
 {
-	this.newMessage('channel-message', false, payload.params[2]);
+	// idk what to do here if anything
 }
 ircServer.prototype.disconnect = function(reason)
 {
