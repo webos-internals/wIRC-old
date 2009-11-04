@@ -183,7 +183,8 @@ PreferencesAssistant.prototype.setup = function()
 				minValue: 0,
 				maxValue: 1,
 				round: false,
-				modelProperty: 'value'
+				modelProperty: 'value',
+				updateInterval: 0.2
 			},
 			{
 				value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)
