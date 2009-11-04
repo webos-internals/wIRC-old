@@ -29,7 +29,7 @@ function ircMessage(params)
 		case 'channel-action':
 			this.rowClass =		'action-message';
 			this.nick =			params.nick;
-			this.nickDisplay =	'*';
+			this.nickDisplay =	'-*-';
 			this.message =		this.nick.name + ' ' + params.message;
 			if (this.message.include(this.me) && this.nick.name != this.me) 
 			{
@@ -64,7 +64,7 @@ function ircMessage(params)
 			
 		case 'action':
 			this.rowClass =		'status-message';
-			this.nickDisplay =	'*';
+			this.nickDisplay =	'-*-';
 			this.message =		params.message;
 			break;
 			

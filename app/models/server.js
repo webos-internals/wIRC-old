@@ -162,23 +162,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.runOnConnect.bind(this).defer();
 					
 					break;
-					
-				case 'NOTICE':
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan) 
-						{
-							var tmpNick = this.getNick(payload.origin);
-							tmpChan.newNotice(tmpNick, payload.params[1]);
-						}
-					}
-					else
-					{
-						this.newMessage('notice', false, payload.params);
-					}
-					break;
-					
+								
 				case 'JOIN':
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
@@ -199,6 +183,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						tmpChan.close();
 					}
 					break;
+					
 				case 'PART':
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
@@ -256,7 +241,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						var tmpQuery = this.getQuery(tmpNick);
 						if (tmpQuery)
 						{
-							tmpQuery.newMessage('channel-action', tmpNick, payload.params[1]);
+							tmpQuery.newMessage('server-action', tmpNick, payload.params[1]);
 						}
 						else
 						{
@@ -264,6 +249,22 @@ ircServer.prototype.connectionHandler = function(payload)
 						}
 					}
 					break;
+					
+				case 'NOTICE':
+					if (payload.params[0].substr(0, 1) == '#') // it's a channel
+					{
+						var tmpChan = this.getChannel(payload.params[0]);
+						if (tmpChan) 
+						{
+							var tmpNick = this.getNick(payload.origin);
+							tmpChan.newNotice(tmpNick, payload.params[1]);
+						}
+					}
+					else
+					{
+						this.newMessage('notice', false, payload.params);
+					}
+					break;					
 					
 				case 'NICK':
 					var tmpNick = this.getNick(payload.origin);
