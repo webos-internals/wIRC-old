@@ -189,10 +189,18 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
-						this.nick.removeChannel(tmpChan); 
-						this.removeChannel(tmpChan);
-						this.newMessage('status', false, "You have been kicked from " + tmpChan.name);
-						tmpChan.close();
+						var tmpNick = this.getNick(payload.params[1]);
+						if (tmpNick)
+						{
+							tmpNick.removeChannel(tmpChan); 
+							tmpChan.newMessage('part-event', false, tmpNick.name + ' was kicked by ' + payload.params[2]);
+							if (tmpNick.me)
+							{
+								this.newMessage('status', false, "You have been kicked from " + tmpChan.name + " by " + payload.params[2]);
+								tmpChan.close();
+								this.removeChannel(tmpChan);
+							}
+						}
 					}
 					break;
 					
