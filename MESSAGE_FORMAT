@@ -1,8 +1,0 @@
-* Color numbers are used for pallet standardization, not to indicate a specific color. Types with same color number should be same color.
-
-Type		Origin			Color		Nick		Message		
-==========================================================================================================================================
-JOIN		Channel			1		-->		"<nick> has joined <channel>"
-PART		Channel			1		<--		"<nick> has left <channel> (<part_message>)"
-ACTION		Channel			2		-*-		"<nick> <message>"
-ACTION		Server			?		 * 		"<message>"
