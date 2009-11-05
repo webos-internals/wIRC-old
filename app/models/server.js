@@ -169,7 +169,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						var tmpNick = this.getNick(payload.origin);
 						tmpNick.addChannel(tmpChan, '');
-						tmpChan.newMessage('join-event', false, tmpNick.name + ' has joined ' + tmpChan.name);
+						tmpChan.newMessage('join-event', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has joined ' + tmpChan.name);
 					}
 					break;
 					
@@ -194,7 +194,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							this.removeChannel(tmpChan);
 						}
-						tmpChan.newMessage('part-event', false, tmpNick.name + ' has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
+						tmpChan.newMessage('part-event', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
 					}
 					break;
 					
