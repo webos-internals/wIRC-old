@@ -179,31 +179,34 @@ ChannelChatAssistant.prototype.updateTopic = function()
 	this.topicElement.update(this.channel.topic);
 }
 
-ChannelChatAssistant.prototype.headerTap = function()
+ChannelChatAssistant.prototype.headerTap = function(event)
 {
-	if (this.topicVisible)
+	if (event.target.id == 'header') // we don't want to toggle topic if the header is not tapped right on
 	{
-		var from = 0;
-		var to   = 0 - this.topicContainerElement.getHeight();
-	}
-	else
-	{
-		var from = 0 - this.topicContainerElement.getHeight();
-		var to   = 0;
-	}
-	
-	Mojo.Animation.animateStyle
-	(
-		this.topicContainerElement,
-		'top',
-		'zeno', // linear/bezier/zeno
+		if (this.topicVisible)
 		{
-			from:       from,
-			to:         to,
-			duration:   0.5,
-			onComplete: this.topicToggled
+			var from = 0;
+			var to   = 0 - this.topicContainerElement.getHeight();
 		}
-	);
+		else
+		{
+			var from = 0 - this.topicContainerElement.getHeight();
+			var to   = 0;
+		}
+		
+		Mojo.Animation.animateStyle
+		(
+			this.topicContainerElement,
+			'top',
+			'zeno', // linear/bezier/zeno
+			{
+				from:       from,
+				to:         to,
+				duration:   0.5,
+				onComplete: this.topicToggled
+			}
+		);
+	}
 }
 ChannelChatAssistant.prototype.topicToggle = function()
 {
