@@ -202,9 +202,9 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpNick = this.getNick(payload.origin);
 					if (tmpNick)
 					{
-						for (var i = 0; i< this.channels.length; i++)
+						for (var i = 0; i< tmpNick.channels.length; i++)
 						{
-							this.channels[i].newMessage('channel-event', false, tmpNick.name + ' has quit (' + payload.params + ')');
+							tmpNick.channels[i].newMessage('channel-event', false, tmpNick.name + ' has quit (' + payload.params + ')');
 						}
 
 						this.removeNick(tmpNick);
