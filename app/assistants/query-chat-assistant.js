@@ -11,8 +11,7 @@ function QueryChatAssistant(query)
 	this.sendButtonElement =		false;
 	
 	this.autoScroll =				true;
-	
-	this.isVisible = false;
+	this.isVisible = 				false;
 	
 	this.listModel =
 	{

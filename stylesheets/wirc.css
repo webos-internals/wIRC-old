@@ -250,9 +250,9 @@ br.clear
 
 
 /*
- * Query Dashboard Scene Styles
+ * Generic Dashboard Scene Styles
  */
-.query-dashboard .palm-dashboard-icon
+.dashboard .palm-dashboard-icon
 {
 	background: url(../icon.png) center center no-repeat;
 	-webkit-background-size: 48px 48px;

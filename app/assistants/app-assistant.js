@@ -51,6 +51,19 @@ AppAssistant.prototype.handleLaunch = function(params)
 				}
 			}
 		}
+		else if (params.type == 'channel')
+		{
+			var tmpServer = servers.getServerForId(params.server);
+			if (tmpServer)
+			{
+				var tmpChannel = tmpServer.getChannel(params.channel);
+				if (tmpChannel)
+				{
+					tmpChannel.closeDash();
+					tmpChannel.openStage();
+				}
+			}
+		}
 		else
 		{
 			// for debug

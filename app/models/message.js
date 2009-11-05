@@ -9,6 +9,8 @@ function ircMessage(params)
 	this.nickDisplay =	'';
 	this.message =		'';
 	
+	this.channel =		false;
+	
 	this.rowClass =		'';
 	this.rowStyle =		'';
 	this.nickStyle =	'';
@@ -24,6 +26,10 @@ function ircMessage(params)
 			this.me =			params.me;
 			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
 			{
+				if (params.channel)
+				{
+					this.channel = params.channel;
+				}
 				this.highlightMessage();
 			}
 			break;
@@ -35,6 +41,10 @@ function ircMessage(params)
 			this.message =		this.nick.name + ' ' + params.message;
 			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
 			{
+				if (params.channel)
+				{
+					this.channel = params.channel;
+				}
 				this.highlightMessage();
 			}
 			break;
@@ -99,6 +109,15 @@ function ircMessage(params)
 
 ircMessage.prototype.highlightMessage = function()
 {
+	if (this.channel)
+	{
+		if (!this.channel.chatAssistant.isVisible)
+		{
+			this.channel.openDash(this.getListObject());
+		}
+		this.channel = false;
+	}
+	
 	var style = '';
 	
 	if (prefs.get().highlightStyle == 'color' || prefs.get().highlightStyle == 'boldcolor') 

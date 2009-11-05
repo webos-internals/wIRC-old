@@ -5,6 +5,7 @@ function ChannelChatAssistant(channel)
 	this.tabText = false;
 	this.action = false;
 	
+	this.documentElement =			false;
 	this.sceneScroller =			false;
 	this.headerElement =			false;
 	this.titleElement =				false;
@@ -19,6 +20,7 @@ function ChannelChatAssistant(channel)
 	
 	this.autoScroll =				true;
 	this.topicVisible =				false;
+	this.isVisible = 				false;
 	
 	this.listModel =
 	{
@@ -54,6 +56,7 @@ ChannelChatAssistant.prototype.setup = function()
 		
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
+		this.documentElement =			this.controller.stageController.document;
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.headerElement =			this.controller.get('header');
 		this.titleElement =				this.controller.get('title');
@@ -66,17 +69,22 @@ ChannelChatAssistant.prototype.setup = function()
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
-		this.scrollHandler =		this.onScrollStarted.bindAsEventListener(this);
-		this.keyHandler =			this.keyHandler.bindAsEventListener(this);
-		this.headerTapped =			this.headerTap.bindAsEventListener(this);
-		this.topicToggled =			this.topicToggle.bindAsEventListener(this);
-		this.userButtonPressed =	this.userButtonPressed.bindAsEventListener(this);
-		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
-		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
+		this.scrollHandler =			this.onScrollStarted.bindAsEventListener(this);
+		this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
+		this.invisibleWindowHandler =	this.invisibleWindow.bindAsEventListener(this);
+		this.keyHandler =				this.keyHandler.bindAsEventListener(this);
+		this.headerTapped =				this.headerTap.bindAsEventListener(this);
+		this.topicToggled =				this.topicToggle.bindAsEventListener(this);
+		this.userButtonPressed =		this.userButtonPressed.bindAsEventListener(this);
+		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
+		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
 		
-		Mojo.Event.listen(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
+		Mojo.Event.listen(this.sceneScroller,	Mojo.Event.scrollStarting,	this.scrollHandler);
+		Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate,   this.visibleWindowHandler);
+		Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
 		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
 		Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
+		this.isVisible = true;
 		
 		Mojo.Event.listen(this.headerElement, Mojo.Event.tap, this.headerTapped);
 		this.updateTitle();
@@ -351,9 +359,24 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 	}
 }
 
+ChannelChatAssistant.prototype.visibleWindow = function(event)
+{
+	if (!this.isVisible)
+	{
+		this.isVisible = true;
+	}
+	this.channel.closeDash();
+}
+ChannelChatAssistant.prototype.invisibleWindow = function(event)
+{
+	this.isVisible = false;
+}
+
 ChannelChatAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
+	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageActivate,   this.visibleWindowHandler);
+	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
 	Mojo.Event.stopListening(this.userButtonElement,	Mojo.Event.tap,				this.userButtonPressed);
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);

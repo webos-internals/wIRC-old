@@ -34,6 +34,10 @@
         "source": "app/assistants/channel-chat-assistant.js"
     },
     {
+        "scenes": "channel-dashboard",
+        "source": "app/assistants/channel-dashboard-assistant.js"
+    },
+    {
         "scenes": "channel-users",
         "source": "app/assistants/channel-users-assistant.js"
     },

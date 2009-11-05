@@ -9,6 +9,10 @@ function ircChannel(params)
 	this.mode = 			'';
 	this.topic =			'';
 	
+	this.dashName =			'channeldash-' + this.server.id + '-' + this.name;
+	this.dashMessage =		false;
+	this.dashController =	false;
+	this.dashAssistant =	false;
 	this.stageName =		'channel-' + this.server.id + '-' + this.name;
 	this.stageController =	false;
 	this.chatAssistant =	false;
@@ -108,7 +112,9 @@ ircChannel.prototype.newMessage = function(type, nick, message)
 		type:		type,
 		nick:		nick,
 		message:	message,
-		me:			this.server.nick.name
+		me:			this.server.nick.name,
+		// pass this channel for mention dash pop reasons 
+		channel:	this
 	};
 	var newMsg = new ircMessage(obj);
 	this.messages.push(newMsg);
@@ -257,6 +263,50 @@ ircChannel.prototype.close = function()
 	}
 }
 
+ircChannel.prototype.openDash = function(message)
+{
+	try
+	{
+		Mojo.Controller.appController.showBanner
+		(
+			{
+				messageText: message.nick + ': ' + message.message,
+				soundClass: "alerts"
+			},
+			{
+				type: 'channel',
+				server: this.server.id,
+				channel: this.name
+			},
+			'channel-' + this.name
+		);
+		
+		this.dashController = Mojo.Controller.appController.getStageController(this.dashName);
+	    if (this.dashController) 
+		{
+			this.dashController.delegateToSceneAssistant("updateMessage", message.nick, message.message);
+		}
+		else
+		{
+			this.dashMessage = message;
+			Mojo.Controller.appController.createStageWithCallback({name: this.dashName, lightweight: true}, this.openDashCallback.bind(this), "dashboard");
+		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircChannel#openDash");
+	}
+}
+ircChannel.prototype.openDashCallback = function(controller)
+{
+	controller.pushScene('channel-dashboard', this, this.dashMessage);
+}
+ircChannel.prototype.closeDash = function()
+{
+	Mojo.Controller.appController.removeBanner('channel-' + this.name);
+	Mojo.Controller.appController.closeStage(this.dashName);
+}
+
 ircChannel.prototype.openStage = function()
 {
 	try
@@ -290,6 +340,10 @@ ircChannel.prototype.openStageCallback = function(controller)
 	controller.pushScene('channel-chat', this);
 }
 
+ircChannel.prototype.setDashAssistant = function(assistant)
+{
+	this.dashAssistant = assistant;
+}
 ircChannel.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
