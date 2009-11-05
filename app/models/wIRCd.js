@@ -242,3 +242,31 @@ wIRCd.channel_mode = function(callback, sessionToken, channel, mode)
 	});
 	return request;
 }
+wIRCd.ping = function(callback, sessionToken, server)
+{
+	var request = new Mojo.Service.Request(wIRCd.identifier,
+	{
+		method: 'client_cmd_ping',
+		parameters: {
+			"sessionToken": sessionToken,
+			"server": server,
+		},
+		onSuccess: callback,
+		onFailure: callback
+	});
+	return request;
+}
+wIRCd.away = function(callback, sessionToken, reason)
+{
+	var request = new Mojo.Service.Request(wIRCd.identifier,
+	{
+		method: 'client_cmd_away',
+		parameters: {
+			"sessionToken": sessionToken,
+			"reason": reason,
+		},
+		onSuccess: callback,
+		onFailure: callback
+	});
+	return request;
+}
