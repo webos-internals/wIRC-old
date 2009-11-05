@@ -113,7 +113,7 @@ ircMessage.prototype.highlightMessage = function()
 	{
 		if (!this.channel.chatAssistant.isVisible)
 		{
-			this.channel.openDash(this.getListObject());
+			this.channel.openDash(this.getNotificationObject());
 		}
 		this.channel = false;
 	}
@@ -154,13 +154,38 @@ ircMessage.prototype.highlightMessage = function()
 			break;
 	}
 }
+ircMessage.prototype.parseLinks = function(message)
+{
+  	return message.replace
+	(
+		/((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ig,
+		function(url)
+		{
+		    var full_url = url;
+		    if (!full_url.match('^https?:\/\/')) {
+		        full_url = 'http://' + full_url;
+		    }
+		    return '<a href="' + full_url + '" target="_blank">' + url + '</a>';
+		}
+	);
+}
 
+ircMessage.prototype.getNotificationObject = function()
+{
+	var obj =
+	{
+		nick:			this.nickDisplay,
+		message:		this.message
+	};
+	
+	return obj;
+}
 ircMessage.prototype.getListObject = function()
 {
 	var obj =
 	{
 		nick:			this.nickDisplay,
-		message:		this.message,
+		message:		this.parseLinks(this.message),
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,

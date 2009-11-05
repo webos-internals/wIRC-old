@@ -29,7 +29,7 @@ QueryDashboardAssistant.prototype.setup = function()
 	this.newNumberBubbleElement.style.display = 'none';
 	
 	// put last mesage into fields
-	var lastMessage = this.query.getLastMessage();
+	var lastMessage = this.query.getLastMessage().getNotificationObject();
 	this.updateMessage(lastMessage.nick, lastMessage.message);
 	
 	// to whole thing for tap
