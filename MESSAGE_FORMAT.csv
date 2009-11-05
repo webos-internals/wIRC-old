@@ -4,6 +4,7 @@
 	"NOTICE"	"NULL"		"<active-nick>"		"[]"	1	"server"
 	"NOTICE"	"NickServ!"		"<active-nick>"		"***"	2	"server"
 	"MODE"	"NickServ"				"***"	2	"server"
+	"MODE"	"NickServ"		"<channel>"		"***"	2	"channel"
 	"CONNECT"	"<host>"	"X"					
 	376	"<host>"	"X"					
 	"JOIN"	"<nick>!"				"-->"	2	"channel"
