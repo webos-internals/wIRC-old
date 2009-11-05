@@ -65,11 +65,15 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'topic':
-					if (val) {
+					if (val) 
+					{
 						var tmpMatch = twoValRegExp.exec(val);
-						if (tmpMatch) {
+						if (tmpMatch) 
+						{
 							this.topic(tmpMatch[1],tmpMatch[2]);
-						} else {
+						} 
+						else 
+						{
 							this.topic(val,null);
 						}
 					}
@@ -319,29 +323,47 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case '332':		// TOPIC
 					var tmpChan = this.getChannel(payload.params[1]);
-					if (tmpChan) {
+					if (tmpChan) 
+					{
 						tmpChan.topicUpdate(payload.params[2]);
-						if (tmpChan.containsNick(this.nick)) {
+						if (tmpChan.containsNick(this.nick)) 
+						{
 							tmpChan.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
 						}
-					} else {
+					} 
+					else 
+					{
 						this.newMessage('action', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
 					}
 					break;
+
 				case '333':		// TOPIC SET TIME
 					var newDate = new Date();
 					newDate.setTime(payload.params[3]*1000);
 					dateString = newDate.toUTCString();
 					var tmpChan = this.getChannel(payload.params[1]);
-					if (tmpChan) {
-						if (tmpChan.containsNick(this.nick)) {
+					if (tmpChan) 
+					{
+						if (tmpChan.containsNick(this.nick)) 
+						{
 							tmpChan.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
 						}
-					} else {
+					} 
+					else 
+					{
 						this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
 					}
 					break;
 					
+				case 'TOPIC': 	// TOPIC CHANGED
+					var tmpChan = this.getChannel(payload.params[0]);
+					if (tmpChan)
+					{
+						var tmpNick = this.getNick(payload.origin);
+						tmpChan.topicUpdate(payload.params[1]);
+						tmpChan.newMessage('action', false, tmpNick&&tmpNick.name + ' changed the topic to: ' + payload.params[1]);
+					}
+					break;
 				case '328':		// ???
 				case '329':		// ???
 				case '331':		// NO TOPIC
