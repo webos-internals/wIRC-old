@@ -18,3 +18,5 @@
 	333	"<host>"		"<active-nick>"	"<channel>"	"*"	2	"channel > server"
 	"NICK"	"<nick>!"				"<->"	2	"channel"
 	"KICK"	"<nick>!"		"<channel>"		"<-*"	2	"channel"
+	"PRIVMSG"	"<nick>!"		"<channel>"		"<nick>"	4	"channel"
+	"PRIVMSG"	"<nick>!"		"<active-nick>"		"<nick>"	4	"query"
