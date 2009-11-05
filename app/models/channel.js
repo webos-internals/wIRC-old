@@ -63,6 +63,14 @@ ircChannel.prototype.newCommand = function(message)
 					this.server.topic(this.name);
 				}			
 				
+				case 'away':
+					this.server.away(val?val:null);
+					break;
+					
+				case 'ping':
+					if (val) this.server.ping(val);
+					break;				
+				
 			default:
 				// forward unknown to the server object
 				this.server.newCommand(message);

@@ -64,6 +64,14 @@ ircServer.prototype.newCommand = function(message)
 					}
 					break;
 					
+				case 'away':
+					this.away(val?val:null);
+					break;
+					
+				case 'ping':
+					if (val) this.ping(val);
+					break;
+					
 				case 'topic':
 					if (val) 
 					{
@@ -321,6 +329,11 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.newMessage('action', false, payload.params[1] + ' ' + payload.params[2]);
 					break;
 					
+				case '305':		// NOTAWAY
+				case '306':		// AWAY
+					this.newMessage('action', false, payload.params[1]);
+					break;
+					
 				case '332':		// TOPIC
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan) 
@@ -459,7 +472,14 @@ ircServer.prototype.runOnConnect = function()
 		}
 	}
 }
-
+ircServer.prototype.away = function(reason)
+{
+	wIRCd.away(this.topicHandler.bindAsEventListener(this), this.sessionToken, reason);
+}
+ircServer.prototype.ping = function(server)
+{
+	wIRCd.ping(this.topicHandler.bindAsEventListener(this), this.sessionToken, server);
+}
 ircServer.prototype.topic = function(channel, topic)
 {
 	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
