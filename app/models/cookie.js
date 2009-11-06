@@ -40,7 +40,13 @@ prefCookie.prototype.get = function(reload)
 				realname:			'wIRCer',
 				nick1:				'wIRCer',
 				nick2:				'',
-				nick3:				''
+				nick3:				'',
+				
+				// Color scheme
+				colorNotice:		'orangered',
+				colorAction:		'blue',
+				colorStatus:		'orchid',
+				colorText:			'black',
 			};
 			
 			var cookieData = this.cookie.get();

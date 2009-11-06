@@ -37,20 +37,11 @@ ircNick.prototype.updateNickName = function(newName)
 {
 	var oldName = this.name;
 	this.name = newName;
-	var msg;
-	if (this.me)
-	{
-		msg = 'You are ';
-	}
-	else
-	{
-		msg = oldName + ' is ';
-	}
-	msg = msg + 'now known as [' + newName + ']';
+	var msg = oldName + ' is now known as '+ newName;
 
 	for (var i = 0; i < this.channels.length; i++)
 	{
-		this.channels[i].newMessage('status', false, msg);
+		this.channels[i].newMessage('type9', false, msg);
 	}
 }
 ircNick.prototype.updateNickMode = function(newMode, channel)

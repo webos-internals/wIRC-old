@@ -18,10 +18,88 @@ function ircMessage(params)
 	
 	switch(this.type)
 	{
-		case 'channel-message':
+				
+		case 'type1':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '[]';
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.message		= params.message[1];
+			break;
+
+		case 'type2':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '*';
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.message		= params.message;
+			break;
+
+		case 'type4':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '-->';
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.message		= params.message;
+			break;
+			
+		case 'type5':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '<--';
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.message		= params.message;
+			break;
+			
+		case 'type6':
+			this.rowClass		= 'no-seperator';
+			this.nick			= params.nick;
+			this.nickDisplay	= '[' + this.nick.name + ']';
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.message		= params.message;
+			break;						
+
+		case 'type7':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '-*-';
+			this.nickStyle 		= 'color: ' + prefs.get().colorAction;
+			this.messageStyle 	= 'color: ' + prefs.get().colorAction;
+			this.message		= params.message;
+			break;
+
+		case 'type8':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '*';
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.message		= params.message;
+			break;
+
+		case 'type9':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '<->';
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.message		= params.message;
+			break;
+			
+		case 'type10':
+			this.rowClass		= 'no-seperator';
+			this.nickDisplay	= '<-*';
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.message		= params.message;
+			break;			
+				
+//===================== OLD STYLES ===========================================//
+	
+		// type11
+		case 'privmsg':
 			this.nick =			params.nick;
 			this.nickDisplay =	this.nick.name;
 			this.nickStyle =	'color: ' + this.nick.colorHex + ';',
+			this.messageStyle = 'color: ' + prefs.get().colorText;
 			this.message =		params.message;
 			this.me =			params.me;
 			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
@@ -33,11 +111,14 @@ function ircMessage(params)
 				this.highlightMessage();
 			}
 			break;
-			
-		case 'channel-action':
-			this.rowClass =		'action-message';
+
+		// type7					
+		case 'action':
+			//this.rowClass =		'action-message';
 			this.nick =			params.nick;
 			this.nickDisplay =	'-*-';
+			this.nickStyle = 'color: ' + prefs.get().colorAction;
+			this.messageStyle = 'color: ' + prefs.get().colorAction;
 			this.message =		this.nick.name + ' ' + params.message;
 			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
 			{
@@ -49,52 +130,65 @@ function ircMessage(params)
 			}
 			break;
 			
-		case 'me-action':
-			this.rowClass =		'action-message';
-			this.nick =			params.nick;
-			this.nickDisplay =	'-*-';
-			this.message =		this.nick.name + ' ' + params.message;
-			break;			
-			
-		case 'channel-event':
-			this.rowClass =		'event-message';
-			this.nickDisplay =	'**';
+		// type9
+		case 'nick':
+			//this.rowClass =		'event-message';
+			this.nickDisplay =	'<->';
+			this.nickStyle = 'color: ' + prefs.get().colorStatus;
+			this.messageStyle = 'color: ' + prefs.get().colorStatus;
 			this.message =		params.message;
-			break;
-			
-		case 'join-event':
-			this.rowClass =		'event-message';
+			break;								
+		
+		// type4
+		case 'channel-join':
+			//this.rowClass =		'event-message';
 			this.nickDisplay =	'-->';
+			this.nickStyle = 'color: ' + prefs.get().colorStatus;
+			this.messageStyle = 'color: ' + prefs.get().colorStatus;
 			this.message =		params.message;
 			break;
 			
-		case 'part-event':
-			this.rowClass =		'event-message';
+		// type5
+		case 'channel-part-quit':
+			//this.rowClass =		'event-message';
 			this.nickDisplay =	'<--';
+			this.nickStyle = 'color: ' + prefs.get().colorStatus;
+			this.messageStyle = 'color: ' + prefs.get().colorStatus;
+			this.message =		params.message;
+			break;
+			
+		// type10
+		case 'channel-kick':
+			//this.rowClass =		'event-message';
+			this.nickDisplay =	'<-*';
+			this.nickStyle = 'color: ' + prefs.get().colorStatus;
+			this.messageStyle = 'color: ' + prefs.get().colorStatus;
 			this.message =		params.message;
 			break;						
-			
-		case 'action':
-			this.rowClass =		'status-message';
-			this.nickDisplay =	'-*-';
-			this.message =		params.message;
-			break;
-			
+
+		// type1			
 		case 'notice':
-			this.rowClass =		'status-message';
-			this.nickDisplay =	'[' + params.message[0] + ']';
-			this.message =		params.message[1];
+			this.rowClass =		'no-seperator';
+			this.nickDisplay	= '[' + params.message[0] + ']';
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.message		= params.message[1];
 			break;
-			
-		case 'channel-notice':
-			this.rowClass =		'status-message';
-			this.nickDisplay =	'[' + params.nick.name + ']';
-			this.message =		params.message;
+
+		// type2			
+		case 'info':
+			this.nickDisplay	= '*';
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.message		= params.message[1];
 			break;
-			
+
+		// type3			
 		case 'status':
-			this.rowClass =		'status-message';
+			//this.rowClass =		'status-message';
 			this.nickDisplay =	'***';
+			this.nickStyle = 'color: ' + prefs.get().colorStatus;
+			this.messageStyle = 'color: ' + prefs.get().colorStatus;
 			this.message =		params.message;
 			break;
 			

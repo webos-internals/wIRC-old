@@ -96,7 +96,7 @@ ircChannel.prototype.topicUpdate = function(topic)
 ircChannel.prototype.me = function(message)
 {
 	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
-	this.newMessage('me-action', this.server.nick, message);
+	this.newMessage('type7', this.server.nick, message);
 }
 ircChannel.prototype.meHandler = function(payload)
 {
@@ -106,7 +106,7 @@ ircChannel.prototype.meHandler = function(payload)
 ircChannel.prototype.msg = function(message)
 {
 	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
-	this.newMessage('channel-message', this.server.nick, message);
+	this.newMessage('privmsg', this.server.nick, message);
 }
 ircChannel.prototype.msgHandler = function(payload)
 {

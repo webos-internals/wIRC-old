@@ -44,7 +44,7 @@ ircQuery.prototype.newCommand = function(message)
 ircQuery.prototype.me = function(message)
 {
 	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.nick.name, message);
-	this.newMessage('channel-action', this.server.nick, message);
+	this.newMessage('action', this.server.nick, message);
 }
 ircQuery.prototype.meHandler = function(payload)
 {
@@ -54,7 +54,7 @@ ircQuery.prototype.meHandler = function(payload)
 ircQuery.prototype.msg = function(message)
 {
 	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.nick.name, message);
-	this.newMessage('channel-message', this.server.nick, message);
+	this.newMessage('privmsg', this.server.nick, message);
 }
 ircQuery.prototype.msgHandler = function(payload)
 {

@@ -385,29 +385,12 @@ body.palm-dark .message-row .message
 .font-21 .message-row { font-size: 21px; line-height: 22px; }
 .font-22 .message-row { font-size: 22px; line-height: 23px; }
 
-.message-row.action-message .nick,
-.message-row.action-message .message
-{
-	color: purple; /*navy;*/
-}
-.message-row.event-message .nick,
-.message-row.event-message .message
-{
-	color: green;
-}
-.message-row.status-message .nick,
-.message-row.status-message .message
-{
-	color: red; /*maroon;*/
-}
 .message-row.debug-message .nick,
 .message-row.debug-message .message
 {
 	color: gray;
 }
-.message-row.action-message .nick .seperator,
-.message-row.event-message .nick .seperator,
-.message-row.status-message .nick .seperator,
+.message-row.no-seperator .nick .seperator,
 .message-row.debug-message .nick .seperator
 {
 	display: none;
