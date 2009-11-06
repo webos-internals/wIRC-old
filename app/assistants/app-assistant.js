@@ -91,3 +91,47 @@ AppAssistant.prototype.cleanup = function()
     });
   }
 }
+
+
+AppAssistant.prototype.getStageCount = function()
+{
+	var count = 0;
+	
+	// test server list stage
+	if (this.controller.getStageController(serverStage)) count++;
+	
+	if (servers.servers.length > 0)
+	{
+		for (var s = 0; s < servers.servers.length; s++)
+		{
+			// test server status stage
+			if (this.controller.getStageController(servers.servers[s].stageName)) count++;
+			
+			if (servers.servers[s].channels.length > 0)
+			{
+				for (var c = 0; c < servers.servers[s].channels.length; c++) 
+				{
+					// test channel chat stage
+					if (this.controller.getStageController(servers.servers[s].channels[c].stageName)) count++;
+					
+					// test channel dashboard stage
+					if (this.controller.getStageController(servers.servers[s].channels[c].dashName)) count++;
+				}
+			}
+			
+			if (servers.servers[s].queries.length > 0)
+			{
+				for (var q = 0; q < servers.servers[s].queries.length; q++) 
+				{
+					// test query chat stage
+					if (this.controller.getStageController(servers.servers[s].queries[q].stageName)) count++;
+					
+					// test query dashboard stage
+					if (this.controller.getStageController(servers.servers[s].queries[q].dashName)) count++;
+				}
+			}
+		}
+	}
+	
+	return count;
+}
