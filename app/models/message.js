@@ -1,3 +1,32 @@
+/*	MESSAGE_FORMAT
+ * 
+ *	Implemented	MessageType	Event		Origin		NoDisplay	Param-1			Param-2		Nick		Color	Destination
+ *		X		type1		NOTICE		NULL					AUTH						[]			1		server
+ *		X		type2		#			<host>					<active-nick>				*			1		server
+ *		X		type1		NOTICE		NULL					<active-nick>				[]			1		server
+ *		X		type3		NOTICE		-1,services				<active-nick>				***			2		server
+ *				type3		MODE		NickServ											***			2		server
+ *				type3		MODE		NickServ				<channel>					***			2		channel
+ *							CONNECT		<host>			X
+ *							376			<host>			X
+ *		X		type4		JOIN		<nick>!												-->			2		channel
+ *		X		type5		PART		<nick>!												<--			2		channel
+ *		X		type5		QUIT		<nick>!												<--			2		channel
+ *		X		type6		NOTICE		<nick>!					<channel>					[<nick>]	1		channel
+ *		X		type6		NOTICE		<nick>!					<active-nick>				[<nick>]	1		query
+ *		X		type7		ACTION		<nick>!					<channel>					-*-			3		channel
+ *		X		type7		ACTION		<nick>!					<active-nick>				-*-			3		query
+ *				type8		TOPIC		<nick>!					<channel>					*			2		channel > server
+ *		X		type8		332			<host>					<active-nick>	<channel>	*			2		channel > server
+ *		X		type8		333			<host>					<active-nick>	<channel>	*			2		channel > server
+ *		X		type9		NICK		<nick>!												<->			2		channel
+ *		X		type10		KICK		<nick>!					<channel>					<-*			2		channel
+ *				type11		PRIVMSG		<nick>!					<channel>					<nick>		4		channel
+ *				type11		PRIVMSG		<nick>!					<active-nick>				<nick>		4		query
+ *				type12		?			?						?							<=			2		channel // NETSPLIT LEAVE
+ *				type13		?			?						?							=>			2		channel // NETSPLIT JOIN
+ */
+
 function ircMessage(params)
 {
 	ircMessage.num++;
