@@ -15,13 +15,12 @@ function ircServer(params)
 	this.nextNick = 0;
 	
 	this.reconnect = true;
-	this.autoReconnect = true;
+	this.autoReconnect = false;
 	this.timerId = false;
 	this.dcThreshold = 5000;
 	this.cmSubscription = false;
 	this.ipAddress = false;
 	this.reconnectOnBetter = false;
-	this.nick_attempt =		1;
 
 	this.connected =		false;
 	this.channels =			[];
@@ -196,6 +195,8 @@ ircServer.prototype.ipMatches = function(payload)
 
 ircServer.prototype.cmHandler = function(payload)
 {
+	// Needs a lot of testing
+	return;
 	if (!payload.returnValue)
 	{
 		this.newMessage('status', false, 'ip ' + this.ipAddress);
@@ -221,6 +222,7 @@ ircServer.prototype.cmHandler = function(payload)
 				else
 				{
 					// disconnect in 5 seconds if connection doesn't come back
+					this.reconnect = false;
 					this.newMessage('status', false, 'disconnect after threshold ' + this.dcThreshold);
 					this.timerId = setTimeout(this.disconnect.bind(this), this.dcThreshold);
 				}
@@ -267,6 +269,11 @@ ircServer.prototype.connectionHandler = function(payload)
 	{
 		if (!payload.returnValue) 
 		{
+			if (!this.sessionToken)
+			{
+				this.sessionToken = payload.sessionToken;
+			}
+
 			if (payload.returnValue === 0)
 			{
 				this.newMessage('status', false, 'Disconnected!');
@@ -288,7 +295,6 @@ ircServer.prototype.connectionHandler = function(payload)
 			switch(payload.event)
 			{
 				case 'CONNECT':
-					this.sessionToken = payload.sessionToken;
 					this.nick = this.getNick(payload.params[0]); 
 					this.nick.me = true;
 					
@@ -597,6 +603,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
 					this.nextNick = (this.nextNick < this.preferredNicks.length - 1) ? this.nextNick + 1 : 0;
 					this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + this.preferredNicks[this.nextNick]);
+					wIRCd.nick(null, this.sessionToken, this.preferredNicks[this.nextNick])
 
 					break;
 					
@@ -643,31 +650,6 @@ ircServer.prototype.runOnConnect = function()
 				this.newCommand.bind(this).defer(tmpSplit[s]);
 			}
 		}
-	}
-}
-ircServer.prototype.tryNextNick = function()
-{
-	if (this.nick_attempt==1)
-	{
-		var nick = prefs.get().nick2;
-		if (nick)
-		{
-			wIRCd.nick(null, this.sessionToken, nick);
-			this.nick_attempt++;
-		}
-	}
-	else if (this.nick_attempt==2)
-	{
-		var nick = prefs.get().nick3;
-		if (nick)
-		{
-			wIRCd.nick(null, this.sessionToken, nick);
-			this.nick_attempt++;
-		}
-	}
-	else if (this.nick_attempt==3)
-	{
-		wIRCd.quit(null, this.sessionToken, 'Out of nicks to try');
 	}
 }
 ircServer.prototype.away = function(reason)
