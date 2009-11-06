@@ -53,6 +53,7 @@ prefCookie.prototype.get = function(reload)
 				colorAction:		'blue',
 				colorStatus:		'mediumpurple',
 				colorText:			'black',
+				colorMarker:		'red',
 			};
 			
 			var cookieData = this.cookie.get();

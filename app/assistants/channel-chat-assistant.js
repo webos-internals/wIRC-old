@@ -234,6 +234,7 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 			if (!this.isVisible && this.lastFocusMessage && !this.lastFocusMessage.hasClassName('lostFocus'))
 			{
 				this.lastFocusMessage.addClassName('lostFocus');
+				this.lastFocusMessage.style.borderBottomColor=prefs.get().colorMarker;
 			}
 			
 			var start = this.messageListElement.mojo.getLength();

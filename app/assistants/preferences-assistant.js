@@ -438,7 +438,17 @@ PreferencesAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
-				
+		this.controller.setupWidget
+		(
+			'colorMarker',
+			{
+				label: 'Marker line',
+				choices: this.colorChoices,
+				modelProperty: 'colorMarker'
+			},
+			this.prefs
+		);
+						
 		this.highlightStyleChanged();
 		this.controller.listen('highlightStyle',	Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 		
@@ -449,7 +459,8 @@ PreferencesAssistant.prototype.setup = function()
 		this.controller.listen('colorNotice',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('colorAction',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('colorStatus',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorText',			Mojo.Event.propertyChange, this.listChangedHandler);		
+		this.controller.listen('colorText',			Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('colorMarker',		Mojo.Event.propertyChange, this.listChangedHandler);		
 		
 		// Dashboard/Banner Group
 		this.controller.setupWidget
@@ -671,6 +682,7 @@ PreferencesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('colorAction',		Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorStatus',		Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorText',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorMarker',		Mojo.Event.propertyChange, this.listChangedHandler);
 
 	this.controller.stopListening('dashboardChannel',		Mojo.Event.propertyChange, this.dashboardChannelChanged.bindAsEventListener(this));
 	this.controller.stopListening('dashboardChannelSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
