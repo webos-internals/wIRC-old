@@ -11,6 +11,8 @@ function ChannelDashboardAssistant(channel, message)
 	this.iconActionElement =		false;
 	this.textActionElement =		false;
 	
+	this.messageCount =				0;
+	
 	this.channel.setDashAssistant(this);
 }
 
@@ -38,6 +40,12 @@ ChannelDashboardAssistant.prototype.setup = function()
 
 ChannelDashboardAssistant.prototype.updateMessage = function(nick, message)
 {
+	this.messageCount++;
+	if (this.messageCount > 1)
+	{
+		this.newNumberBubbleElement.style.display = '';
+		this.newNumberElement.innerHTML = this.messageCount;
+	}
 	this.dashboardTitleElement.innerHTML = nick;
 	this.dashboardTextElement.innerHTML = message;
 }
