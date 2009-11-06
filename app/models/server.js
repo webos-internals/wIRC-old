@@ -14,7 +14,7 @@ function ircServer(params)
 	this.preferredNicks = [];
 	this.nextNick = 0;
 	
-	this.reconnect = false;
+	this.reconnect = true;
 	this.autoReconnect = true;
 	this.timerId = false;
 	this.dcThreshold = 5000;
