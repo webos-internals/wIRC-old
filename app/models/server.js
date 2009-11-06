@@ -385,15 +385,42 @@ ircServer.prototype.connectionHandler = function(payload)
 					}
 					break;
 					
+				case 'MODE':
+					if (payload.params[0].substr(0, 1) == '#') // it's a channel
+					{	
+						var tmpNick = this.getNick(payload.origin);
+						var tmpChan = this.getChannel(payload.params[0]);
+						if (tmpChan) 
+						{
+							tmpChan.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[1] + ' by ' + tmpNick.name);
+						}
+					}
+					else
+					{
+						this.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[0] + ' by ' + payload.origin);
+					}
+					break;
+					
 				case 'NOTICE':
 					var tmpNick = this.getNick(payload.origin);
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
+					if (payload.origin=='NULL')
+						this.newMessage('type1', false, payload.params);
+					else if (payload.params[0].substr(0, 1) == '#') // it's a channel
 					{
 						var tmpChan = this.getChannel(payload.params[0]);
 						if (tmpChan) 
 						{
 							tmpChan.newMessage('type6', tmpNick, payload.params[1]);
 						}
+					}
+					else if (payload.params[0] == this.nick.name) // it's me
+					{
+						this.newMessage('type6', tmpNick, payload.params[1]);
+					}
+					else
+					{
+						//if (payload.origin=='services')
+							this.newMessage('type3', false, payload.params[1]);					
 					}
 					//else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
 					//{
@@ -407,11 +434,6 @@ ircServer.prototype.connectionHandler = function(payload)
 						//	this.startQuery(tmpNick, false, 'type6', payload.params[1]);
 						//}
 					//}
-					else
-					{
-						if (payload.origin=='NULL')
-							this.newMessage('type1', false, payload.params);																			
-					}
 					break;					
 					
 				case 'NICK':
@@ -442,6 +464,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '266':		// ???
 				case '250':		// ???
 				case '372':		// MOTD
+				case '901':		// ???
 					this.newMessage('type2', false, payload.params[1]);
 					break;
 					

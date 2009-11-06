@@ -37,6 +37,7 @@ br.clear
 }
 
 
+
 /*
  * Server List Scene Styles
  */
@@ -252,11 +253,15 @@ br.clear
 /*
  * Generic Dashboard Scene Styles
  */
-.dashboard .palm-dashboard-icon
+.channel-dashboard .palm-dashboard-icon
 {
-	background: url(../icon.png) center center no-repeat;
-	-webkit-background-size: 48px 48px;
+	background: url(../icon-channel.png) center center no-repeat;
 }
+.query-dashboard .palm-dashboard-icon
+{
+	background: url(../icon-query.png) center center no-repeat;
+}
+
 
 
 /*
@@ -395,6 +400,8 @@ body.palm-dark .message-row .message
 {
 	display: none;
 }
+
+
 
 /* Display all list selector popup items in their color if labeled a color */
 [x-mojo-menu-cmd=aliceblue]{color:aliceblue;}

@@ -104,6 +104,7 @@ ircQuery.prototype.openDash = function()
 			Mojo.Controller.appController.showBanner
 			(
 				{
+					icon: 'icon-query.png',
 					messageText: lastMessage.nick + ': ' + lastMessage.message,
 					soundClass: (prefs.get().dashboardQuerySound?"alerts":"")
 				},

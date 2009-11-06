@@ -662,7 +662,6 @@ PreferencesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('highlightColorOf',		Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('highlightColor',			Mojo.Event.propertyChange, this.listChangedHandler);
 	
-
 	this.controller.stopListening('highlightStyle',		Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 	this.controller.stopListening('highlightPart',		Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('highlightColorOf',	Mojo.Event.propertyChange, this.listChangedHandler);

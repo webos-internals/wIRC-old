@@ -278,6 +278,7 @@ ircChannel.prototype.openDash = function(message)
 		Mojo.Controller.appController.showBanner
 		(
 			{
+				icon: 'icon-channel.png',
 				messageText: message.nick + ': ' + message.message,
 				soundClass: (prefs.get().dashboardChannelSound?"alerts":"")
 			},
