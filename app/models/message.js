@@ -23,6 +23,8 @@
  *		X		type10		KICK		<nick>!					<channel>					<-*			2		channel
  *				type11		PRIVMSG		<nick>!					<channel>					<nick>		4		channel
  *				type11		PRIVMSG		<nick>!					<active-nick>				<nick>		4		query
+ *				type12		?			?						?							<=			2		channel // NETSPLIT LEAVE
+ *				type13		?			?						?							=>			2		channel // NETSPLIT JOIN
  */
 
 function ircMessage(params)
