@@ -105,7 +105,7 @@ ircQuery.prototype.openDash = function()
 			(
 				{
 					messageText: lastMessage.nick + ': ' + lastMessage.message,
-					soundClass: "alerts"
+					soundClass: (prefs.get().dashboardQuerySound?"alerts":"")
 				},
 				{
 					type: 'query',

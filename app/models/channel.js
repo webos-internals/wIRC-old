@@ -279,7 +279,7 @@ ircChannel.prototype.openDash = function(message)
 		(
 			{
 				messageText: message.nick + ': ' + message.message,
-				soundClass: "alerts"
+				soundClass: (prefs.get().dashboardChannelSound?"alerts":"")
 			},
 			{
 				type: 'channel',

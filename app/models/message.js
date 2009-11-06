@@ -111,7 +111,7 @@ ircMessage.prototype.highlightMessage = function()
 {
 	if (this.channel)
 	{
-		if (!this.channel.chatAssistant.isVisible)
+		if (!this.channel.chatAssistant.isVisible && prefs.get().dashboardChannel)
 		{
 			this.channel.openDash(this.getNotificationObject());
 		}
