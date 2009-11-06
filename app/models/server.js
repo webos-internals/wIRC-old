@@ -21,6 +21,8 @@ function ircServer(params)
 	this.cmSubscription = false;
 	this.ipAddress = false;
 	this.reconnectOnBetter = false;
+	this.nick_attempt =		1;
+
 	this.connected =		false;
 	this.channels =			[];
 	this.queries =			[];
@@ -456,18 +458,6 @@ ircServer.prototype.connectionHandler = function(payload)
 						//if (payload.origin=='services')
 							this.newMessage('type3', false, payload.params[1]);					
 					}
-					//else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
-					//{
-						//var tmpQuery = this.getQuery(tmpNick);
-						//if (tmpQuery)
-						//{
-						//	tmpQuery.newMessage('type6', tmpNick, payload.params[1]);
-						//}
-						//else
-						//{
-						//	this.startQuery(tmpNick, false, 'type6', payload.params[1]);
-						//}
-					//}
 					break;					
 					
 				case 'NICK':
@@ -653,6 +643,31 @@ ircServer.prototype.runOnConnect = function()
 				this.newCommand.bind(this).defer(tmpSplit[s]);
 			}
 		}
+	}
+}
+ircServer.prototype.tryNextNick = function()
+{
+	if (this.nick_attempt==1)
+	{
+		var nick = prefs.get().nick2;
+		if (nick)
+		{
+			wIRCd.nick(null, this.sessionToken, nick);
+			this.nick_attempt++;
+		}
+	}
+	else if (this.nick_attempt==2)
+	{
+		var nick = prefs.get().nick3;
+		if (nick)
+		{
+			wIRCd.nick(null, this.sessionToken, nick);
+			this.nick_attempt++;
+		}
+	}
+	else if (this.nick_attempt==3)
+	{
+		wIRCd.quit(null, this.sessionToken, 'Out of nicks to try');
 	}
 }
 ircServer.prototype.away = function(reason)

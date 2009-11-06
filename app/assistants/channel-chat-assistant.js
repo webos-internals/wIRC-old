@@ -21,6 +21,7 @@ function ChannelChatAssistant(channel)
 	this.autoScroll =				true;
 	this.topicVisible =				false;
 	this.isVisible = 				false;
+	this.lastFocusMessage =			false;
 	
 	this.listModel =
 	{
@@ -230,6 +231,11 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 		}
 		else
 		{
+			if (!this.isVisible && this.lastFocusMessage && !this.lastFocusMessage.hasClassName('lostFocus'))
+			{
+				this.lastFocusMessage.addClassName('lostFocus');
+			}
+			
 			var start = this.messageListElement.mojo.getLength();
 			var newMessages = this.channel.getMessages(start);
 			if (newMessages.length > 0)
@@ -373,6 +379,12 @@ ChannelChatAssistant.prototype.visibleWindow = function(event)
 ChannelChatAssistant.prototype.invisibleWindow = function(event)
 {
 	this.isVisible = false;
+	
+	if (this.lastFocusMessage && this.lastFocusMessage.hasClassName('lostFocus'))
+	{
+		this.lastFocusMessage.removeClassName('lostFocus');
+	}
+	this.lastFocusMessage = this.messageListElement.mojo.getNodeByIndex(this.messageListElement.mojo.getLength()-1);
 }
 
 ChannelChatAssistant.prototype.cleanup = function(event)
