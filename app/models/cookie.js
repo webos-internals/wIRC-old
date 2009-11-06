@@ -36,6 +36,12 @@ prefCookie.prototype.get = function(reload)
 				highlightColorOf:	'background',
 				highlightColor:		'lightpink',
 				
+				// Dashboard/Banner Group
+				dashboardChannel:		true,
+				dashboardChannelSound:	true,
+				dashboardQuerySound:	true,
+				
+				
 				// Identity Scene
 				realname:			'wIRCer',
 				nick1:				'wIRCer',
