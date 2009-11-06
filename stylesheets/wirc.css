@@ -400,6 +400,12 @@ body.palm-dark .message-row .message
 {
 	display: none;
 }
+.message-row.lostFocus
+{
+	padding-bottom: 8px;
+	margin-bottom: 5px;
+	border-bottom: 2px solid #999;
+}
 
 
 
