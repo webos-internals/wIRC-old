@@ -51,7 +51,7 @@ prefCookie.prototype.get = function(reload)
 				// Color scheme
 				colorNotice:		'orangered',
 				colorAction:		'blue',
-				colorStatus:		'orchid',
+				colorStatus:		'mediumpurple',
 				colorText:			'black',
 			};
 			
