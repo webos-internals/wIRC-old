@@ -11,9 +11,17 @@ function ircServer(params)
 	this.identifyService =	params.identifyService;
 	this.identifyPassword =	params.identifyPassword;
 	this.onConnect =		params.onConnect;
+	this.preferredNicks = [];
+	this.nextNick = 0;
 	
-	this.nick_attempt =		1;
-	
+	this.reconnect = true;
+	this.autoReconnect = false;
+	this.timerId = false;
+	this.dcThreshold = 5000;
+	this.cmSubscription = false;
+	this.ipAddress = false;
+	this.reconnectOnBetter = false;
+
 	this.connected =		false;
 	this.channels =			[];
 	this.queries =			[];
@@ -28,6 +36,17 @@ function ircServer(params)
 	this.stageController =	false;
 	this.statusAssistant =	false;
 	
+	var nicks = ['nick1', 'nick2', 'nick3'];
+	for (var i = 0; i < nicks.length; i++)
+	{
+		console.log("i " + i);
+		var nick = prefs.get()[nicks[i]];
+		if (nick)
+		{
+		  console.log("nick " + nick);
+			this.preferredNicks.push(nick);
+		}
+	}
 	if (this.autoConnect)
 	{
 		this.connect();
@@ -141,6 +160,7 @@ ircServer.prototype.getStatusMessages = function(start)
 ircServer.prototype.connect = function()
 {
 	// connecting...
+	this.newMessage('status', false, 'Connecting...');
 	this.subscription = wIRCd.connect
 	(
 		this.connectionHandler.bindAsEventListener(this),
@@ -148,20 +168,133 @@ ircServer.prototype.connect = function()
 		this.port,
 		(this.serverUser?this.serverUser:null),
 		(this.serverPassword?this.serverPassword:null),
-		prefs.get().nick1,
+		this.preferredNicks[this.nextNick],
 		prefs.get().realname
 	);
 }
+
+ircServer.prototype.maybeReconnect = function(network)
+{
+	if (network !== '1x')
+	{
+		this.reconnect = true;
+	}
+
+	this.disconnect();
+}
+
+ircServer.prototype.ipDiffers = function(payload)
+{
+	return (payload && payload.ipAddress && payload.ipAddress !== this.ipAddress);
+}
+
+ircServer.prototype.ipMatches = function(payload)
+{
+	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
+}
+
+ircServer.prototype.cmHandler = function(payload)
+{
+	// Needs a lot of testing
+	return;
+	if (!payload.returnValue)
+	{
+		this.newMessage('status', false, 'ip ' + this.ipAddress);
+		if (this.ipAddress)
+		{ 
+			if (!this.ipMatches(payload.wifi) && !this.ipMatches(payload.wan))
+			{
+				if (payload.isInternetConnectionAvailable)
+				{
+					if (this.timerId)
+					{
+						this.reconnect = true;
+						this.newMessage('status', false, 'disconnecting, but mark alternate connection' + this.dcThreshold);
+					}
+					else
+					{
+						this.reconnect = false;
+						this.timerId = setTimeout(this.maybeReconnect.bind(this), this.dcThreshold);
+						this.newMessage('status', false, 'reconnect after threshold ' + this.dcThreshold);
+					}
+					return;
+				}
+				else
+				{
+					// disconnect in 5 seconds if connection doesn't come back
+					this.reconnect = false;
+					this.newMessage('status', false, 'disconnect after threshold ' + this.dcThreshold);
+					this.timerId = setTimeout(this.disconnect.bind(this), this.dcThreshold);
+				}
+				return;
+			}
+
+			if (this.timerId)
+			{
+				clearTimeout(this.timerId);
+				this.timerId = false;
+			}
+
+			if (this.reconnectOnBetter)
+			{
+				if (this.ipDiffers(payload.wifi))
+				{
+					this.maybeReconnect();
+				}
+				else if (this.ipDiffers(payload.wan))
+				{
+					this.maybeReconnect(payload.wan.network);
+				}
+				return;
+			}
+		}
+		else
+		{
+			if (payload.isInternetConnectionAvailable)
+			{
+				clearTimeout(this.timerId);
+				this.timerId = false;
+				this.newMessage('status', false, 'connected or connect... ' + this.connected);
+				this.connected || this.connect();
+			}
+		}
+
+		this.newMessage('status', false, '--- CM f ---');
+	}
+}
+
 ircServer.prototype.connectionHandler = function(payload)
 {
 	try
 	{
 		if (!payload.returnValue) 
 		{
+			if (!this.sessionToken)
+			{
+				this.sessionToken = payload.sessionToken;
+			}
+
+			if (payload.returnValue === 0)
+			{
+				this.newMessage('status', false, 'Disconnected!');
+				this.subscription.cancel();
+				this.ipAddress = false;
+				this.connected = false;
+				this.removeNick(this.nick);
+				if (servers.listAssistant && servers.listAssistant.controller)
+				{
+					servers.listAssistant.updateList();
+				}
+				if (this.autoReconnect && this.reconnect)
+				{
+					this.newMessage('status', false, 'Reconnecting...');
+					this.connect();
+				}
+				return;
+			}
 			switch(payload.event)
 			{
 				case 'CONNECT':
-					this.sessionToken = payload.sessionToken;
 					this.nick = this.getNick(payload.params[0]); 
 					this.nick.me = true;
 					
@@ -174,6 +307,13 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 					// perform onconnect when mojo isn't busy
 					this.runOnConnect.bind(this).defer();
+					this.ipAddress = payload.ipAddress;
+
+					if (!this.cmSubscription) 
+					{ 
+						this.cmSubscription = connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
+					}
+
 					
 					break;
 								
@@ -460,8 +600,11 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				case '433':		// NAMEINUSE
-					this.newMessage('type3', false, payload.params[2]);
-					this.tryNextNick();
+					this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
+					this.nextNick = (this.nextNick < this.preferredNicks.length - 1) ? this.nextNick + 1 : 0;
+					this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + this.preferredNicks[this.nextNick]);
+					wIRCd.nick(null, this.sessionToken, this.preferredNicks[this.nextNick])
+
 					break;
 					
 				default:
@@ -509,31 +652,6 @@ ircServer.prototype.runOnConnect = function()
 		}
 	}
 }
-ircServer.prototype.tryNextNick = function()
-{
-	if (this.nick_attempt==1)
-	{
-		var nick = prefs.get().nick2;
-		if (nick)
-		{
-			wIRCd.nick(null, this.sessionToken, nick);
-			this.nick_attempt++;
-		}
-	}
-	else if (this.nick_attempt==2)
-	{
-		var nick = prefs.get().nick3;
-		if (nick)
-		{
-			wIRCd.nick(null, this.sessionToken, nick);
-			this.nick_attempt++;
-		}
-	}
-	else if (this.nick_attempt==3)
-	{
-		wIRCd.quit(null, this.sessionToken, 'Out of nicks to try');
-	}
-}
 ircServer.prototype.away = function(reason)
 {
 	wIRCd.away(this.topicHandler.bindAsEventListener(this), this.sessionToken, reason);
@@ -570,21 +688,41 @@ ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
 	// TODO: Jump to server status scene and display disconnecting
-	if (!reason) reason = 'wIRC FTW';
-	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
+	if (reason)
+	{
+		this.reconnect = false;
+		this.newMessage('status', false, 'Quitting (' + reason + ')...');
+		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
+	}
+	else
+	{
+		this.newMessage('status', false, 'Disconnecting...');
+		// wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
+		wIRCd.disconnect(null, this.sessionToken);
+	}
 }
 ircServer.prototype.disconnectHandler = function(payload)
 {
+	this.newMessage('status', false, 'dc handler');
+	/*
 	if (payload.returnValue == 0)
 	{
-		this.removeNick(this.nick);
+		this.ipAddress = false;
 		this.connected = false;
-		this.subscription.cancel();
+		this.reconnect = false;
+		this.removeNick(this.nick);
 		if (servers.listAssistant && servers.listAssistant.controller)
 		{
 			servers.listAssistant.updateList();
 		}
 	}
+	this.subscription.cancel();
+	if (this.autoReconnect && this.reconnect)
+	{
+		this.connect();
+	}
+	this.newMessage('status', false, 'ending dc handle');
+	*/
 }
 
 ircServer.prototype.showStatusScene = function(popit)
