@@ -8,6 +8,7 @@ function ircMessage(params)
 	this.nick =			false;
 	this.nickDisplay =	'';
 	this.message =		'';
+	this.plainMessage =	'';
 	
 	this.channel =		false;
 	
@@ -15,6 +16,18 @@ function ircMessage(params)
 	this.rowStyle =		'';
 	this.nickStyle =	'';
 	
+	if (params.message.constructor == Array) 
+	{	// params.message isn't a "message" if its an array it becomes "messages",
+		// but whatever, we'll fix them all anyways.
+		for(var m = 0; m < params.message.length; m++)
+		{
+			params.message[m] = params.message[m].escapeHTML();
+		}
+	}
+	else
+	{	// good message, you're actually a message, lets fix you.
+		params.message = params.message.escapeHTML();
+	}
 	
 	switch(this.type)
 	{
@@ -252,6 +265,7 @@ ircMessage.prototype.highlightMessage = function()
 			this.messageStyle += style;
 			break;
 		case 'word':
+			this.plainMessage = this.message;
 			this.message = this.message.replace(new RegExp('(' + this.me + ')', 'gi'), '<span style="' + style + '">$1</span>');
 			break;
 	}
@@ -277,7 +291,7 @@ ircMessage.prototype.getNotificationObject = function()
 	var obj =
 	{
 		nick:			this.nickDisplay,
-		message:		this.message
+		message:		(this.plainMessage==''?this.message:this.plainMessage)
 	};
 	
 	return obj;
