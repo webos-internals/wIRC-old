@@ -270,3 +270,16 @@ wIRCd.away = function(callback, sessionToken, reason)
 	});
 	return request;
 }
+wIRCd.disconnect = function(callback, sessionToken)
+{
+	var request = new Mojo.Service.Request(wIRCd.identifier,
+	{
+		method: 'client_cmd_disconnect',
+		parameters: {
+			"sessionToken": sessionToken,
+		},
+		onSuccess: callback,
+		onFailure: callback
+	});
+	return request;
+}
