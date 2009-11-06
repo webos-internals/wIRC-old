@@ -12,6 +12,11 @@ function ircServer(params)
 	this.identifyPassword =	params.identifyPassword;
 	this.onConnect =		params.onConnect;
 	
+	this.timerId = false;
+	this.dcThreshold = 5000;
+	this.cmSubscription = false;
+	this.ipAddress = false;
+	this.reconnectOnBetter = false;
 	this.connected =		false;
 	this.channels =			[];
 	this.queries =			[];
@@ -139,6 +144,8 @@ ircServer.prototype.getStatusMessages = function(start)
 ircServer.prototype.connect = function()
 {
 	// connecting...
+	console.log("COOOOOOOOOOONNNNNNNNNECT");
+	this.newMessage('status', false, 'Connecting...');
 	this.subscription = wIRCd.connect
 	(
 		this.connectionHandler.bindAsEventListener(this),
@@ -150,6 +157,92 @@ ircServer.prototype.connect = function()
 		prefs.get().realname
 	);
 }
+
+ircServer.prototype.reconnect = function()
+{
+
+	this.newMessage('status', false, 'Reconnecting...');
+	this.disconnect();
+	this.connect.defer();
+}
+
+ircServer.prototype.maybeReconnect = function(network)
+{
+	if (network === '1x')
+	{
+		this.disconnect();
+	}
+	else
+	{
+		this.reconnect();
+	}
+}
+
+ircServer.prototype.ipDiffers = function(payload)
+{
+	return (payload && payload.ipAddress && payload.ipAddress !== this.ipAddress);
+}
+
+ircServer.prototype.ipMatches = function(payload)
+{
+	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
+}
+
+ircServer.prototype.cmHandler = function(payload)
+{
+	if (payload.returnValue)
+	{
+		this.newMessage('status', false, '--- CM t ---');
+	}
+	else
+	{
+		this.newMessage('status', false, '--- CM f ---');
+		this.newMessage('status', false, 'ip ' + this.ipAddress);
+		if (this.ipAddress)
+		{ 
+			if (!this.ipMatches(payload.wifi) && !this.ipMatches(payload.wan))
+			{
+				if (payload.isInternetConnectionAvailable)
+				{
+					this.newMessage('status', false, 'reconnect after threshold ' + this.dcThreshold);
+					this.timerId = setTimeout(this.maybeReconnect.bind(this), this.dcThreshold);
+					this.newMessage('status', false, 'timerid ' + this.timerId);
+				}
+				else
+				{
+					// disconnect in 5 seconds if connection doesn't come back
+					this.newMessage('status', false, 'disconnect after threshold ' + this.dcThreshold);
+					this.timerId = setTimeout(this.disconnect.bind(this), this.dcThreshold);
+				}
+				return;
+			}
+
+			if (this.reconnectOnBetter)
+			{
+				if (this.ipDiffers(payload.wifi))
+				{
+					this.maybeReconnect();
+				}
+				else if (this.ipDiffers(payload.wan))
+				{
+					this.maybeReconnect(payload.wan.network);
+				}
+				return;
+			}
+		}
+		else
+		{
+			if (this.ipMatches(payload.wifi) || this.ipMatches(payload.wan))
+			{
+				this.connected || this.connect();
+				clearTimeout(this.timerId);
+			}
+		}
+
+		this.newMessage('status', false, '--- CM f ---');
+	}
+}
+
 ircServer.prototype.connectionHandler = function(payload)
 {
 	try
@@ -172,6 +265,13 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 					// perform onconnect when mojo isn't busy
 					this.runOnConnect.bind(this).defer();
+					this.ipAddress = payload.ipAddress;
+
+					if (!this.cmSubscription) 
+					{ 
+						this.cmSubscription = connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
+					}
+
 					
 					break;
 								
@@ -532,20 +632,25 @@ ircServer.prototype.disconnect = function(reason)
 	// disconnecting...
 	// TODO: Jump to server status scene and display disconnecting
 	if (!reason) reason = 'wIRC FTW';
+	this.newMessage('status', false, 'Disconnecting...');
+	this.ipAddress = false;
+	this.connected = false;
+	this.newMessage('status', false, 'BYE NOW');
 	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
 ircServer.prototype.disconnectHandler = function(payload)
 {
+	this.newMessage('status', false, 'dc handler');
 	if (payload.returnValue == 0)
 	{
 		this.removeNick(this.nick);
-		this.connected = false;
-		this.subscription.cancel();
+		// this.subscription.cancel();
 		if (servers.listAssistant && servers.listAssistant.controller)
 		{
 			servers.listAssistant.updateList();
 		}
 	}
+	this.newMessage('status', false, 'ending dc handle');
 }
 
 ircServer.prototype.showStatusScene = function(popit)
