@@ -12,14 +12,14 @@ function ircServer(params)
 	this.identifyPassword =	params.identifyPassword;
 	this.onConnect =		params.onConnect;
 	this.preferredNicks =	[];
-	this.nextNick = 0;
+	this.nextNick =			0;
 	
-	this.reconnect = true;
-	this.autoReconnect = false;
-	this.timerId = false;
-	this.dcThreshold = 5000;
-	this.cmSubscription = false;
-	this.ipAddress = false;
+	this.reconnect =		true;
+	this.autoReconnect =	false;
+	this.timerId =			false;
+	this.dcThreshold =		5000;
+	this.cmSubscription =	false;
+	this.ipAddress =		false;
 	this.reconnectOnBetter = false;
 
 	this.connected =		false;
@@ -36,17 +36,6 @@ function ircServer(params)
 	this.stageController =	false;
 	this.statusAssistant =	false;
 	
-	var nicks = ['nick1', 'nick2', 'nick3'];
-	for (var i = 0; i < nicks.length; i++)
-	{
-		//console.log("i " + i);
-		var nick = prefs.get()[nicks[i]];
-		if (nick)
-		{
-			//console.log("nick " + nick);
-			this.preferredNicks.push(nick);
-		}
-	}
 	if (this.autoConnect)
 	{
 		this.connect();
@@ -159,6 +148,18 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {
+	// load identity nick list
+	this.preferredNicks = [];
+	var nicks = ['nick1', 'nick2', 'nick3'];
+	for (var i = 0; i < nicks.length; i++)
+	{
+		var nick = prefs.get()[nicks[i]];
+		if (nick)
+		{
+			this.preferredNicks.push(nick);
+		}
+	}
+	
 	// connecting...
 	this.newMessage('status', false, 'Connecting...');
 	this.subscription = wIRCd.connect
