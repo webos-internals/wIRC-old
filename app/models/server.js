@@ -434,7 +434,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						var tmpChan = this.getChannel(payload.params[0]);
 						if (tmpChan) 
 						{
-							tmpChan.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[1] + ' by ' + tmpNick.name);
+							tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
 						}
 					}
 					else
