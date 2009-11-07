@@ -9,6 +9,7 @@ function ServerStatusAssistant(server, popped)
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
+	this.inputElement =				false;
 	this.sendButtonElement =		false;
 	
 	this.autoScroll =				true;
@@ -55,10 +56,11 @@ ServerStatusAssistant.prototype.setup = function()
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
 		
-		this.scrollHandler =		this.onScrollStarted.bindAsEventListener(this);
-		this.popButtonPressed =		this.popButtonPressed.bindAsEventListener(this);
-		this.inputChanged =			this.inputChanged.bindAsEventListener(this);
-		this.sendButtonPressed =	this.sendButtonPressed.bindAsEventListener(this);
+		this.scrollHandler =			this.onScrollStarted.bindAsEventListener(this);
+		this.popButtonPressed =			this.popButtonPressed.bindAsEventListener(this);
+		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
+		this.inputElementLoseFocus =	this.inputFocus.bind(this);
+		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
 		
 		Mojo.Event.listen(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
 		
@@ -88,6 +90,7 @@ ServerStatusAssistant.prototype.setup = function()
 			{
 				modelProperty: 'value',
 				//hintText: $L('Message...'),
+				inputName: 'inputElement',
 				focus: false,
 				multiline: true,
 				enterSubmits: true,
@@ -135,6 +138,11 @@ ServerStatusAssistant.prototype.activate = function(event)
 	{
 		this.loadPrefs();
 		this.updateList();
+	}
+	else
+	{
+		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
+		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
@@ -223,6 +231,13 @@ ServerStatusAssistant.prototype.inputChanged = function(event)
 		}
 	}
 }
+ServerStatusAssistant.prototype.inputFocus = function(event)
+{
+	if (this.inputElement)
+	{
+		this.inputElement.focus();
+	}
+}
 
 ServerStatusAssistant.prototype.handleCommand = function(event)
 {
@@ -246,5 +261,6 @@ ServerStatusAssistant.prototype.cleanup = function(event)
 		Mojo.Event.stopListening(this.popButtonElement, Mojo.Event.tap, 			this.popButtonPressed);
 	}
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
+	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap, 			this.sendButtonPressed);
 }

@@ -8,6 +8,7 @@ function QueryChatAssistant(query)
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
+	this.inputElement =				false;
 	this.sendButtonElement =		false;
 	
 	this.autoScroll =				true;
@@ -60,6 +61,7 @@ QueryChatAssistant.prototype.setup = function()
 		this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
 		this.invisibleWindowHandler =	this.invisibleWindow.bindAsEventListener(this);
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
+		this.inputElementLoseFocus =	this.inputFocus.bind(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
 		
 		Mojo.Event.listen(this.sceneScroller,	Mojo.Event.scrollStarting,	this.scrollHandler);
@@ -90,6 +92,7 @@ QueryChatAssistant.prototype.setup = function()
 			{
 				modelProperty: 'value',
 				//hintText: $L('Message...'),
+				inputName: 'inputElement',
 				focus: false,
 				multiline: true,
 				enterSubmits: true,
@@ -137,6 +140,11 @@ QueryChatAssistant.prototype.activate = function(event)
 	if (this.alreadyActivated)
 	{
 		this.updateList();
+	}
+	else
+	{
+		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
+		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
@@ -228,6 +236,13 @@ QueryChatAssistant.prototype.inputChanged = function(event)
 		}
 	}
 }
+QueryChatAssistant.prototype.inputFocus = function(event)
+{
+	if (this.inputElement)
+	{
+		this.inputElement.focus();
+	}
+}
 
 QueryChatAssistant.prototype.handleCommand = function(event)
 {
@@ -267,5 +282,6 @@ QueryChatAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageActivate,   this.visibleWindowHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
+	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
 }

@@ -16,6 +16,7 @@ function ChannelChatAssistant(channel)
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
+	this.inputElement =				false;
 	this.sendButtonElement =		false;
 	
 	this.autoScroll =				true;
@@ -78,6 +79,7 @@ ChannelChatAssistant.prototype.setup = function()
 		this.topicToggled =				this.topicToggle.bindAsEventListener(this);
 		this.userButtonPressed =		this.userButtonPressed.bindAsEventListener(this);
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
+		this.inputElementLoseFocus =	this.inputFocus.bind(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
 		
 		Mojo.Event.listen(this.sceneScroller,	Mojo.Event.scrollStarting,	this.scrollHandler);
@@ -114,6 +116,7 @@ ChannelChatAssistant.prototype.setup = function()
 			{
 				modelProperty: 'value',
 				//hintText: $L('Message...'),
+				inputName: 'inputElement',
 				focus: false,
 				multiline: true,
 				enterSubmits: true,
@@ -161,6 +164,11 @@ ChannelChatAssistant.prototype.activate = function(event)
 	if (this.alreadyActivated)
 	{
 		this.updateList();
+	}
+	else
+	{
+		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
+		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
@@ -350,6 +358,13 @@ ChannelChatAssistant.prototype.inputChanged = function(event)
 		}
 	}
 }
+ChannelChatAssistant.prototype.inputFocus = function(event)
+{
+	if (this.inputElement)
+	{
+		this.inputElement.focus();
+	}
+}
 
 ChannelChatAssistant.prototype.userButtonPressed = function(event)
 {
@@ -395,6 +410,7 @@ ChannelChatAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
 	Mojo.Event.stopListening(this.userButtonElement,	Mojo.Event.tap,				this.userButtonPressed);
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
+	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
 	if (this.channel.containsNick(this.channel.server.nick))
 	{
