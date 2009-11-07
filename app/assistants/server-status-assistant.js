@@ -111,27 +111,10 @@ ServerStatusAssistant.prototype.setup = function()
 	}
 }
 
-ServerStatusAssistant.prototype.onScrollStarted = function(event)
-{
-	event.addListener(this);
-}
-ServerStatusAssistant.prototype.moved = function(stopped, position)
-{
-	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
-	{
-		this.autoScroll = false;
-	}
-	else
-	{
-		this.autoScroll = true;
-	}
-}
-
 ServerStatusAssistant.prototype.loadPrefs = function(initial)
 {
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 }
-
 ServerStatusAssistant.prototype.activate = function(event)
 {
 	if (this.alreadyActivated)
@@ -185,6 +168,21 @@ ServerStatusAssistant.prototype.updateList = function(initial)
 	}
 }
 
+ServerStatusAssistant.prototype.onScrollStarted = function(event)
+{
+	event.addListener(this);
+}
+ServerStatusAssistant.prototype.moved = function(stopped, position)
+{
+	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
+	{
+		this.autoScroll = false;
+	}
+	else
+	{
+		this.autoScroll = true;
+	}
+}
 ServerStatusAssistant.prototype.revealBottom = function()
 {
 	if (this.autoScroll) 
@@ -252,7 +250,6 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 	}
 }
 
-ServerStatusAssistant.prototype.deactivate = function(event) {}
 ServerStatusAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);

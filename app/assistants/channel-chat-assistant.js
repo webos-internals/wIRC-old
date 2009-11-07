@@ -137,27 +137,10 @@ ChannelChatAssistant.prototype.setup = function()
 	}
 }
 
-ChannelChatAssistant.prototype.onScrollStarted = function(event)
-{
-	event.addListener(this);
-}
-ChannelChatAssistant.prototype.moved = function(stopped, position)
-{
-	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
-	{
-		this.autoScroll = false;
-	}
-	else
-	{
-		this.autoScroll = true;
-	}
-}
-
 ChannelChatAssistant.prototype.loadPrefs = function(initial)
 {
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 }
-
 ChannelChatAssistant.prototype.activate = function(event)
 {
 	this.loadPrefs();
@@ -174,54 +157,6 @@ ChannelChatAssistant.prototype.activate = function(event)
 	this.revealBottom();
 	this.inputWidgetElement.mojo.focus();
 }
-
-ChannelChatAssistant.prototype.updateUserCount = function()
-{
-	this.userCountElement.update(this.channel.nicks.length);
-}
-ChannelChatAssistant.prototype.updateTitle = function()
-{
-	this.titleElement.update(this.channel.name + (this.channel.mode?' (' + this.channel.mode + ')':''));
-}
-ChannelChatAssistant.prototype.updateTopic = function()
-{
-	this.topicElement.update(this.channel.topic);
-}
-
-ChannelChatAssistant.prototype.headerTap = function(event)
-{
-	if (event.target.id == 'header') // we don't want to toggle topic if the header is not tapped right on
-	{
-		if (this.topicVisible)
-		{
-			var from = 0;
-			var to   = 0 - this.topicContainerElement.getHeight();
-		}
-		else
-		{
-			var from = 0 - this.topicContainerElement.getHeight();
-			var to   = 0;
-		}
-		
-		Mojo.Animation.animateStyle
-		(
-			this.topicContainerElement,
-			'top',
-			'zeno', // linear/bezier/zeno
-			{
-				from:       from,
-				to:         to,
-				duration:   0.5,
-				onComplete: this.topicToggled
-			}
-		);
-	}
-}
-ChannelChatAssistant.prototype.topicToggle = function()
-{
-	this.topicVisible = !this.topicVisible;
-}
-
 ChannelChatAssistant.prototype.updateList = function(initial)
 {
 	try
@@ -266,6 +201,34 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 	}
 }
 
+ChannelChatAssistant.prototype.updateUserCount = function()
+{
+	this.userCountElement.update(this.channel.nicks.length);
+}
+ChannelChatAssistant.prototype.updateTitle = function()
+{
+	this.titleElement.update(this.channel.name + (this.channel.mode?' (' + this.channel.mode + ')':''));
+}
+ChannelChatAssistant.prototype.updateTopic = function()
+{
+	this.topicElement.update(this.channel.topic);
+}
+
+ChannelChatAssistant.prototype.onScrollStarted = function(event)
+{
+	event.addListener(this);
+}
+ChannelChatAssistant.prototype.moved = function(stopped, position)
+{
+	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
+	{
+		this.autoScroll = false;
+	}
+	else
+	{
+		this.autoScroll = true;
+	}
+}
 ChannelChatAssistant.prototype.revealBottom = function()
 {
 	if (this.autoScroll) 
@@ -279,6 +242,44 @@ ChannelChatAssistant.prototype.revealBottom = function()
 	}
 }
 
+ChannelChatAssistant.prototype.headerTap = function(event)
+{
+	if (event.target.id == 'header') // we don't want to toggle topic if the header is not tapped right on
+	{
+		if (this.topicVisible)
+		{
+			var from = 0;
+			var to   = 0 - this.topicContainerElement.getHeight();
+		}
+		else
+		{
+			var from = 0 - this.topicContainerElement.getHeight();
+			var to   = 0;
+		}
+		
+		Mojo.Animation.animateStyle
+		(
+			this.topicContainerElement,
+			'top',
+			'zeno', // linear/bezier/zeno
+			{
+				from:       from,
+				to:         to,
+				duration:   0.5,
+				onComplete: this.topicToggled
+			}
+		);
+	}
+}
+ChannelChatAssistant.prototype.topicToggle = function()
+{
+	this.topicVisible = !this.topicVisible;
+}
+
+ChannelChatAssistant.prototype.userButtonPressed = function(event)
+{
+	this.controller.stageController.pushScene('channel-users', this.channel);
+}
 ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 {
 	this.channel.newCommand(this.inputModel.value);
@@ -286,6 +287,34 @@ ChannelChatAssistant.prototype.sendButtonPressed = function(event)
 	
 	// this probably isn't needed
 	//this.updateList();
+}
+ChannelChatAssistant.prototype.inputChanged = function(event)
+{
+	this.revealBottom();
+	
+	if (event.originalEvent && Mojo.Char.isEnterKey(event.originalEvent.keyCode) &&
+		event.value != '') 
+	{
+		this.sendButtonPressed();
+	}
+	else 
+	{
+		if (event.value == '') 
+		{
+			this.sendButtonElement.style.display = 'none';
+		}
+		else 
+		{
+			this.sendButtonElement.style.display = '';
+		}
+	}
+}
+ChannelChatAssistant.prototype.inputFocus = function(event)
+{
+	if (this.inputElement)
+	{
+		this.inputElement.focus();
+	}
 }
 
 ChannelChatAssistant.prototype.keyHandler = function(event)
@@ -335,40 +364,6 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 		this.text = false;
 		this.nick = false;
 	}
-}
-
-ChannelChatAssistant.prototype.inputChanged = function(event)
-{
-	this.revealBottom();
-	
-	if (event.originalEvent && Mojo.Char.isEnterKey(event.originalEvent.keyCode) &&
-		event.value != '') 
-	{
-		this.sendButtonPressed();
-	}
-	else 
-	{
-		if (event.value == '') 
-		{
-			this.sendButtonElement.style.display = 'none';
-		}
-		else 
-		{
-			this.sendButtonElement.style.display = '';
-		}
-	}
-}
-ChannelChatAssistant.prototype.inputFocus = function(event)
-{
-	if (this.inputElement)
-	{
-		this.inputElement.focus();
-	}
-}
-
-ChannelChatAssistant.prototype.userButtonPressed = function(event)
-{
-	this.controller.stageController.pushScene('channel-users', this.channel);
 }
 
 ChannelChatAssistant.prototype.handleCommand = function(event)

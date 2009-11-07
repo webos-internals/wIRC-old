@@ -113,27 +113,10 @@ QueryChatAssistant.prototype.setup = function()
 	}
 }
 
-QueryChatAssistant.prototype.onScrollStarted = function(event)
-{
-	event.addListener(this);
-}
-QueryChatAssistant.prototype.moved = function(stopped, position)
-{
-	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
-	{
-		this.autoScroll = false;
-	}
-	else
-	{
-		this.autoScroll = true;
-	}
-}
-
 QueryChatAssistant.prototype.loadPrefs = function(initial)
 {
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 }
-
 QueryChatAssistant.prototype.activate = function(event)
 {
 	this.loadPrefs();
@@ -150,7 +133,6 @@ QueryChatAssistant.prototype.activate = function(event)
 	this.revealBottom();
 	this.inputWidgetElement.mojo.focus();
 }
-
 QueryChatAssistant.prototype.updateList = function(initial)
 {
 	try
@@ -194,6 +176,21 @@ QueryChatAssistant.prototype.updateList = function(initial)
 	}
 }
 
+QueryChatAssistant.prototype.onScrollStarted = function(event)
+{
+	event.addListener(this);
+}
+QueryChatAssistant.prototype.moved = function(stopped, position)
+{
+	if (this.sceneScroller.scrollHeight - this.sceneScroller.scrollTop > this.sceneScroller.clientHeight) 
+	{
+		this.autoScroll = false;
+	}
+	else
+	{
+		this.autoScroll = true;
+	}
+}
 QueryChatAssistant.prototype.revealBottom = function()
 {
 	if (this.autoScroll) 
