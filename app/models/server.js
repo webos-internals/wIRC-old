@@ -568,23 +568,18 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							if (nicks[i])
 							{
+								var prefixNick = '';
 								var onlyNick = nicks[i];
-								var modeNick = nicks[i].substr(0, 1);
-								if (modeNick == '@' ||	// op
-									modeNick == '%' ||	// hop
-									modeNick == '+')		// v
+								if (ircNick.hasPrefix(onlyNick))
 								{
+									prefixNick = nicks[i].substr(0, 1);
 									onlyNick = nicks[i].substr(1);
-								}
-								else
-								{
-									modeNick = '';
 								}
 								
 								tmpNick = this.getNick(onlyNick);
 								if (tmpNick)
 								{
-									tmpNick.addChannel(tmpChan, modeNick);
+									tmpNick.addChannel(tmpChan, ircNick.getPrefixMode(prefixNick));
 								}
 							}
 						}
