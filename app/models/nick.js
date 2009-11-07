@@ -19,7 +19,9 @@ ircNick.prototype.addChannel = function(channel, mode)
 		{ 
 			channel.addNick(this);
 			this.channels.push(channel);
-			this.channelModes[channel.name] = mode;
+			
+			if (mode) this.channelModes[channel.name] = [mode];
+			else this.channelModes[channel.name] = [];
 		} 
 	}
 }
@@ -29,7 +31,7 @@ ircNick.prototype.removeChannel = function(channel)
 	{
 		channel.removeNick(this);
 		this.channels = this.channels.without(channel);
-		this.channelModes[channel.name] = '';
+		this.channelModes[channel.name] = null;
 	}
 }
 
@@ -44,22 +46,49 @@ ircNick.prototype.updateNickName = function(newName)
 		this.channels[i].newMessage('type9', false, msg);
 	}
 }
-ircNick.prototype.updateNickPrefix = function(newPrefix, channel)
+ircNick.prototype.updateMode = function(mode, channel)
 {
-	this.channelModes[channel.name] = ircNick.getModePrefix(newPrefix);
+	alert(this.name + ': ' + this.channelModes[channel.name]);
+	
+	switch (mode.substr(0, 1))
+	{
+		case '-':
+			this.channelModes[channel.name] = this.channelModes[channel.name].without(mode.substr(1, 1));
+			break;
+		
+		case '+':
+			this.channelModes[channel.name].push(mode.substr(1, 1));
+			break;
+	}
+	
+	alert(this.name + ': ' + this.channelModes[channel.name]);
 }
-ircNick.prototype.updateNickMode = function(newMode, channel)
+
+ircNick.prototype.getHighestMode = function(channel)
 {
-	this.channelModes[channel.name] = newMode;
+	if (this.channelModes[channel.name].length < 1)
+	{
+		return '';
+	}
+	if (this.channelModes[channel.name].length > 1) 
+	{
+		this.channelModes[channel.name].sort(function(a, b)
+		{
+			return ircNick.getModeNum(a) - ircNick.getModeNum(b);
+		});
+	}
+	
+	return this.channelModes[channel.name][0];
 }
 
 ircNick.prototype.getListObject = function(channel)
 {
+	var objMode = this.getHighestMode(channel);
 	var obj =
 	{
 		name:	this.name,
-		prefix:	(channel.name ? ircNick.getModePrefix(this.channelModes[channel.name]) : ''),
-		mode:	(channel.name ? this.channelModes[channel.name] : '')
+		prefix:	(channel.name ? ircNick.getModePrefix(objMode) : ''),
+		mode:	(channel.name ? objMode : '')
 	};
 	
 	return obj;

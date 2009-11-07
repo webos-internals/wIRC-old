@@ -11,7 +11,7 @@ function ircServer(params)
 	this.identifyService =	params.identifyService;
 	this.identifyPassword =	params.identifyPassword;
 	this.onConnect =		params.onConnect;
-	this.preferredNicks = [];
+	this.preferredNicks =	[];
 	this.nextNick = 0;
 	
 	this.reconnect = true;
@@ -39,11 +39,11 @@ function ircServer(params)
 	var nicks = ['nick1', 'nick2', 'nick3'];
 	for (var i = 0; i < nicks.length; i++)
 	{
-		console.log("i " + i);
+		//console.log("i " + i);
 		var nick = prefs.get()[nicks[i]];
 		if (nick)
 		{
-		  console.log("nick " + nick);
+			//console.log("nick " + nick);
 			this.preferredNicks.push(nick);
 		}
 	}
@@ -435,6 +435,11 @@ ircServer.prototype.connectionHandler = function(payload)
 						if (tmpChan) 
 						{
 							tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
+							var modeNick = this.getNick(payload.params[2]);
+							if (modeNick)
+							{
+								modeNick.updateMode(payload.params[1], tmpChan);
+							}
 						}
 					}
 					else
