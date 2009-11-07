@@ -48,8 +48,6 @@ ircNick.prototype.updateNickName = function(newName)
 }
 ircNick.prototype.updateMode = function(mode, channel)
 {
-	alert(this.name + ': ' + this.channelModes[channel.name]);
-	
 	switch (mode.substr(0, 1))
 	{
 		case '-':
@@ -60,8 +58,6 @@ ircNick.prototype.updateMode = function(mode, channel)
 			this.channelModes[channel.name].push(mode.substr(1, 1));
 			break;
 	}
-	
-	alert(this.name + ': ' + this.channelModes[channel.name]);
 }
 
 ircNick.prototype.getHighestMode = function(channel)
