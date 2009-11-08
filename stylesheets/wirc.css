@@ -75,6 +75,7 @@ br.clear
 
 .server-list .palm-list .palm-row-wrapper .button
 {
+	background-image: url(../images/list-button-blank.png);
 	float: right;
 	width: 48px;
 	height: 49px;
@@ -95,11 +96,28 @@ br.clear
 {
 	background-image: url(../images/list-button-disconnected.png);
 }
+.server-list .palm-list .palm-row-wrapper .button.spinner
+{
+	display: none;
+}
+.server-list .palm-list .palm-row-wrapper .button.spinner .spinner
+{
+	margin-top: 9px;
+	margin-left: 8px;
+}
 .server-list .palm-list .palm-row-wrapper .button.prefs.selected,
 .server-list .palm-list .palm-row-wrapper.connected .button.status.selected,
 .server-list .palm-list .palm-row-wrapper.disconnected .button.status.selected
 {
 	background-position: bottom center;
+}
+.server-list .palm-list .palm-row-wrapper.changing .button.status
+{
+	display: none;
+}
+.server-list .palm-list .palm-row-wrapper.changing .button.spinner
+{
+	display: inline;
 }
 
 

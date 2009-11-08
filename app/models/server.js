@@ -950,6 +950,7 @@ ircServer.prototype.getListObject = function()
 		alias:		this.alias,
 		address:	this.address,
 		connected:	this.connected,
+		spinning:	true,
 		rowStyle:	''
 	};
 	

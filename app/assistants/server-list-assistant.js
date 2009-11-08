@@ -55,7 +55,8 @@ ServerListAssistant.prototype.setup = function()
 		{
 			itemTemplate: "server-list/server-row",
 			swipeToDelete: true,
-			reorderable: false
+			reorderable: false,
+			spinnerSize: Mojo.Widget.spinnerSmall
 		}, this.serverListModel);
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
@@ -103,6 +104,7 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else if (event.originalEvent.target.className.include('status'))
 	{
+		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
 		if (event.item.connected) 
 		{
 			servers.servers[event.item.key].disconnect();
