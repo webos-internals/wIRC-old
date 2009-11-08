@@ -23,6 +23,7 @@ function ircServer(params)
 	this.reconnectOnBetter = false;
 
 	this.connected =		false;
+	this.connectAction =	false; // is true when app is in the action of connecting/disconnecting
 	this.channels =			[];
 	this.queries =			[];
 	this.nick =				false;
@@ -162,6 +163,7 @@ ircServer.prototype.connect = function()
 	
 	// connecting...
 	this.newMessage('status', false, 'Connecting...');
+	this.connectAction = true;
 	this.subscription = wIRCd.connect
 	(
 		this.connectionHandler.bindAsEventListener(this),
@@ -278,6 +280,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				this.subscription.cancel();
 				this.ipAddress = false;
 				this.connected = false;
+				this.connectAction = false;
 				this.removeNick(this.nick);
 				if (servers.listAssistant && servers.listAssistant.controller)
 				{
@@ -290,6 +293,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				}
 				return;
 			}
+			
 			switch(payload.event)
 			{
 				case 'CONNECT':
@@ -297,6 +301,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.nick.me = true;
 					
 					this.connected = true;
+					this.connectAction = false;
 					
 					if (servers.listAssistant && servers.listAssistant.controller)
 					{
@@ -671,6 +676,7 @@ ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
 	// TODO: Jump to server status scene and display disconnecting
+	this.connectAction = true;
 	if (reason)
 	{
 		this.reconnect = false;
@@ -680,18 +686,19 @@ ircServer.prototype.disconnect = function(reason)
 	else
 	{
 		this.newMessage('status', false, 'Disconnecting...');
-		// wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
-		wIRCd.disconnect(null, this.sessionToken);
+		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
+		//wIRCd.disconnect(null, this.sessionToken);
 	}
 }
 ircServer.prototype.disconnectHandler = function(payload)
 {
-	this.newMessage('status', false, 'dc handler');
+	//this.newMessage('status', false, 'dc handler');
 	/*
 	if (payload.returnValue == 0)
 	{
 		this.ipAddress = false;
 		this.connected = false;
+		this.connectAction = false;
 		this.reconnect = false;
 		this.removeNick(this.nick);
 		if (servers.listAssistant && servers.listAssistant.controller)
@@ -704,8 +711,8 @@ ircServer.prototype.disconnectHandler = function(payload)
 	{
 		this.connect();
 	}
-	this.newMessage('status', false, 'ending dc handle');
 	*/
+	//this.newMessage('status', false, 'ending dc handle');
 }
 
 ircServer.prototype.showStatusScene = function(popit)
@@ -956,6 +963,8 @@ ircServer.prototype.getListObject = function()
 	
 	if (this.connected) obj.rowStyle = obj.rowStyle + ' connected';
 	else obj.rowStyle = obj.rowStyle + ' disconnected';
+	
+	if (this.connectAction) obj.rowStyle = obj.rowStyle + ' changing';
 	
 	if (this.alias == '') obj.rowStyle = obj.rowStyle + ' address-title';
 	
