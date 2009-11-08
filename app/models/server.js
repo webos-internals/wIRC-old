@@ -183,17 +183,14 @@ ircServer.prototype.maybeReconnect = function(network)
 
 	this.disconnect();
 }
-
 ircServer.prototype.ipDiffers = function(payload)
 {
 	return (payload && payload.ipAddress && payload.ipAddress !== this.ipAddress);
 }
-
 ircServer.prototype.ipMatches = function(payload)
 {
 	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
 }
-
 ircServer.prototype.cmHandler = function(payload)
 {
 	// Needs a lot of testing
@@ -670,21 +667,6 @@ ircServer.prototype.topicHandler = function(payload)
 	// idk what to do here if anything
 }
 
-ircServer.prototype.removeNick = function(nick)
-{
-	if (nick)
-	{
-		// Remove nick from all the channels
-		for (var i = 0; i < this.channels.length; i++)
-		{
-			this.channels[i].removeNick(nick);
-		}
-
-		// Remove nick from server list
-		this.nicks = this.nicks.without(nick);
-	}
-}
-
 ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
@@ -814,8 +796,8 @@ ircServer.prototype.joinChannel = function(name)
 		name:	name,
 		server:	this
 	});
-	newChannel.join();
 	this.channels.push(newChannel);
+	newChannel.join();
 }
 ircServer.prototype.getChannel = function(name)
 {
@@ -876,6 +858,20 @@ ircServer.prototype.startQuery = function(nick, started, messageType, message)
 	}
 	this.queries.push(newQuery);
 }
+ircServer.prototype.newQuery = function(name)
+{
+	var tmpNick = this.getNick(name);
+	if (tmpNick) 
+	{
+		var newQuery = new ircQuery(
+		{
+			nick:	tmpNick,
+			server:	this
+		});
+		this.queries.push(newQuery);
+		newQuery.openStage();
+	}
+}
 ircServer.prototype.getQuery = function(nick)
 {
 	if (this.queries.length > 0)
@@ -928,6 +924,20 @@ ircServer.prototype.getNick = function(name)
 	catch (e)
 	{
 		Mojo.Log.logException(e, "ircServer#getNick");
+	}
+}
+ircServer.prototype.removeNick = function(nick)
+{
+	if (nick)
+	{
+		// Remove nick from all the channels
+		for (var i = 0; i < this.channels.length; i++)
+		{
+			this.channels[i].removeNick(nick);
+		}
+
+		// Remove nick from server list
+		this.nicks = this.nicks.without(nick);
 	}
 }
 

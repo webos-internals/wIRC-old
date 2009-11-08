@@ -205,6 +205,10 @@ UserActionDialog.prototype.setup = function(widget)
 }
 UserActionDialog.prototype.queryTap = function(event)
 {
+	event.stop();
+	
+	this.sceneAssistant.channel.server.newQuery(this.item.name);
+	
 	this.widget.mojo.close();
 }
 UserActionDialog.prototype.close = function(event)
