@@ -32,8 +32,13 @@ function ServerStatusAssistant(server, popped)
 		items:
 		[
 			{
-				label: "Preferences",
+				label: 'Preferences',
 				command: 'do-prefs'
+			},
+			{},
+			{
+				label: 'Join Channel',
+				command: 'join-channel'
 			}
 		]
 	}
@@ -125,7 +130,7 @@ ServerStatusAssistant.prototype.activate = function(event)
 	else
 	{
 		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
-		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+		this.startAutoFocus();
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
@@ -166,6 +171,16 @@ ServerStatusAssistant.prototype.updateList = function(initial)
 	{
 		Mojo.Log.logException(e, 'server-status#updateList');
 	}
+}
+
+ServerStatusAssistant.prototype.startAutoFocus = function()
+{
+	Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+	this.inputWidgetElement.mojo.focus();
+}
+ServerStatusAssistant.prototype.stopAutoFocus = function()
+{
+	Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
 }
 
 ServerStatusAssistant.prototype.onScrollStarted = function(event)
@@ -245,6 +260,14 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 		{
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences');
+				break;
+				
+			case 'join-channel':
+				this.controller.showDialog(
+				{
+					template: 'channel-dialogs/join-dialog',
+					assistant: new ChannelJoinDialog(this)
+				});
 				break;
 		}
 	}

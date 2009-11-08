@@ -42,6 +42,7 @@
         "scenes": "channel-users",
         "source": "app/assistants/channel-users-assistant.js"
     },
+    {"source": "app/assistants/channel-dialog-assistants.js"},
     {
         "scenes": "query-chat",
         "source": "app/assistants/query-chat-assistant.js"
