@@ -47,8 +47,9 @@ ircServer.prototype.newCommand = function(message)
 {
 	if (this.connected)
 	{
-		var cmdRegExp =		new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
-		var twoValRegExp =	new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
+		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]{1}(.*)$/);
+		var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
+		var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{1}(.*)$/);
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{
@@ -60,7 +61,7 @@ ircServer.prototype.newCommand = function(message)
 				case 'nick':
 					wIRCd.nick(null, this.sessionToken, val)
 					break;
-					
+						
 				case 'j':
 				case 'join':
 					this.joinChannel(val);
@@ -89,11 +90,11 @@ ircServer.prototype.newCommand = function(message)
 						var tmpMatch = twoValRegExp.exec(val);
 						if (tmpMatch) 
 						{
-							this.topic(tmpMatch[1],tmpMatch[2]);
+							this.topic(tmpMatch[1], tmpMatch[2]);
 						} 
 						else 
 						{
-							this.topic(val,null);
+							this.topic(val, null);
 						}
 					}
 					break;					
