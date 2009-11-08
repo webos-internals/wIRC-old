@@ -1,4 +1,159 @@
 
+function SingleLineCommandDialog(sceneAssistant, params)
+{
+	this.sceneAssistant =	sceneAssistant;
+	this.params =			params;
+	
+	/* 
+	 * "params" object
+	 * 
+	 * - REQUIRED 
+	 * command		- without the slash or trailing space - example: 'nick', 'join', etc
+	 * onSubmit		- callback function to send the command string to, its diffent in server/channel/query assistants
+	 * 
+	 * - OPTIONAL
+	 * dialogTitle	- title of dialog - default: "Dialog"
+	 * textLabel	- label next to text field
+	 * textDefault	- default in text field
+	 * okText		- text on ok button - default: "Ok"
+	 * cancelText	- text on cancel button - defalt: "Cancel"
+	 * postCommand	- string to append to end of command dialog (after a space)
+	 * onActivate	- callback fnction to call on dialog activation
+	 * onDeactivate	- callback function to call on dialog deactivation
+	 * 
+	 */
+	
+	this.dialogTitle =	false;
+	this.textLabel =	false;
+	this.textField =	false;
+	this.okButton =		false;
+	this.cancelButton =	false;
+	
+	this.okHandler =	false;
+	this.closeHandler =	false;
+}
+SingleLineCommandDialog.pop = function(sceneAssistant, params)
+{
+	sceneAssistant.controller.showDialog(
+	{
+		template: 'dialog/single-line-dialog',
+		assistant: new SingleLineCommandDialog(sceneAssistant, params)
+	});
+}
+SingleLineCommandDialog.prototype.setup = function(widget)
+{
+	this.widget = widget;
+	
+	// load elements
+	this.dialogTitle =	this.sceneAssistant.controller.get('dialogTitle');
+	this.textLabel =	this.sceneAssistant.controller.get('textLabel');
+	this.textField =	this.sceneAssistant.controller.get('textField');
+	this.okButton =		this.sceneAssistant.controller.get('okButton');
+	this.cancelButton =	this.sceneAssistant.controller.get('cancelButton');
+	
+	// update strings
+	this.dialogTitle.update((this.params.dialogTitle?this.params.dialogTitle:'Dialog'));
+	this.textLabel.update((this.params.textLabel?this.params.textLabel:''));
+	
+	// load handlers
+	this.textChanged =	this.text.bindAsEventListener(this);
+	this.okTapped =		this.ok.bindAsEventListener(this);
+	this.cancelTapped =	this.cancel.bindAsEventListener(this);
+	
+	// setup widgets
+	this.sceneAssistant.controller.setupWidget
+	(
+		'textField',
+		{
+			modelProperty: 'value',
+			requiresEnterKey: true,
+			autoReplace: false,
+			textCase: Mojo.Widget.steModeLowerCase
+		},
+		{
+			value: (this.params.textDefault?this.params.textDefault:'')
+		}
+	);
+	this.sceneAssistant.controller.setupWidget
+	(
+		'okButton',
+		{},
+		{
+			buttonLabel: (this.params.okText?this.params.okText:'Ok'),
+			buttonClass: 'affirmative'
+		}
+	);
+	this.sceneAssistant.controller.setupWidget
+	(
+		'cancelButton',
+		{},
+		{
+			buttonLabel: (this.params.cancelText?this.params.cancelText:'Cancel'),
+			buttonClass: 'negative'
+		}
+	);
+	
+	// start listeners
+	Mojo.Event.listen(this.textField,		Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.listen(this.okButton,		Mojo.Event.tap,				this.okTapped);
+	Mojo.Event.listen(this.cancelButton,	Mojo.Event.tap,				this.cancelTapped);
+}
+SingleLineCommandDialog.prototype.text = function(event)
+{
+	// if enter, act as-if ok was pressed
+	if (event.originalEvent && Mojo.Char.isEnterKey(event.originalEvent.keyCode) &&
+		event.value != '') 
+	{
+		this.ok(event);
+	}
+}
+SingleLineCommandDialog.prototype.ok = function(event)
+{
+	// stop event
+	event.stop();
+	// we need the required parameters to actually send a command
+	if (this.params.onSubmit && this.params.command) 
+	{
+		this.params.onSubmit('/' + this.params.command + ' ' + this.textField.mojo.getValue() + (this.params.postCommand?' '+this.params.postCommand:''));
+	}
+	// close dialog
+	this.widget.mojo.close();
+}
+SingleLineCommandDialog.prototype.cancel = function(event)
+{
+	// stop event and close dialog
+	event.stop();
+	this.widget.mojo.close();
+}
+SingleLineCommandDialog.prototype.activate = function(event)
+{
+	// if onActivate callback, lets call it
+	if (this.params.onActivate)
+	{
+		this.params.onActivate();
+	}
+	// focus text field
+	this.textField.mojo.focus();
+}
+SingleLineCommandDialog.prototype.deactivate = function(event)
+{
+	// if onDeactivate callback, lets call it
+	if (this.params.onDeactivate)
+	{
+		this.params.onDeactivate();
+	}
+}
+SingleLineCommandDialog.prototype.cleanup = function(event)
+{
+	// kill listeners
+	Mojo.Event.stopListening(this.textField,	Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.okButton,		Mojo.Event.tap,				this.okTapped);
+	Mojo.Event.stopListening(this.cancelButton,	Mojo.Event.tap,				this.cancelTapped);
+}
+
+
+
+/*
 function ChangeNickDialog(sceneAssistant)
 {
 	this.sceneAssistant = sceneAssistant;
@@ -208,7 +363,7 @@ ChannelJoinDialog.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.joinButtonElement,	Mojo.Event.tap,				this.joinHandler);
 	Mojo.Event.stopListening(this.cancelButtonElement,	Mojo.Event.tap,				this.closeHandler);
 }
-
+*/
 
 
 function UserActionDialog(sceneAssistant, item)

@@ -280,11 +280,20 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 			case 'change-nick':
 				if (this.server.connected) 
 				{
-					this.controller.showDialog(
-					{
-						template: 'dialog/nick-dialog',
-						assistant: new ChangeNickDialog(this)
-					});
+					SingleLineCommandDialog.pop
+					(
+						this,
+						{
+							command:		'nick',
+							onSubmit:		this.server.newCommand.bind(this.server),
+							dialogTitle:	'Change Nick',
+							textLabel:		'Nick',
+							textDefault:	this.server.nick.name,
+							okText:			'change',
+							onActivate:		this.stopAutoFocus.bind(this),
+							onDeactivate:	this.startAutoFocus.bind(this)
+						}
+					);
 				}
 				else
 				{
@@ -295,11 +304,20 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 			case 'join-channel':
 				if (this.server.connected) 
 				{
-					this.controller.showDialog(
-					{
-						template: 'dialog/join-dialog',
-						assistant: new ChannelJoinDialog(this)
-					});
+					SingleLineCommandDialog.pop
+					(
+						this,
+						{
+							command:		'join',
+							onSubmit:		this.server.newCommand.bind(this.server),
+							dialogTitle:	'Join Channel',
+							textLabel:		'Channel',
+							textDefault:	'#',
+							okText:			'Join',
+							onActivate:		this.stopAutoFocus.bind(this),
+							onDeactivate:	this.startAutoFocus.bind(this)
+						}
+					);
 				}
 				else
 				{
