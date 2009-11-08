@@ -1,5 +1,111 @@
 
-function ChannelJoinDialog(sceneAssistant)
+function ChangeNickDialog(sceneAssistant)
+{
+	this.sceneAssistant = sceneAssistant;
+	
+	this.nickNameElement =		false;
+	this.changeButtonElement =	false;
+	this.cancelButtonElement =	false;
+	
+	this.changeHandler =		false;
+	this.closeHandler =			false;
+}
+ChangeNickDialog.prototype.setup = function(widget)
+{
+	this.widget = widget;
+	
+	this.nickNameElement =		this.sceneAssistant.controller.get('nickName');
+	this.changeButtonElement =	this.sceneAssistant.controller.get('changeButton');
+	this.cancelButtonElement =	this.sceneAssistant.controller.get('cancelButton');
+	
+	this.textChangeHandler =	this.textChanged.bindAsEventListener(this);
+	this.changeHandler =		this.change.bindAsEventListener(this);
+	this.closeHandler =			this.close.bindAsEventListener(this);
+	
+	
+	this.sceneAssistant.controller.setupWidget
+	(
+		'nickName',
+		{
+			modelProperty: 'value',
+			requiresEnterKey: true,
+			autoReplace: false,
+			textCase: Mojo.Widget.steModeLowerCase
+		},
+		{
+			value: this.sceneAssistant.server.nick.name
+		}
+	);
+	this.sceneAssistant.controller.setupWidget
+	(
+		'changeButton',
+		{},
+		{
+			buttonLabel: 'Change',
+			buttonClass: 'affirmative'
+		}
+	);
+	this.sceneAssistant.controller.setupWidget
+	(
+		'cancelButton',
+		{},
+		{
+			buttonLabel: 'Cancel',
+			buttonClass: 'negative'
+		}
+	);
+	
+	
+	Mojo.Event.listen(this.nickNameElement,		Mojo.Event.propertyChange,	this.textChangeHandler);
+	Mojo.Event.listen(this.changeButtonElement,	Mojo.Event.tap,				this.changeHandler);
+	Mojo.Event.listen(this.cancelButtonElement,	Mojo.Event.tap,				this.closeHandler);
+}
+ChangeNickDialog.prototype.textChanged = function(event)
+{
+	if (event.originalEvent && Mojo.Char.isEnterKey(event.originalEvent.keyCode) &&
+		event.value != '') 
+	{
+		this.change(event);
+	}
+}
+ChangeNickDialog.prototype.change = function(event)
+{
+	event.stop();
+	
+	this.sceneAssistant.server.newCommand('/nick ' + this.nickNameElement.mojo.getValue());
+	
+	this.widget.mojo.close();
+}
+ChangeNickDialog.prototype.close = function(event)
+{
+	event.stop();
+	this.widget.mojo.close();
+}
+ChangeNickDialog.prototype.activate = function(event)
+{
+	if (this.sceneAssistant.stopAutoFocus)
+	{
+		this.sceneAssistant.stopAutoFocus();
+	}
+	this.nickNameElement.mojo.focus();
+}
+ChangeNickDialog.prototype.deactivate = function(event)
+{
+	if (this.sceneAssistant.startAutoFocus)
+	{
+		this.sceneAssistant.startAutoFocus();
+	}
+}
+ChangeNickDialog.prototype.cleanup = function(event)
+{
+	Mojo.Event.stopListening(this.nickNameElement,		Mojo.Event.propertyChange,	this.changeHandler);
+	Mojo.Event.stopListening(this.changeButtonElement,	Mojo.Event.tap,				this.changeHandler);
+	Mojo.Event.stopListening(this.cancelButtonElement,	Mojo.Event.tap,				this.closeHandler);
+}
+
+
+
+function ChannelchangeDialog(sceneAssistant)
 {
 	this.sceneAssistant = sceneAssistant;
 	

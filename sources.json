@@ -10,6 +10,7 @@
     {"source": "app/models/nick.js"},
     {"source": "app/models/message.js"},
     {"source": "app/assistants/app-assistant.js"},
+    {"source": "app/assistants/dialog-assistant.js"},
     {
         "scenes": "server-list",
         "source": "app/assistants/server-list-assistant.js"
@@ -42,7 +43,6 @@
         "scenes": "channel-users",
         "source": "app/assistants/channel-users-assistant.js"
     },
-    {"source": "app/assistants/channel-dialog-assistants.js"},
     {
         "scenes": "query-chat",
         "source": "app/assistants/query-chat-assistant.js"

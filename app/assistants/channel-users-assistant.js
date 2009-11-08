@@ -99,7 +99,7 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	event.stop();
 	this.controller.showDialog(
 	{
-		template: 'channel-dialogs/user-dialog',
+		template: 'dialog/user-dialog',
 		assistant: new UserActionDialog(this, event.item)
 	});
 }

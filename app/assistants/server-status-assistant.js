@@ -35,7 +35,10 @@ function ServerStatusAssistant(server, popped)
 				label: 'Preferences',
 				command: 'do-prefs'
 			},
-			{},
+			{
+				label: 'Change Nick',
+				command: 'change-nick'
+			},
 			{
 				label: 'Join Channel',
 				command: 'join-channel'
@@ -252,6 +255,18 @@ ServerStatusAssistant.prototype.inputFocus = function(event)
 	}
 }
 
+ServerStatusAssistant.prototype.alertDialog = function(message)
+{
+	this.controller.showAlertDialog(
+	{
+	    title:				this.server.alias,
+		allowHTMLMessage:	true,
+	    message:			message,
+	    choices:			[{label:$L('Ok'), value:''}],
+		onChoose:			function(value){}
+    });
+}
+
 ServerStatusAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -262,12 +277,34 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 				this.controller.stageController.pushScene('preferences');
 				break;
 				
-			case 'join-channel':
-				this.controller.showDialog(
+			case 'change-nick':
+				if (this.server.connected) 
 				{
-					template: 'channel-dialogs/join-dialog',
-					assistant: new ChannelJoinDialog(this)
-				});
+					this.controller.showDialog(
+					{
+						template: 'dialog/nick-dialog',
+						assistant: new ChangeNickDialog(this)
+					});
+				}
+				else
+				{
+					this.alertDialog('You must be connected to change your nick.');
+				}
+				break;
+				
+			case 'join-channel':
+				if (this.server.connected) 
+				{
+					this.controller.showDialog(
+					{
+						template: 'dialog/join-dialog',
+						assistant: new ChannelJoinDialog(this)
+					});
+				}
+				else
+				{
+					this.alertDialog('You must be connected to join a channel.');
+				}
 				break;
 		}
 	}
