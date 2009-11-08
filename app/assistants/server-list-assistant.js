@@ -104,6 +104,19 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else if (event.originalEvent.target.className.include('status'))
 	{
+		if (prefs.get().nick1 == 'wIRCer')
+		{
+			this.controller.showAlertDialog(
+			{
+			    title:				'wIRC',
+				allowHTMLMessage:	true,
+			    message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
+									'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
+			    choices:			[{label:$L('Ok'), value:''}],
+				onChoose:			function(value){}
+		    });
+			return;
+		}
 		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
 		if (event.item.connected) 
 		{
