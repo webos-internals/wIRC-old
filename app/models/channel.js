@@ -31,6 +31,7 @@ ircChannel.prototype.newCommand = function(message)
 		switch(cmd.toLowerCase())
 		{
 			case 'part':
+			case 'leave':
 				this.part();
 				break;
 				

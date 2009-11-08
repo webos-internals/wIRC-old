@@ -59,6 +59,10 @@ ircNick.prototype.updateMode = function(mode, channel)
 			break;
 	}
 }
+ircNick.prototype.hasMode = function(mode, channel)
+{
+	return (this.channelModes[channel.name].indexOf(mode) !== -1);
+}
 
 ircNick.prototype.getHighestMode = function(channel)
 {
