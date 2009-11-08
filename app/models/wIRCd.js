@@ -2,8 +2,11 @@ wIRCd.identifier = 'palm://us.ryanhope.wIRCd';
 
 function wIRCd() {}
 
-wIRCd.connect = function(callback, server, port, username, password, nick, realname)
+wIRCd.connect = function(callback, server, port, username, password, nick, realname, interface)
 {
+	var iface = null;
+	if (interface.length>0)
+		iface = interface;
 	var request = new Mojo.Service.Request(wIRCd.identifier,
 	{
 		method: 'client_connect',
@@ -14,6 +17,7 @@ wIRCd.connect = function(callback, server, port, username, password, nick, realn
 			"nick": nick,
 			"port": port,
 			"realname": realname,
+			"interface": iface,
 		},
 		onSuccess: callback,
 		onFailure: callback

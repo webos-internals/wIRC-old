@@ -173,7 +173,8 @@ ircServer.prototype.connect = function()
 		(this.serverUser?this.serverUser:null),
 		(this.serverPassword?this.serverPassword:null),
 		this.preferredNicks[this.nextNick],
-		prefs.get().realname
+		prefs.get().realname,
+		prefs.get().forcedInterface
 	);
 }
 

@@ -8,6 +8,8 @@ function PreferencesAssistant()
 	this.secretString = '';
 	this.secretAnswer = 'iknowwhatimdoing';
 	
+	this.interfaceWrapper =		false;
+	
 	// setup menu
 	this.menuModel =
 	{
@@ -162,6 +164,7 @@ function PreferencesAssistant()
 					{label:'yellow', value:'yellow'},
 					{label:'yellowgreen', value:'yellowgreen'}
 				];
+				
 }
 
 PreferencesAssistant.prototype.setup = function()
@@ -178,6 +181,9 @@ PreferencesAssistant.prototype.setup = function()
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
+		
+		this.pifaceChanged();
+		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);
 		
 		// Global Group
 		this.controller.setupWidget
@@ -216,7 +222,37 @@ PreferencesAssistant.prototype.setup = function()
 		
 		this.controller.listen('statusPop',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
-		
+		// Connection details group
+		this.controller.setupWidget
+		(
+			'piface',
+			{
+				label: 'Interface',
+				choices:
+				[
+					{label:'None', value:''},
+					{label:'Wan (ppp0)', value:'ppp0'},
+					{label:'Wifi (eth0)', value:'eth0'}
+				],
+				modelProperty: 'piface'
+			},
+			this.prefs
+		);
+		this.controller.listen('piface',		Mojo.Event.propertyChange, this.pifaceChangedHandler);
+		this.controller.setupWidget
+		(
+			'aiface',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+	  			fieldName:  'aiface'
+			},
+			{
+				value : this.prefs.aiface,
+	 			disabled: false
+			}
+		);
+		this.controller.listen('aiface',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		// Input Group
 		this.controller.setupWidget
@@ -513,6 +549,8 @@ PreferencesAssistant.prototype.setup = function()
 		// hide secret group
 		this.controller.get('secretPreferences').style.display = 'none';
 		
+		this.interfaceWrapper =		this.controller.get('interfaceWrapper');
+		
 	}
 	catch (e)
 	{
@@ -571,6 +609,23 @@ PreferencesAssistant.prototype.highlightStyleChanged = function(event)
 	{
 		this.controller.get('highlightPartContainer').className = 'palm-row last';
 		this.controller.get('highlightColorOptions').style.display = 'none';
+	}
+}
+PreferencesAssistant.prototype.pifaceChanged = function(event)
+{
+	if (event) 
+	{
+		this.listChanged(event);
+	}
+	if (this.prefs['piface']=='')
+	{
+		this.interfaceWrapper.className = 'palm-row single';
+		this.controller.get('fallbackInfo').style.display = 'none';
+	}
+	else
+	{
+		this.interfaceWrapper.className = 'palm-row first';
+		this.controller.get('fallbackInfo').style.display = '';
 	}
 }
 PreferencesAssistant.prototype.dashboardChannelChanged = function(event)
@@ -659,6 +714,9 @@ PreferencesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('theme',					Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 	
 	this.controller.stopListening('statusPop',				Mojo.Event.propertyChange, this.toggleChangeHandler);
+	
+	this.controller.stopListening('piface',					Mojo.Event.propertyChange, this.pifaceChangedHandler);
+	this.controller.stopListening('aiface',					Mojo.Event.propertyChange, this.listChangedHandler);
 		
 	this.controller.stopListening('tabSuffix',				Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('autoCap',				Mojo.Event.propertyChange, this.toggleChangeHandler);

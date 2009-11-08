@@ -17,6 +17,10 @@ prefCookie.prototype.get = function(reload)
 				// Global Group
 				theme:				'palm-default',
 				
+				// Global Group
+				piface:				'',
+				aiface:				false,
+				
 				// Server Status Group
 				statusPop:			false,
 				
