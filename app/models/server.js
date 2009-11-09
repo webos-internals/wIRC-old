@@ -174,7 +174,7 @@ ircServer.prototype.connect = function()
 		(this.serverPassword?this.serverPassword:null),
 		this.preferredNicks[this.nextNick],
 		prefs.get().realname,
-		prefs.get().forcedInterface
+		prefs.get().piface
 	);
 }
 
