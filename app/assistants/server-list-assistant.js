@@ -37,6 +37,10 @@ function ServerListAssistant()
 			{
 				label: "Preferences",
 				command: 'do-prefs'
+			},
+			{
+				label: "About",
+				command: 'do-about'
 			}
 		]
 	}
@@ -219,6 +223,10 @@ ServerListAssistant.prototype.handleCommand = function(event)
 				
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences');
+				break;
+				
+			case 'do-about':
+				this.controller.stageController.pushScene('about');
 				break;
 				
 			case 'new-server':

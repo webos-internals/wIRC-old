@@ -50,5 +50,9 @@
     {
         "scenes": "query-dashboard",
         "source": "app/assistants/query-dashboard-assistant.js"
-    }
+    },
+    {
+        "scenes": "about",
+        "source": "app/assistants/about-assistant.js"
+    }    
 ]
