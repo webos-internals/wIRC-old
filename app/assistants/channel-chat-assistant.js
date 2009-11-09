@@ -211,7 +211,7 @@ ChannelChatAssistant.prototype.updateTitle = function()
 }
 ChannelChatAssistant.prototype.updateTopic = function()
 {
-	this.topicElement.update(this.channel.topic);
+	this.topicElement.update(Mojo.Format.runTextIndexer(this.channel.topic));
 }
 
 ChannelChatAssistant.prototype.onScrollStarted = function(event)
