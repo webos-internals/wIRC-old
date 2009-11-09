@@ -16,13 +16,14 @@ function ircChannel(params)
 	this.stageName =		'channel-' + this.server.id + '-' + this.name;
 	this.stageController =	false;
 	this.chatAssistant =	false;
+	this.usersAssistant =	false;
 }
 
 ircChannel.prototype.newCommand = function(message)
 {
 	var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
-	var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
-	var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{1}(.*)$/);
+	var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{0,1}(.*)$/);
+	var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{0,1}(.*)$/);
 	var match = cmdRegExp.exec(message);
 	if (match)
 	{
@@ -161,7 +162,7 @@ ircChannel.prototype.removeNick = function(nick)
 		this.nicks = this.nicks.without(nick);
 		if (!nick.me)
 		{
-			this.chatAssistant.updateUserCount();
+			this.updateUserCount();
 		}
 	}
 }
@@ -222,6 +223,31 @@ ircChannel.prototype.tabNick = function(tabText, nick)
 	}
 
 	return false;
+}
+
+ircChannel.prototype.setMode = function(mode)
+{	// i would just call this "mode" but thats the name of the variable that holds the mode for this channel
+	if (mode)
+	{
+		wIRCd.channel_mode(this.modeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, mode);
+	}
+}
+ircChannel.prototype.modeHandler = function(payload)
+{
+	// this doesn't really need anything
+}
+
+ircChannel.prototype.kick = function(nick, reason)
+{
+	if (!reason) reason = 'No Reason';
+	if (nick && this.containsNick(nick))
+	{
+		wIRCd.kick(this.kickHandler.bindAsEventListener(this), this.server.sessionToken, this.name, nick.name, reason);
+	}
+}
+ircChannel.prototype.kickHandler = function(payload)
+{
+	// this doesn't really need anything
 }
 
 ircChannel.prototype.join = function()
@@ -359,11 +385,34 @@ ircChannel.prototype.setChatAssistant = function(assistant)
 {
 	this.chatAssistant = assistant;
 }
+ircChannel.prototype.setUsersAssistant = function(assistant)
+{
+	this.usersAssistant = assistant;
+}
 
+ircChannel.prototype.updateUserCount = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateUserCount();
+	}
+	
+	// users assistant may also need to be updated (for mode changes/kicks/etc)
+	if (this.usersAssistant && this.usersAssistant.controller)
+	{
+		this.usersAssistant.updateList();
+	}
+}
 ircChannel.prototype.updateChatList = function()
 {
 	if (this.chatAssistant && this.chatAssistant.controller)
 	{
 		this.chatAssistant.updateList();
+	}
+	
+	// users assistant may also need to be updated (for mode changes/kicks/etc)
+	if (this.usersAssistant && this.usersAssistant.controller)
+	{
+		this.usersAssistant.updateList();
 	}
 }
