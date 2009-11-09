@@ -291,6 +291,7 @@ wIRCd.version = function(callback)
 	var request = new Mojo.Service.Request(wIRCd.identifier,
 	{
 		method: 'client_get_version',
+		parameters: {},
 		onSuccess: callback,
 		onFailure: callback
 	});
