@@ -47,7 +47,7 @@ ircServer.prototype.newCommand = function(message)
 {
 	if (this.connected)
 	{
-		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]{1}(.*)$/);
+		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
 		var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
 		var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{1}(.*)$/);
 		var match = cmdRegExp.exec(message);

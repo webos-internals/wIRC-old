@@ -20,7 +20,7 @@ function ircChannel(params)
 
 ircChannel.prototype.newCommand = function(message)
 {
-	var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]{1}(.*)$/);
+	var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
 	var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
 	var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{1}(.*)$/);
 	var match = cmdRegExp.exec(message);
@@ -47,13 +47,13 @@ ircChannel.prototype.newCommand = function(message)
 					if (tmpMatch) 
 					{
 						this.server.topic(tmpMatch[1],tmpMatch[2]);
-					} 
-					else 
+					}
+					else
 					{
 						if (val.substr(0, 1) == '#') 
 						{
 							this.server.topic(val);
-						} 
+						}
 						else 
 						{
 							this.server.topic(this.name, val);
