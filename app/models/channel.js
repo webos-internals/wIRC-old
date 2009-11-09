@@ -1,6 +1,6 @@
 function ircChannel(params)
 {
-	this.name =				params.name;
+	this.name =				params.name.toLowerCase();
 	this.server =			params.server;
 	this.nicks = [];
 	

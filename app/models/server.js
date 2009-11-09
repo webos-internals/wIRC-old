@@ -842,7 +842,7 @@ ircServer.prototype.getChannel = function(name)
 	{
 		for (var c = 0; c < this.channels.length; c++)
 		{
-			if (this.channels[c].name == name)
+			if (this.channels[c].name == name.toLowerCase())
 			{
 				return this.channels[c];
 			}
