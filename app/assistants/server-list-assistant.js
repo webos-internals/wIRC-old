@@ -1,5 +1,12 @@
 function ServerListAssistant()
 {
+	// subtitle random list
+	this.randomSub = 
+	[
+		{weight: 30, text: 'The webOS IRC Client'},
+		{weight:  2, text: 'Random Taglines Are Awesome'}
+	];
+	
 	this.serverListModel =
 	{
 		items: []
@@ -10,8 +17,10 @@ function ServerListAssistant()
 		items: []
 	};
 	
-	this.versionElement =			false;
-	this.serverListElement =		false;
+	this.versionElement =		false;
+	this.subTitleElement =		false;
+	this.noServersElement =		false;
+	this.serverListElement =	false;
 	
 	servers.setListAssistant(this);
 	
@@ -43,12 +52,15 @@ ServerListAssistant.prototype.setup = function()
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.versionElement =		this.controller.get('version');
+		this.subTitleElement =		this.controller.get('subTitle');
+		this.noServersElement =		this.controller.get('noServers');
 		this.serverListElement =	this.controller.get('serverList');
 		
 		this.listTapHandler =		this.listTapHandler.bindAsEventListener(this);
 		this.listDeleteHandler =	this.listDeleteHandler.bindAsEventListener(this);
 		
-		this.versionElement.innerHTML = "- v" + Mojo.Controller.appInfo.version;
+		this.versionElement.innerHTML = "v" + Mojo.Controller.appInfo.version;
+		this.subTitleElement.innerHTML = this.getRandomSubTitle();
 		
 		this.updateList(true);
 		this.controller.setupWidget('serverList', 
@@ -84,6 +96,15 @@ ServerListAssistant.prototype.updateList = function(skipUpdate)
 	{
 		this.serverListModel.items = [];
 		this.serverListModel.items = servers.getListObjects();
+		
+		if (this.serverListModel.items.length > 0)
+		{
+			this.noServersElement.hide();
+		}
+		else
+		{
+			this.noServersElement.show();
+		}
 		
 		if (!skipUpdate) 
 		{
@@ -155,6 +176,35 @@ ServerListAssistant.prototype.updateCommandMenu = function(skipUpdate)
 	{
 		Mojo.Log.logException(e, 'server-list#updateList');
 	}
+}
+
+ServerListAssistant.prototype.getRandomSubTitle = function()
+{
+	// loop to get total weight value
+	var weight = 0;
+	for (var r = 0; r < this.randomSub.length; r++)
+	{
+		weight += this.randomSub[r].weight;
+	}
+	
+	// random weighted value
+	var rand = Math.floor(Math.random() * weight);
+	
+	// loop through to find the random title
+	for (var r = 0; r < this.randomSub.length; r++)
+	{
+		if (rand <= this.randomSub[r].weight)
+		{
+			return this.randomSub[r].text;
+		}
+		else
+		{
+			rand -= this.randomSub[r].weight;
+		}
+	}
+	
+	// if no random title was found (for whatever reason, wtf?) return first and best subtitle
+	return this.randomSub[0].text;
 }
 
 ServerListAssistant.prototype.handleCommand = function(event)

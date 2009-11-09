@@ -41,6 +41,50 @@ br.clear
 /*
  * Server List Scene Styles
  */
+.server-list .palm-page-header-wrapper .icon
+{
+	width: 76px;
+	height: 75px;
+	background: url(../icon.png) center center no-repeat;
+}
+.server-list .palm-page-header-wrapper .title
+{
+	padding-left: 80px;
+	text-transform: none;
+}
+.server-list .palm-page-header-wrapper .title.main
+{
+	font-size: 30px;
+	padding-top: 5px;
+	padding-bottom: 0px;
+}
+.server-list .palm-page-header-wrapper .title .version
+{
+	font-size: 12px;
+	color: #888;
+}
+.server-list .palm-page-header-wrapper .title.sub
+{
+	font-size: 14px;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+.server-list #noServers .icon
+{
+	width: 320px;
+	height: 128px;
+	margin-top: 60px;
+	background: url(../images/no-servers.png) center center no-repeat;
+}
+.server-list #noServers .message
+{
+	color: #999;
+	margin-top: 30px;
+	font-size: 16px;
+	text-align: center;
+}
+
 .server-list .palm-list .palm-row-wrapper
 {
 	padding-right: 4px;

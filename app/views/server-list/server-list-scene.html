@@ -2,11 +2,21 @@
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
-	<div class="palm-header">
-		wIRC <span id="version"></span>
+	<div class="palm-page-header multi-line">
+		<div class="palm-page-header-wrapper">
+			<div class="icon"></div>
+			<div class="title main">
+				wIRC
+				<span class="version" id="version">v0.0.0</span>
+			</div>
+			<div class="title sub" id="subTitle">The webOS IRC Client</div>
+		</div>
 	</div>
 	
-	<div class="palm-header-spacer"></div>
+	<div id="noServers">
+		<div class="icon"></div>
+		<div class="message">You need to configure a server.<br />Tap the + at the bottom right.</div>
+	</div>
 	
 	<div class="palm-list">
 		<div id="serverList" x-mojo-element="List"></div>
