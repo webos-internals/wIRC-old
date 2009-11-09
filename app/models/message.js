@@ -113,7 +113,7 @@ function ircMessage(params)
 		case 'type7':
 			this.rowClass		= 'no-seperator';
 			this.nick			= params.nick;
-			this.nickDisplay	= '-*-';
+			this.nickDisplay	= '*';
 			this.nickStyle 		= 'color: ' + prefs.get().colorAction;
 			this.messageStyle 	= 'color: ' + prefs.get().colorAction;
 			this.message		= this.nick.name + ' ' + params.message;
@@ -167,7 +167,7 @@ function ircMessage(params)
 		case 'action':
 			//this.rowClass =		'action-message';
 			this.nick =			params.nick;
-			this.nickDisplay =	'-*-';
+			this.nickDisplay =	'*';
 			this.nickStyle = 'color: ' + prefs.get().colorAction;
 			this.messageStyle = 'color: ' + prefs.get().colorAction;
 			this.message =		this.nick.name + ' ' + params.message;

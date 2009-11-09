@@ -47,9 +47,9 @@ ircServer.prototype.newCommand = function(message)
 {
 	if (this.connected)
 	{
-		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]{1}(.*)$/);
-		var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{1}(.*)$/);
-		var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{1}(.*)$/);
+		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+		var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{0,1}(.*)$/);
+		var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{0,1}(.*)$/);
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{
@@ -73,6 +73,34 @@ ircServer.prototype.newCommand = function(message)
 					if (tmpMatch) 
 					{
 						this.startQuery(this.getNick(tmpMatch[1]), true, 'message', tmpMatch[2]);
+					}
+					break;
+					
+				case 'kick':
+					var tmpMatch = threeValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						tmpChan = this.getChannel(tmpMatch[1]);
+						if (tmpChan)
+						{
+							tmpChan.kick(this.getNick(tmpMatch[2]), tmpMatch[3]);
+						}
+					}
+					break;
+					
+				case 'mode':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						tmpChan = this.getChannel(tmpMatch[1]);
+						if (tmpChan)
+						{
+							tmpChan.setMode(tmpMatch[2]);
+						}
+					}
+					else
+					{
+						// if no 2 values, its to set user mode
 					}
 					break;
 					
@@ -342,12 +370,12 @@ ircServer.prototype.connectionHandler = function(payload)
 						if (tmpNick)
 						{
 							tmpNick.removeChannel(tmpChan); 
-							tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + payload.params[0] + ' (' + payload.params[2] + ')');
 							if (tmpNick.me)
 							{
 								tmpChan.close();
 								this.removeChannel(tmpChan);
 							}
+							tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + payload.params[0] + ' (' + payload.params[2] + ')');
 						}
 					}
 					break;
@@ -439,12 +467,12 @@ ircServer.prototype.connectionHandler = function(payload)
 						var tmpChan = this.getChannel(payload.params[0]);
 						if (tmpChan) 
 						{
-							tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
 							var modeNick = this.getNick(payload.params[2]);
 							if (modeNick)
 							{
 								modeNick.updateMode(payload.params[1], tmpChan);
 							}
+							tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
 						}
 					}
 					else

@@ -172,6 +172,9 @@ function UserActionDialog(sceneAssistant, item)
 	this.cancelButtonElement =	false;
 	
 	this.closeHandler =			false;
+	this.opHandler =			false;
+	this.halfHandler =			false;
+	this.closeHandler =			false;
 }
 UserActionDialog.prototype.setup = function(widget)
 {
@@ -189,6 +192,9 @@ UserActionDialog.prototype.setup = function(widget)
 	this.cancelButtonElement =	this.sceneAssistant.controller.get('cancelButton');
 	
 	this.closeHandler =			this.close.bindAsEventListener(this);
+	this.opHandler =			(this.nick.hasMode('o', this.sceneAssistant.channel)?this.deopTap.bindAsEventListener(this):this.opTap.bindAsEventListener(this));
+	this.halfHandler =			(this.nick.hasMode('h', this.sceneAssistant.channel)?this.dehalfTap.bindAsEventListener(this):this.halfTap.bindAsEventListener(this));
+	this.voiceHandler =			(this.nick.hasMode('v', this.sceneAssistant.channel)?this.devoiceTap.bindAsEventListener(this):this.voiceTap.bindAsEventListener(this));
 	
 	this.titleElement.update(this.item.name);
 	
@@ -229,7 +235,6 @@ UserActionDialog.prototype.setup = function(widget)
 		'opButton',
 		{},
 		{
-			disabled: true,
 			buttonLabel: (this.nick.hasMode('o', this.sceneAssistant.channel)?'DeOp':'Op'),
 			buttonClass: 'palm-button'
 		}
@@ -239,7 +244,6 @@ UserActionDialog.prototype.setup = function(widget)
 		'halfButton',
 		{},
 		{
-			disabled: true,
 			buttonLabel: (this.nick.hasMode('h', this.sceneAssistant.channel)?'DeHalfOp':'HalfOp'),
 			buttonClass: 'palm-button'
 		}
@@ -249,7 +253,6 @@ UserActionDialog.prototype.setup = function(widget)
 		'voiceButton',
 		{},
 		{
-			disabled: true,
 			buttonLabel: (this.nick.hasMode('v', this.sceneAssistant.channel)?'DeVoice':'Voce'),
 			buttonClass: 'palm-button'
 		}
@@ -260,7 +263,6 @@ UserActionDialog.prototype.setup = function(widget)
 		'kickButton',
 		{},
 		{
-			disabled: true,
 			buttonLabel: 'Kick',
 			buttonClass: 'palm-button'
 		}
@@ -290,10 +292,10 @@ UserActionDialog.prototype.setup = function(widget)
 	Mojo.Event.listen(this.queryButtonElement,	Mojo.Event.tap, this.queryTap.bindAsEventListener(this));
 	//Mojo.Event.listen(this.inviteButtonElement,	Mojo.Event.tap, this.closeHandler);
 	//Mojo.Event.listen(this.ignoreButtonElement,	Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.listen(this.opButtonElement,		Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.listen(this.halfButtonElement,	Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.listen(this.voiceButtonElement,	Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.listen(this.kickButtonElement,	Mojo.Event.tap, this.closeHandler);
+	Mojo.Event.listen(this.opButtonElement,		Mojo.Event.tap, this.opHandler);
+	Mojo.Event.listen(this.halfButtonElement,	Mojo.Event.tap, this.halfHandler);
+	Mojo.Event.listen(this.voiceButtonElement,	Mojo.Event.tap, this.voiceHandler);
+	Mojo.Event.listen(this.kickButtonElement,	Mojo.Event.tap, this.kickTap.bindAsEventListener(this));
 	//Mojo.Event.listen(this.banButtonElement,	Mojo.Event.tap, this.closeHandler);
 	Mojo.Event.listen(this.cancelButtonElement,	Mojo.Event.tap, this.closeHandler);
 }
@@ -312,12 +314,12 @@ UserActionDialog.prototype.deopTap = function(event)
 	this.sceneAssistant.channel.newCommand('/mode ' + this.sceneAssistant.channel.name + ' -o ' + this.item.name);
 	this.close(event);
 }
-UserActionDialog.prototype.halfopTap = function(event)
+UserActionDialog.prototype.halfTap = function(event)
 {
 	this.sceneAssistant.channel.newCommand('/mode ' + this.sceneAssistant.channel.name + ' +h ' + this.item.name);
 	this.close(event);
 }
-UserActionDialog.prototype.dehalfopTap = function(event)
+UserActionDialog.prototype.dehalfTap = function(event)
 {
 	this.sceneAssistant.channel.newCommand('/mode ' + this.sceneAssistant.channel.name + ' -h ' + this.item.name);
 	this.close(event);
@@ -334,7 +336,18 @@ UserActionDialog.prototype.devoiceTap = function(event)
 }
 UserActionDialog.prototype.kickTap = function(event)
 {
-	this.sceneAssistant.channel.newCommand('/kick ' + this.sceneAssistant.channel.name + ' ' + this.item.name);
+	SingleLineCommandDialog.pop
+	(
+		this.sceneAssistant,
+		{
+			command:		'kick ' + this.sceneAssistant.channel.name + ' ' + this.item.name,
+			onSubmit:		this.sceneAssistant.channel.newCommand.bind(this.sceneAssistant.channel),
+			dialogTitle:	'Kick ' + this.item.name,
+			textLabel:		'Reason',
+			textDefault:	'',
+			okText:			'Kick'
+		}
+	);
 	this.close(event);
 }
 UserActionDialog.prototype.close = function(event)
@@ -347,10 +360,10 @@ UserActionDialog.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.queryButtonElement,	Mojo.Event.tap, this.queryTap.bindAsEventListener(this));
 	//Mojo.Event.stopListening(this.inviteButtonElement,	Mojo.Event.tap, this.closeHandler);
 	//Mojo.Event.stopListening(this.ignoreButtonElement,	Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.stopListening(this.opButtonElement,		Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.stopListening(this.halfButtonElement,	Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.stopListening(this.voiceButtonElement,	Mojo.Event.tap, this.closeHandler);
-	//Mojo.Event.stopListening(this.kickButtonElement,	Mojo.Event.tap, this.closeHandler);
+	Mojo.Event.stopListening(this.opButtonElement,		Mojo.Event.tap, this.opHandler);
+	Mojo.Event.stopListening(this.halfButtonElement,	Mojo.Event.tap, this.halfHandler);
+	Mojo.Event.stopListening(this.voiceButtonElement,	Mojo.Event.tap, this.voiceHandler);
+	Mojo.Event.stopListening(this.kickButtonElement,	Mojo.Event.tap, this.kickTap.bindAsEventListener(this));
 	//Mojo.Event.stopListening(this.banButtonElement,		Mojo.Event.tap, this.closeHandler);
 	Mojo.Event.stopListening(this.cancelButtonElement,	Mojo.Event.tap, this.closeHandler);
 }

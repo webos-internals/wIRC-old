@@ -10,6 +10,8 @@ function ChannelUsersAssistant(channel)
 		items: []
 	};
 	
+	this.channel.setUsersAssistant(this);
+	
 	// setup menu
 	this.menuModel =
 	{
@@ -84,8 +86,8 @@ ChannelUsersAssistant.prototype.updateList = function(skipUpdate)
 		
 		if (!skipUpdate) 
 		{
-			this.listElement.mojo.noticeUpdatedItems(0, this.listModel.items);
-			this.listElement.mojo.setLength(this.listModel.items.length);
+			this.userListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+			this.userListElement.mojo.setLength(this.listModel.items.length);
 		}
 	}
 	catch (e)
