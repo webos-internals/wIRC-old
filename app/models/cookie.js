@@ -54,7 +54,7 @@ prefCookie.prototype.get = function(reload)
 				
 				// Color scheme
 				colorNotice:		'orangered',
-				colorAction:		'blue',
+				colorAction:		'firebrick',
 				colorStatus:		'mediumpurple',
 				colorText:			'black',
 				colorMarker:		'red',

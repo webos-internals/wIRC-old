@@ -191,7 +191,7 @@ ircServer.prototype.connect = function()
 	}
 	
 	// connecting...
-	this.newMessage('status', false, 'Connecting...');
+	this.newMessage('type3', false, 'Connecting...');
 	this.connectAction = true;
 	this.subscription = wIRCd.connect
 	(
@@ -629,7 +629,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case '375':		// MOTDSTART
 				case '376':		// ENDOFMOTD
-					this.newMessage('action', false, payload.params[1]);
+					//this.newMessage('action', false, payload.params[1]);
 					break;
 					
 				case '433':		// NAMEINUSE
