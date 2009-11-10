@@ -183,6 +183,7 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {
+	/*
 	if (!prefs.get().aiface)
 	{
 		var state = '';
@@ -197,6 +198,7 @@ ircServer.prototype.connect = function()
 			return;
 		}
 	}
+	*/
 
 	// load identity nick list
 	this.preferredNicks = [];
