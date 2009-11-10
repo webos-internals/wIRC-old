@@ -13,14 +13,18 @@ function ircServer(params)
 	this.onConnect =		params.onConnect;
 	this.preferredNicks =	[];
 	this.nextNick =			0;
+
+	this.cmSubscription = connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
 	
 	this.reconnect =		true;
 	this.autoReconnect =	false;
 	this.timerId =			false;
 	this.dcThreshold =		5000;
-	this.cmSubscription =	false;
 	this.ipAddress =		false;
 	this.reconnectOnBetter = false;
+	
+	this.wan_state =		'';
+	this.wifi_state =		''; 
 
 	this.connected =		false;
 	this.connectAction =	false; // is true when app is in the action of connecting/disconnecting
@@ -178,6 +182,21 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {
+	if (!prefs.get().aiface)
+	{
+		var state = '';
+		switch (prefs.get().piface)
+		{
+			case 'ppp0': state = this.wan_state; break;
+			case 'eth0': state = this.wifi_state; break;
+		}
+		if (state == 'disconnected')
+		{
+			this.newMessage('type3', false, 'Preferred interface is not avaliable and use fallbacks is false... not connecting.');
+			return;
+		}
+	}
+
 	// load identity nick list
 	this.preferredNicks = [];
 	var nicks = ['nick1', 'nick2', 'nick3'];
@@ -225,8 +244,15 @@ ircServer.prototype.ipMatches = function(payload)
 }
 ircServer.prototype.cmHandler = function(payload)
 {
-	// Needs a lot of testing
+
+	if (!payload.returnValue)
+	{
+		this.interfaces['wan'] = payload.wan.state;
+		this.interfaces['wifi'] = payload.wifi.state;
+	}
 	return;
+	
+	// Needs a lot of testing
 	if (!payload.returnValue)
 	{
 		this.newMessage('status', false, 'ip ' + this.ipAddress);
@@ -341,12 +367,6 @@ ircServer.prototype.connectionHandler = function(payload)
 					// perform onconnect when mojo isn't busy
 					this.runOnConnect.bind(this).defer();
 					this.ipAddress = payload.ipAddress;
-
-					if (!this.cmSubscription) 
-					{ 
-						this.cmSubscription = connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
-					}
-
 					
 					break;
 								

@@ -244,7 +244,9 @@ PreferencesAssistant.prototype.setup = function()
 			'aiface',
 			{
 	  			trueLabel:  'Yes',
+	  			trueValue:	true,
 	 			falseLabel: 'No',
+	 			falseValue: false,
 	  			fieldName:  'aiface'
 			},
 			{
