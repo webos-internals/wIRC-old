@@ -149,7 +149,7 @@ ircServer.prototype.newCommand = function(message)
 	}
 }
 
-ircServer.prototype.newMessage = function(type, nick, message)
+ircServer.prototype.newMessage = function(type, nick, message, dontUpdate)
 {
 	var obj =
 	{
@@ -160,7 +160,10 @@ ircServer.prototype.newMessage = function(type, nick, message)
 	};
 	var newMsg = new ircMessage(obj);
 	this.statusMessages.push(newMsg);
-	this.updateStatusList();
+	if (!dontUpdate) 
+	{
+		this.updateStatusList();
+	}
 }
 ircServer.prototype.getStatusMessages = function(start)
 {
@@ -475,7 +478,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '250':		// ???
 				case '372':		// MOTD
 				case '901':		// ???
-					this.newMessage('type2', false, payload.params[1]);
+					this.newMessage('type2', false, payload.params[1], true);
 					break;
 					
 				case '253':		// LUSERUNKNOWN
@@ -571,6 +574,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case '375':		// MOTDSTART
 				case '376':		// ENDOFMOTD
+					this.updateStatusList();
 					//this.newMessage('action', false, payload.params[1]);
 					break;
 					

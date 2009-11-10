@@ -182,7 +182,6 @@ PreferencesAssistant.prototype.setup = function()
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
 		
-		this.pifaceChanged();
 		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);
 		
 		// Global Group
@@ -223,6 +222,8 @@ PreferencesAssistant.prototype.setup = function()
 		this.controller.listen('statusPop',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		// Connection details group
+		this.interfaceWrapper =		this.controller.get('interfaceWrapper');
+		this.pifaceChanged();
 		this.controller.setupWidget
 		(
 			'piface',
@@ -550,8 +551,6 @@ PreferencesAssistant.prototype.setup = function()
 		
 		// hide secret group
 		this.controller.get('secretPreferences').style.display = 'none';
-		
-		this.interfaceWrapper =		this.controller.get('interfaceWrapper');
 		
 	}
 	catch (e)
