@@ -303,8 +303,11 @@ ircServer.prototype.connectionHandler = function(payload)
 					var tmpChan = this.getChannel(payload.params[0]);
 					if (tmpChan) 
 					{
-						tmpChan.openStage();
 						var tmpNick = this.getNick(payload.origin);
+						if (tmpNick.me)
+						{
+							tmpChan.openStage();
+						}
 						tmpNick.addChannel(tmpChan, '');
 						tmpChan.newMessage('type4', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has joined ' + tmpChan.name);
 					}
