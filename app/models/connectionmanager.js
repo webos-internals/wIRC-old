@@ -1,3 +1,5 @@
+var connectionInfo = {}
+
 connectionmanager.identifier = 'palm://com.palm.connectionmanager';
 
 function connectionmanager() {}

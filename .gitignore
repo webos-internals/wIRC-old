@@ -1,2 +1,4 @@
 *.ipk
+*.swp
+*.eg
 .directory

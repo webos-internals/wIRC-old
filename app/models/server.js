@@ -14,8 +14,6 @@ function ircServer(params)
 	this.preferredNicks =	[];
 	this.nextNick =			0;
 
-	this.cmSubscription = connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
-	
 	this.reconnect =		true;
 	this.autoReconnect =	false;
 	this.timerId =			false;
@@ -187,8 +185,8 @@ ircServer.prototype.connect = function()
 		var state = '';
 		switch (prefs.get().piface)
 		{
-			case 'ppp0': state = this.wan_state; break;
-			case 'eth0': state = this.wifi_state; break;
+			case 'ppp0': state = connectionInfo.wan.state; break;
+			case 'eth0': state = connectionInfo.wifi.state; break;
 		}
 		if (state == 'disconnected')
 		{
@@ -241,82 +239,6 @@ ircServer.prototype.ipDiffers = function(payload)
 ircServer.prototype.ipMatches = function(payload)
 {
 	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
-}
-ircServer.prototype.cmHandler = function(payload)
-{
-
-	if (!payload.returnValue)
-	{
-		this.interfaces['wan'] = payload.wan.state;
-		this.interfaces['wifi'] = payload.wifi.state;
-	}
-	return;
-	
-	// Needs a lot of testing
-	if (!payload.returnValue)
-	{
-		this.newMessage('status', false, 'ip ' + this.ipAddress);
-		if (this.ipAddress)
-		{ 
-			if (!this.ipMatches(payload.wifi) && !this.ipMatches(payload.wan))
-			{
-				if (payload.isInternetConnectionAvailable)
-				{
-					if (this.timerId)
-					{
-						this.reconnect = true;
-						this.newMessage('status', false, 'disconnecting, but mark alternate connection' + this.dcThreshold);
-					}
-					else
-					{
-						this.reconnect = false;
-						this.timerId = setTimeout(this.maybeReconnect.bind(this), this.dcThreshold);
-						this.newMessage('status', false, 'reconnect after threshold ' + this.dcThreshold);
-					}
-					return;
-				}
-				else
-				{
-					// disconnect in 5 seconds if connection doesn't come back
-					this.reconnect = false;
-					this.newMessage('status', false, 'disconnect after threshold ' + this.dcThreshold);
-					this.timerId = setTimeout(this.disconnect.bind(this), this.dcThreshold);
-				}
-				return;
-			}
-
-			if (this.timerId)
-			{
-				clearTimeout(this.timerId);
-				this.timerId = false;
-			}
-
-			if (this.reconnectOnBetter)
-			{
-				if (this.ipDiffers(payload.wifi))
-				{
-					this.maybeReconnect();
-				}
-				else if (this.ipDiffers(payload.wan))
-				{
-					this.maybeReconnect(payload.wan.network);
-				}
-				return;
-			}
-		}
-		else
-		{
-			if (payload.isInternetConnectionAvailable)
-			{
-				clearTimeout(this.timerId);
-				this.timerId = false;
-				this.newMessage('status', false, 'connected or connect... ' + this.connected);
-				this.connected || this.connect();
-			}
-		}
-
-		this.newMessage('status', false, '--- CM f ---');
-	}
 }
 
 ircServer.prototype.connectionHandler = function(payload)
