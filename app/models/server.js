@@ -247,8 +247,8 @@ ircServer.prototype.cmHandler = function(payload)
 
 	if (!payload.returnValue)
 	{
-		this.interfaces['wan'] = payload.wan.state;
-		this.interfaces['wifi'] = payload.wifi.state;
+		this.wan_state = payload.wan.state;
+		this.wifi_state = payload.wifi.state;
 	}
 	return;
 	
