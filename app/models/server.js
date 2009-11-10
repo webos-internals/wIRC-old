@@ -332,7 +332,7 @@ ircServer.prototype.connectionHandler = function(payload)
 
 			if (payload.returnValue === 0)
 			{
-				this.newMessage('status', false, 'Disconnected!');
+				this.newMessage('type3', false, 'Disconnected!');
 				this.subscription.cancel();
 				this.ipAddress = false;
 				this.connected = false;
@@ -730,12 +730,12 @@ ircServer.prototype.disconnect = function(reason)
 	if (reason)
 	{
 		this.reconnect = false;
-		this.newMessage('status', false, 'Quitting (' + reason + ')...');
+		this.newMessage('type3', false, 'Quitting (' + reason + ')...');
 		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 	}
 	else
 	{
-		this.newMessage('status', false, 'Disconnecting...');
+		this.newMessage('type3', false, 'Disconnecting...');
 		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 		//wIRCd.disconnect(null, this.sessionToken);
 	}
