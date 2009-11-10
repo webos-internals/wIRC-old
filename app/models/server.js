@@ -1,5 +1,10 @@
 function ircServer(params)
 {
+	this.STATE_DISCONNECTED = 0; 
+	this.STATE_CONNECTING = 1; 
+	this.STATE_CONNECTED = 2; 
+	this.STATE_DISCONNECTING = 3;
+
 	this.id =				params.id;
 	this.alias =			params.alias;
 	this.address =			params.address;
@@ -21,11 +26,7 @@ function ircServer(params)
 	this.ipAddress =		false;
 	this.reconnectOnBetter = false;
 	
-	this.wan_state =		'';
-	this.wifi_state =		''; 
-
-	this.connected =		false;
-	this.connectAction =	false; // is true when app is in the action of connecting/disconnecting
+	this.state = this.STATE_DISCONNECTED;
 	this.channels =			[];
 	this.queries =			[];
 	this.nick =				false;
@@ -45,9 +46,14 @@ function ircServer(params)
 	}
 }
 
+ircServer.prototype.isConnected = function(message)
+{
+	return (this.state === this.STATE_CONNECTED);
+}
+
 ircServer.prototype.newCommand = function(message)
 {
-	if (this.connected)
+	if (this.isConnected())
 	{
 		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
 		var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{0,1}(.*)$/);
@@ -212,7 +218,7 @@ ircServer.prototype.connect = function()
 	
 	// connecting...
 	this.newMessage('type3', false, 'Connecting...');
-	this.connectAction = true;
+	this.state = this.STATE_CONNECTING;
 	this.subscription = wIRCd.connect
 	(
 		this.connectionHandler.bindAsEventListener(this),
@@ -260,8 +266,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				this.newMessage('type3', false, 'Disconnected!');
 				this.subscription.cancel();
 				this.ipAddress = false;
-				this.connected = false;
-				this.connectAction = false;
+				this.state = this.STATE_DISCONNECTED;
 				this.removeNick(this.nick);
 				if (servers.listAssistant && servers.listAssistant.controller)
 				{
@@ -281,8 +286,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.nick = this.getNick(payload.params[0]); 
 					this.nick.me = true;
 					
-					this.connected = true;
-					this.connectAction = false;
+					this.state = this.STATE_CONNECTED;
 					
 					if (servers.listAssistant && servers.listAssistant.controller)
 					{
@@ -485,12 +489,12 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '252':		// LUSEROP
 				case '254':		// LUSERCHANNELS
 				case '256':		// ADMINME
-					this.newMessage('action', false, payload.params[1] + ' ' + payload.params[2]);
+					this.newMessage('debug', false, payload.params[1] + ' ' + payload.params[2]);
 					break;
 					
 				case '305':		// NOTAWAY
 				case '306':		// AWAY
-					this.newMessage('action', false, payload.params[1]);
+					this.newMessage('debug', false, payload.params[1]);
 					break;
 					
 				case '332':		// TOPIC
@@ -652,7 +656,7 @@ ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
 	// TODO: Jump to server status scene and display disconnecting
-	this.connectAction = true;
+	this.state = this.STATE_DISCONNECTING;
 	if (reason)
 	{
 		this.reconnect = false;
@@ -672,9 +676,8 @@ ircServer.prototype.disconnectHandler = function(payload)
 	/*
 	if (payload.returnValue == 0)
 	{
+		this.state = this.STATE_DISCONNECTED;
 		this.ipAddress = false;
-		this.connected = false;
-		this.connectAction = false;
 		this.reconnect = false;
 		this.removeNick(this.nick);
 		if (servers.listAssistant && servers.listAssistant.controller)
@@ -932,16 +935,24 @@ ircServer.prototype.getListObject = function()
 		id:			this.id,
 		alias:		this.alias,
 		address:	this.address,
-		connected:	this.connected,
+		connected: 	this.isConnected(),	
 		spinning:	true,
 		rowStyle:	''
 	};
 	
-	if (this.connected) obj.rowStyle = obj.rowStyle + ' connected';
-	else obj.rowStyle = obj.rowStyle + ' disconnected';
-	
-	if (this.connectAction) obj.rowStyle = obj.rowStyle + ' changing';
-	
+	switch (this.state)
+	{
+		case this.STATE_DISCONNECTED:
+			obj.rowStyle = obj.rowStyle + ' disconnected';
+			break;
+		case this.STATE_CONNECTING:
+			obj.rowStyle = obj.rowStyle + ' changing';
+			break;
+		case this.STATE_CONNECTED:
+			obj.rowStyle = obj.rowStyle + ' connected';
+			break;
+	}
+
 	if (this.alias == '') obj.rowStyle = obj.rowStyle + ' address-title';
 	
 	return obj;
