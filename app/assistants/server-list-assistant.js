@@ -121,6 +121,18 @@ ServerListAssistant.prototype.updateList = function(skipUpdate)
 		Mojo.Log.logException(e, 'server-list#updateList');
 	}
 }
+ServerListAssistant.prototype.changeNickPrompt = function()
+{
+	this.controller.showAlertDialog(
+	{
+    title:				'wIRC',
+		allowHTMLMessage:	true,
+    message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
+									'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
+    choices:			[{label:$L('Ok'), value:''}],
+		onChoose:			function(value){}
+  });
+}
 ServerListAssistant.prototype.listTapHandler = function(event)
 {
 	if (event.originalEvent.target.className.include('prefs'))
@@ -131,15 +143,7 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	{
 		if (prefs.get().nick1 == 'wIRCer')
 		{
-			this.controller.showAlertDialog(
-			{
-			    title:				'wIRC',
-				allowHTMLMessage:	true,
-			    message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
-									'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
-			    choices:			[{label:$L('Ok'), value:''}],
-				onChoose:			function(value){}
-		    });
+			this.changeNickPrompt();
 			return;
 		}
 		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');

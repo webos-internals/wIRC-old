@@ -188,7 +188,7 @@ ircServer.prototype.getStatusMessages = function(start)
 }
 
 ircServer.prototype.connect = function()
-{
+{	
 	if (!prefs.get().aiface)
 	{
 		var state = '';
@@ -217,6 +217,14 @@ ircServer.prototype.connect = function()
 	}
 	
 	// connecting...
+	if (this.preferredNicks[this.nextNick] === 'wIRCer')
+	{
+		if (servers.listAssistant && servers.listAssistant.controller)
+		{
+			servers.listAssistant.changeNickPrompt();
+		}
+		return;
+	}
 	this.newMessage('type3', false, 'Connecting...');
 	this.state = this.STATE_CONNECTING;
 	this.subscription = wIRCd.connect
