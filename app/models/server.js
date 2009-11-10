@@ -265,6 +265,7 @@ ircServer.prototype.connectionHandler = function(payload)
 			{
 				this.newMessage('type3', false, 'Disconnected!');
 				this.subscription.cancel();
+				this.sessionToken = false;
 				this.ipAddress = false;
 				this.state = this.STATE_DISCONNECTED;
 				this.removeNick(this.nick);
