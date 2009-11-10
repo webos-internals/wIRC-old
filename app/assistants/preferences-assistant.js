@@ -614,7 +614,6 @@ PreferencesAssistant.prototype.highlightStyleChanged = function(event)
 }
 PreferencesAssistant.prototype.pifaceChanged = function(event)
 {
-	/*
 	if (event) 
 	{
 		this.listChanged(event);
@@ -629,7 +628,6 @@ PreferencesAssistant.prototype.pifaceChanged = function(event)
 		this.interfaceWrapper.className = 'palm-row first';
 		this.controller.get('fallbackInfo').style.display = '';
 	}
-	*/
 }
 PreferencesAssistant.prototype.dashboardChannelChanged = function(event)
 {
