@@ -309,7 +309,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 								
 				case 'JOIN':
-					var tmpChan = this.getChannel(payload.params[0]);
+					var tmpChan = this.getOrCreateChannel(payload.params[0]);
 					if (tmpChan) 
 					{
 						var tmpNick = this.getNick(payload.origin);
@@ -775,29 +775,31 @@ ircServer.prototype.updateStatusList = function()
 	}
 }
 
+ircServer.prototype.getOrCreateChannel = function(name)
+{
+	var tmpChan = this.getChannel(name);
+	if (!tmpChan)
+	{
+		tmpChan = new ircChannel(
+		{
+			name:	name,
+			server:	this
+		});
+		this.channels.push(tmpChan);
+	}
+
+	return tmpChan;
+}
+
 ircServer.prototype.joinChannel = function(name)
 {
-	var tmpChannel = this.getChannel(name);
-	if (tmpChannel)
+	var tmpChan = this.getOrCreateChannel(name);
+	if (!tmpChan.containsNick(this.nick))
 	{
-		// Do nothing if already in this channel
-		if (!tmpChannel.containsNick(this.nick))
-		{
-			// Open the stage and join the channel
-			tmpChannel.openStage();
-			tmpChannel.join();
-		}
-		return;
+		tmpChan.join();
 	}
-	
-	var newChannel = new ircChannel(
-	{
-		name:	name,
-		server:	this
-	});
-	this.channels.push(newChannel);
-	newChannel.join();
 }
+
 ircServer.prototype.getChannel = function(name)
 {
 	if (this.channels.length > 0)
