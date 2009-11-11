@@ -132,10 +132,13 @@ IdentityAssistant.prototype.setup = function()
 
 IdentityAssistant.prototype.validateIdentity = function()
 {
-	if (this.prefs.realname.length>0 && this.prefs.nicknames.length>0) {
+	if (this.prefs.realname.length>0 && this.prefs.nicknames.length>0)
 		this.identDoneModel.disabled = false;
-		this.controller.modelChanged(this.identDoneModel);
-	}
+	else
+		this.identDoneModel.disabled = true;
+	this.controller.modelChanged(this.identDoneModel);
+	
+	return !this.identDoneModel.disabled;
 }
 
 IdentityAssistant.prototype.identDoneTapped = function()
