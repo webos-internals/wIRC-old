@@ -2,3 +2,7 @@
 *.swp
 *.eg
 .directory
+*.swp
+*.swo
+*.swn
+*.eg

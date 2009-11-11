@@ -268,7 +268,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'change-nick':
-				if (this.server.connected) 
+				if (this.server.isConnected()) 
 				{
 					SingleLineCommandDialog.pop
 					(
@@ -292,7 +292,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'join-channel':
-				if (this.server.connected) 
+				if (this.server.isConnected()) 
 				{
 					SingleLineCommandDialog.pop
 					(
