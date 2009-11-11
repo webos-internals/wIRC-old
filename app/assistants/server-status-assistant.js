@@ -29,22 +29,12 @@ function ServerStatusAssistant(server, popped)
 	this.menuModel =
 	{
 		visible: true,
-		items:
-		[
-			{
-				label: 'Preferences',
-				command: 'do-prefs'
-			},
-			{
-				label: 'Change Nick',
-				command: 'change-nick'
-			},
-			{
-				label: 'Join Channel',
-				command: 'join-channel'
-			}
-		]
+		items: []
 	}
+	if (this.popped) this.menuModel.items.push({ label: 'Server List',	command: 'server-list' });
+	this.menuModel.items.push({ label: 'Preferences',	command: 'do-prefs' });
+	this.menuModel.items.push({ label: 'Change Nick',	command: 'change-nick' });
+	this.menuModel.items.push({ label: 'Join Channel',	command: 'join-channel' });
 }
 
 ServerStatusAssistant.prototype.setup = function()
@@ -323,6 +313,10 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 				{
 					this.alertDialog('You must be connected to join a channel.');
 				}
+				break;
+				
+			case 'server-list':
+				this.alertDialog('This doesn\'t work yet.');
 				break;
 		}
 	}

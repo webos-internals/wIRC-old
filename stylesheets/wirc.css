@@ -239,6 +239,14 @@ br.clear
 {
 	text-align: right;
 }
+.form .textfield-group .hint-text
+{
+	color: #666;
+}
+body.palm-dark .form .textfield-group .hint-text
+{
+	color: #ccc;
+}
 .form .palm-group.disabled
 {
 	opacity: 0.35;
