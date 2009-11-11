@@ -11,8 +11,8 @@ function ircServer(params)
 	this.serverUser =		params.serverUser;
 	this.serverPassword =	params.serverPassword;
 	this.port =				params.port;
-	this.autoConnect =		(params.autoConnect=='true'?true:false);
-	this.autoIdentify =		(params.autoIdentify=='true'?true:false);
+	this.autoConnect =		params.autoConnect;
+	this.autoIdentify =		params.autoIdentify;
 	this.identifyService =	params.identifyService;
 	this.identifyPassword =	params.identifyPassword;
 	this.onConnect =		params.onConnect;
@@ -646,16 +646,12 @@ ircServer.prototype.debugPayload = function(payload, visible)
 }
 ircServer.prototype.runOnConnect = function()
 {
-	if (this.onConnect)
+	if (this.onConnect && this.onConnect.length > 0)
 	{
-		var tmpSplit = this.onConnect.split(';');
-		if (tmpSplit.length > 0)
+		for (var c = 0; c < this.onConnect.length; c++)
 		{
-			for (var s = 0; s < tmpSplit.length; s++)
-			{
-				// also defer these commands to run one after another when its not busy
-				this.newCommand.bind(this).defer(tmpSplit[s]);
-			}
+			// also defer these commands to run one after another when its not busy
+			this.newCommand.bind(this).defer(this.onConnect[c]);
 		}
 	}
 }
@@ -1022,7 +1018,6 @@ ircServer.prototype.saveInfo = function(params)
 		serverCookie.put(params);
 	}
 }
-ircServer.prototype.saveInfoResponse = function(results) {}
 
 ircServer.getBlankServerObject = function()
 {
@@ -1038,7 +1033,7 @@ ircServer.getBlankServerObject = function()
 		autoIdentify:		false,
 		identifyService:	'NickServ',
 		identifyPassword:	'',
-		onConnect:			''
+		onConnect:			[]
 	};
 	return obj;
 }
