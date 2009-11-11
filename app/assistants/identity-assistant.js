@@ -16,20 +16,34 @@ function IdentityAssistant()
 			}
 		]
 	}
+	
+	this.nickList =			false;
+	this.nickListModel =	{items:[]};
+	this.nickListData =		[];
+	this.nickListCount =	0;
+	
+	if (this.prefs.nicknames && this.prefs.nicknames.length > 0)
+	{
+		for (var n = 0; n < this.prefs.nicknames.length; n++)
+		{
+			this.nickListCount++;
+			this.nickListData.push({id: this.nickListCount, index: this.nickListCount-1, value: this.prefs.nicknames[n]});
+		}
+	}
 }
 
 IdentityAssistant.prototype.setup = function()
 {
 	try
 	{
-		// setup menu
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
-		// set this scene's default transition
 		this.controller.setDefaultTransition(Mojo.Transition.zoomFade);
 		
-		// setup handler
-		this.textChanged = this.textChanged.bindAsEventListener(this);
+		this.realName = this.controller.get('realname');
+		this.nickList = this.controller.get('nickList');
+		
+		this.textChanged = 			this.textChanged.bindAsEventListener(this);
 		
 		this.controller.setupWidget
 		(
@@ -45,60 +59,49 @@ IdentityAssistant.prototype.setup = function()
 				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.prefs
-		);		
+		);
+		Mojo.Event.listen(this.realName, Mojo.Event.propertyChange, this.textChanged);
+		
+		this.nickListBuildList();
 		this.controller.setupWidget
 		(
-			'nick1',
+			'nickList',
 			{
+				itemTemplate: "identity/nick-row",
+				swipeToDelete: true,
+				reorderable: true,
+				addItemLabel: 'Add',
+				
 				multiline: false,
 				enterSubmits: false,
-				//changeOnKeyPress: true,
-				hintText: '',
-				modelProperty: 'nick1',
+				modelProperty: 'value',
+				changeOnKeyPress: true,
 				charsAllow: this.validChars,
 				maxLength: 16,
 				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
 			},
-			this.prefs
+			this.nickListModel
 		);
 		this.controller.setupWidget
 		(
-			'nick2',
+			'nickField',
 			{
 				multiline: false,
 				enterSubmits: false,
-				//changeOnKeyPress: true,
-				hintText: '',
-				modelProperty: 'nick2',
+				modelProperty: 'value',
+				changeOnKeyPress: true,
 				charsAllow: this.validChars,
 				maxLength: 16,
 				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.prefs
-		);
-		this.controller.setupWidget
-		(
-			'nick3',
-			{
-				multiline: false,
-				enterSubmits: false,
-				//changeOnKeyPress: true,
-				hintText: '',
-				modelProperty: 'nick3',
-				charsAllow: this.validChars,
-				maxLength: 16,
-				textCase: Mojo.Widget.steModeLowerCase,
-				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.prefs
+			}
 		);
 		
-		this.controller.listen('realname', Mojo.Event.propertyChange, this.textChanged);
-		this.controller.listen('nick1', Mojo.Event.propertyChange, this.textChanged);
-		this.controller.listen('nick2', Mojo.Event.propertyChange, this.textChanged);
-		this.controller.listen('nick3', Mojo.Event.propertyChange, this.textChanged);
+		Mojo.Event.listen(this.nickList, Mojo.Event.listAdd,			this.nickListAdd.bindAsEventListener(this));
+		Mojo.Event.listen(this.nickList, Mojo.Event.propertyChanged,	this.nickListChange.bindAsEventListener(this));
+		Mojo.Event.listen(this.nickList, Mojo.Event.listReorder,		this.nickListReorder.bindAsEventListener(this));
+		Mojo.Event.listen(this.nickList, Mojo.Event.listDelete,			this.nickListDelete.bindAsEventListener(this));
 	}
 	catch (e)
 	{
@@ -129,16 +132,137 @@ IdentityAssistant.prototype.textChanged = function(event)
 	this.cookie.put(this.prefs);
 }
 
-IdentityAssistant.prototype.activate = function(event) {}
+
+IdentityAssistant.prototype.nickListBuildList = function()
+{
+	this.nickListModel.items = [];
+	if (this.nickListData.length > 0)
+	{
+		for (var d = 0; d < this.nickListData.length; d++)
+		{
+			this.nickListModel.items.push(this.nickListData[d]);
+		}
+	}
+}
+IdentityAssistant.prototype.nickListAdd = function(event)
+{
+	this.nickListCount++;
+	this.nickListData.push({id: this.nickListCount, index: this.nickListData.length, value: ''});
+	
+	this.nickListBuildList();
+	
+	this.nickList.mojo.noticeUpdatedItems(0, this.nickListModel.items);
+	this.nickList.mojo.setLength(this.nickListModel.items.length);
+	
+	this.nickListSave();
+}
+IdentityAssistant.prototype.nickListChange = function(event)
+{
+	this.nickListSave();
+}
+IdentityAssistant.prototype.nickListReorder = function(event)
+{
+	for (var d = 0; d < this.nickListData.length; d++) 
+	{
+		if (this.nickListData[d].index == event.fromIndex) 
+		{
+			this.nickListData[d].index = event.toIndex;
+		}
+		else 
+		{
+			if (event.fromIndex > event.toIndex) 
+			{
+				if (this.nickListData[d].index < event.fromIndex &&
+				this.nickListData[d].index >= event.toIndex) 
+				{
+					this.nickListData[d].index++;
+				}
+			}
+			else if (event.fromIndex < event.toIndex) 
+			{
+				if (this.nickListData[d].index > event.fromIndex &&
+				this.nickListData[d].index <= event.toIndex) 
+				{
+					this.nickListData[d].index--;
+				}
+			}
+		}
+	}
+	this.nickListSave();
+}
+IdentityAssistant.prototype.nickListDelete = function(event)
+{
+	var newData = [];
+	if (this.nickListData.length > 0) 
+	{
+		for (var d = 0; d < this.nickListData.length; d++) 
+		{
+			if (this.nickListData[d].id == event.item.id) 
+			{
+				// ignore
+			}
+			else 
+			{
+				if (this.nickListData[d].index > event.index) 
+				{
+					this.nickListData[d].index--;
+				}
+				newData.push(this.nickListData[d]);
+			}
+		}
+	}
+	this.nickListData = newData;
+	this.nickListSave();
+}
+IdentityAssistant.prototype.nickListSave = function()
+{
+	if (this.nickListData.length > 0) 
+	{
+		if (this.nickListData.length > 1) 
+		{
+			this.nickListData.sort(function(a, b)
+			{
+				return a.index - b.index;
+			});
+		}
+		
+		for (var i = 0; i < this.nickListModel.items.length; i++) 
+		{
+			for (var d = 0; d < this.nickListData.length; d++) 
+			{
+				if (this.nickListData[d].id == this.nickListModel.items[i].id) 
+				{
+					this.nickListData[d].value = this.nickListModel.items[i].value;
+				}
+			}
+		}
+	}
+	
+	this.prefs.nicknames = [];
+	if (this.nickListData.length > 0) 
+	{
+		for (var d = 0; d < this.nickListData.length; d++) 
+		{
+			this.prefs.nicknames.push(this.nickListData[d].value);
+		}
+	}
+	
+	this.cookie.put(this.prefs);
+}
+
+
 IdentityAssistant.prototype.deactivate = function(event)
 {
+	this.nickListSave();
+	
 	// reload global storage of preferences when we get rid of this stage
 	var tmp = prefs.get(true);
 }
 IdentityAssistant.prototype.cleanup = function(event)
 {
-	this.controller.stopListening('realname', Mojo.Event.propertyChange, this.textChanged);
-	this.controller.stopListening('nick1', Mojo.Event.propertyChange, this.textChanged);
-	this.controller.stopListening('nick2', Mojo.Event.propertyChange, this.textChanged);
-	this.controller.stopListening('nick3', Mojo.Event.propertyChange, this.textChanged);
+	Mojo.Event.stopListening(this.realName, Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.nickList, Mojo.Event.listAdd,			this.nickListAdd.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.nickList, Mojo.Event.propertyChanged,	this.nickListChange.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.nickList, Mojo.Event.listReorder,		this.nickListReorder.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.nickList, Mojo.Event.listDelete,		this.nickListDelete.bindAsEventListener(this));
 }
