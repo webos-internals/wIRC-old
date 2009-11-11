@@ -4,6 +4,7 @@ function ServerListAssistant()
 	this.randomSub = 
 	[
 		{weight: 30, text: 'The webOS IRC Client'},
+		{weight:  5, text: 'Now you can IRC from the crapper'},
 		{weight:  2, text: 'Random Taglines Are Awesome'}
 	];
 	
@@ -79,6 +80,10 @@ ServerListAssistant.prototype.setup = function()
 		
 		this.updateCommandMenu(true);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
+		
+		if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
+			this.controller.stageController.pushScene('identity');		
+		
 	} 
 	catch (e) 
 	{
@@ -121,6 +126,18 @@ ServerListAssistant.prototype.updateList = function(skipUpdate)
 		Mojo.Log.logException(e, 'server-list#updateList');
 	}
 }
+ServerListAssistant.prototype.changeNickPrompt = function()
+{
+	this.controller.showAlertDialog(
+	{
+		title:				'wIRC',
+		allowHTMLMessage:	true,
+		message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
+							'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
+		choices:			[{label:$L('Ok'), value:''}],
+		onChoose:			function(value){}
+	});
+}
 ServerListAssistant.prototype.listTapHandler = function(event)
 {
 	if (event.originalEvent.target.className.include('prefs'))
@@ -129,19 +146,14 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else if (event.originalEvent.target.className.include('status'))
 	{
+		/*
 		if (prefs.get().nick1 == 'wIRCer')
 		{
-			this.controller.showAlertDialog(
-			{
-			    title:				'wIRC',
-				allowHTMLMessage:	true,
-			    message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
-									'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
-			    choices:			[{label:$L('Ok'), value:''}],
-				onChoose:			function(value){}
-		    });
+			this.changeNickPrompt();
 			return;
 		}
+		*/
+		
 		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
 		if (event.item.connected) 
 		{

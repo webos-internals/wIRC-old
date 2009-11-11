@@ -42,6 +42,10 @@ function ChannelChatAssistant(channel)
 		items:
 		[
 			{
+				label: "Away",
+				command: 'do-away'
+			},
+			{
 				label: "Preferences",
 				command: 'do-prefs'
 			}
@@ -211,7 +215,7 @@ ChannelChatAssistant.prototype.updateTitle = function()
 }
 ChannelChatAssistant.prototype.updateTopic = function()
 {
-	this.topicElement.update(this.channel.topic);
+	this.topicElement.update(Mojo.Format.runTextIndexer(this.channel.topic));
 }
 
 ChannelChatAssistant.prototype.onScrollStarted = function(event)
@@ -366,12 +370,41 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 	}
 }
 
+ChannelChatAssistant.prototype.startAutoFocus = function()
+{
+	Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+	this.inputWidgetElement.mojo.focus();
+}
+ChannelChatAssistant.prototype.stopAutoFocus = function()
+{
+	Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+}
+
 ChannelChatAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
 	{
 		switch (event.command)
 		{
+			case 'do-away':
+				if (!this.channel.server.isAway)
+				{
+					SingleLineCommandDialog.pop
+					(
+						this,
+						{
+							command:		'away',
+							onSubmit:		this.channel.newCommand.bind(this.channel),
+							dialogTitle:	'Set Away Status',
+							textLabel:		'Reason',
+							onActivate:		this.stopAutoFocus.bind(this),
+							onDeactivate:	this.startAutoFocus.bind(this)
+						}
+					);
+				}
+				else
+					this.channel.newCommand('/away');
+				break;
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences');
 				break;

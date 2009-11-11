@@ -253,7 +253,7 @@ UserActionDialog.prototype.setup = function(widget)
 		'voiceButton',
 		{},
 		{
-			buttonLabel: (this.nick.hasMode('v', this.sceneAssistant.channel)?'DeVoice':'Voce'),
+			buttonLabel: (this.nick.hasMode('v', this.sceneAssistant.channel)?'DeVoice':'Voice'),
 			buttonClass: 'palm-button'
 		}
 	);

@@ -21,6 +21,10 @@ prefCookie.prototype.get = function(reload)
 				piface:				'',
 				aiface:				false,
 				
+				// Identity Scene
+				realname:			'',
+				nicknames:			[],
+				
 				// Server Status Group
 				statusPop:			false,
 				
@@ -46,15 +50,14 @@ prefCookie.prototype.get = function(reload)
 				dashboardQuerySound:	true,
 				
 				
-				// Identity Scene
-				realname:			'wIRCer',
+				// Identity Scene (deprecated)
 				nick1:				'wIRCer',
 				nick2:				'',
 				nick3:				'',
 				
 				// Color scheme
 				colorNotice:		'orangered',
-				colorAction:		'blue',
+				colorAction:		'firebrick',
 				colorStatus:		'mediumpurple',
 				colorText:			'black',
 				colorMarker:		'red',

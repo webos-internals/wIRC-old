@@ -1,4 +1,6 @@
 *.ipk
+*.swp
+*.eg
 .directory
 *.swp
 *.swo

@@ -5,8 +5,9 @@ function database()
 	this.db = null;
 	this.openDB();
 	
-	//this.dropTables();
-	this.createTables();
+	// now we just kill this
+	this.dropTables();
+	//this.createTables();
 	//this.initialData();
 }
 

@@ -31,16 +31,12 @@ function ServerInfoAssistant(id)
 	this.onConnectData =	[];
 	this.onConnectCount =	0;
 	
-	if (this.server.onConnect)
+	if (this.server.onConnect && this.server.onConnect.length > 0)
 	{
-		tmpSplit = this.server.onConnect.split(';');
-		if (tmpSplit.length > 0)
+		for (var c = 0; c < this.server.onConnect.length; c++)
 		{
-			for (var s = 0; s < tmpSplit.length; s++)
-			{
-				this.onConnectCount++;
-				this.onConnectData.push({id: this.onConnectCount, index: this.onConnectCount-1, value: tmpSplit[s]});
-			}
+			this.onConnectCount++;
+			this.onConnectData.push({id: this.onConnectCount, index: this.onConnectCount-1, value: this.server.onConnect[c]});
 		}
 	}
 }
@@ -292,11 +288,13 @@ ServerInfoAssistant.prototype.onConnectAdd = function(event)
 	this.onConnectList.mojo.noticeUpdatedItems(0, this.onConnectModel.items);
 	this.onConnectList.mojo.setLength(this.onConnectModel.items.length);
 	
-	this.onConenctSave();
+	this.onConnectList.mojo.focusItem(this.onConnectModel.items[this.onConnectModel.items.length-1]);
+	
+	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectChange = function(event)
 {
-	this.onConenctSave();
+	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectReorder = function(event)
 {
@@ -326,7 +324,7 @@ ServerInfoAssistant.prototype.onConnectReorder = function(event)
 			}
 		}
 	}
-	this.onConenctSave();
+	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectDelete = function(event)
 {
@@ -350,9 +348,9 @@ ServerInfoAssistant.prototype.onConnectDelete = function(event)
 		}
 	}
 	this.onConnectData = newData;
-	this.onConenctSave();
+	this.onConnectSave();
 }
-ServerInfoAssistant.prototype.onConenctSave = function()
+ServerInfoAssistant.prototype.onConnectSave = function()
 {
 	if (this.onConnectData.length > 0) 
 	{
@@ -376,20 +374,22 @@ ServerInfoAssistant.prototype.onConenctSave = function()
 		}
 	}
 	
-	this.server.onConnect = '';
+	this.server.onConnect = [];
 	if (this.onConnectData.length > 0) 
 	{
 		for (var d = 0; d < this.onConnectData.length; d++) 
 		{
-			if (this.server.onConnect != '') this.server.onConnect += ';';
-			this.server.onConnect += this.onConnectData[d].value;
+			if (this.onConnectData[d].value) 
+			{
+				this.server.onConnect.push(this.onConnectData[d].value);
+			}
 		}
 	}
 }
 
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 {
-	this.onConenctSave();
+	this.onConnectSave();
 	if (ircServer.validateNewServer(this.server, this, true)) 
 	{
 		servers.newServer(this.server, this);
@@ -397,8 +397,8 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
-	this.onConenctSave();
-	if (this.server.id)
+	this.onConnectSave();
+	if (this.serverKey !== false)
 	{
 		servers.servers[this.serverKey].saveInfo(this.server);
 	}

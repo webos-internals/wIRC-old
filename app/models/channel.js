@@ -152,7 +152,7 @@ ircChannel.prototype.addNick = function(nick)
 	if (this.nicks.indexOf(nick) === -1)
 	{
 		this.nicks.push(nick);
-		this.chatAssistant.updateUserCount();
+		this.updateUserCount();
 	}
 }
 ircChannel.prototype.removeNick = function(nick)
@@ -257,10 +257,12 @@ ircChannel.prototype.join = function()
 }
 ircChannel.prototype.joinHandler = function(payload)
 {
+	/*
 	if (payload.returnValue == 0)
 	{
 		this.openStage();
 	}
+	*/
 }
 
 ircChannel.prototype.channelMode = function(mode)

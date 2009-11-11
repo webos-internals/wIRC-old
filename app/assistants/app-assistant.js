@@ -64,6 +64,15 @@ AppAssistant.prototype.handleLaunch = function(params)
 				}
 			}
 		}
+		else if (params.type == 'invite')
+		{
+			var tmpServer = servers.getServerForId(params.server);
+			if (tmpServer)
+			{
+				tmpServer.closeInvite(params.nick, params.channel);
+				tmpServer.joinChannel(params.channel);
+			}
+		}
 		else
 		{
 			// for debug

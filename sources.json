@@ -44,6 +44,10 @@
         "source": "app/assistants/channel-users-assistant.js"
     },
     {
+        "scenes": "invite-dashboard",
+        "source": "app/assistants/invite-dashboard-assistant.js"
+    },
+    {
         "scenes": "query-chat",
         "source": "app/assistants/query-chat-assistant.js"
     },

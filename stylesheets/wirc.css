@@ -164,7 +164,52 @@ br.clear
 	display: inline;
 }
 
-
+/*
+ * About scene
+ */
+.about
+{
+	font-size: 12px;
+	text-align: center;
+	margin: auto;
+}
+.about .logo-block
+{
+	vertical-align: top;
+	text-align: center;
+	margin: auto;
+	margin-top: 8px;
+	width: 160px;
+	padding: 4px;
+	border-style: inset;
+	border-width: 5px;
+}
+.about .logo-block .logo
+{
+	height: 128px;
+	background: url(../images/no-servers.png) center top no-repeat;
+}
+.about .logo-block .versions
+{
+	display: inline;
+}
+.about .by
+{
+	margin-bottom: 6px;
+}
+.about .dev
+{
+	margin-top: 2px;
+}
+.about .dev-list
+{
+	margin: auto;
+	margin-top: 32px;
+}
+.about .dev-name
+{
+	font-weight: bold;
+}
 
 /*
  * Form Styles - Scene Inspecific
@@ -255,7 +300,7 @@ br.clear
 	padding-left: 15px;
 	padding-right: 10px;
 	margin-bottom: -27px;
-	font-size: 18px;
+	font-size: 12px;
 }
 .channel-chat #userButton
 {
