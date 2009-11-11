@@ -1,4 +1,4 @@
-function IdentityAssistant()
+function IdentityAssistant(showButton, disableButton)
 {
 	// setup default preferences in the prefCookie.js model
 	this.cookie = new prefCookie();
@@ -15,6 +15,12 @@ function IdentityAssistant()
 				command: 'do-help'
 			}
 		]
+	}
+	
+	this.identDoneModel = 
+	{
+		label:		"Done",
+		disabled:	disableButton
 	}
 	
 	this.nickList =			false;
@@ -40,8 +46,9 @@ IdentityAssistant.prototype.setup = function()
 		
 		this.controller.setDefaultTransition(Mojo.Transition.zoomFade);
 		
-		this.realName = this.controller.get('realname');
-		this.nickList = this.controller.get('nickList');
+		this.realName	= this.controller.get('realname');
+		this.nickList	= this.controller.get('nickList');
+		this.identDone	= this.controller.get('identDone');
 		
 		this.textChanged = 			this.textChanged.bindAsEventListener(this);
 		
@@ -102,12 +109,29 @@ IdentityAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.nickList, Mojo.Event.propertyChanged,	this.nickListChange.bindAsEventListener(this));
 		Mojo.Event.listen(this.nickList, Mojo.Event.listReorder,		this.nickListReorder.bindAsEventListener(this));
 		Mojo.Event.listen(this.nickList, Mojo.Event.listDelete,			this.nickListDelete.bindAsEventListener(this));
+		
+		this.controller.setupWidget
+		(
+			'identDone',
+			{},
+			this.identDoneModel
+		);
+		
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, 'preferences#setup');
 	}
 
+}
+
+IdentityAssistant.prototype.validateIdentity = function()
+{
+	var tmp = prefs.get(true);
+	if (prefs.get().realname && prefs.get().realname.length>0 && prefs.get().nicknames && prefs.get().nicknames.length>0) {
+		this.identDoneModel.disabled = false;
+		this.controller.modelChanged(this.identDoneModel);
+	}
 }
 
 IdentityAssistant.prototype.validChars = function(test)
@@ -130,6 +154,7 @@ IdentityAssistant.prototype.textChanged = function(event)
 //	if (!event.value.match(/^[\x41-\x7D][-\d\x41-\x7D]*$/)) error = true;
 	
 	this.cookie.put(this.prefs);
+	this.validateIdentity();
 }
 
 
@@ -253,6 +278,7 @@ IdentityAssistant.prototype.nickListSave = function()
 	}
 	
 	this.cookie.put(this.prefs);
+	this.validateIdentity();
 }
 
 
