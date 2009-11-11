@@ -100,7 +100,7 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				modelProperty: 'port',
-				hintText: 'Required',
+				hintText: 'Optional',
 				charsAllow: Mojo.Char.isDigit,
 				modifierState: Mojo.Widget.numLock,
 				focusMode: Mojo.Widget.focusSelectMode
