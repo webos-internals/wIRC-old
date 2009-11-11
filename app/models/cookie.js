@@ -21,7 +21,8 @@ prefCookie.prototype.get = function(reload)
 				piface:				'',
 				aiface:				false,
 				
-				// Global nickname/identities list
+				// Identity Scene
+				realname:			'',
 				nicknames:			[],
 				
 				// Server Status Group
@@ -49,8 +50,7 @@ prefCookie.prototype.get = function(reload)
 				dashboardQuerySound:	true,
 				
 				
-				// Identity Scene
-				realname:			'wIRCer',
+				// Identity Scene (deprecated)
 				nick1:				'wIRCer',
 				nick2:				'',
 				nick3:				'',
