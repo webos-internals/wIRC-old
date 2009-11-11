@@ -288,11 +288,11 @@ ServerInfoAssistant.prototype.onConnectAdd = function(event)
 	this.onConnectList.mojo.noticeUpdatedItems(0, this.onConnectModel.items);
 	this.onConnectList.mojo.setLength(this.onConnectModel.items.length);
 	
-	this.onConenctSave();
+	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectChange = function(event)
 {
-	this.onConenctSave();
+	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectReorder = function(event)
 {
@@ -322,7 +322,7 @@ ServerInfoAssistant.prototype.onConnectReorder = function(event)
 			}
 		}
 	}
-	this.onConenctSave();
+	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectDelete = function(event)
 {
@@ -346,9 +346,9 @@ ServerInfoAssistant.prototype.onConnectDelete = function(event)
 		}
 	}
 	this.onConnectData = newData;
-	this.onConenctSave();
+	this.onConnectSave();
 }
-ServerInfoAssistant.prototype.onConenctSave = function()
+ServerInfoAssistant.prototype.onConnectSave = function()
 {
 	if (this.onConnectData.length > 0) 
 	{
@@ -384,7 +384,7 @@ ServerInfoAssistant.prototype.onConenctSave = function()
 
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 {
-	this.onConenctSave();
+	this.onConnectSave();
 	if (ircServer.validateNewServer(this.server, this, true)) 
 	{
 		servers.newServer(this.server, this);
@@ -392,7 +392,7 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
-	this.onConenctSave();
+	this.onConnectSave();
 	if (this.serverKey)
 	{
 		servers.servers[this.serverKey].saveInfo(this.server);
