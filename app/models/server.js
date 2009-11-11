@@ -18,6 +18,8 @@ function ircServer(params)
 	this.onConnect =		params.onConnect;
 	this.preferredNicks =	[];
 	this.nextNick =			0;
+	
+	this.isAway =			false;
 
 	this.reconnect =		true;
 	this.autoReconnect =	false;
@@ -506,7 +508,11 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 					
 				case '305':		// NOTAWAY
+					this.isAway = false;
+					this.newMessage('debug', false, payload.params[1]);
+					break;
 				case '306':		// AWAY
+					this.isAway = true;
 					this.newMessage('debug', false, payload.params[1]);
 					break;
 					
