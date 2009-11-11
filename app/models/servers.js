@@ -1,9 +1,12 @@
 function ircServers()
 {
-	this.servers =				[];
-	this.listAssistant =		false;
+	this.cookie =			new Mojo.Model.Cookie('servers');
+	this.cookieData =		false;
+	
+	this.servers =			[];
+	this.listAssistant =	false;
 
-	this.cmSubscription = connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
+	this.cmSubscription =	connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
 }
 
 ircServers.prototype.cmHandler = function(payload)
@@ -135,19 +138,27 @@ ircServers.prototype.getServerForId = function(id)
 ircServers.prototype.load = function()
 {
 	this.servers = [];
-	db.getServers(this.loadResponse.bind(this));
-}
-ircServers.prototype.loadResponse = function(results)
-{
-	if (results.rows.length > 0)
+	
+	this.cookieData = this.cookie.get();
+	if (this.cookieData)
 	{
-		for(var s = 0; s < results.rows.length; s++)
+		if (this.cookieData.servers && this.cookieData.servers.length > 0) 
 		{
-			//alert('Loaded Server #' + results.rows.item(s)['id'] + ' - ' + results.rows.item(s)['alias']);
-			var newServer = new ircServer(results.rows.item(s));
-			this.servers.push(newServer);
+			for (var s = 0; s < this.cookieData.servers.length; s++) 
+			{
+				this.loadServer(this.cookieData.servers[s]);
+			}
 		}
 	}
+	else
+	{
+		this.cookieData = 
+		{
+			serial: 0,
+			servers: []
+		};
+	}
+	
 	if (this.listAssistant)
 	{
 		this.listAssistant.updateList();
@@ -155,41 +166,47 @@ ircServers.prototype.loadResponse = function(results)
 }
 ircServers.prototype.loadServer = function(id)
 {
-	db.getServer(id, this.loadServerResponse.bind(this));
-}
-ircServers.prototype.loadServerResponse = function(results)
-{
-	var newServer = new ircServer(results.rows.item(0));
-	this.servers.push(newServer);
+	var serverCookie = new Mojo.Model.Cookie('server-' + id);
+	var serverParams = serverCookie.get();
+	if (serverParams)
+	{
+		alert('-- '+id+' --');
+		for (var x in serverParams) alert(x + ': ' + serverParams[x]);
+		
+		var newServer = new ircServer(serverParams);
+		this.servers.push(newServer);
+	}
 	
 	if (this.listAssistant)
 	{
 		this.listAssistant.updateList();
 	}
 }
-
 ircServers.prototype.newServer = function(params, assistant)
 {
-	db.saveServer(params, this.newServerResponse.bind(this, assistant));
-}
-ircServers.prototype.newServerResponse = function(assistant, results)
-{
+	this.cookieData.serial++;
+	this.cookieData.servers.push(this.cookieData.serial);
+	this.cookie.put(this.cookieData);
+	
+	params.id = this.cookieData.serial;
+	var serverCookie = new Mojo.Model.Cookie('server-' + params.id);
+	serverCookie.put(params);
+	
+	this.loadServer(params.id);
 	assistant.doneSaving();
-	this.loadServer(results.insertId);
 }
-
 ircServers.prototype.deleteServer = function(id)
 {
-	var key = this.getServerArrayKey(id);
+	this.cookieData.servers = this.cookieData.servers.without(id);
+	this.cookie.put(this.cookieData);
 	
+	var serverCookie = new Mojo.Model.Cookie('server-' + id);
+	serverCookie.remove();
+	
+	var key = this.getServerArrayKey(id);
 	if (this.servers[key].connected)
 	{
 		this.servers[key].disconnect();
 	}
-	
-	db.deleteServer(id, this.deleteServerResponse.bind(this, key));
-}
-ircServers.prototype.deleteServerResponse = function(key, results)
-{
 	this.servers[key] = false;
 }

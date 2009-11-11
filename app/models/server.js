@@ -473,6 +473,17 @@ ircServer.prototype.connectionHandler = function(payload)
 						this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
 					}
 					tmpNick.updateNickName(payload.params[0]);
+					break;				
+					
+				case 'INVITE':
+					/* origin: nick, params[0] me, params[1] channel
+					var tmpNick = this.getNick(payload.origin);
+					if (tmpNick === this.nick)
+					{
+						this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
+					}
+					tmpNick.updateNickName(payload.params[0]);
+					*/
 					break;
 					
 				case '324': // CHANNELMODEIS
@@ -1005,9 +1016,14 @@ ircServer.prototype.saveInfo = function(params)
 		this.autoIdentify =		params.autoIdentify;
 		this.identifyService =	params.identifyService;
 		this.identifyPassword =	params.identifyPassword;
-		this.onConnect =		params.onConnect;		
+		this.onConnect =		params.onConnect;
 		
-		db.saveServer(this, this.saveInfoResponse.bind(this));
+		
+		alert('-- Save --');
+		for (var x in params) alert(x + ': ' + params[x]);
+		
+		var serverCookie = new Mojo.Model.Cookie('server-' + this.id);
+		serverCookie.put(params);
 	}
 }
 ircServer.prototype.saveInfoResponse = function(results) {}

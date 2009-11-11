@@ -398,7 +398,7 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
 	this.onConenctSave();
-	if (this.server.id)
+	if (this.serverKey)
 	{
 		servers.servers[this.serverKey].saveInfo(this.server);
 	}
