@@ -29,7 +29,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 			{
 				var f = function(controller)
 				{
-					if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
+					if (prefs.get().realname && prefs.get().realname.length>0 && prefs.get().nicknames && prefs.get().nicknames.length>0)
 						controller.pushScene('identity', true, true);
 					else
 						controller.pushScene('server-list');
