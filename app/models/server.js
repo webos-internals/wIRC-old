@@ -1,46 +1,47 @@
 function ircServer(params)
 {
-	this.STATE_DISCONNECTED = 0; 
-	this.STATE_CONNECTING = 1; 
-	this.STATE_CONNECTED = 2; 
-	this.STATE_DISCONNECTING = 3;
+	this.STATE_DISCONNECTED =	0; 
+	this.STATE_CONNECTING =		1; 
+	this.STATE_CONNECTED =		2; 
+	this.STATE_DISCONNECTING =	3;
 
-	this.id =				params.id;
-	this.alias =			params.alias;
-	this.address =			params.address;
-	this.serverUser =		params.serverUser;
-	this.serverPassword =	params.serverPassword;
-	this.port =				params.port;
-	this.autoConnect =		params.autoConnect;
-	this.autoIdentify =		params.autoIdentify;
-	this.identifyService =	params.identifyService;
-	this.identifyPassword =	params.identifyPassword;
-	this.onConnect =		params.onConnect;
-	this.preferredNicks =	[];
-	this.nextNick =			0;
+	this.id =					params.id;
+	this.alias =				params.alias;
+	this.address =				params.address;
+	this.serverUser =			params.serverUser;
+	this.serverPassword =		params.serverPassword;
+	this.port =					params.port;
+	this.autoConnect =			params.autoConnect;
+	this.autoIdentify =			params.autoIdentify;
+	this.identifyService =		params.identifyService;
+	this.identifyPassword =		params.identifyPassword;
+	this.onConnect =			params.onConnect;
+	this.preferredNicks =		[];
+	this.nextNick =				0;
 	
-	this.isAway =			false;
+	this.isAway =				false;
 
-	this.reconnect =		true;
-	this.autoReconnect =	false;
-	this.timerId =			false;
-	this.dcThreshold =		5000;
-	this.ipAddress =		false;
-	this.reconnectOnBetter = false;
+	this.reconnect =			true;
+	this.autoReconnect =		false;
+	this.timerId =				false;
+	this.dcThreshold =			5000;
+	this.ipAddress =			false;
+	this.reconnectOnBetter =	false;
 	
-	this.state = this.STATE_DISCONNECTED;
-	this.channels =			[];
-	this.queries =			[];
-	this.nick =				false;
-	this.nicks =			[];
-	this.statusMessages =	[];
+	this.state =				this.STATE_DISCONNECTED;
+	this.channels =				[];
+	this.queries =				[];
+	this.nick =					false;
+	this.nicks =				[];
+	this.statusMessages =		[];
 	
-	this.sessionToken =		false;
-	this.subscription =		false;
+	this.sessionToken =			false;
+	this.subscription =			false;
 	
-	this.stageName =		'status-' + this.id;
-	this.stageController =	false;
-	this.statusAssistant =	false;
+	this.stageName =			'status-' + this.id;
+	this.stageController =		false;
+	this.statusAssistant =		false;
+	this.invites =				[];
 	
 	if (this.autoConnect)
 	{
@@ -207,6 +208,9 @@ ircServer.prototype.connect = function()
 	}
 
 	// load identity nick list
+	// temporary new for magical list (i assume puff will be doing more then this)
+	this.preferredNicks = prefs.get().nicknames;
+	/* // old and busted
 	this.preferredNicks = [];
 	var nicks = ['nick1', 'nick2', 'nick3'];
 	for (var i = 0; i < nicks.length; i++)
@@ -217,6 +221,7 @@ ircServer.prototype.connect = function()
 			this.preferredNicks.push(nick);
 		}
 	}
+	*/
 	
 	// connecting...
 	if (this.preferredNicks[this.nextNick] === 'wIRCer')
@@ -478,14 +483,15 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;				
 					
 				case 'INVITE':
-					/* origin: nick, params[0] me, params[1] channel
 					var tmpNick = this.getNick(payload.origin);
-					if (tmpNick === this.nick)
-					{
-						this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
+					if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
+					{	// if to me and from a nick
+						tmpChan = this.getChannel(payload.params[1]);
+						if (!tmpChan || !tmpChan.containsNick(this.nick)) 
+						{	// if chan doesn't exist or it does and i'm not in it, pop invite
+							this.openInvite(tmpNick.name, payload.params[1]);
+						}
 					}
-					tmpNick.updateNickName(payload.params[0]);
-					*/
 					break;
 					
 				case '324': // CHANNELMODEIS
@@ -955,6 +961,56 @@ ircServer.prototype.removeNick = function(nick)
 	}
 }
 
+ircServer.prototype.openInvite = function(nick, channel)
+{
+	try
+	{
+		var tmpBannerName = 'invite-' + this.id + '-' + nick + '-' + channel;
+		var tmpDashName = 'invitedash-' + this.id + '-' + nick + '-' + channel;
+		
+		Mojo.Controller.appController.showBanner
+		(
+			{
+				icon: 'icon-channel.png',
+				messageText: nick + ' invites you to: ' + channel,
+				soundClass: (prefs.get().dashboardChannelSound?"alerts":"")
+			},
+			{
+				type: 'invite',
+				server: this.id,
+				nick: nick,
+				channel: channel
+			},
+			tmpBannerName
+		);
+		
+		var tmpController = Mojo.Controller.appController.getStageController(tmpDashName);
+	    if (tmpController) 
+		{
+			// do nothing on second invite if dash already exists?
+		}
+		else
+		{
+			this.invites.push({nick: nick, channel: channel});
+			Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openInviteCallback.bind(this), "dashboard");
+		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#openInvite");
+	}
+}
+ircServer.prototype.openInviteCallback = function(controller)
+{
+	controller.pushScene('invite-dashboard', this, this.invites[this.invites.length-1].nick, this.invites[this.invites.length-1].channel);
+}
+ircServer.prototype.closeInvite = function(nick, channel)
+{
+	this.invites = this.invites.without({nick: nick, channel: channel});
+	Mojo.Controller.appController.removeBanner('invite-' + this.id + '-' + nick + '-' + channel);
+	Mojo.Controller.appController.closeStage('inviteDash-' + this.id + '-' + nick + '-' + channel);
+}
+
 ircServer.prototype.getListObject = function()
 {
 	var obj =
@@ -1008,7 +1064,7 @@ ircServer.prototype.saveInfo = function(params)
 {
 	if (ircServer.validateNewServer(params, false, false)) 
 	{
-		this.id =				params.id;
+		//this.id =				params.id;
 		this.alias =			params.alias;
 		this.address =			params.address;
 		this.serverUser =		params.serverUser;
