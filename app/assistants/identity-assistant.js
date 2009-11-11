@@ -123,7 +123,7 @@ IdentityAssistant.prototype.setup = function()
 			{},
 			this.identDoneModel
 		);
-		Mojo.Event.listen(this.identDone, Mojo.Event.tap, this.identDoneTapped);
+		Mojo.Event.listen(this.identDone, Mojo.Event.tap, this.identDoneTapped.bindAsEventListener(this));
 		
 	}
 	catch (e)
@@ -145,7 +145,7 @@ IdentityAssistant.prototype.identDoneTapped = function()
 {
 	try
 	{
-		Mojo.Controller.appController.getActiveStageController().swapScene('server-list');
+		this.controller.stageController.swapScene('server-list');
 	}
 	catch (e)
 	{
