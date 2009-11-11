@@ -288,6 +288,8 @@ ServerInfoAssistant.prototype.onConnectAdd = function(event)
 	this.onConnectList.mojo.noticeUpdatedItems(0, this.onConnectModel.items);
 	this.onConnectList.mojo.setLength(this.onConnectModel.items.length);
 	
+	this.onConnectList.mojo.focusItem(this.onConnectModel.items[this.onConnectModel.items.length-1]);
+	
 	this.onConnectSave();
 }
 ServerInfoAssistant.prototype.onConnectChange = function(event)
@@ -377,7 +379,10 @@ ServerInfoAssistant.prototype.onConnectSave = function()
 	{
 		for (var d = 0; d < this.onConnectData.length; d++) 
 		{
-			this.server.onConnect.push(this.onConnectData[d].value);
+			if (this.onConnectData[d].value) 
+			{
+				this.server.onConnect.push(this.onConnectData[d].value);
+			}
 		}
 	}
 }

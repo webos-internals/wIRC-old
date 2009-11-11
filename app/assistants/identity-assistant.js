@@ -154,6 +154,8 @@ IdentityAssistant.prototype.nickListAdd = function(event)
 	this.nickList.mojo.noticeUpdatedItems(0, this.nickListModel.items);
 	this.nickList.mojo.setLength(this.nickListModel.items.length);
 	
+	this.nickList.mojo.focusItem(this.nickListModel.items[this.nickListModel.items.length-1]);
+	
 	this.nickListSave();
 }
 IdentityAssistant.prototype.nickListChange = function(event)
@@ -243,7 +245,10 @@ IdentityAssistant.prototype.nickListSave = function()
 	{
 		for (var d = 0; d < this.nickListData.length; d++) 
 		{
-			this.prefs.nicknames.push(this.nickListData[d].value);
+			if (this.nickListData[d].value) 
+			{
+				this.prefs.nicknames.push(this.nickListData[d].value);
+			}
 		}
 	}
 	
