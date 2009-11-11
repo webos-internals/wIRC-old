@@ -79,10 +79,7 @@ ServerListAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 		
 		this.updateCommandMenu(true);
-		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
-		
-		if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
-			this.controller.stageController.pushScene('identity');		
+		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);		
 		
 	} 
 	catch (e) 

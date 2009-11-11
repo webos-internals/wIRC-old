@@ -29,7 +29,10 @@ AppAssistant.prototype.handleLaunch = function(params)
 			{
 				var f = function(controller)
 				{
-					controller.pushScene('server-list');
+					if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
+						controller.pushScene('identity', true, true);
+					else
+						controller.pushScene('server-list');
 				};
 				this.controller.createStageWithCallback({name: serverStage, lightweight: true}, f);
 			}
