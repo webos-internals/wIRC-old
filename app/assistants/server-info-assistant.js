@@ -74,7 +74,7 @@ ServerInfoAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
-				hintText: 'Name Of Connection',
+				hintText: 'Optional',
 				modelProperty: 'alias',
 				focusMode: Mojo.Widget.focusSelectMode
 			},
@@ -86,7 +86,7 @@ ServerInfoAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
-				hintText: 'URL Or IP Address',
+				hintText: 'Required',
 				modelProperty: 'address',
 				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
@@ -100,6 +100,7 @@ ServerInfoAssistant.prototype.setup = function()
 				multiline: false,
 				enterSubmits: false,
 				modelProperty: 'port',
+				hintText: 'Required',
 				charsAllow: Mojo.Char.isDigit,
 				modifierState: Mojo.Widget.numLock,
 				focusMode: Mojo.Widget.focusSelectMode
@@ -112,6 +113,7 @@ ServerInfoAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
+				hintText: 'Optional',
 				modelProperty: 'serverUser',
 				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
@@ -124,6 +126,7 @@ ServerInfoAssistant.prototype.setup = function()
 			{
 				multiline: false,
 				enterSubmits: false,
+				hintText: 'Optional',
 				modelProperty: 'serverPassword',
 				textCase: Mojo.Widget.steModeLowerCase,
 				focusMode: Mojo.Widget.focusSelectMode
