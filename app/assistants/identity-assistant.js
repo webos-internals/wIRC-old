@@ -1,9 +1,7 @@
 function IdentityAssistant(showButton, disableButton)
 {
 	
-	this.identDoneWrapperStyle = '';
-	if (!showButton)
-		this.identDoneWrapperStyle = 'none';
+	this.showButton = showButton;
 		
 	// setup default preferences in the prefCookie.js model
 	this.cookie = new prefCookie();
@@ -55,9 +53,8 @@ IdentityAssistant.prototype.setup = function()
 		this.nickList	= this.controller.get('nickList');
 		this.identDone	= this.controller.get('identDone');
 		
-		this.controller.get('identDoneWrapper').style.display = this.identDoneWrapperDisplay;
-		
-		this.textChanged = 			this.textChanged.bindAsEventListener(this);
+		if (!this.showButton)
+			this.identDone.hide();
 		
 		this.controller.setupWidget
 		(
