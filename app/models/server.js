@@ -1018,10 +1018,6 @@ ircServer.prototype.saveInfo = function(params)
 		this.identifyPassword =	params.identifyPassword;
 		this.onConnect =		params.onConnect;
 		
-		
-		alert('-- Save --');
-		for (var x in params) alert(x + ': ' + params[x]);
-		
 		var serverCookie = new Mojo.Model.Cookie('server-' + this.id);
 		serverCookie.put(params);
 	}

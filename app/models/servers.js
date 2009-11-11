@@ -170,9 +170,6 @@ ircServers.prototype.loadServer = function(id)
 	var serverParams = serverCookie.get();
 	if (serverParams)
 	{
-		alert('-- '+id+' --');
-		for (var x in serverParams) alert(x + ': ' + serverParams[x]);
-		
 		var newServer = new ircServer(serverParams);
 		this.servers.push(newServer);
 	}
