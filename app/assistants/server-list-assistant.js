@@ -227,7 +227,7 @@ ServerListAssistant.prototype.handleCommand = function(event)
 		switch (event.command)
 		{
 			case 'do-ident':
-				this.controller.stageController.pushScene('identity');
+				this.controller.stageController.pushScene('identity', false, true);
 				break;
 				
 			case 'do-prefs':

@@ -1,5 +1,10 @@
 function IdentityAssistant(showButton, disableButton)
 {
+	
+	this.identDoneWrapperStyle = '';
+	if (!showButton)
+		this.identDoneWrapperStyle = 'none';
+		
 	// setup default preferences in the prefCookie.js model
 	this.cookie = new prefCookie();
 	this.prefs = this.cookie.get();
@@ -49,6 +54,8 @@ IdentityAssistant.prototype.setup = function()
 		this.realName	= this.controller.get('realname');
 		this.nickList	= this.controller.get('nickList');
 		this.identDone	= this.controller.get('identDone');
+		
+		this.controller.get('identDoneWrapper').style.display = this.identDoneWrapperDisplay;
 		
 		this.textChanged = 			this.textChanged.bindAsEventListener(this);
 		
@@ -116,6 +123,7 @@ IdentityAssistant.prototype.setup = function()
 			{},
 			this.identDoneModel
 		);
+		Mojo.Event.listen(this.identDone, Mojo.Event.tap, this.identDoneTapped);
 		
 	}
 	catch (e)
@@ -127,10 +135,21 @@ IdentityAssistant.prototype.setup = function()
 
 IdentityAssistant.prototype.validateIdentity = function()
 {
-	var tmp = prefs.get(true);
-	if (prefs.get().realname && prefs.get().realname.length>0 && prefs.get().nicknames && prefs.get().nicknames.length>0) {
+	if (this.prefs.realname.length>0 && this.prefs.nicknames.length>0) {
 		this.identDoneModel.disabled = false;
 		this.controller.modelChanged(this.identDoneModel);
+	}
+}
+
+IdentityAssistant.prototype.identDoneTapped = function()
+{
+	try
+	{
+		Mojo.Controller.appController.getActiveStageController().swapScene('server-list');
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'ident#done');
 	}
 }
 
@@ -296,4 +315,5 @@ IdentityAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.propertyChanged,	this.nickListChange.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.listReorder,		this.nickListReorder.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.listDelete,		this.nickListDelete.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.identDone, Mojo.Event.tap, this.identDoneTapped);
 }

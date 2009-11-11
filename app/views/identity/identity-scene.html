@@ -10,13 +10,12 @@
 	</div>
 	
 	<div class="palm-group">
-		<div class="palm-group-title">General</div>
+		<div class="palm-group-title">Real Name</div>
 		<div class="palm-list">
 		
 			<div class="palm-row single">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
 					<div class="title">
-						<div class="label">Real Name</div>
 						<div id="realname" x-mojo-element="TextField"></div>
 					</div>
 				</div>
@@ -31,7 +30,9 @@
 		</div>
 	</div>
 	
-	<div x-mojo-element="Button" id="identDone" class="identDone"></div>
+	<div id="identDoneWrapper">
+		<div x-mojo-element="Button" id="identDone" class="identDone"></div>
+	</div>
 	
 	<div class="palm-inline-error" style="display: none;" id="error_message">
 		<div class="error-message">Invalid Characters.<br />Please Try again.</div>
