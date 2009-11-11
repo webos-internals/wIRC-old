@@ -21,6 +21,9 @@ prefCookie.prototype.get = function(reload)
 				piface:				'',
 				aiface:				false,
 				
+				// Global nickname/identities list
+				nicknames:			[],
+				
 				// Server Status Group
 				statusPop:			false,
 				
