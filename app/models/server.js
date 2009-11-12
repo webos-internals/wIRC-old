@@ -16,7 +16,7 @@ function ircServer(params)
 	this.identifyService =		params.identifyService;
 	this.identifyPassword =		params.identifyPassword;
 	this.onConnect =			params.onConnect;
-	this.preferredNicks =		[];
+	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
 	
 	this.isAway =				false;
@@ -208,31 +208,6 @@ ircServer.prototype.connect = function()
 		}
 	}
 
-	// load identity nick list
-	// temporary new for magical list (i assume puff will be doing more then this)
-	this.preferredNicks = prefs.get().nicknames;
-	/* // old and busted
-	this.preferredNicks = [];
-	var nicks = ['nick1', 'nick2', 'nick3'];
-	for (var i = 0; i < nicks.length; i++)
-	{
-		var nick = prefs.get()[nicks[i]];
-		if (nick)
-		{
-			this.preferredNicks.push(nick);
-		}
-	}
-	*/
-	
-	// connecting...
-	if (this.preferredNicks[this.nextNick] === 'wIRCer')
-	{
-		if (servers.listAssistant && servers.listAssistant.controller)
-		{
-			servers.listAssistant.changeNickPrompt();
-		}
-		return;
-	}
 	this.newMessage('type3', false, 'Connecting...');
 	this.state = this.STATE_CONNECTING;
 	this.subscription = wIRCd.connect
@@ -242,7 +217,7 @@ ircServer.prototype.connect = function()
 		this.port,
 		(this.serverUser?this.serverUser:null),
 		(this.serverPassword?this.serverPassword:null),
-		this.preferredNicks[this.nextNick],
+		this.defaultNick?this.defaultNick:prefs.get().nicknames[this.nextNick],
 		prefs.get().realname,
 		prefs.get().piface
 	);
@@ -624,9 +599,9 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case '433':		// NAMEINUSE
 					this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
-					this.nextNick = (this.nextNick < this.preferredNicks.length - 1) ? this.nextNick + 1 : 0;
-					this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + this.preferredNicks[this.nextNick]);
-					wIRCd.nick(null, this.sessionToken, this.preferredNicks[this.nextNick])
+					this.nextNick = (this.nextNick < prefs.get().nicknames.length - 1) ? this.nextNick + 1 : 0;
+					this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
+					wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick])
 
 					break;
 					
