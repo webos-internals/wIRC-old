@@ -75,11 +75,8 @@ ircServer.prototype.newCommand = function(message)
 						
 				case 'j':
 				case 'join':
-					var tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch)
-						this.joinChannel(tmpMatch[1],tmpMatch[2]);
-					else
-						this.joinChannel(val, null);
+					var vals = val.split(" ");
+					this.joinChannel(vals[0],vals[1]);
 					break;
 					
 				case 'msg':
