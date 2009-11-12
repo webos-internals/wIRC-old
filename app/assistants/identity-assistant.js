@@ -23,7 +23,8 @@ function IdentityAssistant(showButton, disableButton)
 	this.identDoneModel = 
 	{
 		label:		"Done",
-		disabled:	disableButton
+		disabled:	disableButton,
+		buttonClass: 'affirmative'
 	}
 	
 	this.nickList =			false;
