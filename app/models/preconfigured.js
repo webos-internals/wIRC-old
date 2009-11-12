@@ -100,5 +100,24 @@ var preconfigured = [
 	{network: 'EFnet',		region: 'US',				subregion: 'Minneapolis, MN',		address: 'irc.umn.edu'},
 	{network: 'EFnet',		region: 'US',				subregion: 'Reston, VA',			address: 'irc.wh.verio.net'},
 	
+	// Undernet
+	{network: 'Undernet',	region: 'CA',				subregion: 'Vancouver, BC',			address: 'Vancouver.BC.CA.Undernet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Bucharest, RO',			address: 'bucharest.ro.eu.undernet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Diemen, NL',			address: 'Diemen.NL.EU.Undernet.Org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Ede, NL',				address: 'Ede.NL.EU.UnderNet.Org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Elsene, BE',			address: 'Elsene.Be.Eu.undernet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Graz, AT',				address: 'graz.at.Eu.UnderNet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Helsinki, FI',			address: 'Helsinki.FI.EU.Undernet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Lelystad, NL',			address: 'Lelystad.NL.EU.UnderNet.Org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Olso, NO',				address: 'oslo.no.eu.undernet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Trondheim, NO',			address: 'trondheim.no.eu.undernet.org'},
+	{network: 'Undernet',	region: 'EU',				subregion: 'Zagreb, HR',			address: 'Zagreb.Hr.EU.UnderNet.org'},
+	{network: 'Undernet',	region: 'US',				subregion: 'Dallas, TX',			address: 'Dallas.TX.US.Undernet.org'},
+	{network: 'Undernet',	region: 'US',				subregion: 'Mesa, AZ',				address: 'mesa.az.us.undernet.org'},
+	{network: 'Undernet',	region: 'US',				subregion: 'Mesa, AZ',				address: 'mesa2.az.us.undernet.org'},
+	{network: 'Undernet',	region: 'US',				subregion: 'New York, NY',			address: 'newyork.ny.us.undernet.org'},
+	{network: 'Undernet',	region: 'US',				subregion: 'SantaAna, CA',			address: 'SantaAna.CA.US.Undernet.org'},
+	{network: 'Undernet',	region: 'US',				subregion: 'Tampa, FL',				address: 'Tampa.FL.US.Undernet.org'},
+
 ];
 
