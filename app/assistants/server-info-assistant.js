@@ -224,9 +224,17 @@ ServerInfoAssistant.prototype.advancedButtonPressed = function(event)
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 {
 	this.onConnectSave();
-	if (ircServer.validateNewServer(this.server, this, true)) 
+	if (this.serverKey === false)
 	{
-		servers.newServer(this.server, this);
+		if (ircServer.validateNewServer(this.server, this, true)) 
+		{
+			servers.newServer(this.server, this);
+		}
+	}
+	else
+	{
+		servers.servers[this.serverKey].saveInfo(this.server);
+		this.doneSaving();
 	}
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
