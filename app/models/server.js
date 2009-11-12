@@ -1048,6 +1048,7 @@ ircServer.prototype.getEditObject = function()
 		alias:				this.alias,
 		address:			this.address,
 		port:				this.port,
+		defaultNick:		this.defaultNick,
 		serverUser:			this.serverUser,
 		serverPassword:		this.serverPassword,
 		autoConnect:		this.autoConnect,
@@ -1069,6 +1070,7 @@ ircServer.prototype.saveInfo = function(params)
 		this.serverUser =		params.serverUser;
 		this.serverPassword =	params.serverPassword;
 		this.port =				params.port;
+		this.defaultNick =		params.defaultNick;
 		this.autoConnect =		params.autoConnect;
 		this.autoIdentify =		params.autoIdentify;
 		this.identifyService =	params.identifyService;
@@ -1090,6 +1092,7 @@ ircServer.getBlankServerObject = function()
 		serverUser:			'',
 		serverPassword:		'',
 		port:				'',
+		defaultNick:		'',
 		autoConnect:		false,
 		autoIdentify:		false,
 		identifyService:	'NickServ',
