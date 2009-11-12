@@ -421,10 +421,21 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 
 ChannelChatAssistant.prototype.dragStartHandler = function(event)
 {
+	this.useScroll = false;
+	this.lastY = event.move.y;
 	this.lastX = event.move.x;
 }
 ChannelChatAssistant.prototype.draggingHandler = function(event)
 {
+	if (this.useScroll)
+	{
+		return;
+	}
+	if (Math.abs(event.move.y - this.lastY) > 15)
+	{
+		this.useScroll = true;
+		return;
+	}
 	var difference = event.move.x - this.lastX;
 	while (Math.abs(difference) >= 15)
 	{

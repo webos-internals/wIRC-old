@@ -60,6 +60,8 @@ QueryChatAssistant.prototype.setup = function()
 		this.scrollHandler =			this.onScrollStarted.bindAsEventListener(this);
 		this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
 		this.invisibleWindowHandler =	this.invisibleWindow.bindAsEventListener(this);
+		this.dragStartHandler =	this.dragStartHandler.bindAsEventListener(this);
+		this.draggingHandler =	this.draggingHandler.bindAsEventListener(this);
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
 		this.inputElementLoseFocus =	this.inputFocus.bind(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
@@ -67,6 +69,8 @@ QueryChatAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.sceneScroller,	Mojo.Event.scrollStarting,	this.scrollHandler);
 		Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate,   this.visibleWindowHandler);
 		Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
+		Mojo.Event.listen(this.messageListElement, Mojo.Event.dragStart, this.dragStartHandler);
+		Mojo.Event.listen(this.messageListElement, Mojo.Event.dragging, this.draggingHandler);
 		this.isVisible = true;
 		
 		this.titleElement.innerHTML = this.query.nick.name;
@@ -115,6 +119,9 @@ QueryChatAssistant.prototype.setup = function()
 
 QueryChatAssistant.prototype.loadPrefs = function(initial)
 {
+	this.messageSplit = parseInt(prefs.get().messageSplit);
+	this.messagesStyle = prefs.get().messagesStyle;
+	this.fontSize = prefs.get().fontSize;
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 }
 QueryChatAssistant.prototype.activate = function(event)
@@ -253,7 +260,49 @@ QueryChatAssistant.prototype.handleCommand = function(event)
 		}
 	}
 }
-
+QueryChatAssistant.prototype.dragStartHandler = function(event)
+{
+	this.useScroll = false;
+	this.lastY = event.move.y;
+	this.lastX = event.move.x;
+}
+QueryChatAssistant.prototype.draggingHandler = function(event)
+{
+	if (this.useScroll)
+	{
+		return;
+	}
+	if (Math.abs(event.move.y - this.lastY) > 15)
+	{
+		this.useScroll = true;
+		return;
+	}
+	var difference = event.move.x - this.lastX;
+	while (Math.abs(difference) >= 15)
+	{
+		if (difference > 0)
+		{
+			this.lastX = event.move.x;
+			this.messageSplit = this.messageSplit + 5;
+			difference = difference - 15;
+		}
+		else if (difference < 0)
+		{
+			this.lastX = event.move.x;
+			this.messageSplit = this.messageSplit - 5;
+			difference = difference + 15;
+		}
+	}
+	if (this.messageSplit < 15)
+	{
+		this.messageSplit = 15;
+	}
+	if (this.messageSplit > 50)
+	{
+		this.messageSplit = 50;
+	}
+	this.messageListElement.className = this.messagesStyle + ' fixed-' + this.messageSplit + ' font-' + this.fontSize;
+}
 QueryChatAssistant.prototype.visibleWindow = function(event)
 {
 	if (!this.isVisible)
@@ -278,6 +327,8 @@ QueryChatAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageActivate,   this.visibleWindowHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
+	Mojo.Event.stopListening(this.messageListElement, Mojo.Event.dragStart, this.dragStartHandler);
+	Mojo.Event.stopListening(this.messageListElement, Mojo.Event.dragging, this.draggingHandler);
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
 	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
