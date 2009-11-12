@@ -81,7 +81,10 @@ ServerInfoAssistant.prototype.setup = function()
 			this.server
 		);
 
-		Mojo.Event.listen(this.addressElement, 'keyup', this.textChanged);
+		if (this.serverKey === false)
+		{
+			Mojo.Event.listen(this.addressElement, 'keyup', this.textChanged);
+		}
 		
 		
 		this.updateDefaultNickChoices(true);
@@ -173,6 +176,22 @@ ServerInfoAssistant.prototype.toggleChanged = function(event)
 {
 	// Nothing special here, The model is being changed automatically
 }
+ServerInfoAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type === Mojo.Event.back)
+	{
+		if (this.addressElement.mojo.getValue().length <= 0)
+		{
+			this.controller.showAlertDialog(
+			{
+				title: 'wIRC',
+				message: 'Valid Server Address is Required',
+				choices: [{label:$L('OK'), value:''}]
+			});
+			event.stop();
+		}
+	}
+}
 ServerInfoAssistant.prototype.textChanged = function(event)
 {
 	// test server validation
@@ -249,7 +268,13 @@ ServerInfoAssistant.prototype.deactivate = function(event)
 	this.onConnectSave();
 	if (this.serverKey !== false)
 	{
-		servers.servers[this.serverKey].saveInfo(this.server);
+		if (ircServer.validateNewServer(this.server, this, true)) 
+		{
+			if (this.addressElement.mojo.getValue().length > 0)
+			{
+				servers.servers[this.serverKey].saveInfo(this.server);
+			}
+		}
 	}
 }
 
