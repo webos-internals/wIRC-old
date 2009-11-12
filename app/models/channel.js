@@ -41,6 +41,12 @@ ircChannel.prototype.newCommand = function(message)
 			case 'me':
 				this.me(val);
 				break;
+				
+			case 'j':
+			case 'join':
+				var vals = val.split(" ");
+				this.server.joinChannel(vals[0],vals[1]);
+				break;				
 			
 			case 'topic':
 				if (val) 
