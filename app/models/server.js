@@ -483,13 +483,16 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;				
 					
 				case 'INVITE':
-					var tmpNick = this.getNick(payload.origin);
-					if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
-					{	// if to me and from a nick
-						tmpChan = this.getChannel(payload.params[1]);
-						if (!tmpChan || !tmpChan.containsNick(this.nick)) 
-						{	// if chan doesn't exist or it does and i'm not in it, pop invite
-							this.openInvite(tmpNick.name, payload.params[1]);
+					if (prefs.get().inviteAction != 'ignore') 
+					{
+						var tmpNick = this.getNick(payload.origin);
+						if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
+						{	// if to me and from a nick
+							tmpChan = this.getChannel(payload.params[1]);
+							if (!tmpChan || !tmpChan.containsNick(this.nick)) 
+							{	// if chan doesn't exist or it does and i'm not in it, pop invite
+								this.openInvite(tmpNick.name, payload.params[1]);
+							}
 						}
 					}
 					break;
@@ -965,34 +968,42 @@ ircServer.prototype.openInvite = function(nick, channel)
 {
 	try
 	{
-		var tmpBannerName = 'invite-' + this.id + '-' + nick + '-' + channel;
-		var tmpDashName = 'invitedash-' + this.id + '-' + nick + '-' + channel;
-		
-		Mojo.Controller.appController.showBanner
-		(
-			{
-				icon: 'icon-channel.png',
-				messageText: nick + ' invites you to: ' + channel,
-				soundClass: (prefs.get().dashboardChannelSound?"alerts":"")
-			},
-			{
-				type: 'invite',
-				server: this.id,
-				nick: nick,
-				channel: channel
-			},
-			tmpBannerName
-		);
-		
-		var tmpController = Mojo.Controller.appController.getStageController(tmpDashName);
-	    if (tmpController) 
+		if (prefs.get().inviteAction == 'prompt') 
 		{
-			// do nothing on second invite if dash already exists?
+			var tmpBannerName = 'invite-' + this.id + '-' + nick + '-' + channel;
+			var tmpDashName = 'invitedash-' + this.id + '-' + nick + '-' + channel;
+			
+			Mojo.Controller.appController.showBanner
+			(
+				{
+					icon: 'icon-invite.png',
+					messageText: nick + ' invites you to: ' + channel,
+					soundClass: (prefs.get().dashboardInviteSound?"alerts":"")
+				},
+				{
+					type: 'invite',
+					server: this.id,
+					nick: nick,
+					channel: channel
+				},
+				tmpBannerName
+			);
+			
+			var tmpController = Mojo.Controller.appController.getStageController(tmpDashName);
+		    if (tmpController) 
+			{
+				// do nothing on second invite if dash already exists?
+			}
+			else
+			{
+				this.invites.push({nick: nick, channel: channel});
+				
+				Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openInviteCallback.bind(this), "dashboard");
+			}
 		}
-		else
+		else if (prefs.get().inviteAction == 'accept')
 		{
-			this.invites.push({nick: nick, channel: channel});
-			Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openInviteCallback.bind(this), "dashboard");
+			this.joinChannel(channel);
 		}
 	}
 	catch (e)
@@ -1006,9 +1017,20 @@ ircServer.prototype.openInviteCallback = function(controller)
 }
 ircServer.prototype.closeInvite = function(nick, channel)
 {
-	this.invites = this.invites.without({nick: nick, channel: channel});
-	Mojo.Controller.appController.removeBanner('invite-' + this.id + '-' + nick + '-' + channel);
-	Mojo.Controller.appController.closeStage('inviteDash-' + this.id + '-' + nick + '-' + channel);
+	try
+	{
+		var tmpBannerName = 'invite-' + this.id + '-' + nick + '-' + channel;
+		var tmpDashName = 'invitedash-' + this.id + '-' + nick + '-' + channel;
+		
+		this.invites = this.invites.without({nick: nick, channel: channel});
+		
+		Mojo.Controller.appController.removeBanner(tmpBannerName);
+		Mojo.Controller.appController.closeStage(tmpDashName);
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#closeInvite");
+	}
 }
 
 ircServer.prototype.getListObject = function()
