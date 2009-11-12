@@ -75,7 +75,11 @@ ircServer.prototype.newCommand = function(message)
 						
 				case 'j':
 				case 'join':
-					this.joinChannel(val);
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch)
+						this.joinChannel(tmpMatch[1],tmpMatch[2]);
+					else
+						this.joinChannel(val, null);
 					break;
 					
 				case 'msg':
@@ -316,7 +320,7 @@ ircServer.prototype.connectionHandler = function(payload)
 					break;
 								
 				case 'JOIN':
-					var tmpChan = this.getOrCreateChannel(payload.params[0]);
+					var tmpChan = this.getOrCreateChannel(payload.params[0], null);
 					if (tmpChan) 
 					{
 						var tmpNick = this.getNick(payload.origin);
@@ -794,7 +798,7 @@ ircServer.prototype.updateStatusList = function()
 	}
 }
 
-ircServer.prototype.getOrCreateChannel = function(name)
+ircServer.prototype.getOrCreateChannel = function(name, key)
 {
 	var tmpChan = this.getChannel(name);
 	if (!tmpChan)
@@ -802,6 +806,7 @@ ircServer.prototype.getOrCreateChannel = function(name)
 		tmpChan = new ircChannel(
 		{
 			name:	name,
+			key:	key,
 			server:	this
 		});
 		this.channels.push(tmpChan);
@@ -810,9 +815,9 @@ ircServer.prototype.getOrCreateChannel = function(name)
 	return tmpChan;
 }
 
-ircServer.prototype.joinChannel = function(name)
+ircServer.prototype.joinChannel = function(name, key)
 {
-	var tmpChan = this.getOrCreateChannel(name);
+	var tmpChan = this.getOrCreateChannel(name, key);
 	if (!tmpChan.containsNick(this.nick))
 	{
 		tmpChan.join();
