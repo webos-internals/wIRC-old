@@ -31,6 +31,8 @@ function ServerInfoAssistant(id)
 	this.onConnectData =	[];
 	this.onConnectCount =	0;
 	
+	this.defaultNickChoices = [];
+	
 	this.addNicksModel = 
 	{
 		label:		"Add Nicknames",
@@ -45,6 +47,7 @@ function ServerInfoAssistant(id)
 			this.onConnectData.push({id: this.onConnectCount, index: this.onConnectCount-1, value: this.server.onConnect[c]});
 		}
 	}
+		
 }
 
 ServerInfoAssistant.prototype.setup = function()
@@ -157,12 +160,7 @@ ServerInfoAssistant.prototype.setup = function()
 			'defaultNick',
 			{
 				label: 'Default',
-				choices:
-				[
-					{label:'test1', value:'test1'},
-					{label:'test2', value:'test2'},
-					{label:'test3', value:'test3'}
-				],
+				choices: this.defaultNickChoices,
 				modelProperty: 'defaultNick'
 			},
 			this.prefs
@@ -274,6 +272,12 @@ ServerInfoAssistant.prototype.setup = function()
 	{
 		Mojo.Log.logException(e, 'server-info#setup');
 	}
+}
+
+ServerInfoAssistant.prototype.updateDefaultNickChoices = function()
+{
+	for (var nick in prefs.get().nicknames)
+		this.defaultNickChoices.push({label:nick,value:nick});
 }
 
 ServerInfoAssistant.prototype.addNicksTapped = function()
@@ -460,7 +464,10 @@ ServerInfoAssistant.prototype.doneSaving = function()
 	this.controller.stageController.popScene();
 }
 
-ServerInfoAssistant.prototype.activate = function(event) {}
+ServerInfoAssistant.prototype.activate = function(event)
+{
+	this.updateDefaultNickChoices();
+}
 ServerInfoAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.aliasElement,				Mojo.Event.propertyChange,	this.textChanged);
