@@ -37,6 +37,7 @@ prefCookie.prototype.get = function(reload)
 				messagesStyle:		'lefta',
 				messageSplit:		'25',
 				fontSize:			'15',
+				senderColoring:		true,
 				
 				// Highlight Group
 				highlightStyle:		'color',
@@ -57,6 +58,8 @@ prefCookie.prototype.get = function(reload)
 				colorMarker:		'red',
 				colorHighlightFG:	'black',
 				colorHighlightBG:	'lightpink',
+				colorOwnNick:		'black',
+				colorOtherNicks:	'green',
 			};
 			
 			var cookieData = this.cookie.get();

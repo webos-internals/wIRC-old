@@ -108,15 +108,6 @@ function ircMessage(params)
 			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
 			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
 			this.message		= params.message;
-			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
-			{
-				if (params.channel)
-				{
-					this.channel = params.channel;
-				}
-				this.highlightMessage();
-			}
-			break;						
 
 		case 'type7':
 			this.rowClass		= 'no-seperator';
@@ -155,12 +146,17 @@ function ircMessage(params)
 	
 		// type11
 		case 'privmsg':
+			this.me =			params.me;
 			this.nick =			params.nick;
 			this.nickDisplay =	this.nick.name;
-			this.nickStyle =	'color: ' + this.nick.colorHex + ';',
+			if (this.me==this.nick.name)
+				this.nickStyle =	'color: ' + prefs.get().colorOwnNick + ';';
+			else if (prefs.get().senderColoring)
+				this.nickStyle =	'color: ' + this.nick.colorHex + ';';
+			else
+				this.nickStyle =	'color: ' + prefs.get().colorOtherNicks + ';';
 			this.messageStyle = 'color: ' + prefs.get().colorText;
 			this.message =		params.message;
-			this.me =			params.me;
 			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
 			{
 				if (params.channel)
