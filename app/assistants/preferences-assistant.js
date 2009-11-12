@@ -24,6 +24,7 @@ function PreferencesAssistant()
 	}
 	
 	this.colorChoices = [
+					{label:'', value:''},
 					{label:'aliceblue', value:'aliceblue'},
 					{label:'antiquewhite', value:'antiquewhite'},
 					{label:'aqua', value:'aqua'},
@@ -412,30 +413,6 @@ PreferencesAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
-		this.controller.setupWidget
-		(
-			'highlightColorOf',
-			{
-				label: 'Color Of',
-				choices:
-				[
-					{label:'Foreground', value:'foreground'},
-					{label:'Background', value:'background'}
-				],
-				modelProperty: 'highlightColorOf'
-			},
-			this.prefs
-		);
-		this.controller.setupWidget
-		(
-			'highlightColor',
-			{
-				label: 'Color',
-				choices: this.colorChoices,
-				modelProperty: 'highlightColor'
-			},
-			this.prefs
-		);
 		
 		this.controller.setupWidget
 		(
@@ -479,6 +456,26 @@ PreferencesAssistant.prototype.setup = function()
 		);
 		this.controller.setupWidget
 		(
+			'colorHighlightFG',
+			{
+				label: 'Highlight FG',
+				choices: this.colorChoices,
+				modelProperty: 'colorHighlightFG'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'colorHighlightBG',
+			{
+				label: 'Highlight BG',
+				choices: this.colorChoices,
+				modelProperty: 'colorHighlightBG'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
 			'colorMarker',
 			{
 				label: 'Marker line',
@@ -490,11 +487,10 @@ PreferencesAssistant.prototype.setup = function()
 						
 		this.highlightStyleChanged();
 		this.controller.listen('highlightStyle',	Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
-		
 		this.controller.listen('highlightPart',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('highlightColorOf',	Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('highlightColor',	Mojo.Event.propertyChange, this.listChangedHandler);
 		
+		this.controller.listen('colorHighlightFG',	Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('colorHighlightBG',	Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('colorNotice',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('colorAction',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('colorStatus',		Mojo.Event.propertyChange, this.listChangedHandler);
@@ -636,12 +632,10 @@ PreferencesAssistant.prototype.highlightStyleChanged = function(event)
 	}
 	if (this.prefs['highlightStyle'] == 'color' || this.prefs['highlightStyle'] == 'boldcolor')
 	{
-		this.controller.get('highlightPartContainer').className = 'palm-row';
 		this.controller.get('highlightColorOptions').style.display = '';
 	}
 	else
 	{
-		this.controller.get('highlightPartContainer').className = 'palm-row last';
 		this.controller.get('highlightColorOptions').style.display = 'none';
 	}
 }
@@ -779,14 +773,9 @@ PreferencesAssistant.prototype.cleanup = function(event)
 	
 	this.controller.stopListening('highlightStyle',			Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 	this.controller.stopListening('highlightPart',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('highlightColorOf',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('highlightColor',			Mojo.Event.propertyChange, this.listChangedHandler);
 	
-	this.controller.stopListening('highlightStyle',			Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
-	this.controller.stopListening('highlightPart',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('highlightColorOf',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('highlightColor',			Mojo.Event.propertyChange, this.listChangedHandler);
-	
+	this.controller.stopListening('colorHighlightFG',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorHighlightBG',		Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorNotice',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorAction',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorStatus',			Mojo.Event.propertyChange, this.listChangedHandler);

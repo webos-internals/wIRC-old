@@ -41,8 +41,6 @@ prefCookie.prototype.get = function(reload)
 				// Highlight Group
 				highlightStyle:		'color',
 				highlightPart:		'all',
-				highlightColorOf:	'background',
-				highlightColor:		'lightpink',
 				
 				// Dashboard/Banner Group
 				dashboardChannel:		true,
@@ -57,6 +55,8 @@ prefCookie.prototype.get = function(reload)
 				colorStatus:		'mediumpurple',
 				colorText:			'black',
 				colorMarker:		'red',
+				colorHighlightFG:	'black',
+				colorHighlightBG:	'lightpink',
 			};
 			
 			var cookieData = this.cookie.get();

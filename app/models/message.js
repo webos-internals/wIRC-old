@@ -108,6 +108,14 @@ function ircMessage(params)
 			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
 			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
 			this.message		= params.message;
+			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
+			{
+				if (params.channel)
+				{
+					this.channel = params.channel;
+				}
+				this.highlightMessage();
+			}
 			break;						
 
 		case 'type7':
@@ -265,28 +273,18 @@ ircMessage.prototype.highlightMessage = function()
 	
 	var style = '';
 	
-	if (prefs.get().highlightStyle == 'color' || prefs.get().highlightStyle == 'boldcolor') 
-	{
-		if (prefs.get().highlightColorOf == 'foreground') style += 'color: ' + prefs.get().highlightColor + ';';
-		if (prefs.get().highlightColorOf == 'background') style += 'background-color: ' + prefs.get().highlightColor + ';';
-	}
+	if (prefs.get().highlightStyle == 'color' || prefs.get().highlightStyle == 'boldcolor')
+		style += 'color:' + prefs.get().colorHighlightFG + ';background-color:' + prefs.get().colorHighlightBG + ';';
+		
 	if (prefs.get().highlightStyle == 'bold' || prefs.get().highlightStyle == 'boldcolor') 
-	{
-		style += 'font-weight: bold;';
-	}
+		style += 'font-weight:bold;';
 	
 	switch (prefs.get().highlightPart)
 	{
 		case 'all':
 			this.rowStyle += style;
-			// foreground color doesn't work through children, sigh, so we have to set them manually...
-			if ((prefs.get().highlightStyle == 'color' ||
-				prefs.get().highlightStyle == 'boldcolor') &&
-				prefs.get().highlightColorOf == 'foreground')
-			{
-				this.nickStyle += style;
-				this.messageStyle += style;
-			}
+			this.nickStyle += style;
+			this.messageStyle += style;
 			break;
 		case 'nick':
 			this.nickStyle += style;
