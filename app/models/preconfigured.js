@@ -1,5 +1,8 @@
 var preconfigured = [
 
+	// OFTC
+	{network: 'OFTC',		region: '',			 		subregion: '', 						address: 'irc.oftc.net'},
+
 	// Freenode
 	{network: 'Freenode',	region: '',			 		subregion: '', 						address: 'irc.freenode.net'},
 		
