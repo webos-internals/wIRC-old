@@ -67,6 +67,7 @@ ServerInfoAssistant.prototype.setup = function()
 		this.identifyPasswordElement =	this.controller.get('identifyPassword');
 		this.saveButtonElement =		this.controller.get('saveButton');
 		this.onConnectList =			this.controller.get('onConnect');
+		this.defaultNick = 				this.controller.get('defaultNick');
 		this.addNicks = 				this.controller.get('addNicks');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
@@ -171,7 +172,7 @@ ServerInfoAssistant.prototype.setup = function()
 			},
 			this.nickSelectModel
 		);
-		Mojo.Event.listen(this.addNicks, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
+		Mojo.Event.listen(this.defaultNick, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
 		this.controller.setupWidget
 		(
 			'addNicks',
