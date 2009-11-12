@@ -39,17 +39,7 @@ function ChannelChatAssistant(channel)
 	this.menuModel =
 	{
 		visible: true,
-		items:
-		[
-			{
-				label: "Away",
-				command: 'do-away'
-			},
-			{
-				label: "Preferences",
-				command: 'do-prefs'
-			}
-		]
+		items: []
 	}
 }
 
@@ -60,6 +50,7 @@ ChannelChatAssistant.prototype.setup = function()
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
 		
+		this.updateAppMenu(true);
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.documentElement =			this.controller.stageController.document;
@@ -380,6 +371,29 @@ ChannelChatAssistant.prototype.stopAutoFocus = function()
 	Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
 }
 
+ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate)
+{
+	this.menuModel.items = [];
+	
+	if (this.channel.server.isAway) 
+	{
+		this.menuModel.items.push({label: "Back", command: 'do-away'});
+	}
+	else
+	{
+		this.menuModel.items.push({label: "Away", command: 'do-away'});
+	}
+	
+	this.menuModel.items.push({label: "Preferences", command: 'do-prefs'});
+	
+	if (!this.test) this.test=1;
+	this.menuModel.items.push({label: "Test" + this.test, command: 'do-test'});
+	
+	if (!skipUpdate)
+	{
+		this.controller.modelChanged(this.menuModel);
+	}
+}	
 ChannelChatAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -403,10 +417,18 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 					);
 				}
 				else
+				{
 					this.channel.newCommand('/away');
+				}
+				this.updateAppMenu();
 				break;
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences');
+				break;
+			case 'do-prefs':
+				this.test++;
+				alert(this.test);
+				this.updateAppMenu();
 				break;
 		}
 	}
