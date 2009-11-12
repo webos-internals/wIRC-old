@@ -31,13 +31,11 @@ function ServerInfoAssistant(id)
 	this.onConnectData =	[];
 	this.onConnectCount =	0;
 	
-	this.defaultNickChoices = [];
-	
-	this.addNicksModel = 
+	this.nickSelectModel =
 	{
-		label:		"Add Nicknames",
-		disabled:	false
-	}
+		value: (this.server.defaultNick?this.server.defaultNick:prefs.get().nicknames[0]),
+		choices: []
+	};
 	
 	if (this.server.onConnect && this.server.onConnect.length > 0)
 	{
@@ -155,17 +153,6 @@ ServerInfoAssistant.prototype.setup = function()
 			this.server
 		);
 		
-		this.controller.setupWidget
-		(
-			'defaultNick',
-			{
-				label: 'Default',
-				choices: this.defaultNickChoices,
-				modelProperty: 'defaultNick'
-			},
-			this.prefs
-		);
-		
 		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
@@ -173,11 +160,26 @@ ServerInfoAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 		
+		
+		this.updateDefaultNickChoices(true);
+		this.controller.setupWidget
+		(
+			'defaultNick',
+			{
+				label: 'Default',
+				modelProperty: 'value'
+			},
+			this.nickSelectModel
+		);
+		Mojo.Event.listen(this.addNicks, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
 		this.controller.setupWidget
 		(
 			'addNicks',
 			{},
-			this.addNicksModel
+			{
+				label:		"Add Nicknames",
+				disabled:	false
+			}
 		);
 		Mojo.Event.listen(this.addNicks, Mojo.Event.tap, this.addNicksTapped.bindAsEventListener(this));
 
@@ -274,13 +276,28 @@ ServerInfoAssistant.prototype.setup = function()
 	}
 }
 
-ServerInfoAssistant.prototype.updateDefaultNickChoices = function()
+ServerInfoAssistant.prototype.updateDefaultNickChoices = function(skipUpdate)
 {
-	for (var nick in prefs.get().nicknames)
-		this.defaultNickChoices.push({label:nick,value:nick});
+	this.nickSelectModel.choices = [];
+	var valFound = false;
+	
+	for (var n = 0; n < prefs.get().nicknames.length; n++) 
+	{
+		this.nickSelectModel.choices.push({label: prefs.get().nicknames[n], value: prefs.get().nicknames[n]});
+		if (prefs.get().nicknames[n] == this.nickSelectModel.value) valFound = true;
+	}
+	if (!valFound) this.nickSelectModel.value = prefs.get().nicknames[0];
+	
+	if (!skipUpdate)
+	{
+		this.controller.modelChanged(this.nickSelectModel);
+	}
 }
-
-ServerInfoAssistant.prototype.addNicksTapped = function()
+ServerInfoAssistant.prototype.nickDefaultChanged = function(event)
+{
+	this.server.defaultNick = this.nickSelectModel.value;
+}
+ServerInfoAssistant.prototype.addNicksTapped = function(event)
 {
 	try
 	{
