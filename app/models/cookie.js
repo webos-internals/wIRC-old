@@ -37,12 +37,11 @@ prefCookie.prototype.get = function(reload)
 				messagesStyle:		'lefta',
 				messageSplit:		'25',
 				fontSize:			'15',
+				senderColoring:		true,
 				
 				// Highlight Group
 				highlightStyle:		'color',
 				highlightPart:		'all',
-				highlightColorOf:	'background',
-				highlightColor:		'lightpink',
 				
 				// Dashboard/Banner Group
 				dashboardChannel:		true,
@@ -57,6 +56,10 @@ prefCookie.prototype.get = function(reload)
 				colorStatus:		'mediumpurple',
 				colorText:			'black',
 				colorMarker:		'red',
+				colorHighlightFG:	'black',
+				colorHighlightBG:	'lightpink',
+				colorOwnNick:		'black',
+				colorOtherNicks:	'green',
 			};
 			
 			var cookieData = this.cookie.get();

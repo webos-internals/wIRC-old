@@ -108,7 +108,6 @@ function ircMessage(params)
 			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
 			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
 			this.message		= params.message;
-			break;						
 
 		case 'type7':
 			this.rowClass		= 'no-seperator';
@@ -147,12 +146,17 @@ function ircMessage(params)
 	
 		// type11
 		case 'privmsg':
+			this.me =			params.me;
 			this.nick =			params.nick;
 			this.nickDisplay =	this.nick.name;
-			this.nickStyle =	'color: ' + this.nick.colorHex + ';',
+			if (this.me==this.nick.name)
+				this.nickStyle =	'color: ' + prefs.get().colorOwnNick + ';';
+			else if (prefs.get().senderColoring)
+				this.nickStyle =	'color: ' + this.nick.colorHex + ';';
+			else
+				this.nickStyle =	'color: ' + prefs.get().colorOtherNicks + ';';
 			this.messageStyle = 'color: ' + prefs.get().colorText;
 			this.message =		params.message;
-			this.me =			params.me;
 			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
 			{
 				if (params.channel)
@@ -265,34 +269,24 @@ ircMessage.prototype.highlightMessage = function()
 	
 	var style = '';
 	
-	if (prefs.get().highlightStyle == 'color' || prefs.get().highlightStyle == 'boldcolor') 
-	{
-		if (prefs.get().highlightColorOf == 'foreground') style += 'color: ' + prefs.get().highlightColor + ';';
-		if (prefs.get().highlightColorOf == 'background') style += 'background-color: ' + prefs.get().highlightColor + ';';
-	}
+	if (prefs.get().highlightStyle == 'color' || prefs.get().highlightStyle == 'boldcolor')
+		style += 'color:' + prefs.get().colorHighlightFG + ';background-color:' + prefs.get().colorHighlightBG + ';';
+		
 	if (prefs.get().highlightStyle == 'bold' || prefs.get().highlightStyle == 'boldcolor') 
-	{
-		style += 'font-weight: bold;';
-	}
+		style += 'font-weight:bold;';
 	
 	switch (prefs.get().highlightPart)
 	{
 		case 'all':
-			this.rowStyle += style;
-			// foreground color doesn't work through children, sigh, so we have to set them manually...
-			if ((prefs.get().highlightStyle == 'color' ||
-				prefs.get().highlightStyle == 'boldcolor') &&
-				prefs.get().highlightColorOf == 'foreground')
-			{
-				this.nickStyle += style;
-				this.messageStyle += style;
-			}
+			this.rowStyle = style;
+			this.nickStyle = style;
+			this.messageStyle = style;
 			break;
 		case 'nick':
-			this.nickStyle += style;
+			this.nickStyle = style;
 			break;
 		case 'message':
-			this.messageStyle += style;
+			this.messageStyle = style;
 			break;
 		case 'word':
 			this.plainMessage = this.message;
