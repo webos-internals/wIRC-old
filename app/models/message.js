@@ -282,15 +282,15 @@ ircMessage.prototype.highlightMessage = function()
 	switch (prefs.get().highlightPart)
 	{
 		case 'all':
-			this.rowStyle += style;
-			this.nickStyle += style;
-			this.messageStyle += style;
+			this.rowStyle = style;
+			this.nickStyle = style;
+			this.messageStyle = style;
 			break;
 		case 'nick':
-			this.nickStyle += style;
+			this.nickStyle = style;
 			break;
 		case 'message':
-			this.messageStyle += style;
+			this.messageStyle = style;
 			break;
 		case 'word':
 			this.plainMessage = this.message;
