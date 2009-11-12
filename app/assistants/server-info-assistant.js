@@ -108,22 +108,29 @@ ServerInfoAssistant.prototype.setup = function()
 			
 		Mojo.Event.listen(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
 		
-		this.controller.setupWidget
-	(
-			'saveButton',
-			this.attributes = 
-			{
-				type: Mojo.Widget.activityButton
-			},
-			this.buttonModel =
-			{
-				buttonLabel: 'Save',
-				buttonClass: 'affirmative',
-				disabled: (this.serverKey === false)
-			}
-		);
+		if (this.serverKey === false)
+		{
+			this.controller.setupWidget
+			(
+				'saveButton',
+				this.attributes = 
+				{
+					type: Mojo.Widget.activityButton
+				},
+				this.buttonModel =
+				{
+					buttonLabel: 'Save',
+					buttonClass: 'affirmative',
+					disabled: (this.serverKey === false)
+				}
+			);
 			
-		Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
+			Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
+		}
+		else
+		{
+			this.saveButtonElement.hide();
+		}
 		
 	} 
 	catch (e) 
