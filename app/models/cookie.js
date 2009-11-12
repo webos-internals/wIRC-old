@@ -48,6 +48,8 @@ prefCookie.prototype.get = function(reload)
 				dashboardChannel:		true,
 				dashboardChannelSound:	true,
 				dashboardQuerySound:	true,
+				inviteAction:			'prompt',
+				dashboardInviteSound:	true,
 				
 				
 				// Identity Scene (deprecated)
