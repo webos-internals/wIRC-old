@@ -142,15 +142,7 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 		this.controller.stageController.pushScene('server-info', event.item.id);
 	}
 	else if (event.originalEvent.target.className.include('status'))
-	{
-		/*
-		if (prefs.get().nick1 == 'wIRCer')
-		{
-			this.changeNickPrompt();
-			return;
-		}
-		*/
-		
+	{		
 		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
 		if (event.item.connected) 
 		{

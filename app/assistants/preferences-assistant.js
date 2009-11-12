@@ -542,11 +542,44 @@ PreferencesAssistant.prototype.setup = function()
 			}
 		);
 		
+		this.controller.setupWidget
+		(
+			'inviteAction',
+			{
+				label: 'Invite Action',
+				choices:
+				[
+					{label:'Always Accept',	value:'accept'},
+					{label:'Prompt',		value:'prompt'},
+					{label:'Always Ignore',	value:'ignore'}
+				],
+				modelProperty: 'inviteAction'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'dashboardInviteSound',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+	  			fieldName:  'dashboardInviteSound'
+			},
+			{
+				value : this.prefs.dashboardInviteSound,
+	 			disabled: false
+			}
+		);
+		
 		this.dashboardChannelChanged();
 		this.controller.listen('dashboardChannel',		Mojo.Event.propertyChange, this.dashboardChannelChanged.bindAsEventListener(this));
 		
 		this.controller.listen('dashboardChannelSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('dashboardQuerySound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		
+		this.inviteActionChanged();
+		this.controller.listen('inviteAction',			Mojo.Event.propertyChange, this.inviteActionChanged.bindAsEventListener(this));
+		this.controller.listen('dashboardInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		
 		// hide secret group
@@ -635,13 +668,30 @@ PreferencesAssistant.prototype.dashboardChannelChanged = function(event)
 	{
 		this.toggleChanged(event);
 	}
-	if (this.prefs['dashboardChannel'])
+	if (this.prefs['inviteAction'])
 	{
 		this.controller.get('dashboardChannelSoundRow').style.display = '';
 	}
 	else
 	{
 		this.controller.get('dashboardChannelSoundRow').style.display = 'none';
+	}
+}
+PreferencesAssistant.prototype.inviteActionChanged = function(event)
+{
+	if (event) 
+	{
+		this.listChanged(event);
+	}
+	if (this.prefs['inviteAction'] == 'prompt')
+	{
+		this.controller.get('inviteContainer').className = 'palm-row';
+		this.controller.get('dashboardInviteSoundRow').style.display = '';
+	}
+	else
+	{
+		this.controller.get('inviteContainer').className = 'palm-row last';
+		this.controller.get('dashboardInviteSoundRow').style.display = 'none';
 	}
 }
 
@@ -732,18 +782,21 @@ PreferencesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('highlightColorOf',		Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('highlightColor',			Mojo.Event.propertyChange, this.listChangedHandler);
 	
-	this.controller.stopListening('highlightStyle',		Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
-	this.controller.stopListening('highlightPart',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('highlightColorOf',	Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('highlightColor',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('highlightStyle',			Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
+	this.controller.stopListening('highlightPart',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('highlightColorOf',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('highlightColor',			Mojo.Event.propertyChange, this.listChangedHandler);
 	
-	this.controller.stopListening('colorNotice',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorAction',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorStatus',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorText',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorMarker',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorNotice',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorAction',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorStatus',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorText',				Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorMarker',			Mojo.Event.propertyChange, this.listChangedHandler);
 
 	this.controller.stopListening('dashboardChannel',		Mojo.Event.propertyChange, this.dashboardChannelChanged.bindAsEventListener(this));
 	this.controller.stopListening('dashboardChannelSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('dashboardQuerySound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+	
+	this.controller.stopListening('inviteAction',			Mojo.Event.propertyChange, this.inviteActionChanged.bindAsEventListener(this));
+	this.controller.stopListening('dashboardInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 }

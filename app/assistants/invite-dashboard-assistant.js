@@ -32,7 +32,7 @@ InviteDashboardAssistant.prototype.setup = function()
 	
 	// puts message
 	this.dashboardTitleElement.innerHTML = this.nick + ' invites you to: ' + this.channel;
-	this.dashboardTextElement.innerHTML = 'Tap here to Join, Swipe away to Ignore.';
+	this.dashboardTextElement.innerHTML = 'Tap to Join, Swipe to Ignore.';
 	
 	// to whole thing for tap
 	Mojo.Event.listen(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);

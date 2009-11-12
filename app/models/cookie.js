@@ -48,12 +48,8 @@ prefCookie.prototype.get = function(reload)
 				dashboardChannel:		true,
 				dashboardChannelSound:	true,
 				dashboardQuerySound:	true,
-				
-				
-				// Identity Scene (deprecated)
-				nick1:				'wIRCer',
-				nick2:				'',
-				nick3:				'',
+				inviteAction:			'prompt',
+				dashboardInviteSound:	true,
 				
 				// Color scheme
 				colorNotice:		'orangered',

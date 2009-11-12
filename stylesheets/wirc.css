@@ -376,6 +376,10 @@ body.palm-dark .form .textfield-group .hint-text
 {
 	background: url(../icon-query.png) center center no-repeat;
 }
+.invite-dashboard .palm-dashboard-icon
+{
+	background: url(../icon-invite.png) center center no-repeat;
+}
 
 
 
