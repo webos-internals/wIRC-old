@@ -246,13 +246,11 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
-	/*
 	this.onConnectSave();
 	if (this.serverKey !== false)
 	{
 		servers.servers[this.serverKey].saveInfo(this.server);
 	}
-	*/
 }
 
 ServerInfoAssistant.prototype.validationError = function(error)
@@ -274,10 +272,10 @@ ServerInfoAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.addressElement, 'keyup', this.textChanged);
 	Mojo.Event.stopListening(this.defaultNick, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
-	
-	if (this.server.id === false)
+	Mojo.Event.stopListening(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
+
+	if (this.serverKey === false)
 	{
-		Mojo.Event.stopListening(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
 		Mojo.Event.stopListening(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
 	}
 }
