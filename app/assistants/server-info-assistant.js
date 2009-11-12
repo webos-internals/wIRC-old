@@ -24,12 +24,18 @@ function ServerInfoAssistant(id)
 	this.autoIdentifyElement =		false;
 	this.identifyService =			false;
 	this.identifyPassword =			false;
-	this.saveButtonElement =		false;
+	this.saveButtFonElement =		false;
 	this.onConnectList =			false;
 	
 	this.onConnectModel =	{items:[]};
 	this.onConnectData =	[];
 	this.onConnectCount =	0;
+	
+	this.addNicksModel = 
+	{
+		label:		"Add Nicknames",
+		disabled:	false
+	}
 	
 	if (this.server.onConnect && this.server.onConnect.length > 0)
 	{
@@ -60,6 +66,7 @@ ServerInfoAssistant.prototype.setup = function()
 		this.identifyPasswordElement =	this.controller.get('identifyPassword');
 		this.saveButtonElement =		this.controller.get('saveButton');
 		this.onConnectList =			this.controller.get('onConnect');
+		this.addNicks = 				this.controller.get('addNicks');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
 		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
@@ -145,6 +152,22 @@ ServerInfoAssistant.prototype.setup = function()
 			this.server
 		);
 		
+		this.controller.setupWidget
+		(
+			'defaultNick',
+			{
+				label: 'Default',
+				choices:
+				[
+					{label:'test1', value:'test1'},
+					{label:'test2', value:'test2'},
+					{label:'test3', value:'test3'}
+				],
+				modelProperty: 'defaultNick'
+			},
+			this.prefs
+		);
+		
 		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
@@ -152,7 +175,14 @@ ServerInfoAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 		
-		
+		this.controller.setupWidget
+		(
+			'addNicks',
+			{},
+			this.addNicksModel
+		);
+		Mojo.Event.listen(this.addNicks, Mojo.Event.tap, this.addNicksTapped.bindAsEventListener(this));
+
 		
 		this.controller.setupWidget
 		(
@@ -232,7 +262,7 @@ ServerInfoAssistant.prototype.setup = function()
 				this.model =
 				{
 					buttonLabel: 'Add New Server',
-					buttonClass: 'palm-button'
+					buttonClass: 'affirmative'
 				}
 			);
 			
@@ -243,6 +273,18 @@ ServerInfoAssistant.prototype.setup = function()
 	catch (e) 
 	{
 		Mojo.Log.logException(e, 'server-info#setup');
+	}
+}
+
+ServerInfoAssistant.prototype.addNicksTapped = function()
+{
+	try
+	{
+		this.controller.stageController.pushScene('identity');
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'serverinfo#addNicks');
 	}
 }
 
