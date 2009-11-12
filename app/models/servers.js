@@ -11,12 +11,11 @@ function ircServers()
 
 ircServers.prototype.cmHandler = function(payload)
 {
-
+	connectionInfo = payload;
 	if (payload.returnValue)
 	{
 		this.load();
 	}
-	connectionInfo = payload;
 	return;
 	
 	// Needs a lot of testing

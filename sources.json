@@ -21,6 +21,10 @@
         "source": "app/assistants/server-info-assistant.js"
     },
     {
+        "scenes": "server-advanced",
+        "source": "app/assistants/server-advanced-assistant.js"
+    },
+    {
         "scenes": "server-status",
         "source": "app/assistants/server-status-assistant.js"
     },

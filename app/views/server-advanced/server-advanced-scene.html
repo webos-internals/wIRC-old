@@ -1,0 +1,103 @@
+<div class="form server-info">
+	
+	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
+	
+	<div class="palm-page-header multi-line">
+		<div class="palm-page-header-wrapper">
+			<div class="icon"></div>
+			<div class="title">Server Advanced Setup</div>
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Connection</div>
+		<div class="palm-list">
+			
+			<div class="palm-row">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div class="label">Port</div>
+						<div id="port" x-mojo-element="TextField"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="palm-row">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div class="label">User</div>
+						<div id="serverUser" x-mojo-element="TextField"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="palm-row">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div class="label">Password</div>
+						<div id="serverPassword" x-mojo-element="PasswordField"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="palm-row last">
+				<div class="palm-row-wrapper">
+					<div class="label left">Auto-Connect</div>
+					<div id="autoConnect" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group" style="visibility:hidden;display:none">
+		<div class="palm-group-title">Auto Identify</div>
+		<div class="palm-list">
+			
+			<div class="palm-row first" id="autoIdentifyWrapper">
+				<div class="palm-row-wrapper">
+					<div class="label left">Auto Identify</div>
+					<div id="autoIdentify" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>
+			
+			<div id="identifyInfo">
+			
+				<div class="palm-row">
+					<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+						<div class="title">
+							<div class="label">Service</div>
+							<div id="identifyService" x-mojo-element="TextField"></div>
+						</div>
+					</div>
+				</div>
+			
+				<div class="palm-row last">
+					<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+						<div class="title">
+							<div class="label">Password</div>
+							<div id="identifyPassword" x-mojo-element="PasswordField"></div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Perform On Connect</div>
+			<div class="palm-list" id="onConnect" x-mojo-element="List">
+		</div>
+	</div>
+	
+	<div class="palm-inline-error" style="display: none;" id="error_message">
+		<div class="error-message">Invalid.</div>
+	</div>
+	
+	<div id="saveButton" x-mojo-element="Button"></div>
+	
+	<div class="scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>
+	
+</div>

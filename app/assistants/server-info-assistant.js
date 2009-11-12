@@ -16,21 +16,11 @@ function ServerInfoAssistant(id)
 	
 	this.aliasElement =				false;
 	this.addressElement =			false;
-	this.portElement =				false;
-	this.serverUserElement =		false;
-	this.serverPasswordElement =	false;
-	this.autoConnectElement =		false;
-	this.autoIdentifyWrapper =		false;
-	this.autoIdentifyElement =		false;
-	this.identifyService =			false;
-	this.identifyPassword =			false;
 	this.saveButtFonElement =		false;
-	this.onConnectList =			false;
 	
-	this.onConnectModel =	{items:[]};
-	this.onConnectData =	[];
-	this.onConnectCount =	0;
-	
+	this.onConnectData = [];
+	this.onConnectCount = 0;
+
 	this.nickSelectModel =
 	{
 		value: (this.server.defaultNick?this.server.defaultNick:prefs.get().nicknames[0]),
@@ -57,24 +47,13 @@ ServerInfoAssistant.prototype.setup = function()
 		
 		this.aliasElement =				this.controller.get('alias');
 		this.addressElement =			this.controller.get('address');
-		this.portElement =				this.controller.get('port');
-		this.serverUserElement =		this.controller.get('serverUser');
-		this.serverPasswordElement =	this.controller.get('serverPassword');
-		this.autoConnectElement =		this.controller.get('autoConnect');
-		this.autoIdentifyWrapper =		this.controller.get('autoIdentifyWrapper');
-		this.autoIdentifyElement =		this.controller.get('autoIdentify');
-		this.identifyServiceElement =	this.controller.get('identifyService');
-		this.identifyPasswordElement =	this.controller.get('identifyPassword');
 		this.saveButtonElement =		this.controller.get('saveButton');
-		this.onConnectList =			this.controller.get('onConnect');
-		this.addNicks = 				this.controller.get('addNicks');
+		this.advancedButtonElement =		this.controller.get('advancedButton');
+		this.defaultNick = 				this.controller.get('defaultNick');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
-		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
 		this.saveButtonPressed =	this.saveButtonPressed.bindAsEventListener(this);
-		
-		this.autoIdentifyChanged();
-		this.autoIdentifyChanged =	this.autoIdentifyChanged.bindAsEventListener(this);
+		this.advancedButtonPressed =	this.advancedButtonPressed.bindAsEventListener(this);
 		
 		this.controller.setupWidget
 		(
@@ -101,64 +80,8 @@ ServerInfoAssistant.prototype.setup = function()
 			},
 			this.server
 		);
-		this.controller.setupWidget
-		(
-			'port',
-			{
-				multiline: false,
-				enterSubmits: false,
-				modelProperty: 'port',
-				hintText: 'Optional',
-				charsAllow: Mojo.Char.isDigit,
-				modifierState: Mojo.Widget.numLock,
-				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.server
-		);
-		this.controller.setupWidget
-		(
-			'serverUser',
-			{
-				multiline: false,
-				enterSubmits: false,
-				hintText: 'Optional',
-				modelProperty: 'serverUser',
-				textCase: Mojo.Widget.steModeLowerCase,
-				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.server
-		);
-		this.controller.setupWidget
-		(
-			'serverPassword',
-			{
-				multiline: false,
-				enterSubmits: false,
-				hintText: 'Optional',
-				modelProperty: 'serverPassword',
-				textCase: Mojo.Widget.steModeLowerCase,
-				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.server
-		);
-		
-		this.controller.setupWidget
-		(
-			'autoConnect',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-				modelProperty: 'autoConnect'
-			},
-			this.server
-		);
-		
-		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
+
+		Mojo.Event.listen(this.addressElement, 'keyup', this.textChanged);
 		
 		
 		this.updateDefaultNickChoices(true);
@@ -166,108 +89,41 @@ ServerInfoAssistant.prototype.setup = function()
 		(
 			'defaultNick',
 			{
-				label: 'Default',
 				modelProperty: 'value'
 			},
 			this.nickSelectModel
 		);
-		Mojo.Event.listen(this.addNicks, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
+		Mojo.Event.listen(this.defaultNick, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
 		this.controller.setupWidget
 		(
-			'addNicks',
-			{},
+			'advancedButton',
+			this.attributes = 
 			{
-				label:		"Add Nicknames",
-				disabled:	false
+			},
+			this.model =
+			{
+				buttonLabel: 'Advanced',
 			}
 		);
-		Mojo.Event.listen(this.addNicks, Mojo.Event.tap, this.addNicksTapped.bindAsEventListener(this));
-
-		
-		this.controller.setupWidget
-		(
-			'autoIdentify',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-				modelProperty: 'autoIdentify'
-			},
-			this.server
-		);
-		this.controller.setupWidget
-		(
-			'identifyService',
-			{
-				multiline: false,
-				enterSubmits: false,
-				modelProperty: 'identifyService',
-				textCase: Mojo.Widget.steModeLowerCase,
-				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.server
-		);
-		this.controller.setupWidget
-		(
-			'identifyPassword',
-			{
-				multiline: false,
-				enterSubmits: false,
-				modelProperty: 'identifyPassword',
-				textCase: Mojo.Widget.steModeLowerCase,
-				focusMode: Mojo.Widget.focusSelectMode
-			},
-			this.server
-		);
-		
-		Mojo.Event.listen(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
-		Mojo.Event.listen(this.identifyServiceElement,	Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.identifyPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
-		
-				
-		
-		this.onConnectBuildList();
-		this.controller.setupWidget
-		(
-			'onConnect',
-			{
-				itemTemplate: "server-info/onConnect-row",
-				swipeToDelete: true,
-				reorderable: true,
-				addItemLabel: 'New',
-				
-				multiline: false,
-				enterSubmits: false,
-				modelProperty: 'value',
-				changeOnKeyPress: true,
-			},
-			this.onConnectModel
-		);
-		
-		Mojo.Event.listen(this.onConnectList, Mojo.Event.listAdd,			this.onConnectAdd.bindAsEventListener(this));
-		Mojo.Event.listen(this.onConnectList, Mojo.Event.propertyChanged,	this.onConnectChange.bindAsEventListener(this));
-		Mojo.Event.listen(this.onConnectList, Mojo.Event.listReorder,		this.onConnectReorder.bindAsEventListener(this));
-		Mojo.Event.listen(this.onConnectList, Mojo.Event.listDelete,		this.onConnectDelete.bindAsEventListener(this));
-		
-		
-		
-		if (this.server.id === false) 
-		{
-			this.controller.setupWidget
-			(
-				'saveButton',
-				this.attributes = 
-				{
-					type: Mojo.Widget.activityButton
-				},
-				this.model =
-				{
-					buttonLabel: 'Add New Server',
-					buttonClass: 'affirmative'
-				}
-			);
 			
-			Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
-		}
+		Mojo.Event.listen(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
+		
+		this.controller.setupWidget
+	(
+			'saveButton',
+			this.attributes = 
+			{
+				type: Mojo.Widget.activityButton
+			},
+			this.buttonModel =
+			{
+				buttonLabel: 'Save',
+				buttonClass: 'affirmative',
+				disabled: (this.serverKey === false)
+			}
+		);
+			
+		Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
 		
 	} 
 	catch (e) 
@@ -286,6 +142,7 @@ ServerInfoAssistant.prototype.updateDefaultNickChoices = function(skipUpdate)
 		this.nickSelectModel.choices.push({label: prefs.get().nicknames[n], value: prefs.get().nicknames[n]});
 		if (prefs.get().nicknames[n] == this.nickSelectModel.value) valFound = true;
 	}
+	this.nickSelectModel.choices.push({label: 'New...', value: '_new'});
 	if (!valFound) this.nickSelectModel.value = prefs.get().nicknames[0];
 	
 	if (!skipUpdate)
@@ -295,17 +152,13 @@ ServerInfoAssistant.prototype.updateDefaultNickChoices = function(skipUpdate)
 }
 ServerInfoAssistant.prototype.nickDefaultChanged = function(event)
 {
-	this.server.defaultNick = this.nickSelectModel.value;
-}
-ServerInfoAssistant.prototype.addNicksTapped = function(event)
-{
-	try
+	if (this.nickSelectModel.value === '_new')
 	{
 		this.controller.stageController.pushScene('identity');
 	}
-	catch (e)
+	else
 	{
-		Mojo.Log.logException(e, 'serverinfo#addNicks');
+		this.server.defaultNick = this.nickSelectModel.value;
 	}
 }
 
@@ -316,7 +169,22 @@ ServerInfoAssistant.prototype.toggleChanged = function(event)
 ServerInfoAssistant.prototype.textChanged = function(event)
 {
 	// test server validation
-	ircServer.validateNewServer(this.server, this, false);
+	if (event.target.value && ircServer.validateNewServer(this.server, this, false))
+	{
+		if (this.buttonModel.disabled)
+		{
+			this.buttonModel.disabled = false;
+			this.controller.modelChanged(this.buttonModel);
+		}
+	}
+	else
+	{
+		if (!this.buttonModel.disabled)
+		{
+			this.buttonModel.disabled = true;
+			this.controller.modelChanged(this.buttonModel);
+		}
+	}
 }
 
 ServerInfoAssistant.prototype.autoIdentifyChanged = function(event)
@@ -333,113 +201,8 @@ ServerInfoAssistant.prototype.autoIdentifyChanged = function(event)
 	}
 }
 
-ServerInfoAssistant.prototype.onConnectBuildList = function()
-{
-	this.onConnectModel.items = [];
-	if (this.onConnectData.length > 0)
-	{
-		for (var d = 0; d < this.onConnectData.length; d++)
-		{
-			this.onConnectModel.items.push(this.onConnectData[d]);
-		}
-	}
-}
-ServerInfoAssistant.prototype.onConnectAdd = function(event)
-{
-	this.onConnectCount++;
-	this.onConnectData.push({id: this.onConnectCount, index: this.onConnectData.length, value: ''});
-	
-	this.onConnectBuildList();
-	
-	this.onConnectList.mojo.noticeUpdatedItems(0, this.onConnectModel.items);
-	this.onConnectList.mojo.setLength(this.onConnectModel.items.length);
-	
-	this.onConnectList.mojo.focusItem(this.onConnectModel.items[this.onConnectModel.items.length-1]);
-	
-	this.onConnectSave();
-}
-ServerInfoAssistant.prototype.onConnectChange = function(event)
-{
-	this.onConnectSave();
-}
-ServerInfoAssistant.prototype.onConnectReorder = function(event)
-{
-	for (var d = 0; d < this.onConnectData.length; d++) 
-	{
-		if (this.onConnectData[d].index == event.fromIndex) 
-		{
-			this.onConnectData[d].index = event.toIndex;
-		}
-		else 
-		{
-			if (event.fromIndex > event.toIndex) 
-			{
-				if (this.onConnectData[d].index < event.fromIndex &&
-				this.onConnectData[d].index >= event.toIndex) 
-				{
-					this.onConnectData[d].index++;
-				}
-			}
-			else if (event.fromIndex < event.toIndex) 
-			{
-				if (this.onConnectData[d].index > event.fromIndex &&
-				this.onConnectData[d].index <= event.toIndex) 
-				{
-					this.onConnectData[d].index--;
-				}
-			}
-		}
-	}
-	this.onConnectSave();
-}
-ServerInfoAssistant.prototype.onConnectDelete = function(event)
-{
-	var newData = [];
-	if (this.onConnectData.length > 0) 
-	{
-		for (var d = 0; d < this.onConnectData.length; d++) 
-		{
-			if (this.onConnectData[d].id == event.item.id) 
-			{
-				// ignore
-			}
-			else 
-			{
-				if (this.onConnectData[d].index > event.index) 
-				{
-					this.onConnectData[d].index--;
-				}
-				newData.push(this.onConnectData[d]);
-			}
-		}
-	}
-	this.onConnectData = newData;
-	this.onConnectSave();
-}
 ServerInfoAssistant.prototype.onConnectSave = function()
 {
-	if (this.onConnectData.length > 0) 
-	{
-		if (this.onConnectData.length > 1) 
-		{
-			this.onConnectData.sort(function(a, b)
-			{
-				return a.index - b.index;
-			});
-		}
-		
-		for (var i = 0; i < this.onConnectModel.items.length; i++) 
-		{
-			for (var d = 0; d < this.onConnectData.length; d++) 
-			{
-				if (this.onConnectData[d].id == this.onConnectModel.items[i].id) 
-				{
-					this.onConnectData[d].value = this.onConnectModel.items[i].value;
-				}
-			}
-		}
-	}
-	
 	this.server.onConnect = [];
 	if (this.onConnectData.length > 0) 
 	{
@@ -453,6 +216,11 @@ ServerInfoAssistant.prototype.onConnectSave = function()
 	}
 }
 
+ServerInfoAssistant.prototype.advancedButtonPressed = function(event)
+{
+	this.controller.stageController.pushScene('server-advanced', this);
+}
+
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 {
 	this.onConnectSave();
@@ -463,11 +231,13 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
+	/*
 	this.onConnectSave();
 	if (this.serverKey !== false)
 	{
 		servers.servers[this.serverKey].saveInfo(this.server);
 	}
+	*/
 }
 
 ServerInfoAssistant.prototype.validationError = function(error)
@@ -487,24 +257,12 @@ ServerInfoAssistant.prototype.activate = function(event)
 }
 ServerInfoAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.aliasElement,				Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
-	
-	Mojo.Event.stopListening(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
-	Mojo.Event.stopListening(this.identifyServiceElement,	Mojo.Event.propertyChange,	this.textChanged);
-	Mojo.Event.stopListening(this.identifyPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
-	
-	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listAdd,			this.onConnectAdd.bindAsEventListener(this));
-	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.propertyChanged,	this.onConnectChange.bindAsEventListener(this));
-	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listReorder,		this.onConnectReorder.bindAsEventListener(this));
-	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listDelete,		this.onConnectDelete.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.addressElement, 'keyup', this.textChanged);
+	Mojo.Event.stopListening(this.defaultNick, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
 	
 	if (this.server.id === false)
 	{
+		Mojo.Event.stopListening(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
 		Mojo.Event.stopListening(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
 	}
 }
