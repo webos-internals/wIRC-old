@@ -81,7 +81,10 @@ ServerInfoAssistant.prototype.setup = function()
 			this.server
 		);
 
-		Mojo.Event.listen(this.addressElement, 'keyup', this.textChanged);
+		if (this.serverKey === false)
+		{
+			Mojo.Event.listen(this.addressElement, 'keyup', this.textChanged);
+		}
 		
 		
 		this.updateDefaultNickChoices(true);
@@ -108,22 +111,29 @@ ServerInfoAssistant.prototype.setup = function()
 			
 		Mojo.Event.listen(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
 		
-		this.controller.setupWidget
-	(
-			'saveButton',
-			this.attributes = 
-			{
-				type: Mojo.Widget.activityButton
-			},
-			this.buttonModel =
-			{
-				buttonLabel: 'Save',
-				buttonClass: 'affirmative',
-				disabled: (this.serverKey === false)
-			}
-		);
+		if (this.serverKey === false)
+		{
+			this.controller.setupWidget
+			(
+				'saveButton',
+				this.attributes = 
+				{
+					type: Mojo.Widget.activityButton
+				},
+				this.buttonModel =
+				{
+					buttonLabel: 'Save',
+					buttonClass: 'affirmative',
+					disabled: (this.serverKey === false)
+				}
+			);
 			
-		Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
+			Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
+		}
+		else
+		{
+			this.saveButtonElement.hide();
+		}
 		
 	} 
 	catch (e) 
@@ -165,6 +175,22 @@ ServerInfoAssistant.prototype.nickDefaultChanged = function(event)
 ServerInfoAssistant.prototype.toggleChanged = function(event)
 {
 	// Nothing special here, The model is being changed automatically
+}
+ServerInfoAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type === Mojo.Event.back)
+	{
+		if (this.addressElement.mojo.getValue().length <= 0)
+		{
+			this.controller.showAlertDialog(
+			{
+				title: 'wIRC',
+				message: 'Valid Server Address is Required',
+				choices: [{label:$L('OK'), value:''}]
+			});
+			event.stop();
+		}
+	}
 }
 ServerInfoAssistant.prototype.textChanged = function(event)
 {
@@ -239,13 +265,17 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
-	/*
 	this.onConnectSave();
 	if (this.serverKey !== false)
 	{
-		servers.servers[this.serverKey].saveInfo(this.server);
+		if (ircServer.validateNewServer(this.server, this, true)) 
+		{
+			if (this.addressElement.mojo.getValue().length > 0)
+			{
+				servers.servers[this.serverKey].saveInfo(this.server);
+			}
+		}
 	}
-	*/
 }
 
 ServerInfoAssistant.prototype.validationError = function(error)
@@ -267,10 +297,10 @@ ServerInfoAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.addressElement, 'keyup', this.textChanged);
 	Mojo.Event.stopListening(this.defaultNick, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
-	
-	if (this.server.id === false)
+	Mojo.Event.stopListening(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
+
+	if (this.serverKey === false)
 	{
-		Mojo.Event.stopListening(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
 		Mojo.Event.stopListening(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
 	}
 }
