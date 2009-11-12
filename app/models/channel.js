@@ -1,6 +1,7 @@
 function ircChannel(params)
 {
 	this.name =				params.name.toLowerCase();
+	this.key = 				params.key;
 	this.server =			params.server;
 	this.nicks = [];
 	
@@ -252,7 +253,7 @@ ircChannel.prototype.kickHandler = function(payload)
 
 ircChannel.prototype.join = function()
 {
-	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
+	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name, this.key?this.key:null);
 	wIRCd.channel_mode(this.channelModeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
 }
 ircChannel.prototype.joinHandler = function(payload)
