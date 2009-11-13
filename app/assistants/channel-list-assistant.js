@@ -49,8 +49,8 @@ ChannelListAssistant.prototype.loadChannels = function(channels)
 	// sorts by name
 	this.listModel.items.sort(function(a, b)
 	{
-		aName = a.channel.toLowerCase();
-		bName = b.channel.toLowerCase();
+		aName = a.channel.toLowerCase().replace('#', '');
+		bName = b.channel.toLowerCase().replace('#', '');
 		return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 	});
 	*/
@@ -60,6 +60,7 @@ ChannelListAssistant.prototype.loadChannels = function(channels)
 	{
 		return b.users - a.users;
 	});
+	
 	
 	this.listElement.mojo.noticeUpdatedItems(0, this.listModel.items);
 	this.listElement.mojo.setLength(this.listModel.items.length);
