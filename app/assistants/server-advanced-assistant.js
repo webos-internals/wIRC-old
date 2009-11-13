@@ -1,10 +1,7 @@
 function ServerAdvancedAssistant(serverInfoAssistant)
 {
 	this.server = serverInfoAssistant.server;
-	this.onConnectData = serverInfoAssistant.onConnectData;
-	this.onConnectCount =	serverInfoAssistant.onConnectCount;
 	
-	console.log("this server " + this.server);
 	this.aliasElement =				false;
 	this.addressElement =			false;
 	this.portElement =				false;
@@ -18,9 +15,10 @@ function ServerAdvancedAssistant(serverInfoAssistant)
 	this.saveButtFonElement =		false;
 	this.onConnectList =			false;
 	
-	this.onConnectModel =	{items:[]};
+	this.onConnectData =			[];
+	this.onConnectCount =			0;
+	this.onConnectModel =			{items:[]};
 	
-	/*
 	if (this.server.onConnect && this.server.onConnect.length > 0)
 	{
 		for (var c = 0; c < this.server.onConnect.length; c++)
@@ -29,7 +27,6 @@ function ServerAdvancedAssistant(serverInfoAssistant)
 			this.onConnectData.push({id: this.onConnectCount, index: this.onConnectCount-1, value: this.server.onConnect[c]});
 		}
 	}
-	*/
 		
 }
 
@@ -345,7 +342,6 @@ ServerAdvancedAssistant.prototype.onConnectSave = function()
 		}
 	}
 	
-	/*
 	this.server.onConnect = [];
 	if (this.onConnectData.length > 0) 
 	{
@@ -357,7 +353,6 @@ ServerAdvancedAssistant.prototype.onConnectSave = function()
 			}
 		}
 	}
-	*/
 }
 
 ServerAdvancedAssistant.prototype.deactivate = function(event)

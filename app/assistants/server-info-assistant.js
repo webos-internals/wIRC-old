@@ -26,24 +26,11 @@ function ServerInfoAssistant(param)
 	this.addressElement =			false;
 	this.saveButtFonElement =		false;
 	
-	this.onConnectData = [];
-	this.onConnectCount = 0;
-
 	this.nickSelectModel =
 	{
 		value: (this.server.defaultNick?this.server.defaultNick:prefs.get().nicknames[0]),
 		choices: []
 	};
-	
-	if (this.server.onConnect && this.server.onConnect.length > 0)
-	{
-		for (var c = 0; c < this.server.onConnect.length; c++)
-		{
-			this.onConnectCount++;
-			this.onConnectData.push({id: this.onConnectCount, index: this.onConnectCount-1, value: this.server.onConnect[c]});
-		}
-	}
-		
 }
 
 ServerInfoAssistant.prototype.setup = function()
@@ -235,21 +222,6 @@ ServerInfoAssistant.prototype.autoIdentifyChanged = function(event)
 	}
 }
 
-ServerInfoAssistant.prototype.onConnectSave = function()
-{
-	this.server.onConnect = [];
-	if (this.onConnectData.length > 0) 
-	{
-		for (var d = 0; d < this.onConnectData.length; d++) 
-		{
-			if (this.onConnectData[d].value) 
-			{
-				this.server.onConnect.push(this.onConnectData[d].value);
-			}
-		}
-	}
-}
-
 ServerInfoAssistant.prototype.advancedButtonPressed = function(event)
 {
 	this.controller.stageController.pushScene('server-advanced', this);
@@ -257,7 +229,6 @@ ServerInfoAssistant.prototype.advancedButtonPressed = function(event)
 
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 {
-	this.onConnectSave();
 	if (this.serverKey === false)
 	{
 		if (ircServer.validateNewServer(this.server, this, true)) 
@@ -273,7 +244,6 @@ ServerInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 ServerInfoAssistant.prototype.deactivate = function(event)
 {
-	this.onConnectSave();
 	if (this.serverKey !== false)
 	{
 		if (ircServer.validateNewServer(this.server, this, true)) 
