@@ -17,6 +17,10 @@
         "source": "app/assistants/server-list-assistant.js"
     },
     {
+        "scenes": "preconfigured-networks",
+        "source": "app/assistants/preconfigured-networks-assistant.js"
+    },
+    {
         "scenes": "server-info",
         "source": "app/assistants/server-info-assistant.js"
     },
@@ -31,6 +35,10 @@
     {
         "scenes": "preferences",
         "source": "app/assistants/preferences-assistant.js"
+    },
+    {
+        "scenes": "about",
+        "source": "app/assistants/about-assistant.js"
     },
     {
         "scenes": "identity",
@@ -59,9 +67,5 @@
     {
         "scenes": "query-dashboard",
         "source": "app/assistants/query-dashboard-assistant.js"
-    },
-    {
-        "scenes": "about",
-        "source": "app/assistants/about-assistant.js"
-    }    
+    }
 ]
