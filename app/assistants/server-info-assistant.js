@@ -294,7 +294,7 @@ ServerInfoAssistant.prototype.validationError = function(error)
 ServerInfoAssistant.prototype.doneSaving = function()
 {
 	this.saveButtonElement.mojo.deactivate();
-	this.controller.stageController.popScene();
+	this.controller.stageController.popScenesTo('server-list');
 }
 
 ServerInfoAssistant.prototype.activate = function(event)
