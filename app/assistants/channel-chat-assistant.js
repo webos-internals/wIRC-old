@@ -396,8 +396,8 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate)
 	
 	this.menuModel.items.push({label: "Preferences", command: 'do-prefs'});
 	
-	if (!this.test) this.test=1;
-	this.menuModel.items.push({label: "Test" + this.test, command: 'do-test'});
+	//if (!this.test) this.test=1;
+	//this.menuModel.items.push({label: "Test " + this.test, command: 'do-test'});
 	
 	if (!skipUpdate)
 	{
