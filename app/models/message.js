@@ -51,11 +51,13 @@ function ircMessage(params)
 		for(var m = 0; m < params.message.length; m++)
 		{
 			params.message[m] = params.message[m].escapeHTML();
+			params.message[m] = params.message[m].replace(/[\s]{2}/g, " &nbsp;"); // fix multiple spaces in a row
 		}
 	}
 	else
 	{	// good message, you're actually a message, lets fix you.
 		params.message = params.message.escapeHTML();
+		params.message = params.message.replace(/[\s]{2}/g, " &nbsp;"); // fix multiple spaces in a row
 	}
 	
 	switch(this.type)
