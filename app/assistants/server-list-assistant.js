@@ -231,7 +231,8 @@ ServerListAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'new-server':
-				this.controller.stageController.pushScene('server-info');
+				//this.controller.stageController.pushScene('server-info');
+				this.controller.stageController.pushScene('preconfigured-networks');
 				break;
 		}
 	}
