@@ -296,9 +296,10 @@ ircMessage.prototype.highlightMessage = function()
 			break;
 	}
 }
-/* // this is replaced by Mojo.Format.runTextIndexer
+
 ircMessage.prototype.parseLinks = function(message)
 {
+	// not using Mojo.Format.runTextIndexer because it tries to parse messages badly
   	return message.replace
 	(
 		/((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ig,
@@ -312,7 +313,7 @@ ircMessage.prototype.parseLinks = function(message)
 		}
 	);
 }
-*/
+
 ircMessage.prototype.getNotificationObject = function()
 {
 	var obj =
@@ -328,7 +329,7 @@ ircMessage.prototype.getListObject = function()
 	var obj =
 	{
 		nick:			this.nickDisplay,
-		message:		Mojo.Format.runTextIndexer(this.message),
+		message:		parseLinks(this.message),
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,
