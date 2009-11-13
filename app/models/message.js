@@ -329,7 +329,7 @@ ircMessage.prototype.getListObject = function()
 	var obj =
 	{
 		nick:			this.nickDisplay,
-		message:		parseLinks(this.message),
+		message:		this.parseLinks(this.message),
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,
