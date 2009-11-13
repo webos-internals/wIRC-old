@@ -1,12 +1,20 @@
-function ServerInfoAssistant(id)
+function ServerInfoAssistant(param)
 {
 	this.serverKey =	false;
 	this.server =		false;
 	
-	if (id)
+	if (typeof(param) == 'number')
 	{
-		this.serverKey = servers.getServerArrayKey(id);
+		this.serverKey = servers.getServerArrayKey(param);
 		this.server = servers.servers[this.serverKey].getEditObject();
+	}
+	else if (typeof(param) == 'object')
+	{
+		this.server = ircServer.getBlankServerObject();
+		Object.keys(param).each(function(key)
+		{
+			this.server[key] = param[key];
+		}, this);
 	}
 	
 	if (!this.server)
@@ -124,7 +132,7 @@ ServerInfoAssistant.prototype.setup = function()
 				{
 					buttonLabel: 'Save',
 					buttonClass: 'affirmative',
-					disabled: (this.serverKey === false)
+					disabled: (this.server.address == '')
 				}
 			);
 			
