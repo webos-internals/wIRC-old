@@ -21,6 +21,10 @@
         "source": "app/assistants/preconfigured-networks-assistant.js"
     },
     {
+        "scenes": "preconfigured-network",
+        "source": "app/assistants/preconfigured-network-assistant.js"
+    },
+    {
         "scenes": "server-info",
         "source": "app/assistants/server-info-assistant.js"
     },

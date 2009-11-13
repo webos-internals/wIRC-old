@@ -46,8 +46,8 @@ PreconfiguredNetworksAssistant.prototype.setup = function()
 			else
 			{
 				this.networks[preconfigured[p].network].count++;
-				this.networks[preconfigured[p].network].scene = 'preconfgured-network';
-				this.networks[preconfigured[p].network].param = {network: preconfigured[p].network};
+				this.networks[preconfigured[p].network].scene = 'preconfigured-network';
+				this.networks[preconfigured[p].network].param = preconfigured[p].network;
 				
 			}
 		}
@@ -66,6 +66,7 @@ PreconfiguredNetworksAssistant.prototype.setup = function()
 	
 	Mojo.Event.listen(this.listElement, Mojo.Event.listTap, this.listTapHandler);
 }
+
 PreconfiguredNetworksAssistant.prototype.listTapHandler = function(event)
 {
 	if (event.item.scene)
@@ -77,6 +78,7 @@ PreconfiguredNetworksAssistant.prototype.listTapHandler = function(event)
 		this.controller.stageController.pushScene(this.networks[event.item.name].scene, this.networks[event.item.name].param);
 	}
 }
+
 PreconfiguredNetworksAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.listElement, Mojo.Event.listDelete, this.listTapHandler);
