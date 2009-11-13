@@ -43,6 +43,11 @@ function ircServer(params)
 	this.statusAssistant =		false;
 	this.invites =				[];
 	
+	this.listStageName =		'channel-list-' + this.id;
+	this.listStageController =	false;
+	this.listsAssistant =		false;
+	this.channelList =			[];
+	
 	if (this.autoConnect)
 	{
 		this.connect();
@@ -114,6 +119,10 @@ ircServer.prototype.newCommand = function(message)
 					{
 						// if no 2 values, its to set user mode
 					}
+					break;
+					
+				case 'list':
+					this.list(val?val:null);
 					break;
 					
 				case 'away':
@@ -222,7 +231,6 @@ ircServer.prototype.connect = function()
 		prefs.get().piface
 	);
 }
-
 ircServer.prototype.maybeReconnect = function(network)
 {
 	if (network !== '1x')
@@ -511,7 +519,17 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.isAway = true;
 					this.newMessage('debug', false, payload.params[1]);
 					break;
-					
+				
+				case '321':		// LISTSTART
+					this.listStart();
+					break;
+				case '322':		// LIST
+					this.listAddChannel(payload.params[1], payload.params[2], payload.params[3]);
+					break;
+				case '323':		// LISTEND
+					this.listEnd();
+					break;
+				
 				case '332':		// TOPIC
 					var tmpChan = this.getChannel(payload.params[1]);
 					if (tmpChan) 
@@ -646,19 +664,20 @@ ircServer.prototype.runOnConnect = function()
 		}
 	}
 }
+
 ircServer.prototype.away = function(reason)
 {
-	wIRCd.away(this.topicHandler.bindAsEventListener(this), this.sessionToken, reason);
+	wIRCd.away(this.genericHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
 ircServer.prototype.ping = function(server)
 {
-	wIRCd.ping(this.topicHandler.bindAsEventListener(this), this.sessionToken, server);
+	wIRCd.ping(this.genericHandler.bindAsEventListener(this), this.sessionToken, server);
 }
 ircServer.prototype.topic = function(channel, topic)
 {
-	wIRCd.topic(this.topicHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
+	wIRCd.topic(this.genericHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
 }
-ircServer.prototype.topicHandler = function(payload)
+ircServer.prototype.genericHandler = function(payload)
 {
 	// idk what to do here if anything
 }
@@ -773,6 +792,73 @@ ircServer.prototype.updateStatusList = function()
 	}
 }
 
+ircServer.prototype.list = function(channel)
+{
+	wIRCd.list(this.listHandler.bindAsEventListener(this), this.sessionToken, channel);
+}
+ircServer.prototype.listHandler = function(payload)
+{
+	this.openListStage();
+}
+ircServer.prototype.openListStage = function()
+{
+	try
+	{
+		this.listStageController = Mojo.Controller.appController.getStageController(this.listStageName);
+	
+        if (this.listStageController) 
+		{
+			if (this.listStageController.activeScene().sceneName == 'channel-list') 
+			{
+				this.listStageController.activate();
+			}
+			else
+			{
+				this.listStageController.popScenesTo('channel-list');
+				this.listStageController.activate();
+			}
+		}
+		else
+		{
+			Mojo.Controller.appController.createStageWithCallback({name: this.listStageName, lightweight: true}, this.openListStageCallback.bind(this));
+		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#openListStage");
+	}
+}
+ircServer.prototype.openListStageCallback = function(controller)
+{
+	controller.pushScene('channel-list', this);
+}
+ircServer.prototype.setListAssistant = function(assistant)
+{
+	this.listAssistant = assistant;
+}
+ircServer.prototype.listStart = function()
+{
+	this.channelList = [];
+}
+ircServer.prototype.listAddChannel = function(channel, users, topic)
+{
+	this.channelList.push({channel: channel, users: users, topic: topic});
+	/*
+	if (this.listAssistant && this.listAssistant.controller)
+	{
+		this.listAssistant.newChannel(channel, users, topic);
+	}
+	*/
+}
+ircServer.prototype.listEnd = function()
+{
+	if (this.listAssistant && this.listAssistant.controller)
+	{
+		this.listAssistant.loadChannels(this.channelList);
+		this.listAssistant.doneLoading();
+	}
+}
+
 ircServer.prototype.getOrCreateChannel = function(name, key)
 {
 	var tmpChan = this.getChannel(name);
@@ -789,7 +875,6 @@ ircServer.prototype.getOrCreateChannel = function(name, key)
 
 	return tmpChan;
 }
-
 ircServer.prototype.joinChannel = function(name, key)
 {
 	var tmpChan = this.getOrCreateChannel(name, key);
@@ -798,7 +883,6 @@ ircServer.prototype.joinChannel = function(name, key)
 		tmpChan.join();
 	}
 }
-
 ircServer.prototype.getChannel = function(name)
 {
 	if (this.channels.length > 0)

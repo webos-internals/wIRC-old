@@ -49,6 +49,10 @@
         "source": "app/assistants/identity-assistant.js"
     },
     {
+        "scenes": "channel-list",
+        "source": "app/assistants/channel-list-assistant.js"
+    },
+    {
         "scenes": "channel-chat",
         "source": "app/assistants/channel-chat-assistant.js"
     },
