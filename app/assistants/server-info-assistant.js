@@ -178,7 +178,7 @@ ServerInfoAssistant.prototype.toggleChanged = function(event)
 }
 ServerInfoAssistant.prototype.handleCommand = function(event)
 {
-	if (event.type === Mojo.Event.back)
+	if (event.type === Mojo.Event.back && this.serverKey !== false)
 	{
 		if (this.addressElement.mojo.getValue().length <= 0)
 		{
