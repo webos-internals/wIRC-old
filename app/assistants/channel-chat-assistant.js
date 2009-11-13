@@ -213,7 +213,10 @@ ChannelChatAssistant.prototype.updateTitle = function()
 }
 ChannelChatAssistant.prototype.updateTopic = function()
 {
-	this.topicElement.update(Mojo.Format.runTextIndexer(this.channel.topic));
+	var tmpTopic = Mojo.Format.runTextIndexer(this.channel.topic);
+	tmpTopic = tmpTopic.escapeHTML();
+	tmpTopic = tmpTopic.replace(/[\s]{2}/g, " &nbsp;");
+	this.topicElement.update(tmpTopic);
 }
 
 ChannelChatAssistant.prototype.onScrollStarted = function(event)

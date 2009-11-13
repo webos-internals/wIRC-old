@@ -51,13 +51,13 @@ function ircMessage(params)
 		for(var m = 0; m < params.message.length; m++)
 		{
 			params.message[m] = params.message[m].escapeHTML();
-			params.message[m] = params.message[m].replace(/[\s]{2}/g, " &nbsp;"); // fix multiple spaces in a row
+			params.message[m] = params.message[m].replace(/[\s]{2}/g, " &nbsp;");
 		}
 	}
 	else
 	{	// good message, you're actually a message, lets fix you.
 		params.message = params.message.escapeHTML();
-		params.message = params.message.replace(/[\s]{2}/g, " &nbsp;"); // fix multiple spaces in a row
+		params.message = params.message.replace(/[\s]{2}/g, " &nbsp;");
 	}
 	
 	switch(this.type)
@@ -296,6 +296,7 @@ ircMessage.prototype.highlightMessage = function()
 			break;
 	}
 }
+/* // this is replaced by Mojo.Format.runTextIndexer
 ircMessage.prototype.parseLinks = function(message)
 {
   	return message.replace
@@ -311,7 +312,7 @@ ircMessage.prototype.parseLinks = function(message)
 		}
 	);
 }
-
+*/
 ircMessage.prototype.getNotificationObject = function()
 {
 	var obj =
@@ -327,7 +328,7 @@ ircMessage.prototype.getListObject = function()
 	var obj =
 	{
 		nick:			this.nickDisplay,
-		message:		this.parseLinks(this.message),
+		message:		Mojo.Format.runTextIndexer(this.message),
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,
