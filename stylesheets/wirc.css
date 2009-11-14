@@ -498,11 +498,53 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 /*
  * Channel Users Scene Styles
  */
+.channel-users #searchText
+{
+	display: none;
+	z-index: 20000;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 50px;
+	color: #fff;
+	padding-top: 2px;
+	padding-left: 1px;
+	border-width: 10px 25px 10px 25px;
+	-webkit-border-image: url(../images/palm-default/search-box.png) 10 25 10 25 stretch stretch;
+	-webkit-box-sizing: border-box;
+}
+body.palm-dark .channel-users #searchText
+{
+	-webkit-border-image: url(../images/palm-dark/search-box.png) 10 25 10 25 stretch stretch;
+}
+.channel-users #searchText input
+{
+	color: #fff;
+	background: none;
+	margin-top: 0px;
+	margin-left: -1px;
+	border: 0px;
+	padding: 0px;
+}
+.channel-users #searchSpinner
+{
+	position: fixed;
+	top: 8px;
+	right: 10px;
+	z-index: 20001;
+	float: right;
+}
 .channel-users #userList .palm-row-wrapper .title .mode
 {
 	float: left;
 	width: 20px;
 	color: #BBB;
+}
+.channel-users #userList .palm-row-wrapper .title .highlight
+{
+	font-weight: bold;
+	text-decoration: underline;
 }
 
 

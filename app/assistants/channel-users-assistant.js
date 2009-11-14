@@ -5,10 +5,14 @@ function ChannelUsersAssistant(channel)
 	this.titleElement =				false;
 	this.userListElement =			false;
 	
-	this.listModel =
-	{
-		items: []
-	};
+	this.nicks =	[];
+	this.listModel = {items:[]};
+	
+	this.searchModel =	{value:''};
+	
+	this.searchTimer =	false;
+	this.searching =	false;
+	this.searchText =	'';
 	
 	this.channel.setUsersAssistant(this);
 	
@@ -32,10 +36,16 @@ ChannelUsersAssistant.prototype.setup = function()
 	{
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
-		this.titleElement =		this.controller.get('title');
-		this.userListElement =	this.controller.get('userList');
+		this.headerElement =		this.controller.get('listHeader');
+		this.searchElement =		this.controller.get('searchText');
+		this.searchSpinnerElement =	this.controller.get('searchSpinner');
+		this.titleElement =			this.controller.get('title');
+		this.userListElement =		this.controller.get('userList');
 		
-		this.listTapHandler =	this.listTap.bindAsEventListener(this);
+		this.listTapHandler =		this.listTap.bindAsEventListener(this);
+		this.filterDelayHandler =	this.filterDelay.bindAsEventListener(this);
+		this.keyHandler =			this.keyTest.bindAsEventListener(this);
+		this.searchFunction =		this.filter.bind(this);
 		
 		this.titleElement.innerHTML = this.channel.name;
 		
@@ -54,6 +64,24 @@ ChannelUsersAssistant.prototype.setup = function()
 		
 		Mojo.Event.listen(this.userListElement, Mojo.Event.listTap, this.listTapHandler);
 		
+		this.controller.setupWidget('searchSpinner', {spinnerSize: 'small'}, {spinning: false});
+		
+		this.searchModel = {value:this.searchText};
+		
+		// setup search widget
+		this.controller.setupWidget
+		(
+			'searchText',
+			{
+				focus: false,
+				autoFocus: false,
+				changeOnKeyPress: true
+			},
+			this.searchModel
+		);
+		
+		Mojo.Event.listen(this.searchElement, Mojo.Event.propertyChange, this.filterDelayHandler);
+		Mojo.Event.listen(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
 	} 
 	catch (e) 
 	{
@@ -65,10 +93,10 @@ ChannelUsersAssistant.prototype.updateList = function(skipUpdate)
 {
 	try
 	{
-		this.listModel.items = [];
-		this.listModel.items = this.channel.getListNicks();
+		this.nicks = [];
+		this.nicks = this.channel.getListNicks();
 		
-		this.listModel.items.sort(function(a, b)
+		this.nicks.sort(function(a, b)
 		{
 			var toReturn = 0;
 			
@@ -84,16 +112,87 @@ ChannelUsersAssistant.prototype.updateList = function(skipUpdate)
 			return toReturn
 		});
 		
-		if (!skipUpdate) 
-		{
-			this.userListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
-			this.userListElement.mojo.setLength(this.listModel.items.length);
-		}
+		this.filter(skipUpdate);
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, 'channel-users#updateList');
 	}
+}
+
+ChannelUsersAssistant.prototype.keyTest = function(event)
+{
+	if (Mojo.Char.isValidWrittenChar(event.originalEvent.charCode)) 
+	{
+		Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
+		this.headerElement.style.display = 'none';
+		this.searchElement.style.display = 'inline';
+		this.searchElement.mojo.focus();
+	}
+}
+ChannelUsersAssistant.prototype.filterDelay = function(event)
+{
+	clearTimeout(this.searchTimer);
+	
+	this.searchText = event.value;
+	
+	if (this.searchText == '') 
+	{
+		this.searchSpinnerElement.mojo.stop();
+		
+		this.searchElement.mojo.blur();
+		this.searchElement.style.display = 'none';
+		this.headerElement.style.display = 'inline';
+		Mojo.Event.listen(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
+		this.searchFunction();
+	}
+	else
+	{
+		this.searchSpinnerElement.mojo.start();
+		
+		this.searching = true;
+		
+		this.searchTimer = setTimeout(this.searchFunction, 1000);
+	}
+}
+ChannelUsersAssistant.prototype.filter = function(skipUpdate)
+{
+	this.listModel.items = [];
+	
+	for (var n = 0; n < this.nicks.length; n++) 
+	{
+		var pushIt = false;
+		
+		if (this.searchText == '') 
+		{
+			this.nicks[n].displayName = this.nicks[n].name;
+			pushIt = true;
+		}
+		else if (this.nicks[n].name.toLowerCase().include(this.searchText.toLowerCase())) 
+		{
+			this.nicks[n].displayName = this.nicks[n].name.replace(new RegExp('(' + this.searchText + ')', 'gi'), '<span class="highlight">$1</span>');
+			pushIt = true;
+		}
+		
+		if (pushIt) 
+		{
+			this.listModel.items.push(this.nicks[n]);
+		}
+	}
+	
+	if (!skipUpdate) 
+	{
+		this.userListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+	 	this.userListElement.mojo.setLength(this.listModel.items.length);
+		if (this.searching) 
+		{
+			this.userListElement.mojo.revealItem(0, true);
+			this.searching = false;
+		}
+		
+		this.searchSpinnerElement.mojo.stop();
+	}
+	
 }
 
 ChannelUsersAssistant.prototype.listTap = function(event)
@@ -122,5 +221,7 @@ ChannelUsersAssistant.prototype.handleCommand = function(event)
 ChannelUsersAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.userListElement, Mojo.Event.listTap, this.listTapHandler);
+	Mojo.Event.stopListening(this.searchElement, Mojo.Event.propertyChange, this.filterDelayHandler);
+	Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
 }
 
