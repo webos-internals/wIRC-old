@@ -204,7 +204,7 @@ ChannelListAssistant.prototype.doneLoading = function()
 
 ChannelListAssistant.prototype.listTapHandler = function(event)
 {
-	alert('tapped');
+	this.server.joinChannel(event.item.channel, '');
 }
 
 ChannelListAssistant.prototype.updateCommandMenu = function(skipUpdate)

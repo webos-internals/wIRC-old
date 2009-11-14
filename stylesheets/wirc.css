@@ -415,9 +415,13 @@ body.palm-dark .channel-list #spinner #spinnerStatus
 }
 .channel-list .palm-list .palm-row-wrapper .sub .highlight
 {
-	color: #333;
+	color: #666;
 	font-weight: bold;
 	text-decoration: underline;
+}
+body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
+{
+	color: #CCC;
 }
 .icon-filter-alpha
 {
