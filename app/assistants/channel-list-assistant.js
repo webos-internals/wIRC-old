@@ -242,5 +242,7 @@ ChannelListAssistant.prototype.handleCommand = function(event)
 }
 ChannelListAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.listElement, Mojo.Event.listDelete, this.listTapHandler);
+	Mojo.Event.stopListening(this.listElement, Mojo.Event.listTap, this.listTapHandler);
+	Mojo.Event.stopListening(this.searchElement, Mojo.Event.propertyChange, this.filterDelayHandler);
+	Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
 }
