@@ -164,6 +164,18 @@ br.clear
 	display: inline;
 }
 
+
+
+/*
+ * Preconfigured Network Scene Styles
+ */
+.preconfigured .palm-list .palm-row-wrapper.custom .title
+{
+	font-weight: bold;
+}
+
+
+
 /*
  * About scene
  */
@@ -210,6 +222,8 @@ br.clear
 {
 	font-weight: bold;
 }
+
+
 
 /*
  * Form Styles - Scene Inspecific

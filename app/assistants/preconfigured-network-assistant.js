@@ -2,6 +2,10 @@ function PreconfiguredNetworkAssistant(network)
 {
 	this.network = network;
 	
+	this.listNoRegionModel =
+	{
+		items: []
+	};
 	this.listModel =
 	{
 		items: []
@@ -10,9 +14,10 @@ function PreconfiguredNetworkAssistant(network)
 
 PreconfiguredNetworkAssistant.prototype.setup = function() 
 {
-	this.networkElement =	this.controller.get('network');
-	this.listElement =		this.controller.get('serverList');
-	this.listTapHandler =	this.listTapHandler.bindAsEventListener(this);
+	this.networkElement =		this.controller.get('network');
+	this.listNoRegionElement =	this.controller.get('serverNoRegionList');
+	this.listElement =			this.controller.get('serverList');
+	this.listTapHandler =		this.listTapHandler.bindAsEventListener(this);
 	
 	this.networkElement.update(this.network);
 	
@@ -32,11 +37,28 @@ PreconfiguredNetworkAssistant.prototype.setup = function()
 						address: preconfigured[p].address
 					}
 				};
-				this.listModel.items.push(networkObj);
+				if (preconfigured[p].region) 
+				{
+					this.listModel.items.push(networkObj);
+				}
+				else
+				{
+					this.listNoRegionModel.items.push(networkObj);
+				}
 			}
 		}
 	}
 	
+	this.controller.setupWidget
+	(
+		'serverNoRegionList',
+		{
+			itemTemplate: "preconfigured-network/server-row",
+			swipeToDelete: false,
+			reorderable: false
+		},
+		this.listNoRegionModel
+	);
 	this.controller.setupWidget
 	(
 		'serverList',
@@ -50,6 +72,7 @@ PreconfiguredNetworkAssistant.prototype.setup = function()
 		this.listModel
 	);
 	
+	Mojo.Event.listen(this.listNoRegionElement, Mojo.Event.listTap, this.listTapHandler);
 	Mojo.Event.listen(this.listElement, Mojo.Event.listTap, this.listTapHandler);
 }
 
@@ -66,5 +89,6 @@ PreconfiguredNetworkAssistant.prototype.listTapHandler = function(event)
 
 PreconfiguredNetworkAssistant.prototype.cleanup = function(event) 
 {
+	Mojo.Event.stopListening(this.listNoRegionElement, Mojo.Event.listDelete, this.listTapHandler);
 	Mojo.Event.stopListening(this.listElement, Mojo.Event.listDelete, this.listTapHandler);
 }

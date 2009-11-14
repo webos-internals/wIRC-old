@@ -2,15 +2,7 @@ function PreconfiguredNetworksAssistant()
 {
 	this.listModel =
 	{
-		items:
-		[
-			{
-				name: 'Custom',
-				rowClass: 'custom',
-				scene: 'server-info',
-				param: false
-			}
-		]
+		items: []
 	};
 	
 	this.networks = {};
@@ -18,7 +10,9 @@ function PreconfiguredNetworksAssistant()
 
 PreconfiguredNetworksAssistant.prototype.setup = function()
 {
+	this.customElement =	this.controller.get('custom');
 	this.listElement =		this.controller.get('networkList');
+	this.customTapHandler =	this.customTapHandler.bindAsEventListener(this);
 	this.listTapHandler =	this.listTapHandler.bindAsEventListener(this);
 	
 	if (preconfigured.length > 0)
@@ -64,22 +58,22 @@ PreconfiguredNetworksAssistant.prototype.setup = function()
 		this.listModel
 	);
 	
+	
+	Mojo.Event.listen(this.customElement, Mojo.Event.tap, this.customTapHandler);
 	Mojo.Event.listen(this.listElement, Mojo.Event.listTap, this.listTapHandler);
 }
 
+PreconfiguredNetworksAssistant.prototype.customTapHandler = function(event)
+{
+	this.controller.stageController.pushScene('server-info');
+}
 PreconfiguredNetworksAssistant.prototype.listTapHandler = function(event)
 {
-	if (event.item.scene)
-	{
-		this.controller.stageController.pushScene(event.item.scene, event.item.param);
-	}
-	else
-	{
-		this.controller.stageController.pushScene(this.networks[event.item.name].scene, this.networks[event.item.name].param);
-	}
+	this.controller.stageController.pushScene(this.networks[event.item.name].scene, this.networks[event.item.name].param);
 }
 
 PreconfiguredNetworksAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.customElement, Mojo.Event.tap, this.customTapHandler);
 	Mojo.Event.stopListening(this.listElement, Mojo.Event.listDelete, this.listTapHandler);
 }
