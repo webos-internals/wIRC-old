@@ -843,12 +843,11 @@ ircServer.prototype.listStart = function()
 ircServer.prototype.listAddChannel = function(channel, users, topic)
 {
 	this.channelList.push({channel: channel, users: users, topic: topic});
-	/*
+	
 	if (this.listAssistant && this.listAssistant.controller)
 	{
-		this.listAssistant.newChannel(channel, users, topic);
+		this.listAssistant.loadedCountUpdate(this.channelList.length);
 	}
-	*/
 }
 ircServer.prototype.listEnd = function()
 {

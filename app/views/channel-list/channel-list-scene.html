@@ -2,14 +2,17 @@
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
-	<div class="palm-header">
+	<div id="listHeader" class="palm-header">
 		<span id="title"></span>
 	</div>
+	
+	<div id="searchSpinner" x-mojo-element="Spinner"></div>
+	<div id="searchText" x-mojo-element="TextField"></div>
 	
 	<div class="palm-header-spacer" style="height: 50px;"></div>
 	
 	<div x-mojo-element="Spinner" id="spinner">
-		<div id="spinnerStatus">...</div>
+		<div id="spinnerStatus">Loading ... <span id="loadedCount"></span></div>
 	</div>
 	
 	<div class="palm-list">

@@ -325,18 +325,55 @@ body.palm-dark .form .textfield-group .hint-text
 /*
  * Channel List Scene Styles
  */
+.channel-list #searchText
+{
+	display: none;
+	z-index: 20000;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 50px;
+	color: #fff;
+	padding-top: 2px;
+	padding-left: 1px;
+	border-width: 10px 25px 10px 25px;
+	-webkit-border-image: url(../images/palm-default/search-box.png) 10 25 10 25 stretch stretch;
+	-webkit-box-sizing: border-box;
+}
+body.palm-dark .channel-list #searchText
+{
+	-webkit-border-image: url(../images/palm-dark/search-box.png) 10 25 10 25 stretch stretch;
+}
+.channel-list #searchText input
+{
+	color: #fff;
+	background: none;
+	margin-top: 0px;
+	margin-left: -1px;
+	border: 0px;
+	padding: 0px;
+}
+.channel-list #searchSpinner
+{
+	position: fixed;
+	top: 8px;
+	right: 10px;
+	z-index: 20001;
+	float: right;
+}
 .channel-list #spinner
 {
-	margin-top: 85px;
+	margin-top: 90px;
 	margin-left: auto;
 	margin-right: auto;
 }
 .channel-list #spinner #spinnerStatus
 {
 	text-align: center;
-	padding-top: 122px;
-	width: 200px;
-	margin-left: -35px;
+	padding-top: 125px;
+	width: 320px;
+	margin-left: -95px;
 	color: #666;
 	font-size: 16px;
 }
@@ -344,7 +381,52 @@ body.palm-dark .channel-list #spinner #spinnerStatus
 {
 	color: #999;
 }
-
+.channel-list .palm-list .palm-row-wrapper
+{
+	padding-right: 8px;
+}
+.channel-list .palm-list .palm-row-wrapper .title
+{
+	padding-top: 5px;
+	margin-top: 0px;
+}
+.channel-list .palm-list .palm-row-wrapper .sub
+{
+	color: #999;
+	font-size: 14px;
+	padding-top: 0px;
+	margin-top: -16px;
+	padding-left: 16px;
+	padding-bottom: 8px;
+	
+	word-wrap: break-word !important;
+	
+	/*max-height: 23px;*/
+	line-height: 14px;
+	
+	/*overflow: hidden;
+	text-overflow: ellipsis;*/
+	/*white-space: nowrap;*/
+}
+.channel-list .palm-list .palm-row-wrapper .title .highlight
+{
+	font-weight: bold;
+	text-decoration: underline;
+}
+.channel-list .palm-list .palm-row-wrapper .sub .highlight
+{
+	color: #333;
+	font-weight: bold;
+	text-decoration: underline;
+}
+.icon-filter-alpha
+{
+	background:url(../images/icon_alpha.png) top center no-repeat;
+}
+.icon-filter-users
+{
+	background:url(../images/icon_users.png) top center no-repeat;
+}
 
 
 /*
