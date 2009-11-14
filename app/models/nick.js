@@ -112,6 +112,57 @@ ircNick.prototype.whoisEvent = function(event, params)
 {
 	//alert('--- ' + event + ' ---');
 	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+	
+	switch(event)
+	{
+		case '311': // WHOISUSER
+			this.whois.user = params[2].replace('n=', '');
+			this.whois.host = params[3];
+			this.whois.realname = params[5];
+			break;
+			
+		case '312': // WHOISSERVER
+			break;
+			
+		case '313': // WHOISOPERATOR
+			break;
+			
+		case '317': // WHOISIDLE
+			this.whois.idle = params[2];
+			this.whois.signon = params[3];
+			break;
+			
+		case '319': // WHOISCHANNELS
+			break;
+			
+		case '320': // ???
+			break;
+		
+		case '318': // ENDOFLIST
+			var message = '';
+			for (w in this.whois)
+			{
+				message += '<b>'+w+'</b>: '+this.whois[w]+'<br />';
+			}
+			// find active card & scene to push the alert dialog to:
+			var activeCard = Mojo.Controller.appController.getActiveStageController('card');
+			if (activeCard) 
+			{
+				var activeScene = activeCard.activeScene();
+				if (activeScene)
+				{
+					activeScene.showAlertDialog(
+					{
+						onChoose: function(value){},
+						allowHTMLMessage: true,
+						title: "Whois: " + this.name,
+						message: message,
+						choices: [{label: "OK", value: ""}]
+					});
+				}
+			}
+			break;
+	}
 }
 
 ircNick.num = 0;
