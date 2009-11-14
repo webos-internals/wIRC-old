@@ -173,7 +173,24 @@ br.clear
 {
 	font-weight: bold;
 }
-
+.preconfigured .palm-list .palm-row-wrapper .sub
+{
+	color: #999;
+	font-size: 14px;
+	padding-top: 0px;
+	margin-top: -16px;
+	padding-left: 16px;
+	padding-bottom: 8px;
+}
+.preconfigured .palm-list .palm-row-wrapper.subregion-title .title.name
+{
+	padding-top: 5px;
+	margin-top: 0px;
+}
+.preconfigured .palm-list .palm-row-wrapper.address-title .sub
+{
+	display: none;
+}
 
 
 /*

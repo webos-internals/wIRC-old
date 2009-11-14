@@ -31,6 +31,8 @@ PreconfiguredNetworkAssistant.prototype.setup = function()
 				{
 					group: preconfigured[p].region,
 					name: (preconfigured[p].subregion ? preconfigured[p].subregion : preconfigured[p].address),
+					rowClass: (preconfigured[p].subregion ? 'subregion-title' : 'address-title'),
+					address: preconfigured[p].address,
 					param: 
 					{
 						alias: preconfigured[p].network + (preconfigured[p].subregion ? ': ' + preconfigured[p].subregion : (preconfigured[p].region ? ': ' + preconfigured[p].region : '')),
