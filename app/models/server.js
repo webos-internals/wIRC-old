@@ -155,7 +155,11 @@ ircServer.prototype.newCommand = function(message)
 				case 'raw':
 				case 'quote':
 					wIRCd.raw(null, this.sessionToken, val);
-					break;					
+					break;
+					
+				case 'whois':
+					this.whois(val);
+					break;			
 					
 				default: // this could probably be left out later
 					this.newMessage('status', false, 'Unknown Command: ' + cmd);
@@ -524,7 +528,16 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.isAway = true;
 					this.newMessage('debug', false, payload.params[1]);
 					break;
-				
+					
+				case '311':		// WHOISUSER
+				case '312':		// WHOISSERVER
+				case '313':		// WHOISOPERATOR
+				case '317':		// WHOISIDLE
+				case '318':		// ENDOFWHOIS
+				case '320':		// WHOIS ??? (seems to include information about if the nick is identified and who its identified as)
+					this.newMessage('debug', false, payload.params.inspect());
+					break;
+					
 				case '321':		// LISTSTART
 					this.listStart();
 					break;
@@ -681,6 +694,10 @@ ircServer.prototype.ping = function(server)
 ircServer.prototype.topic = function(channel, topic)
 {
 	wIRCd.topic(this.genericHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
+}
+ircServer.prototype.whois = function(value)
+{
+	wIRCd.whois(this.genericHandler.bindAsEventListener(this), this.sessionToken, value);
 }
 ircServer.prototype.genericHandler = function(payload)
 {
