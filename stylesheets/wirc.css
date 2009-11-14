@@ -314,6 +314,13 @@ body.palm-dark .form .textfield-group .hint-text
 	height: 23px;
 	background: url(../images/pop-icon.png) center center no-repeat;
 }
+.server-status #connectButton
+{
+	position: fixed;
+	top: 180px;
+	left: 10px;
+	width: 300px;
+}
 .server-status #messageList
 {
 	height: 100%;

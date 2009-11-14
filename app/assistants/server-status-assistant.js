@@ -50,6 +50,7 @@ ServerStatusAssistant.prototype.setup = function()
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
 		this.popButtonElement =			this.controller.get('popButton');
+		this.connectButtonElement =		this.controller.get('connectButton');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
@@ -68,6 +69,21 @@ ServerStatusAssistant.prototype.setup = function()
 		
 		if (this.popped)	this.popButtonElement.style.display = 'none';
 		else				Mojo.Event.listen(this.popButtonElement, Mojo.Event.tap, this.popButtonPressed);
+		
+		this.controller.setupWidget
+		(
+			'connectButton', 
+			{},
+			{
+				buttonLabel: 'Connect',
+				buttonClass: 'affirmative',
+			}
+		);
+		Mojo.Event.listen(this.connectButtonElement, Mojo.Event.tap, this.connectButtonPressed.bindAsEventListener(this));
+		if (this.server.state > 0 || this.server.statusMessages.length > 0)
+		{
+			this.connectButtonElement.hide();
+		}
 		
 		this.updateList(true);
 		this.controller.setupWidget
@@ -203,6 +219,12 @@ ServerStatusAssistant.prototype.revealBottom = function()
 		this.sceneScroller.mojo.revealBottom();
 		this.sceneScroller.mojo.revealBottom();
 	}
+}
+
+ServerStatusAssistant.prototype.connectButtonPressed = function(event)
+{
+	this.server.connect();
+	this.connectButtonElement.hide();
 }
 
 ServerStatusAssistant.prototype.popButtonPressed = function(event)
@@ -341,6 +363,7 @@ ServerStatusAssistant.prototype.cleanup = function(event)
 	{
 		Mojo.Event.stopListening(this.popButtonElement, Mojo.Event.tap, 			this.popButtonPressed);
 	}
+	Mojo.Event.stopListening(this.connectButtonElement, Mojo.Event.tap,				this.connectButtonPressed.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
 	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap, 			this.sendButtonPressed);
