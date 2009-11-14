@@ -535,8 +535,13 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '317':		// WHOISIDLE
 				case '318':		// ENDOFWHOIS
 				case '319':		// WHOISCHANNELS
-				case '320':		// WHOIS ??? (seems to include information about if the nick is identified and who its identified as)
-					this.newMessage('debug', false, payload.params.inspect());
+				case '320':		// ???
+					var tmpNick = this.getNick(payload.params[1]);
+					if (tmpNick)
+					{
+						// forward all whois stuff to nick object for parsing/display
+						tmpNick.whoisEvent(payload.event, payload.params);
+					}
 					break;
 					
 				case '321':		// LISTSTART

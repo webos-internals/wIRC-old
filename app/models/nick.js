@@ -9,6 +9,15 @@ function ircNick(params)
 	this.channelModes =	[];
 	this.me =			false;
 	
+	this.whois =
+	{
+		user:		false,
+		host:		false,
+		realname:	false,
+		channels:	[], // {mode, name},
+		idle:		0,
+		signon:		0,
+	}
 }
 
 ircNick.prototype.addChannel = function(channel, mode)
@@ -99,6 +108,11 @@ ircNick.prototype.getRandomColor = function()
 	return '#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6);
 }
 
+ircNick.prototype.whoisEvent = function(event, params)
+{
+	//alert('--- ' + event + ' ---');
+	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+}
 
 ircNick.num = 0;
 
