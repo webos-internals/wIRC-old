@@ -534,6 +534,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				case '313':		// WHOISOPERATOR
 				case '317':		// WHOISIDLE
 				case '318':		// ENDOFWHOIS
+				case '319':		// WHOISCHANNELS
 				case '320':		// WHOIS ??? (seems to include information about if the nick is identified and who its identified as)
 					this.newMessage('debug', false, payload.params.inspect());
 					break;
