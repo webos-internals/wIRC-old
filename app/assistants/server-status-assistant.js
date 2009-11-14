@@ -34,6 +34,7 @@ function ServerStatusAssistant(server, popped)
 	if (this.popped) this.menuModel.items.push({ label: 'Server List',	command: 'server-list' });
 	this.menuModel.items.push({ label: 'Preferences',	command: 'do-prefs' });
 	this.menuModel.items.push({ label: 'Change Nick',	command: 'change-nick' });
+	this.menuModel.items.push({ label: 'Channel List',	command: 'channel-list' });
 	this.menuModel.items.push({ label: 'Join Channel',	command: 'join-channel' });
 }
 
@@ -288,6 +289,17 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 				else
 				{
 					this.alertDialog('You must be connected to change your nick.');
+				}
+				break;
+				
+			case 'channel-list':
+				if (this.server.isConnected()) 
+				{
+					this.server.newCommand('/list');
+				}
+				else
+				{
+					this.alertDialog('You must be connected to get the channel list.');
 				}
 				break;
 				
