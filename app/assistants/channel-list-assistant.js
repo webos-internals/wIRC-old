@@ -4,20 +4,22 @@ function ChannelListAssistant(server)
 	
 	this.server.setListAssistant(this);
 	
-	this.listModel =
-	{
-		items: []
-	};
+	this.spinnerModel =	{spinning:true};
+	this.listModel =	{items:[]};
+	this.cmdMenuModel =	{items:[]};
 }
 
 ChannelListAssistant.prototype.setup = function()
 {
 	
 	this.titleElement =		this.controller.get('title');
+	this.spinnerElement =	this.controller.get('spinner');
 	this.listElement =		this.controller.get('channelList');
 	this.listTapHandler =	this.listTapHandler.bindAsEventListener(this);
 	
 	this.titleElement.update((this.server.alias?this.server.alias:this.server.address) + ' - Channel List');
+	
+	this.controller.setupWidget('spinner', {spinnerSize: 'large'}, this.spinnerModel);
 	
 	this.controller.setupWidget
 	(
@@ -68,7 +70,7 @@ ChannelListAssistant.prototype.loadChannels = function(channels)
 
 ChannelListAssistant.prototype.doneLoading = function()
 {
-	alert('done!');
+	this.spinnerElement.mojo.stop();
 }
 
 ChannelListAssistant.prototype.listTapHandler = function(event)
