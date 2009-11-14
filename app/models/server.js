@@ -152,6 +152,11 @@ ircServer.prototype.newCommand = function(message)
 					this.disconnect(val);
 					break;
 					
+				case 'raw':
+				case 'quote':
+					wIRCd.raw(null, this.sessionToken, val);
+					break;					
+					
 				default: // this could probably be left out later
 					this.newMessage('status', false, 'Unknown Command: ' + cmd);
 					break;
