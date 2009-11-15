@@ -710,6 +710,7 @@ ircServer.prototype.whois = function(nick)
 	if (tmpNick) 
 	{
 		// reset whois
+		tmpNick.server = this;
 		tmpNick.whois = false;
 	}
 	wIRCd.whois(this.genericHandler.bindAsEventListener(this), this.sessionToken, nick);

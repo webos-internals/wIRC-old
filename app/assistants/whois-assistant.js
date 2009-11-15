@@ -9,12 +9,24 @@ WhoisAssistant.prototype.setup = function()
 	this.dataElement =			this.controller.get('whoisData');
 	
 	this.titleElement.update('Whois - ' + this.nick.name);
-	
+}
+
+WhoisAssistant.prototype.activate = function(event)
+{
+	this.updateData();
+}
+
+WhoisAssistant.prototype.updateData = function()
+{
 	var data = '';
 	var rowTemplate = 'whois/data-row';
 	var dividerTemplate = 'whois/data-divider';
 	var channelTemplate = 'whois/data-channel';
 	
+	// clear scene
+	this.dataElement.update(data);
+	
+	// data elements
 	if (this.nick.whois.realname)		data += Mojo.View.render({object: {title: 'Real Name', data: this.nick.whois.realname}, template: rowTemplate});
 	if (this.nick.whois.user)			data += Mojo.View.render({object: {title: 'User Name', data: this.nick.whois.user}, template: rowTemplate});
 	
@@ -29,7 +41,7 @@ WhoisAssistant.prototype.setup = function()
 	if (this.nick.whois.serverUrl)		data += Mojo.View.render({object: {title: 'Server', data: '<a href="'+this.nick.whois.serverUrl+'">' + this.nick.whois.server + '</a>', rowClass: 'last'}, template: rowTemplate});
 	else if (this.nick.whois.server)	data += Mojo.View.render({object: {title: 'Server', data: this.nick.whois.server, rowClass: 'last'}, template: rowTemplate});
 	
-	
+	// channel elements
 	if (this.nick.whois.channels.length > 0)
 	{
 		data += Mojo.View.render({object: {title: 'Channels'}, template: dividerTemplate});
@@ -43,5 +55,24 @@ WhoisAssistant.prototype.setup = function()
 		}
 	}
 	
+	// update scene
 	this.dataElement.update(data);
+	
+	// listen for channel taps
+	if (this.nick.whois.channels.length > 0) 
+	{
+		for (var c = 0; c < this.nick.whois.channels.length; c++) 
+		{
+			Mojo.Event.listen(this.controller.get('row-' + this.nick.whois.channels[c].channel), Mojo.Event.tap, this.channelTap.bindAsEventListener(this, this.nick.whois.channels[c].channel));
+		}
+	}
 }
+	
+WhoisAssistant.prototype.channelTap = function(event, channel)
+{
+	if (this.nick.server)
+	{
+		this.nick.server.joinChannel(channel);
+	}
+}
+

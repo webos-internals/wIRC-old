@@ -4,6 +4,7 @@ function ircNick(params)
 	
 	this.num =			ircNick.num;
 	this.name =			params.name;
+	this.server =		false; // set when whois is called, its the only time its needed
 	this.colorHex =		this.getRandomColor();
 	this.channels =		[];
 	this.channelModes =	[];
@@ -105,8 +106,8 @@ ircNick.prototype.getRandomColor = function()
 
 ircNick.prototype.whoisEvent = function(event, params)
 {
-	alert('--- ' + event + ' ---');
-	for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+	//alert('--- ' + event + ' ---');
+	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
 	
 	// if no whois object, lets create it
 	if (this.whois === false)
