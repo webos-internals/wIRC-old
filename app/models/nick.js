@@ -142,13 +142,16 @@ ircNick.prototype.whoisEvent = function(event, params)
 			{
 				for (var c = 0; c < channels.length; c++)
 				{
-					if (ircNick.hasPrefix(channels[c]))
+					if (channels[c]) 
 					{
-						this.whois.channels.push({mode: channels[c].substr(0, 1), channel: channels[c].substr(1)});
-					}
-					else
-					{
-						this.whois.channels.push({mode: '&nbsp;', channel: channels[c]});
+						if (ircNick.hasPrefix(channels[c]))
+						{
+							this.whois.channels.push({mode: channels[c].substr(0, 1), channel: channels[c].substr(1)});
+						}
+						else
+						{
+							this.whois.channels.push({mode: '&nbsp;', channel: channels[c]});
+						}
 					}
 				}
 			}
@@ -159,23 +162,6 @@ ircNick.prototype.whoisEvent = function(event, params)
 		
 		case '318': // ENDOFLIST
 			this.openWhoisStage();
-			
-			/* this isn't being used anymore, but im keeping the code here because its example
-			 * of finding the current scenes assistant for an alert is a good one
-			var activeCard = Mojo.Controller.appController.getActiveStageController('card');
-			if (activeCard) 
-			{
-				var activeScene = activeCard.activeScene();
-				if (activeScene)
-				{
-					activeScene.showDialog(
-					{
-						template: 'dialog/whois-dialog',
-						assistant: new WhoisDialog(activeScene, this)
-					});
-				}
-			}
-			*/
 			break;
 	}
 }
@@ -183,6 +169,14 @@ ircNick.prototype.openWhoisStage = function()
 {
 	try
 	{
+		/* // this code pushes the whois scene on top of the currently active card. Maybe using this should be an option
+		var activeCard = Mojo.Controller.appController.getActiveStageController('card');
+		if (activeCard) 
+		{
+			activeCard.pushScene('whois', this);
+		}
+		*/
+		
 		this.whoisStageController = Mojo.Controller.appController.getStageController(this.whoisStageName);
 	
         if (this.whoisStageController) 
