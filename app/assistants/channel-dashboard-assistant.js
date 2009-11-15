@@ -46,7 +46,7 @@ ChannelDashboardAssistant.prototype.updateMessage = function(nick, message)
 		this.newNumberBubbleElement.style.display = '';
 		this.newNumberElement.innerHTML = this.messageCount;
 	}
-	this.dashboardTitleElement.innerHTML = nick;
+	this.dashboardTitleElement.innerHTML = (this.channel.server.channels.length>1?this.channel.name+' / ':'') + nick;
 	this.dashboardTextElement.innerHTML = message;
 }
 

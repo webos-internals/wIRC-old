@@ -316,7 +316,7 @@ ircChannel.prototype.openDash = function(message)
 		(
 			{
 				icon: 'icon-channel.png',
-				messageText: message.nick + ': ' + message.message,
+				messageText: (this.server.channels.length>1?this.name+' / ':'') + message.nick + ': ' + message.message,
 				soundClass: (prefs.get().dashboardChannelSound?"alerts":"")
 			},
 			{
