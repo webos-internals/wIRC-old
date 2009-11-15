@@ -172,7 +172,6 @@ function UserActionDialog(sceneAssistant, item)
 	this.banButtonElement =		false;
 	this.cancelButtonElement =	false;
 	
-	this.closeHandler =			false;
 	this.opHandler =			false;
 	this.halfHandler =			false;
 	this.closeHandler =			false;
@@ -386,3 +385,66 @@ UserActionDialog.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.cancelButtonElement,	Mojo.Event.tap, this.closeHandler);
 }
 
+
+
+function WhoisDialog(sceneController, nick)
+{
+	this.sceneController = sceneController;
+	this.nick = nick;
+	
+	this.titleElement =			false;
+	this.closeButtonElement =	false;
+	
+	this.closeHandler =			false;
+	this.opHandler =			false;
+	this.halfHandler =			false;
+	this.closeHandler =			false;
+}
+WhoisDialog.prototype.setup = function(widget)
+{
+	this.widget = widget;
+	
+	this.titleElement =			this.sceneController.get('dialogTitle');
+	this.dataElement =			this.sceneController.get('whoisData');
+	this.closeButtonElement =	this.sceneController.get('closeButton');
+	
+	this.closeHandler =			this.close.bindAsEventListener(this);
+	
+	this.titleElement.update('Whois: ' + this.nick.name);
+	
+	
+	this.dataElement.update('');
+	
+	var data = '';
+	var dataTemplate = 'dialog/data-row';
+	
+	data += Mojo.View.render({object: {title: 'Real Name', data: this.nick.whois.realname}, template: dataTemplate});
+	data += Mojo.View.render({object: {title: 'User', data: this.nick.whois.user}, template: dataTemplate});
+	data += Mojo.View.render({object: {title: 'Host', data: this.nick.whois.host}, template: dataTemplate});
+	data += Mojo.View.render({object: {title: 'Idle', data: formatSeconds(this.nick.whois.idle)}, template: dataTemplate});
+	data += Mojo.View.render({object: {title: 'Signed On', data: formatDate(this.nick.whois.signon), rowClass: 'last'}, template: dataTemplate});
+	
+	this.dataElement.update(data);
+	
+	
+	this.sceneController.setupWidget
+	(
+		'closeButton',
+		{},
+		{
+			buttonLabel: 'Close',
+			buttonClass: 'palm-button'
+		}
+	);
+	
+	Mojo.Event.listen(this.closeButtonElement,	Mojo.Event.tap, this.closeHandler);
+}
+WhoisDialog.prototype.close = function(event)
+{
+	event.stop();
+	this.widget.mojo.close();
+}
+WhoisDialog.prototype.cleanup = function(event)
+{
+	Mojo.Event.stopListening(this.closeButtonElement,	Mojo.Event.tap, this.closeHandler);
+}

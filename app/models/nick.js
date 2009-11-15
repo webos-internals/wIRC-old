@@ -139,31 +139,24 @@ ircNick.prototype.whoisEvent = function(event, params)
 			break;
 		
 		case '318': // ENDOFLIST
-			var message = '';
-			for (w in this.whois)
-			{
-				message += '<b>'+w+'</b>: '+this.whois[w]+'<br />';
-			}
-			// find active card & scene to push the alert dialog to:
+			// find active card & scene to push the alert dialog to it:
 			var activeCard = Mojo.Controller.appController.getActiveStageController('card');
 			if (activeCard) 
 			{
 				var activeScene = activeCard.activeScene();
 				if (activeScene)
 				{
-					activeScene.showAlertDialog(
+					activeScene.showDialog(
 					{
-						onChoose: function(value){},
-						allowHTMLMessage: true,
-						title: "Whois: " + this.name,
-						message: message,
-						choices: [{label: "OK", value: ""}]
+						template: 'dialog/whois-dialog',
+						assistant: new WhoisDialog(activeScene, this)
 					});
 				}
 			}
 			break;
 	}
 }
+
 
 ircNick.num = 0;
 
