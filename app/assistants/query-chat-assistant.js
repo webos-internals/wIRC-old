@@ -13,6 +13,7 @@ function QueryChatAssistant(query)
 	
 	this.autoScroll =				true;
 	this.isVisible = 				false;
+	this.lastFocusMarker =			false;
 	this.lastFocusMessage =			false;
 	
 	this.listModel =
@@ -159,7 +160,13 @@ QueryChatAssistant.prototype.updateList = function(initial)
 		{
 			if (!this.isVisible && this.lastFocusMessage && !this.lastFocusMessage.hasClassName('lostFocus'))
 			{
+				if (this.lastFocusMarker && this.lastFocusMarker.hasClassName('lostFocus'))
+				{
+					this.lastFocusMarker.removeClassName('lostFocus');
+					this.lastFocusMarker = false;
+				}
 				this.lastFocusMessage.addClassName('lostFocus');
+				this.lastFocusMessage.style.borderBottomColor = prefs.get().colorMarker;
 			}
 			
 			var start = this.messageListElement.mojo.getLength();
@@ -317,7 +324,7 @@ QueryChatAssistant.prototype.invisibleWindow = function(event)
 	
 	if (this.lastFocusMessage && this.lastFocusMessage.hasClassName('lostFocus'))
 	{
-		this.lastFocusMessage.removeClassName('lostFocus');
+		this.lastFocusMarker = this.lastFocusMessage;
 	}
 	this.lastFocusMessage = this.messageListElement.mojo.getNodeByIndex(this.messageListElement.mojo.getLength()-1);
 }

@@ -22,6 +22,7 @@ function ChannelChatAssistant(channel)
 	this.autoScroll =				true;
 	this.topicVisible =				false;
 	this.isVisible = 				false;
+	this.lastFocusMarker =			false;
 	this.lastFocusMessage =			false;
 	
 	this.listModel =
@@ -179,8 +180,13 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 		{
 			if (!this.isVisible && this.lastFocusMessage && !this.lastFocusMessage.hasClassName('lostFocus'))
 			{
+				if (this.lastFocusMarker && this.lastFocusMarker.hasClassName('lostFocus'))
+				{
+					this.lastFocusMarker.removeClassName('lostFocus');
+					this.lastFocusMarker = false;
+				}
 				this.lastFocusMessage.addClassName('lostFocus');
-				this.lastFocusMessage.style.borderBottomColor=prefs.get().colorMarker;
+				this.lastFocusMessage.style.borderBottomColor = prefs.get().colorMarker;
 			}
 			
 			var start = this.messageListElement.mojo.getLength();
@@ -500,7 +506,7 @@ ChannelChatAssistant.prototype.invisibleWindow = function(event)
 	
 	if (this.lastFocusMessage && this.lastFocusMessage.hasClassName('lostFocus'))
 	{
-		this.lastFocusMessage.removeClassName('lostFocus');
+		this.lastFocusMarker = this.lastFocusMessage;
 	}
 	this.lastFocusMessage = this.messageListElement.mojo.getNodeByIndex(this.messageListElement.mojo.getLength()-1);
 }
