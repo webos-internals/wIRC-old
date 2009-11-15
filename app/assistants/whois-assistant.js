@@ -15,11 +15,20 @@ WhoisAssistant.prototype.setup = function()
 	var dividerTemplate = 'whois/data-divider';
 	var channelTemplate = 'whois/data-channel';
 	
-	data += Mojo.View.render({object: {title: 'Real Name', data: this.nick.whois.realname}, template: rowTemplate});
-	data += Mojo.View.render({object: {title: 'User', data: this.nick.whois.user}, template: rowTemplate});
-	data += Mojo.View.render({object: {title: 'Host', data: this.nick.whois.host}, template: rowTemplate});
-	data += Mojo.View.render({object: {title: 'Idle', data: formatSeconds(this.nick.whois.idle)}, template: rowTemplate});
-	data += Mojo.View.render({object: {title: 'Signed On', data: formatDate(this.nick.whois.signon), rowClass: 'last'}, template: rowTemplate});
+	if (this.nick.whois.realname)		data += Mojo.View.render({object: {title: 'Real Name', data: this.nick.whois.realname}, template: rowTemplate});
+	if (this.nick.whois.user)			data += Mojo.View.render({object: {title: 'User Name', data: this.nick.whois.user}, template: rowTemplate});
+	
+	if (this.nick.whois.away)			data += Mojo.View.render({object: {title: 'Away', data: this.nick.whois.away}, template: rowTemplate});
+	
+	if (this.nick.whois.host)			data += Mojo.View.render({object: {title: 'Host', data: this.nick.whois.host}, template: rowTemplate});
+	
+	if (this.nick.whois.idle>0)			data += Mojo.View.render({object: {title: 'Idle For', data: formatSeconds(this.nick.whois.idle)}, template: rowTemplate});
+	if (this.nick.whois.signon)			data += Mojo.View.render({object: {title: 'Signed On At', data: formatDate(this.nick.whois.signon)}, template: rowTemplate});
+	if (this.nick.whois.signon)			data += Mojo.View.render({object: {title: 'Signed On For', data: formatSeconds(Math.round(new Date().getTime()/1000.0)-this.nick.whois.signon)}, template: rowTemplate});
+	
+	if (this.nick.whois.serverUrl)		data += Mojo.View.render({object: {title: 'Server', data: '<a href="'+this.nick.whois.serverUrl+'">' + this.nick.whois.server + '</a>', rowClass: 'last'}, template: rowTemplate});
+	else if (this.nick.whois.server)	data += Mojo.View.render({object: {title: 'Server', data: this.nick.whois.server, rowClass: 'last'}, template: rowTemplate});
+	
 	
 	if (this.nick.whois.channels.length > 0)
 	{

@@ -529,14 +529,15 @@ ircServer.prototype.connectionHandler = function(payload)
 					this.isAway = true;
 					this.newMessage('debug', false, payload.params[1]);
 					break;
-					
+				
+				case '301':		// ??? WHOISAWAY?
 				case '311':		// WHOISUSER
 				case '312':		// WHOISSERVER
 				case '313':		// WHOISOPERATOR
 				case '317':		// WHOISIDLE
 				case '318':		// ENDOFWHOIS
 				case '319':		// WHOISCHANNELS
-				case '320':		// ???
+				case '320':		// ??? WHOISIDENT?
 					var tmpNick = this.getNick(payload.params[1]);
 					if (tmpNick)
 					{
@@ -702,9 +703,16 @@ ircServer.prototype.topic = function(channel, topic)
 {
 	wIRCd.topic(this.genericHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
 }
-ircServer.prototype.whois = function(value)
+ircServer.prototype.whois = function(nick)
 {
-	wIRCd.whois(this.genericHandler.bindAsEventListener(this), this.sessionToken, value);
+	
+	var tmpNick = this.getNick(nick);
+	if (tmpNick) 
+	{
+		// reset whois
+		tmpNick.whois = false;
+	}
+	wIRCd.whois(this.genericHandler.bindAsEventListener(this), this.sessionToken, nick);
 }
 ircServer.prototype.genericHandler = function(payload)
 {
@@ -1027,8 +1035,11 @@ ircServer.prototype.getNick = function(name)
 		{
 			for (var n = 0; n < this.nicks.length; n++)
 			{
-				if (this.nicks[n].name == getNick)
+				// check lowercased
+				if (this.nicks[n].name.toLowerCase() == getNick.toLowerCase())
 				{
+					// set what we assume is correct case
+					this.nicks[n].name = getNick;
 					return this.nicks[n];
 				}
 			}

@@ -12,15 +12,7 @@ function ircNick(params)
 	
 	this.whoisStageName =		'whois-' + this.num;
 	this.whoisStageController =	false;
-	this.whois =
-	{
-		user:		false,
-		host:		false,
-		realname:	false,
-		channels:	[], // {mode, name},
-		idle:		0,
-		signon:		0,
-	}
+	this.whois =				false;
 }
 
 ircNick.prototype.addChannel = function(channel, mode)
@@ -113,11 +105,32 @@ ircNick.prototype.getRandomColor = function()
 
 ircNick.prototype.whoisEvent = function(event, params)
 {
-	//alert('--- ' + event + ' ---');
-	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+	alert('--- ' + event + ' ---');
+	for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+	
+	// if no whois object, lets create it
+	if (this.whois === false)
+	{
+		this.whois =
+		{
+			user:		false,
+			host:		false,
+			realname:	false,
+			away:		false,
+			server:		false,
+			serverUrl:	false,
+			idle:		0,
+			signon:		0,
+			channels:	[], // {mode, name},
+		}
+	}
 	
 	switch(event)
 	{
+		case '301': // ??? WHOISAWAY?
+			this.whois.away = params[2];
+			break;
+			
 		case '311': // WHOISUSER
 			this.whois.user = params[2].replace('n=', '');
 			this.whois.host = params[3];
@@ -125,6 +138,8 @@ ircNick.prototype.whoisEvent = function(event, params)
 			break;
 			
 		case '312': // WHOISSERVER
+			this.whois.server = params[2];
+			this.whois.serverUrl = params[3];
 			break;
 			
 		case '313': // WHOISOPERATOR
@@ -157,7 +172,7 @@ ircNick.prototype.whoisEvent = function(event, params)
 			}
 			break;
 			
-		case '320': // ???
+		case '320': // ??? WHOISIDENT?
 			break;
 		
 		case '318': // ENDOFLIST
