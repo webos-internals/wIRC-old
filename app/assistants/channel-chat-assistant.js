@@ -254,7 +254,7 @@ ChannelChatAssistant.prototype.revealBottom = function()
 
 ChannelChatAssistant.prototype.headerTap = function(event)
 {
-	if (event.target.id == 'header') // we don't want to toggle topic if the header is not tapped right on
+	if (event.target.id == 'header' || event.target.id == 'title') // we don't want to toggle topic if the header is not tapped right on
 	{
 		if (this.topicVisible)
 		{
