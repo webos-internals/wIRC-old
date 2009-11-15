@@ -46,6 +46,7 @@ function ircServer(params)
 	this.listStageName =		'channel-list-' + this.id;
 	this.listStageController =	false;
 	this.listsAssistant =		false;
+	this.listDisplay =			0;
 	this.channelList =			[];
 	
 	if (this.autoConnect)
@@ -871,10 +872,15 @@ ircServer.prototype.listStart = function()
 ircServer.prototype.listAddChannel = function(channel, users, topic)
 {
 	this.channelList.push({channel: channel, users: users, topic: topic});
+	this.listDisplay++;
 	
 	if (this.listAssistant && this.listAssistant.controller)
 	{
-		this.listAssistant.loadedCountUpdate(this.channelList.length);
+		if (this.listDisplay == 100)
+		{
+			this.listAssistant.loadedCountUpdate(this.listDisplay);
+			this.listDisplay = 0;
+		}
 	}
 }
 ircServer.prototype.listEnd = function()

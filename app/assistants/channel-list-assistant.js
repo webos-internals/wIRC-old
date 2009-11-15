@@ -10,6 +10,8 @@ function ChannelListAssistant(server)
 	this.cmdMenuModel =	{items:[]};
 	this.searchModel =	{value:''};
 	
+	this.loadCount =	0;
+	
 	this.searchTimer =	false;
 	this.searching =	false;
 	this.searchText =	'';
@@ -191,9 +193,10 @@ ChannelListAssistant.prototype.filter = function(skipUpdate)
 	
 }
 
-ChannelListAssistant.prototype.loadedCountUpdate = function(count)
+ChannelListAssistant.prototype.loadedCountUpdate = function(num)
 {
-	this.loadedCountElement.update(count);
+	this.loadCount += num;
+	this.loadedCountElement.update(this.loadCount);
 }
 
 ChannelListAssistant.prototype.doneLoading = function()
