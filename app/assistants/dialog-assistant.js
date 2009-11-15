@@ -162,6 +162,7 @@ function UserActionDialog(sceneAssistant, item)
 	
 	this.titleElement =			false;
 	this.queryButtonElement =	false;
+	this.whoisButtonElement =	false;
 	this.inviteButtonElement =	false;
 	this.ignoreButtonElement =	false;
 	this.opButtonElement =		false;
@@ -182,6 +183,7 @@ UserActionDialog.prototype.setup = function(widget)
 	
 	this.titleElement =			this.sceneAssistant.controller.get('dialogTitle');
 	this.queryButtonElement =	this.sceneAssistant.controller.get('queryButton');
+	this.whoisButtonElement =	this.sceneAssistant.controller.get('whoisButton');
 	this.inviteButtonElement =	this.sceneAssistant.controller.get('inviteButton');
 	this.ignoreButtonElement =	this.sceneAssistant.controller.get('ignoreButton');
 	this.opButtonElement =		this.sceneAssistant.controller.get('opButton');
@@ -209,6 +211,15 @@ UserActionDialog.prototype.setup = function(widget)
 		}
 	);
 	
+	this.sceneAssistant.controller.setupWidget
+	(
+		'whoisButton',
+		{},
+		{
+			buttonLabel: 'Whois',
+			buttonClass: 'palm-button'
+		}
+	);
 	this.sceneAssistant.controller.setupWidget
 	(
 		'inviteButton',
@@ -290,6 +301,7 @@ UserActionDialog.prototype.setup = function(widget)
 	
 	
 	Mojo.Event.listen(this.queryButtonElement,	Mojo.Event.tap, this.queryTap.bindAsEventListener(this));
+	Mojo.Event.listen(this.whoisButtonElement,	Mojo.Event.tap, this.whoisTap.bindAsEventListener(this));
 	//Mojo.Event.listen(this.inviteButtonElement,	Mojo.Event.tap, this.closeHandler);
 	//Mojo.Event.listen(this.ignoreButtonElement,	Mojo.Event.tap, this.closeHandler);
 	Mojo.Event.listen(this.opButtonElement,		Mojo.Event.tap, this.opHandler);
@@ -302,6 +314,11 @@ UserActionDialog.prototype.setup = function(widget)
 UserActionDialog.prototype.queryTap = function(event)
 {
 	this.sceneAssistant.channel.server.newQuery(this.item.name);
+	this.close(event);
+}
+UserActionDialog.prototype.whoisTap = function(event)
+{
+	this.sceneAssistant.channel.server.whois(this.item.name);
 	this.close(event);
 }
 UserActionDialog.prototype.opTap = function(event)
@@ -358,6 +375,7 @@ UserActionDialog.prototype.close = function(event)
 UserActionDialog.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.queryButtonElement,	Mojo.Event.tap, this.queryTap.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.whoisButtonElement,	Mojo.Event.tap, this.whoisTap.bindAsEventListener(this));
 	//Mojo.Event.stopListening(this.inviteButtonElement,	Mojo.Event.tap, this.closeHandler);
 	//Mojo.Event.stopListening(this.ignoreButtonElement,	Mojo.Event.tap, this.closeHandler);
 	Mojo.Event.stopListening(this.opButtonElement,		Mojo.Event.tap, this.opHandler);
