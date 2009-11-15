@@ -214,9 +214,7 @@ ChannelChatAssistant.prototype.updateTitle = function()
 }
 ChannelChatAssistant.prototype.updateTopic = function()
 {
-	var tmpTopic = Mojo.Format.runTextIndexer(this.channel.topic);
-	tmpTopic = tmpTopic.escapeHTML();
-	tmpTopic = tmpTopic.replace(/[\s]{2}/g, " &nbsp;");
+	var tmpTopic = formatLinks(formatForHtml(this.channel.topic));
 	this.topicElement.update(tmpTopic);
 }
 

@@ -50,14 +50,12 @@ function ircMessage(params)
 		// but whatever, we'll fix them all anyways.
 		for(var m = 0; m < params.message.length; m++)
 		{
-			params.message[m] = params.message[m].escapeHTML();
-			params.message[m] = params.message[m].replace(/[\s]{2}/g, " &nbsp;");
+			params.message[m] = formatForHtml(params.message[m]);
 		}
 	}
 	else
 	{	// good message, you're actually a message, lets fix you.
-		params.message = params.message.escapeHTML();
-		params.message = params.message.replace(/[\s]{2}/g, " &nbsp;");
+		params.message = formatForHtml(params.message);
 	}
 	
 	switch(this.type)
@@ -297,23 +295,6 @@ ircMessage.prototype.highlightMessage = function()
 	}
 }
 
-ircMessage.prototype.parseLinks = function(message)
-{
-	// not using Mojo.Format.runTextIndexer because it tries to parse messages badly
-  	return message.replace
-	(
-		/((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ig,
-		function(url)
-		{
-		    var full_url = url;
-		    if (!full_url.match('^https?:\/\/')) {
-		        full_url = 'http://' + full_url;
-		    }
-		    return '<a href="' + full_url + '" target="_blank">' + url + '</a>';
-		}
-	);
-}
-
 ircMessage.prototype.getNotificationObject = function()
 {
 	var obj =
@@ -329,7 +310,7 @@ ircMessage.prototype.getListObject = function()
 	var obj =
 	{
 		nick:			this.nickDisplay,
-		message:		this.parseLinks(this.message),
+		message:		formatLinks(this.message),
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,

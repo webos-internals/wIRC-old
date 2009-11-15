@@ -1,5 +1,6 @@
 [
     {"source": "app/models/database.js"},
+    {"source": "app/models/utility.js"},
     {"source": "app/models/cookie.js"},
     {"source": "app/models/wIRCd.js"},
     {"source": "app/models/connectionmanager.js"},
