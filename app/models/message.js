@@ -157,13 +157,13 @@ function ircMessage(params)
 				this.nickStyle =	'color: ' + prefs.get().colorOtherNicks + ';';
 			this.messageStyle = 'color: ' + prefs.get().colorText;
 			this.message =		params.message;
-			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
+			if (this.nick.name.toLowerCase() != this.me.toLowerCase()) // if its not me, move on to highlight test
 			{
-				if (params.channel)
+				if (params.channel) 
 				{
 					this.channel = params.channel;
 				}
-				this.highlightMessage();
+				this.highlightTest();
 			}
 			break;
 
@@ -175,13 +175,13 @@ function ircMessage(params)
 			this.nickStyle = 'color: ' + prefs.get().colorAction;
 			this.messageStyle = 'color: ' + prefs.get().colorAction;
 			this.message =		this.nick.name + ' ' + params.message;
-			if (this.message.toLowerCase().include(this.me.toLowerCase()) && this.nick.name.toLowerCase() != this.me.toLowerCase()) 
+			if (this.nick.name.toLowerCase() != this.me.toLowerCase()) // if its not from me, move on to highlight test
 			{
-				if (params.channel)
+				if (params.channel) 
 				{
 					this.channel = params.channel;
 				}
-				this.highlightMessage();
+				this.highlightTest();
 			}
 			break;
 			
@@ -253,6 +253,34 @@ function ircMessage(params)
 			this.message =		params.message;
 			break;
 	}
+	
+}
+
+ircMessage.prototype.highlightTest = function()
+{
+	// first test is current nick (it may have been /nick'd to and not in the nicklist tested below)
+	if (this.message.toLowerCase().include(this.me.toLowerCase())) 
+	{
+		this.highlightMessage();
+		return;
+	}
+	
+	// then we move onto the predefined nicklist
+	var testNicks = prefs.get().nicknames;
+	if (testNicks.length > 0)
+	{
+		for (var n = 0; n < testNicks.length; n++)
+		{
+			if (this.message.toLowerCase().include(testNicks[n].toLowerCase())) 
+			{
+				this.highlightMessage();
+				return;
+			}
+		}
+	}
+	
+	// eventually we will move to a last one, which is to test it against a highlight words list from prefs
+	// but that list doesn't exist yet.
 	
 }
 
