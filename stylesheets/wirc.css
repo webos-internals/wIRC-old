@@ -557,6 +557,18 @@ body.palm-dark .channel-users #searchText
 
 
 /*
+ * Whois Scene Styles
+ */
+.whois #whoisData .palm-row-wrapper .title .mode
+{
+	float: left;
+	width: 20px;
+	color: #BBB;
+}
+
+
+
+/*
  * Generic Dashboard Scene Styles
  */
 .channel-dashboard .palm-dashboard-icon

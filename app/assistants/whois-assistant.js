@@ -13,6 +13,7 @@ WhoisAssistant.prototype.setup = function()
 	var data = '';
 	var rowTemplate = 'whois/data-row';
 	var dividerTemplate = 'whois/data-divider';
+	var channelTemplate = 'whois/data-channel';
 	
 	data += Mojo.View.render({object: {title: 'Real Name', data: this.nick.whois.realname}, template: rowTemplate});
 	data += Mojo.View.render({object: {title: 'User', data: this.nick.whois.user}, template: rowTemplate});
@@ -20,7 +21,18 @@ WhoisAssistant.prototype.setup = function()
 	data += Mojo.View.render({object: {title: 'Idle', data: formatSeconds(this.nick.whois.idle)}, template: rowTemplate});
 	data += Mojo.View.render({object: {title: 'Signed On', data: formatDate(this.nick.whois.signon), rowClass: 'last'}, template: rowTemplate});
 	
-	data += Mojo.View.render({object: {title: 'Channels'}, template: dividerTemplate});
+	if (this.nick.whois.channels.length > 0)
+	{
+		data += Mojo.View.render({object: {title: 'Channels'}, template: dividerTemplate});
+		for (var c = 0; c < this.nick.whois.channels.length; c++)
+		{
+			if (c == (this.nick.whois.channels.length-1))
+			{
+				this.nick.whois.channels[c].rowClass = 'last';
+			}
+			data += Mojo.View.render({object: this.nick.whois.channels[c], template: channelTemplate});
+		}
+	}
 	
 	this.dataElement.update(data);
 }

@@ -136,6 +136,22 @@ ircNick.prototype.whoisEvent = function(event, params)
 			break;
 			
 		case '319': // WHOISCHANNELS
+			this.whois.channels = [];
+			var channels = params[2].split(" ");
+			if (channels.length > 0)
+			{
+				for (var c = 0; c < channels.length; c++)
+				{
+					if (ircNick.hasPrefix(channels[c]))
+					{
+						this.whois.channels.push({mode: channels[c].substr(0, 1), channel: channels[c].substr(1)});
+					}
+					else
+					{
+						this.whois.channels.push({mode: '&nbsp;', channel: channels[c]});
+					}
+				}
+			}
 			break;
 			
 		case '320': // ???
