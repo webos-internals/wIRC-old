@@ -89,6 +89,7 @@ ChannelChatAssistant.prototype.setup = function()
 		this.isVisible = true;
 		
 		Mojo.Event.listen(this.headerElement, Mojo.Event.tap, this.headerTapped);
+		this.updateUserCount();
 		this.updateTitle();
 		this.updateTopic();
 		this.loadPrefs(true);
