@@ -57,3 +57,44 @@ trim = function(str)
 {
 	return str.replace(/^\s*/, "").replace(/\s*$/, "");
 }
+
+// formats seconds into a readable string
+formatSeconds = function(seconds, longFormat)
+{
+	var toReturn = '';
+	
+	var days = Math.floor(seconds / 86400);
+	seconds -= (days * 86400);
+	
+	var hours = Math.floor(seconds / 3600);
+	seconds -= (hours * 3600);
+
+	var mins = Math.floor(seconds / 60);
+	seconds -= (mins * 60);
+	
+	if (longFormat) 
+	{
+		if (days == 1)		toReturn += days + ' day ';
+		if (days > 1)		toReturn += days + ' days ';
+		if (hours == 1)		toReturn += hours + ' hour ';
+		if (hours > 1)		toReturn += hours + ' hours ';
+		if (mins == 1)		toReturn += mins + ' min ';
+		if (mins > 1)		toReturn += mins + ' mins ';
+		if (seconds == 1)	toReturn += seconds + ' sec ';
+		if (seconds > 1)	toReturn += seconds + ' secs ';
+	}
+	else
+	{
+		if (days > 0)		toReturn += days + 'd ';
+		if (hours > 0)		toReturn += hours + 'h ';
+		if (mins > 0)		toReturn += mins + 'm ';
+		if (seconds > 0)	toReturn += seconds + 's ';
+	}
+	
+	if (toReturn == '')
+	{
+		toReturn = 'never';
+	}
+	
+	return toReturn;
+}
