@@ -330,46 +330,6 @@ body.palm-dark .form .textfield-group .hint-text
 
 
 /*
- * Whois Dialog Styles (shorter palm-list)
- */
-.whois-dialog .palm-row
-{
-	/*
-	min-height: 26px;
-	padding: 0px;
-	margin: 0px;
-	
-	border: 1px solid #0f0;
-	*/
-}
-.whois-dialog .palm-row .label
-{
-	/*
-	padding-top: 0px;
-	padding-bottom: 0px;
-	margin: 0px;
-	height: 10px;
-	
-	border: 1px solid #f00;
-	*/
-}
-.whois-dialog .palm-row .title
-{
-	/*
-	padding-top: 0px;
-	padding-bottom: 0px;
-	margin: 0px;
-	padding: 0px;
-	min-height: 10px;
-	height: 10px;
-	
-	border: 1px solid #00f;
-	*/
-}
-
-
-
-/*
  * Channel List Scene Styles
  */
 .channel-list #searchText

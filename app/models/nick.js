@@ -9,6 +9,9 @@ function ircNick(params)
 	this.channelModes =	[];
 	this.me =			false;
 	
+	
+	this.whoisStageName =		'whois-' + this.num;
+	this.whoisStageController =	false;
 	this.whois =
 	{
 		user:		false,
@@ -139,7 +142,10 @@ ircNick.prototype.whoisEvent = function(event, params)
 			break;
 		
 		case '318': // ENDOFLIST
-			// find active card & scene to push the alert dialog to it:
+			this.openWhoisStage();
+			
+			/* this isn't being used anymore, but im keeping the code here because its example
+			 * of finding the current scenes assistant for an alert is a good one
 			var activeCard = Mojo.Controller.appController.getActiveStageController('card');
 			if (activeCard) 
 			{
@@ -153,8 +159,41 @@ ircNick.prototype.whoisEvent = function(event, params)
 					});
 				}
 			}
+			*/
 			break;
 	}
+}
+ircNick.prototype.openWhoisStage = function()
+{
+	try
+	{
+		this.whoisStageController = Mojo.Controller.appController.getStageController(this.whoisStageName);
+	
+        if (this.whoisStageController) 
+		{
+			if (this.whoisStageController.activeScene().sceneName == 'whois') 
+			{
+				this.whoisStageController.activate();
+			}
+			else
+			{
+				this.whoisStageController.popScenesTo('whois');
+				this.whoisStageController.activate();
+			}
+		}
+		else
+		{
+			Mojo.Controller.appController.createStageWithCallback({name: this.whoisStageName, lightweight: true}, this.openWhoisStageCallback.bind(this));
+		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircNick#openWhoisStage");
+	}
+}
+ircNick.prototype.openWhoisStageCallback = function(controller)
+{
+	controller.pushScene('whois', this);
 }
 
 

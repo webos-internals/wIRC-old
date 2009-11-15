@@ -54,6 +54,10 @@
         "source": "app/assistants/channel-list-assistant.js"
     },
     {
+        "scenes": "whois",
+        "source": "app/assistants/whois-assistant.js"
+    },
+    {
         "scenes": "channel-chat",
         "source": "app/assistants/channel-chat-assistant.js"
     },
