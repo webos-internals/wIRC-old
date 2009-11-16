@@ -109,6 +109,17 @@ ircServer.prototype.eventJoinHandler = function(payload)
 	}
 }
 
+ircServer.prototype.eventQuitHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	if (tmpNick)
+	{
+		for (var i = 0; i< tmpNick.channels.length; i++)
+			tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + payload.params + ')');
+		this.removeNick(tmpNick);
+	}	
+}
+
 ircServer.prototype.eventKickHandler = function(payload)
 {
 	var tmpChan = this.getChannel(payload.params[0]);
@@ -140,7 +151,7 @@ ircServer.prototype.setupSubscriptions = function()
 {
 	this.subscriptions['event_connect']			= wIRCd.subscribe(this.eventConnectHandler.bindAsEventListener(this),this.sessionToken, 'event_connect');
 	this.subscriptions['event_nick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
-	this.subscriptions['event_quit']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
+	this.subscriptions['event_quit']			= wIRCd.subscribe(this.eventQuitHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
 	this.subscriptions['event_join']			= wIRCd.subscribe(this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
 	this.subscriptions['event_part']			= wIRCd.subscribe(this.eventPartHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
 	this.subscriptions['event_mode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
@@ -408,19 +419,6 @@ ircServer.prototype.connectionHandler = function(payload)
 			
 			switch(payload.event)
 			{								
-					
-				case 'QUIT':
-					var tmpNick = this.getNick(payload.origin);
-					if (tmpNick)
-					{
-						for (var i = 0; i< tmpNick.channels.length; i++)
-						{
-							tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + payload.params + ')');
-						}
-
-						this.removeNick(tmpNick);
-					}
-				break;
 
 				case 'PRIVMSG':
 					if (payload.params[0].substr(0, 1) == '#') // it's a channel
