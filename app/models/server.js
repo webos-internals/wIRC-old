@@ -151,6 +151,11 @@ ircServer.prototype.eventModeHandler = function(payload)
 		tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
 	}
 }
+
+ircServer.prototype.eventUmodeHandler = function(payload)
+{
+	this.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[0] + ' by ' + payload.origin);
+}
 	
 ircServer.prototype.eventJoinHandler = function(payload)
 {
@@ -211,7 +216,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_join']			= wIRCd.subscribe(this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
 	this.subscriptions['event_part']			= wIRCd.subscribe(this.eventPartHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
 	this.subscriptions['event_mode']			= wIRCd.subscribe(this.eventModeHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
-	this.subscriptions['event_umode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
+	this.subscriptions['event_umode']			= wIRCd.subscribe(this.eventUmodeHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
 	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
 	this.subscriptions['event_kick']			= wIRCd.subscribe(this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
 	this.subscriptions['event_channel']			= wIRCd.subscribe(this.eventChannelHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
@@ -499,16 +504,6 @@ ircServer.prototype.connectionHandler = function(payload)
 						{
 							this.startQuery(tmpNick, false, 'type7', payload.params[1]);
 						}
-					}
-					break;
-					
-				case 'MODE':
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{	
-					}
-					else
-					{
-						this.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[0] + ' by ' + payload.origin);
 					}
 					break;
 					
