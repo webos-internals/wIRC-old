@@ -181,6 +181,14 @@ ircServer.prototype.eventQuitHandler = function(payload)
 	}	
 }
 
+ircServer.prototype.eventNoticeHandler = function(payload)
+{
+	if (payload.origin=='NULL')
+		this.newMessage('type1', false, payload.params);
+	else if (payload.params[0] == this.nick.name)
+		this.newMessage('type6', tmpNick, payload.params[1]);	
+}
+
 ircServer.prototype.eventKickHandler = function(payload)
 {
 	var tmpChan = this.getChannel(payload.params[0]);
@@ -221,7 +229,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_kick']			= wIRCd.subscribe(this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
 	this.subscriptions['event_channel']			= wIRCd.subscribe(this.eventChannelHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
 	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.eventPrivmsgHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
-	this.subscriptions['event_notice']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
+	this.subscriptions['event_notice']			= wIRCd.subscribe(this.eventNoticeHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
 	this.subscriptions['event_channel_notice']	= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
 	this.subscriptions['event_invite']			= wIRCd.subscribe(this.eventInviteHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
 	this.subscriptions['event_ctcp_req']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_req');
@@ -509,19 +517,14 @@ ircServer.prototype.connectionHandler = function(payload)
 					
 				case 'NOTICE':
 					var tmpNick = this.getNick(payload.origin);
-					if (payload.origin=='NULL')
-						this.newMessage('type1', false, payload.params);
-					else if (payload.params[0].substr(0, 1) == '#') // it's a channel
+
+					if (payload.params[0].substr(0, 1) == '#') // it's a channel
 					{
 						var tmpChan = this.getChannel(payload.params[0]);
 						if (tmpChan) 
 						{
 							tmpChan.newMessage('type6', tmpNick, payload.params[1]);
 						}
-					}
-					else if (payload.params[0] == this.nick.name) // it's me
-					{
-						this.newMessage('type6', tmpNick, payload.params[1]);
 					}
 					else
 					{
