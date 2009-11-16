@@ -1,9 +1,10 @@
 function ircServer(params)
 {
-	this.STATE_DISCONNECTED =	0; 
-	this.STATE_CONNECTING =		1; 
-	this.STATE_CONNECTED =		2; 
-	this.STATE_DISCONNECTING =	3;
+	this.STATE_DISCONNECTED	=	0;
+	this.STATE_TOKEN_REQUEST =	1 
+	this.STATE_CONNECTING =		2; 
+	this.STATE_CONNECTED =		3; 
+	this.STATE_DISCONNECTING =	4;
 
 	this.id =					params.id;
 	this.alias =				params.alias;
@@ -64,16 +65,18 @@ ircServer.prototype.setState = function(state)
 		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;  
 	}	
 	this.state = state;
-	this.newMessage('type3', false, message);
-	if (servers.listAssistant && servers.listAssistant.controller)
-		servers.listAssistant.updateList();
+	if (message.length>0) {
+		this.newMessage('type3', false, message);
+		if (servers.listAssistant && servers.listAssistant.controller)
+			servers.listAssistant.updateList();
+	}
 }
 
 ircServer.prototype.cleanupSubscriptions = function()
 {
 	var s;
 	for (s in this.subscriptions)
-		this.subscriptions[s].cancel();
+		this.subscriptions[s] = false;
 }
 
 ircServer.prototype.initHandler = function(payload)
@@ -82,13 +85,14 @@ ircServer.prototype.initHandler = function(payload)
 	{
 		this.sessionToken = payload.sessionToken;
 		this.setupSubscriptions();
+		this.setState(this.STATE_CONNECTING);
 		this.connect();
 	}	
 }
 
 ircServer.prototype.init = function()
 {
-	this.setState(this.STATE_CONNECTING);
+	this.setState(this.STATE_TOKEN_REQUEST);
 	wIRCd.init(this.initHandler.bindAsEventListener(this));
 }
 
@@ -965,6 +969,7 @@ ircServer.prototype.eventTopicHandler = function(payload)
 	
 ircServer.prototype.eventNoticeHandler = function(payload)
 {
+	var tmpNick = this.getNick(payload.origin);
 	if (payload.origin=='NULL')
 		this.newMessage('type1', false, payload.params);
 	else if (payload.params[0] == this.nick.name)
@@ -1178,6 +1183,7 @@ ircServer.prototype.eventNumericHandler = function(payload)
 
 ircServer.prototype.eventUnknownHandler = function(payload)
 {
+	Mojo.Log.error(payload.params[0]);
 	if (payload.params[0].include('Closing Link'))
 		this.setState(this.STATE_DISCONNECTED);
 }
