@@ -558,20 +558,20 @@ ircServer.prototype.joinChannel = function(name, key)
 		tmpChan.join();
 	}
 }
+
 ircServer.prototype.getChannel = function(name)
 {
-	if (this.channels.length > 0)
+	if (name.substr(0, 1) != '#')
+		return false;
+	else if (this.channels.length < 1)
+		return false;
+	for (var c = 0; c < this.channels.length; c++)
 	{
-		for (var c = 0; c < this.channels.length; c++)
-		{
-			if (this.channels[c].name == name.toLowerCase())
-			{
-				return this.channels[c];
-			}
-		}
+		if (this.channels[c].name == name.toLowerCase())
+			return this.channels[c];
 	}
-	return false;
 }
+
 ircServer.prototype.removeChannel = function(channel)
 {
 	this.channels = this.channels.without(channel);
