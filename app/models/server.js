@@ -434,6 +434,13 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_numeric']			= wIRCd.subscribe(this.eventNumericHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
 }
 
+ircServer.prototype.cleanupSubscriptions = function()
+{
+	var s;
+	for (s in this.subscriptions)
+		this.subscriptions[s].cancel();
+}
+
 ircServer.prototype.initHandler = function(payload)
 {
 	if (payload && payload.sessionToken)
@@ -635,7 +642,7 @@ ircServer.prototype.connect = function()
 		prefs.get().piface
 	);
 }
-ircServer.prototype.maybeReconnect = function(network)
+/*ircServer.prototype.maybeReconnect = function(network)
 {
 	if (network !== '1x')
 	{
@@ -651,7 +658,7 @@ ircServer.prototype.ipDiffers = function(payload)
 ircServer.prototype.ipMatches = function(payload)
 {
 	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
-}
+}*/
 
 ircServer.prototype.debugPayload = function(payload, visible)
 {
@@ -727,6 +734,7 @@ ircServer.prototype.disconnect = function(reason)
 }
 ircServer.prototype.disconnectHandler = function(payload)
 {
+	this.cleanupSubscriptions();
 	//this.newMessage('status', false, 'dc handler');
 	/*
 	if (payload.returnValue == 0)
