@@ -121,6 +121,16 @@ ircServer.prototype.eventChannelHandler = function(payload)
 	}
 }
 
+ircServer.prototype.eventPrivmsgHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	var tmpQuery = this.getQuery(tmpNick);
+	if (tmpQuery)
+		tmpQuery.newMessage('privmsg', tmpNick, payload.params[1]);
+	else
+		this.startQuery(tmpNick, false, 'message', payload.params[1]);
+}
+
 ircServer.prototype.eventNickHandler = function(payload)
 {
 	var tmpNick = this.getNick(payload.origin);
@@ -193,7 +203,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
 	this.subscriptions['event_kick']			= wIRCd.subscribe(this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
 	this.subscriptions['event_channel']			= wIRCd.subscribe(this.eventChannelHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
-	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
+	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.eventPrivmsgHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
 	this.subscriptions['event_notice']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
 	this.subscriptions['event_channel_notice']	= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
 	this.subscriptions['event_invite']			= wIRCd.subscribe(this.eventInviteHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
@@ -453,27 +463,6 @@ ircServer.prototype.connectionHandler = function(payload)
 			
 			switch(payload.event)
 			{								
-
-				case 'PRIVMSG':
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{
-						
-					}
-					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
-					{
-						var tmpNick = this.getNick(payload.origin);
-						var tmpQuery = this.getQuery(tmpNick);
-						if (tmpQuery)
-						{
-							tmpQuery.newMessage('privmsg', tmpNick, payload.params[1]);
-						}
-						else
-						{
-							this.startQuery(tmpNick, false, 'message', payload.params[1]);
-						}
-					}
-					break;
-
 					
 				case 'ACTION':
 					if (payload.params[0].substr(0, 1) == '#') // it's a channel
