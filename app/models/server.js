@@ -80,6 +80,7 @@ ircServer.prototype.initHandler = function(payload)
 {
 	if (payload && payload.sessionToken)
 	{
+		this.setState(this.STATE_CONNECTING);
 		this.sessionToken = payload.sessionToken;
 		this.setupSubscriptions();
 		this.connect();
@@ -88,7 +89,6 @@ ircServer.prototype.initHandler = function(payload)
 
 ircServer.prototype.init = function()
 {
-	this.setState(this.STATE_CONNECTING);
 	wIRCd.init(this.initHandler.bindAsEventListener(this));
 }
 

@@ -143,7 +143,7 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else if (event.originalEvent.target.className.include('status'))
 	{		
-		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
+		//event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
 		if (event.item.connected) 
 		{
 			servers.servers[event.item.key].disconnect();
