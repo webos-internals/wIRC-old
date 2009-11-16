@@ -223,6 +223,7 @@ ServerStatusAssistant.prototype.revealBottom = function()
 
 ServerStatusAssistant.prototype.connectButtonPressed = function(event)
 {
+	// This does not seem to be working
 	this.server.init();
 	this.connectButtonElement.hide();
 }
