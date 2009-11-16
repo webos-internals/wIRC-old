@@ -29,7 +29,7 @@ wIRCd.subscribe = function(callback, sessionToken, type)
 	case 'event_numeric': method = 'event_numeric'; break;
 	}
 
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(wIRCd.identifier+'/subscriptions',
 	{
 		method: method,
 		parameters: {
@@ -43,7 +43,19 @@ wIRCd.subscribe = function(callback, sessionToken, type)
 	
 }
 
-wIRCd.connect = function(callback, server, port, username, password, nick, realname, interfaces)
+wIRCd.init = function(callback)
+{
+	var request = new Mojo.Service.Request(wIRCd.identifier,
+	{
+		method: 'client_init',
+		parameters: {},
+		onSuccess: callback,
+		onFailure: callback
+	});
+	return request;
+}
+
+wIRCd.connect = function(callback, sessionToken, server, port, username, password, nick, realname, interfaces)
 {
 	var iface = null;
 	if (interfaces && interfaces.length > 0) iface = interfaces;
@@ -51,6 +63,7 @@ wIRCd.connect = function(callback, server, port, username, password, nick, realn
 	{
 		method: 'client_connect',
 		parameters: {
+			"sessionToken": sessionToken,
 			"server": server,
 			"username": username,
 			"server_password": password,

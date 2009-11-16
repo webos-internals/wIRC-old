@@ -53,8 +53,80 @@ function ircServer(params)
 	
 	if (this.autoConnect)
 	{
+		//this.connect();
+		this.init();
+	}
+}
+
+ircServer.prototype.setState = function(state)
+{
+	var message = '';
+	switch (state)
+	{
+		case this.STATE_CONNECTING: message = "Connecting..."; break;
+		case this.STATE_CONNECTED: message = "Connected!"; break;
+		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
+		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;  
+	}	
+	this.state = state;
+	this.newMessage('type3', false, message);
+	if (servers.listAssistant && servers.listAssistant.controller)
+		servers.listAssistant.updateList();
+}
+
+ircServer.prototype.eventConnectHandler = function(payload)
+{
+	this.nick		= this.getNick(payload.params[0]); 
+	this.nick.me	= true;
+	
+	this.setState(this.STATE_CONNECTED);
+
+	this.runOnConnect.bind(this).defer();
+}
+
+ircServer.prototype.eventUnknownHandler = function(payload)
+{
+	if (payload.params[0].include('Closing Link'))
+		this.setState(this.STATE_DISCONNECTED);
+}
+
+ircServer.prototype.setupSubscriptions = function()
+{
+	this.subscriptions['event_connect']			= wIRCd.subscribe(this.eventConnectHandler.bindAsEventListener(this),this.sessionToken, 'event_connect');
+	this.subscriptions['event_nick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
+	this.subscriptions['event_quit']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
+	this.subscriptions['event_join']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
+	this.subscriptions['event_part']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
+	this.subscriptions['event_mode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
+	this.subscriptions['event_umode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
+	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
+	this.subscriptions['event_kick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
+	this.subscriptions['event_channel']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
+	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
+	this.subscriptions['event_notice']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
+	this.subscriptions['event_channel_notice']	= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
+	this.subscriptions['event_invite']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
+	this.subscriptions['event_ctcp_req']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_req');
+	this.subscriptions['event_ctcp_rep']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_rep');
+	this.subscriptions['event_ctcp_action']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_action');
+	this.subscriptions['event_unknown']			= wIRCd.subscribe(this.eventUnknownHandler.bindAsEventListener(this),this.sessionToken, 'event_unknown');
+	this.subscriptions['event_numeric']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
+}
+
+ircServer.prototype.initHandler = function(payload)
+{
+	if (payload && payload.sessionToken)
+	{
+		this.sessionToken = payload.sessionToken;
+		this.setupSubscriptions();
 		this.connect();
 	}
+}
+
+ircServer.prototype.init = function()
+{
+	this.setState(this.STATE_CONNECTING);
+	wIRCd.init(this.initHandler.bindAsEventListener(this));
 }
 
 ircServer.prototype.isConnected = function(message)
@@ -229,11 +301,10 @@ ircServer.prototype.connect = function()
 		}
 	}
 
-	this.newMessage('type3', false, 'Connecting...');
-	this.state = this.STATE_CONNECTING;
-	this.subscription = wIRCd.connect
+	wIRCd.connect
 	(
-		this.connectionHandler.bindAsEventListener(this),
+		null,
+		this.sessionToken,
 		this.address,
 		this.port,
 		(this.serverUser?this.serverUser:null),
@@ -267,12 +338,8 @@ ircServer.prototype.connectionHandler = function(payload)
 	{
 		if (!payload.returnValue) 
 		{
-			if (!this.sessionToken)
-			{
-				this.sessionToken = payload.sessionToken;
-			}
 
-			if (payload.returnValue === 0)
+			/*if (payload.returnValue === 0)
 			{
 				this.newMessage('type3', false, 'Disconnected!');
 				this.subscription.cancel();
@@ -287,30 +354,14 @@ ircServer.prototype.connectionHandler = function(payload)
 				if (this.autoReconnect && this.reconnect)
 				{
 					this.newMessage('status', false, 'Reconnecting...');
-					this.connect();
+					//this.connect();
+					this.init();
 				}
 				return;
-			}
+			}*/
 			
 			switch(payload.event)
-			{
-				case 'CONNECT':
-					this.nick = this.getNick(payload.params[0]); 
-					this.nick.me = true;
-					
-					this.state = this.STATE_CONNECTED;
-					
-					if (servers.listAssistant && servers.listAssistant.controller)
-					{
-						servers.listAssistant.updateList();
-					}
-					
-					// perform onconnect when mojo isn't busy
-					this.runOnConnect.bind(this).defer();
-					this.ipAddress = payload.ipAddress;
-					
-					break;
-								
+			{								
 				case 'JOIN':
 					var tmpChan = this.getOrCreateChannel(payload.params[0], null);
 					if (tmpChan) 
@@ -1246,27 +1297,4 @@ ircServer.validateNewServer = function(params, assistant, verbose)
 	
 	// for now, we don't really care about you... don't screw it up!
 	return true;
-}
-
-ircServer.setupSubscriptions = function()
-{
-	this.subscriptions['event_connect'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_connect');
-	this.subscriptions['event_nick'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
-	this.subscriptions['event_quit'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
-	this.subscriptions['event_join'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
-	this.subscriptions['event_part'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
-	this.subscriptions['event_mode'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
-	this.subscriptions['event_umode'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
-	this.subscriptions['event_topic'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
-	this.subscriptions['event_kick'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
-	this.subscriptions['event_channel'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
-	this.subscriptions['event_privmsg'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
-	this.subscriptions['event_notice'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
-	this.subscriptions['event_channel_notice'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
-	this.subscriptions['event_invite'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
-	this.subscriptions['event_ctcp_req'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_req');
-	this.subscriptions['event_ctcp_rep'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_rep');
-	this.subscriptions['event_ctcp_action'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_action');
-	this.subscriptions['event_unknown'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_unknown');
-	this.subscriptions['event_numeric'] = wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
 }
