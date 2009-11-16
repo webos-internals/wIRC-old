@@ -138,8 +138,20 @@ ircServer.prototype.eventNickHandler = function(payload)
 		this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
 	tmpNick.updateNickName(payload.params[0]);
 }
-	
 
+ircServer.prototype.eventModeHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var modeNick = this.getNick(payload.params[2]);
+		if (modeNick)
+			modeNick.updateMode(payload.params[1], tmpChan);
+		tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
+	}
+}
+	
 ircServer.prototype.eventJoinHandler = function(payload)
 {
 	var tmpChan = this.getOrCreateChannel(payload.params[0], null);
@@ -198,7 +210,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_quit']			= wIRCd.subscribe(this.eventQuitHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
 	this.subscriptions['event_join']			= wIRCd.subscribe(this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
 	this.subscriptions['event_part']			= wIRCd.subscribe(this.eventPartHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
-	this.subscriptions['event_mode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
+	this.subscriptions['event_mode']			= wIRCd.subscribe(this.eventModeHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
 	this.subscriptions['event_umode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
 	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
 	this.subscriptions['event_kick']			= wIRCd.subscribe(this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
@@ -493,17 +505,6 @@ ircServer.prototype.connectionHandler = function(payload)
 				case 'MODE':
 					if (payload.params[0].substr(0, 1) == '#') // it's a channel
 					{	
-						var tmpNick = this.getNick(payload.origin);
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan) 
-						{
-							var modeNick = this.getNick(payload.params[2]);
-							if (modeNick)
-							{
-								modeNick.updateMode(payload.params[1], tmpChan);
-							}
-							tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
-						}
 					}
 					else
 					{
