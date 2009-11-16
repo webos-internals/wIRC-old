@@ -38,7 +38,6 @@ function ircServer(params)
 	this.statusMessages =		[];
 	
 	this.sessionToken =			false;
-	this.subscription =			false;
 	
 	this.stageName =			'status-' + this.id;
 	this.stageController =		false;
