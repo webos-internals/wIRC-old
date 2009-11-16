@@ -150,7 +150,8 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 		}
 		else
 		{
-			servers.servers[event.item.key].connect();
+			//servers.servers[event.item.key].connect();
+			servers.servers[event.item.key].init();
 		}
 	}
 	else
