@@ -83,6 +83,40 @@ ircServer.prototype.eventConnectHandler = function(payload)
 	this.runOnConnect.bind(this).defer();
 }
 
+ircServer.prototype.eventJoinHandler = function(payload)
+{
+	var tmpChan = this.getOrCreateChannel(payload.params[0], null);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		if (tmpNick.me)
+			tmpChan.openStage();
+		tmpNick.addChannel(tmpChan, '');
+		tmpChan.newMessage('type4', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has joined ' + tmpChan.name);
+	}
+}
+
+ircServer.prototype.eventKickHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.params[1]);
+		var tmpNick2 = this.getNick(payload.origin);
+		var reason = payload.params[2];
+		if (tmpNick)
+		{
+			tmpNick.removeChannel(tmpChan); 
+			if (tmpNick.me)
+			{
+				tmpChan.close();
+				this.removeChannel(tmpChan);
+			}
+			tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + payload.params[0] + ' (' + payload.params[2] + ')');
+		}
+	}
+}
+
 ircServer.prototype.eventUnknownHandler = function(payload)
 {
 	if (payload.params[0].include('Closing Link'))
@@ -94,12 +128,12 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_connect']			= wIRCd.subscribe(this.eventConnectHandler.bindAsEventListener(this),this.sessionToken, 'event_connect');
 	this.subscriptions['event_nick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
 	this.subscriptions['event_quit']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
-	this.subscriptions['event_join']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
+	this.subscriptions['event_join']			= wIRCd.subscribe(this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
 	this.subscriptions['event_part']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
 	this.subscriptions['event_mode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
 	this.subscriptions['event_umode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
 	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
-	this.subscriptions['event_kick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
+	this.subscriptions['event_kick']			= wIRCd.subscribe(this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
 	this.subscriptions['event_channel']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
 	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
 	this.subscriptions['event_notice']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
@@ -361,39 +395,6 @@ ircServer.prototype.connectionHandler = function(payload)
 			
 			switch(payload.event)
 			{								
-				case 'JOIN':
-					var tmpChan = this.getOrCreateChannel(payload.params[0], null);
-					if (tmpChan) 
-					{
-						var tmpNick = this.getNick(payload.origin);
-						if (tmpNick.me)
-						{
-							tmpChan.openStage();
-						}
-						tmpNick.addChannel(tmpChan, '');
-						tmpChan.newMessage('type4', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has joined ' + tmpChan.name);
-					}
-					break;
-					
-				case 'KICK':
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan) 
-					{
-						var tmpNick = this.getNick(payload.params[1]);
-						var tmpNick2 = this.getNick(payload.origin);
-						var reason = payload.params[2];
-						if (tmpNick)
-						{
-							tmpNick.removeChannel(tmpChan); 
-							if (tmpNick.me)
-							{
-								tmpChan.close();
-								this.removeChannel(tmpChan);
-							}
-							tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + payload.params[0] + ' (' + payload.params[2] + ')');
-						}
-					}
-					break;
 					
 				case 'PART':
 					var tmpChan = this.getChannel(payload.params[0]);
