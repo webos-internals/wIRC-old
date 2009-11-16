@@ -842,41 +842,6 @@ ircServer.prototype.saveInfo = function(params)
 	}
 }
 
-ircServer.getBlankServerObject = function()
-{
-	var obj = 
-	{
-		id:					false,
-		alias:				'',
-		address:			'',
-		serverUser:			'',
-		serverPassword:		'',
-		port:				'',
-		defaultNick:		'',
-		autoConnect:		false,
-		autoIdentify:		false,
-		identifyService:	'NickServ',
-		identifyPassword:	'',
-		onConnect:			[]
-	};
-	return obj;
-}
-ircServer.validateNewServer = function(params, assistant, verbose)
-{
-	/* 
-	 * to be fleshed out so someone can't create a server with no address or something like that
-	 * 
-	 * how it should work:
-	 * if no assistant (verbose doesn't matter) simply return a true/false
-	 * if assistant and not verbose, simply highlight errors, return true/false
-	 * if assistant and verbose, highlight errors and call assistant.alidationError(message), return true/false
-	 * 
-	 */
-	
-	// for now, we don't really care about you... don't screw it up!
-	return true;
-}
-
 /* ==================== START OF CALLBACK SUBSCRIPTIONS ==================== */
 
 ircServer.prototype.eventConnectHandler = function(payload)
@@ -1241,3 +1206,42 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_unknown']			= wIRCd.subscribe(this.eventUnknownHandler.bindAsEventListener(this),this.sessionToken, 'event_unknown');
 	this.subscriptions['event_numeric']			= wIRCd.subscribe(this.eventNumericHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
 }
+
+/* ========================= START OF STATIC METHODS ======================== */
+
+ircServer.getBlankServerObject = function()
+{
+	var obj = 
+	{
+		id:					false,
+		alias:				'',
+		address:			'',
+		serverUser:			'',
+		serverPassword:		'',
+		port:				'',
+		defaultNick:		'',
+		autoConnect:		false,
+		autoIdentify:		false,
+		identifyService:	'NickServ',
+		identifyPassword:	'',
+		onConnect:			[]
+	};
+	return obj;
+}
+ircServer.validateNewServer = function(params, assistant, verbose)
+{
+	/* 
+	 * to be fleshed out so someone can't create a server with no address or something like that
+	 * 
+	 * how it should work:
+	 * if no assistant (verbose doesn't matter) simply return a true/false
+	 * if assistant and not verbose, simply highlight errors, return true/false
+	 * if assistant and verbose, highlight errors and call assistant.alidationError(message), return true/false
+	 * 
+	 */
+	
+	// for now, we don't really care about you... don't screw it up!
+	return true;
+}
+
+/* ========================= END OF STATIC METHODS ========================= */
