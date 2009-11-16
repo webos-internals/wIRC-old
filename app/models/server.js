@@ -96,6 +96,15 @@ ircServer.prototype.eventPartHandler = function(payload)
 	}	
 }
 
+ircServer.prototype.eventNickHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	if (tmpNick === this.nick)
+		this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
+	tmpNick.updateNickName(payload.params[0]);
+}
+	
+
 ircServer.prototype.eventJoinHandler = function(payload)
 {
 	var tmpChan = this.getOrCreateChannel(payload.params[0], null);
@@ -150,7 +159,7 @@ ircServer.prototype.eventUnknownHandler = function(payload)
 ircServer.prototype.setupSubscriptions = function()
 {
 	this.subscriptions['event_connect']			= wIRCd.subscribe(this.eventConnectHandler.bindAsEventListener(this),this.sessionToken, 'event_connect');
-	this.subscriptions['event_nick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
+	this.subscriptions['event_nick']			= wIRCd.subscribe(this.eventNickHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
 	this.subscriptions['event_quit']			= wIRCd.subscribe(this.eventQuitHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
 	this.subscriptions['event_join']			= wIRCd.subscribe(this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
 	this.subscriptions['event_part']			= wIRCd.subscribe(this.eventPartHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
@@ -515,16 +524,7 @@ ircServer.prototype.connectionHandler = function(payload)
 						//if (payload.origin=='services')
 							this.newMessage('type3', false, payload.params[1]);					
 					}
-					break;					
-					
-				case 'NICK':
-					var tmpNick = this.getNick(payload.origin);
-					if (tmpNick === this.nick)
-					{
-						this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
-					}
-					tmpNick.updateNickName(payload.params[0]);
-					break;				
+					break;
 					
 				case 'INVITE':
 					if (prefs.get().inviteAction != 'ignore') 
