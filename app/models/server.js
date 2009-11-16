@@ -74,9 +74,8 @@ ircServer.prototype.setState = function(state)
 
 ircServer.prototype.cleanupSubscriptions = function()
 {
-	var s;
-	for (s in this.subscriptions)
-		this.subscriptions[s] = false;
+	for (var i=0; i<this.subscriptions.length; i++)
+		this.subscriptions[i].cancel();
 }
 
 ircServer.prototype.initHandler = function(payload)
