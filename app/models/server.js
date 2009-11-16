@@ -78,19 +78,17 @@ ircServer.prototype.cleanupSubscriptions = function()
 
 ircServer.prototype.initHandler = function(payload)
 {
-	/*if (payload.returnValue)
-		this.newMessage('type3', false, 'FAIL!')
-	else if (payload.sessionToken)
+	if (payload.sessionToken)
 	{
 		this.sessionToken = payload.sessionToken;
-		this.setState(this.STATE_CONNECTING);
 		this.setupSubscriptions();
 		this.connect();
-	}*/	
+	}	
 }
 
 ircServer.prototype.init = function()
 {
+	this.setState(this.STATE_CONNECTING);
 	wIRCd.init(this.initHandler.bindAsEventListener(this));
 }
 

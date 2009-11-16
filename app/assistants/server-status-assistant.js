@@ -131,7 +131,7 @@ ServerStatusAssistant.prototype.loadPrefs = function(initial)
 	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
 }
 ServerStatusAssistant.prototype.activate = function(event)
-{
+{	
 	if (this.alreadyActivated)
 	{
 		this.loadPrefs();
@@ -223,7 +223,6 @@ ServerStatusAssistant.prototype.revealBottom = function()
 
 ServerStatusAssistant.prototype.connectButtonPressed = function(event)
 {
-	// This does not seem to be working
 	this.server.init();
 	this.connectButtonElement.hide();
 }
