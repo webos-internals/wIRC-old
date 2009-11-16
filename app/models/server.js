@@ -777,7 +777,8 @@ ircServer.prototype.disconnect = function(reason)
 {
 	// disconnecting...
 	// TODO: Jump to server status scene and display disconnecting
-	this.state = this.STATE_DISCONNECTING;
+	
+	this.setState(this.STATE_DISCONNECTING);
 	if (reason)
 	{
 		this.reconnect = false;
@@ -1211,6 +1212,7 @@ ircServer.prototype.getListObject = function()
 			obj.rowStyle = obj.rowStyle + ' disconnected';
 			break;
 		case this.STATE_CONNECTING:
+		case this.STATE_DISCONNECTING:
 			obj.rowStyle = obj.rowStyle + ' changing';
 			break;
 		case this.STATE_CONNECTED:
