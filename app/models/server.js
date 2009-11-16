@@ -110,6 +110,17 @@ ircServer.prototype.eventInviteHandler = function(payload)
 	}
 }
 
+ircServer.prototype.eventChannelHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		tmpNick.addChannel(tmpChan);
+		tmpChan.newMessage('privmsg', tmpNick, payload.params[1]);
+	}
+}
+
 ircServer.prototype.eventNickHandler = function(payload)
 {
 	var tmpNick = this.getNick(payload.origin);
@@ -181,7 +192,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_umode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
 	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
 	this.subscriptions['event_kick']			= wIRCd.subscribe(this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
-	this.subscriptions['event_channel']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
+	this.subscriptions['event_channel']			= wIRCd.subscribe(this.eventChannelHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
 	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
 	this.subscriptions['event_notice']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
 	this.subscriptions['event_channel_notice']	= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
@@ -446,13 +457,7 @@ ircServer.prototype.connectionHandler = function(payload)
 				case 'PRIVMSG':
 					if (payload.params[0].substr(0, 1) == '#') // it's a channel
 					{
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan) 
-						{
-							var tmpNick = this.getNick(payload.origin);
-							tmpNick.addChannel(tmpChan);
-							tmpChan.newMessage('privmsg', tmpNick, payload.params[1]);
-						}
+						
 					}
 					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
 					{
