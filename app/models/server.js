@@ -257,7 +257,7 @@ ircServer.prototype.eventKickHandler = function(payload)
 	}
 }
 
-ircServer.prototype.eventNumercHandler = function(payload)
+ircServer.prototype.eventNumericHandler = function(payload)
 {
 	switch(payload.event)
 	{								
