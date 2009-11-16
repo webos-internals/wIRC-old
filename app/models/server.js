@@ -83,6 +83,19 @@ ircServer.prototype.eventConnectHandler = function(payload)
 	this.runOnConnect.bind(this).defer();
 }
 
+ircServer.prototype.eventPartHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		tmpNick.removeChannel(tmpChan);
+		if (tmpNick.me)
+			this.removeChannel(tmpChan);
+		tmpChan.newMessage('type5', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
+	}	
+}
+
 ircServer.prototype.eventJoinHandler = function(payload)
 {
 	var tmpChan = this.getOrCreateChannel(payload.params[0], null);
@@ -129,7 +142,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_nick']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
 	this.subscriptions['event_quit']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
 	this.subscriptions['event_join']			= wIRCd.subscribe(this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
-	this.subscriptions['event_part']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
+	this.subscriptions['event_part']			= wIRCd.subscribe(this.eventPartHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
 	this.subscriptions['event_mode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
 	this.subscriptions['event_umode']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
 	this.subscriptions['event_topic']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
@@ -395,20 +408,6 @@ ircServer.prototype.connectionHandler = function(payload)
 			
 			switch(payload.event)
 			{								
-					
-				case 'PART':
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan) 
-					{
-						var tmpNick = this.getNick(payload.origin);
-						tmpNick.removeChannel(tmpChan);
-						if (tmpNick.me)
-						{
-							this.removeChannel(tmpChan);
-						}
-						tmpChan.newMessage('type5', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
-					}
-					break;
 					
 				case 'QUIT':
 					var tmpNick = this.getNick(payload.origin);
