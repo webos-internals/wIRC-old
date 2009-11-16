@@ -96,6 +96,20 @@ ircServer.prototype.eventPartHandler = function(payload)
 	}	
 }
 
+ircServer.prototype.eventInviteHandler = function(payload)
+{
+	if (prefs.get().inviteAction != 'ignore') 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
+		{
+			tmpChan = this.getChannel(payload.params[1]);
+			if (!tmpChan || !tmpChan.containsNick(this.nick)) 
+				this.openInvite(tmpNick.name, payload.params[1]);
+		}
+	}
+}
+
 ircServer.prototype.eventNickHandler = function(payload)
 {
 	var tmpNick = this.getNick(payload.origin);
@@ -171,7 +185,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
 	this.subscriptions['event_notice']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
 	this.subscriptions['event_channel_notice']	= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
-	this.subscriptions['event_invite']			= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
+	this.subscriptions['event_invite']			= wIRCd.subscribe(this.eventInviteHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
 	this.subscriptions['event_ctcp_req']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_req');
 	this.subscriptions['event_ctcp_rep']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_rep');
 	this.subscriptions['event_ctcp_action']		= wIRCd.subscribe(this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_action');
@@ -523,21 +537,6 @@ ircServer.prototype.connectionHandler = function(payload)
 					{
 						//if (payload.origin=='services')
 							this.newMessage('type3', false, payload.params[1]);					
-					}
-					break;
-					
-				case 'INVITE':
-					if (prefs.get().inviteAction != 'ignore') 
-					{
-						var tmpNick = this.getNick(payload.origin);
-						if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
-						{	// if to me and from a nick
-							tmpChan = this.getChannel(payload.params[1]);
-							if (!tmpChan || !tmpChan.containsNick(this.nick)) 
-							{	// if chan doesn't exist or it does and i'm not in it, pop invite
-								this.openInvite(tmpNick.name, payload.params[1]);
-							}
-						}
 					}
 					break;
 					
