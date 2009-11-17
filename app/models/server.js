@@ -791,6 +791,8 @@ ircServer.prototype.getListObject = function()
 	switch (this.state)
 	{
 		case this.STATE_SERVICE_UNAVAILABLE:
+			obj.rowStyle = obj.rowStyle + ' error';
+			break;
 		case this.STATE_DISCONNECTED:
 			obj.rowStyle = obj.rowStyle + ' disconnected';
 			break;
