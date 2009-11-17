@@ -965,14 +965,19 @@ ircServer.prototype.eventTopicHandler = function(payload)
 		tmpChan.newMessage('action', false, tmpNick&&tmpNick.name + ' changed the topic to: ' + payload.params[1]);
 	}
 }
-	
+
+/*
+ * These are notices that are directed towards the active/signed-on nick.
+ * These should probably spawn a query window, but that might get really
+ * annoying for commom notices such as those from Nickserv/Chanserv, etc.
+ * For now all of these notices will get directed to the server status
+ * window until a better solution is implemented.
+ */	
 ircServer.prototype.eventNoticeHandler = function(payload)
 {
 	var tmpNick = this.getNick(payload.origin);
-	if (payload.origin=='NULL')
-		this.newMessage('type1', false, payload.params);
-	else if (payload.params[0] == this.nick.name)
-		this.newMessage('type6', tmpNick, payload.params[1]);	
+	Mojo.Log.error("Notice from "+tmpNick.name);
+	this.newMessage('type6', tmpNick, payload.params[1]);
 }
 
 ircServer.prototype.eventChannelNoticeHandler = function(payload)
