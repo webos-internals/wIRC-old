@@ -7,5 +7,6 @@
 	"main": "index.html",
 	"icon": "icon.png",
 	"noWindow": true,
-	"noDeprecatedStyles" : true 
+	"noDeprecatedStyles" : true,
+	"keywords" : [ "IRC" ]
 }
