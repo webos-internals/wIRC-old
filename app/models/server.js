@@ -1,10 +1,11 @@
 function ircServer(params)
 {
-	this.STATE_DISCONNECTED	=	0;
-	this.STATE_TOKEN_REQUEST =	1 
-	this.STATE_CONNECTING =		2; 
-	this.STATE_CONNECTED =		3; 
-	this.STATE_DISCONNECTING =	4;
+	this.STATE_SERVICE_UNAVAILABLE	= -1;
+	this.STATE_DISCONNECTED			= 0;
+	this.STATE_TOKEN_REQUEST		= 1 
+	this.STATE_CONNECTING			= 2; 
+	this.STATE_CONNECTED			= 3; 
+	this.STATE_DISCONNECTING		= 4;
 
 	this.id =					params.id;
 	this.alias =				params.alias;
@@ -59,6 +60,7 @@ ircServer.prototype.setState = function(state)
 	var message = '';
 	switch (state)
 	{
+		case this.STATE_SERVICE_UNAVAILABLE: message = "wIRCd is not running!"; break;
 		case this.STATE_CONNECTING: message = "Connecting..."; break;
 		case this.STATE_CONNECTED: message = "Connected!"; break;
 		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
@@ -86,7 +88,8 @@ ircServer.prototype.initHandler = function(payload)
 		this.setupSubscriptions();
 		this.setState(this.STATE_CONNECTING);
 		this.connect();
-	}	
+	}
+	else this.setState(this.STATE_SERVICE_UNAVAILABLE);
 }
 
 ircServer.prototype.init = function()
@@ -787,6 +790,7 @@ ircServer.prototype.getListObject = function()
 	
 	switch (this.state)
 	{
+		case this.STATE_SERVICE_UNAVAILABLE:
 		case this.STATE_DISCONNECTED:
 			obj.rowStyle = obj.rowStyle + ' disconnected';
 			break;
