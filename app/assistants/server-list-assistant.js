@@ -143,14 +143,16 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	}
 	else if (event.originalEvent.target.className.include('status'))
 	{		
-		event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
-		if (event.item.connected) 
+		//event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
+		//if (event.item.connected)
+		if (servers.servers[event.item.key].state > 0) 
 		{
 			servers.servers[event.item.key].disconnect();
 		}
 		else
 		{
-			servers.servers[event.item.key].connect();
+			//servers.servers[event.item.key].connect();
+			servers.servers[event.item.key].init();
 		}
 	}
 	else

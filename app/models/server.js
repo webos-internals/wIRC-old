@@ -1,9 +1,11 @@
 function ircServer(params)
 {
-	this.STATE_DISCONNECTED =	0; 
-	this.STATE_CONNECTING =		1; 
-	this.STATE_CONNECTED =		2; 
-	this.STATE_DISCONNECTING =	3;
+	this.STATE_SERVICE_UNAVAILABLE	= -1;
+	this.STATE_DISCONNECTED			= 0;
+	this.STATE_TOKEN_REQUEST		= 1 
+	this.STATE_CONNECTING			= 2; 
+	this.STATE_CONNECTED			= 3; 
+	this.STATE_DISCONNECTING		= 4;
 
 	this.id =					params.id;
 	this.alias =				params.alias;
@@ -18,6 +20,8 @@ function ircServer(params)
 	this.onConnect =			params.onConnect;
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
+	
+	this.subscriptions =		[];
 	
 	this.isAway =				false;
 
@@ -36,7 +40,6 @@ function ircServer(params)
 	this.statusMessages =		[];
 	
 	this.sessionToken =			false;
-	this.subscription =			false;
 	
 	this.stageName =			'status-' + this.id;
 	this.stageController =		false;
@@ -49,10 +52,53 @@ function ircServer(params)
 	this.listDisplay =			0;
 	this.channelList =			[];
 	
-	if (this.autoConnect)
+	if (this.autoConnect) this.init();
+}
+
+ircServer.prototype.setState = function(state)
+{
+	if (this.state==-1 && state<this.STATE_CONNECTING)
+		return;
+		
+	var message = '';
+	switch (state)
 	{
+		case this.STATE_SERVICE_UNAVAILABLE: message = "wIRCd is not running!"; break;
+		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
+		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;
+		case this.STATE_CONNECTING: message = "Connecting..."; break;
+		case this.STATE_CONNECTED: message = "Connected!"; break;  
+	}	
+	this.state = state;
+	if (message.length>0) {
+		this.newMessage('type3', false, message);
+		if (servers.listAssistant && servers.listAssistant.controller)
+			servers.listAssistant.updateList();
+	}
+}
+
+ircServer.prototype.cleanupSubscriptions = function()
+{
+	for (var i=0; i<this.subscriptions.length; i++)
+		this.subscriptions[i].cancel();
+}
+
+ircServer.prototype.initHandler = function(payload)
+{
+	if (payload.sessionToken)
+	{
+		this.sessionToken = payload.sessionToken;
+		this.setupSubscriptions();
+		this.setState(this.STATE_CONNECTING);
 		this.connect();
 	}
+	else this.setState(this.STATE_SERVICE_UNAVAILABLE);
+}
+
+ircServer.prototype.init = function()
+{
+	this.setState(this.STATE_TOKEN_REQUEST);
+	wIRCd.init(this.initHandler.bindAsEventListener(this));
 }
 
 ircServer.prototype.isConnected = function(message)
@@ -227,11 +273,10 @@ ircServer.prototype.connect = function()
 		}
 	}
 
-	this.newMessage('type3', false, 'Connecting...');
-	this.state = this.STATE_CONNECTING;
-	this.subscription = wIRCd.connect
+	wIRCd.connect
 	(
-		this.connectionHandler.bindAsEventListener(this),
+		null,
+		this.sessionToken,
 		this.address,
 		this.port,
 		(this.serverUser?this.serverUser:null),
@@ -241,7 +286,7 @@ ircServer.prototype.connect = function()
 		prefs.get().piface
 	);
 }
-ircServer.prototype.maybeReconnect = function(network)
+/*ircServer.prototype.maybeReconnect = function(network)
 {
 	if (network !== '1x')
 	{
@@ -257,416 +302,8 @@ ircServer.prototype.ipDiffers = function(payload)
 ircServer.prototype.ipMatches = function(payload)
 {
 	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
-}
+}*/
 
-ircServer.prototype.connectionHandler = function(payload)
-{
-	try
-	{
-		if (!payload.returnValue) 
-		{
-			if (!this.sessionToken)
-			{
-				this.sessionToken = payload.sessionToken;
-			}
-
-			if (payload.returnValue === 0)
-			{
-				this.newMessage('type3', false, 'Disconnected!');
-				this.subscription.cancel();
-				this.sessionToken = false;
-				this.ipAddress = false;
-				this.state = this.STATE_DISCONNECTED;
-				this.removeNick(this.nick);
-				if (servers.listAssistant && servers.listAssistant.controller)
-				{
-					servers.listAssistant.updateList();
-				}
-				if (this.autoReconnect && this.reconnect)
-				{
-					this.newMessage('status', false, 'Reconnecting...');
-					this.connect();
-				}
-				return;
-			}
-			
-			switch(payload.event)
-			{
-				case 'CONNECT':
-					this.nick = this.getNick(payload.params[0]); 
-					this.nick.me = true;
-					
-					this.state = this.STATE_CONNECTED;
-					
-					if (servers.listAssistant && servers.listAssistant.controller)
-					{
-						servers.listAssistant.updateList();
-					}
-					
-					// perform onconnect when mojo isn't busy
-					this.runOnConnect.bind(this).defer();
-					this.ipAddress = payload.ipAddress;
-					
-					break;
-								
-				case 'JOIN':
-					var tmpChan = this.getOrCreateChannel(payload.params[0], null);
-					if (tmpChan) 
-					{
-						var tmpNick = this.getNick(payload.origin);
-						if (tmpNick.me)
-						{
-							tmpChan.openStage();
-						}
-						tmpNick.addChannel(tmpChan, '');
-						tmpChan.newMessage('type4', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has joined ' + tmpChan.name);
-					}
-					break;
-					
-				case 'KICK':
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan) 
-					{
-						var tmpNick = this.getNick(payload.params[1]);
-						var tmpNick2 = this.getNick(payload.origin);
-						var reason = payload.params[2];
-						if (tmpNick)
-						{
-							tmpNick.removeChannel(tmpChan); 
-							if (tmpNick.me)
-							{
-								tmpChan.close();
-								this.removeChannel(tmpChan);
-							}
-							tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + payload.params[0] + ' (' + payload.params[2] + ')');
-						}
-					}
-					break;
-					
-				case 'PART':
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan) 
-					{
-						var tmpNick = this.getNick(payload.origin);
-						tmpNick.removeChannel(tmpChan);
-						if (tmpNick.me)
-						{
-							this.removeChannel(tmpChan);
-						}
-						tmpChan.newMessage('type5', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
-					}
-					break;
-					
-				case 'QUIT':
-					var tmpNick = this.getNick(payload.origin);
-					if (tmpNick)
-					{
-						for (var i = 0; i< tmpNick.channels.length; i++)
-						{
-							tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + payload.params + ')');
-						}
-
-						this.removeNick(tmpNick);
-					}
-				break;
-
-				case 'PRIVMSG':
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan) 
-						{
-							var tmpNick = this.getNick(payload.origin);
-							tmpNick.addChannel(tmpChan);
-							tmpChan.newMessage('privmsg', tmpNick, payload.params[1]);
-						}
-					}
-					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
-					{
-						var tmpNick = this.getNick(payload.origin);
-						var tmpQuery = this.getQuery(tmpNick);
-						if (tmpQuery)
-						{
-							tmpQuery.newMessage('privmsg', tmpNick, payload.params[1]);
-						}
-						else
-						{
-							this.startQuery(tmpNick, false, 'message', payload.params[1]);
-						}
-					}
-					break;
-
-					
-				case 'ACTION':
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan)
-						{
-							var tmpNick = this.getNick(payload.origin);
-							tmpNick.addChannel(tmpChan);
-							tmpChan.newMessage('type7', tmpNick, payload.params[1]);
-						}
-					}
-					else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase()) // it's a query
-					{
-						var tmpNick = this.getNick(payload.origin);
-						var tmpQuery = this.getQuery(tmpNick);
-						if (tmpQuery)
-						{
-							tmpQuery.newMessage('type7', tmpNick, payload.params[1]);
-						}
-						else
-						{
-							this.startQuery(tmpNick, false, 'type7', payload.params[1]);
-						}
-					}
-					break;
-					
-				case 'MODE':
-					if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{	
-						var tmpNick = this.getNick(payload.origin);
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan) 
-						{
-							var modeNick = this.getNick(payload.params[2]);
-							if (modeNick)
-							{
-								modeNick.updateMode(payload.params[1], tmpChan);
-							}
-							tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
-						}
-					}
-					else
-					{
-						this.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[0] + ' by ' + payload.origin);
-					}
-					break;
-					
-				case 'NOTICE':
-					var tmpNick = this.getNick(payload.origin);
-					if (payload.origin=='NULL')
-						this.newMessage('type1', false, payload.params);
-					else if (payload.params[0].substr(0, 1) == '#') // it's a channel
-					{
-						var tmpChan = this.getChannel(payload.params[0]);
-						if (tmpChan) 
-						{
-							tmpChan.newMessage('type6', tmpNick, payload.params[1]);
-						}
-					}
-					else if (payload.params[0] == this.nick.name) // it's me
-					{
-						this.newMessage('type6', tmpNick, payload.params[1]);
-					}
-					else
-					{
-						//if (payload.origin=='services')
-							this.newMessage('type3', false, payload.params[1]);					
-					}
-					break;					
-					
-				case 'NICK':
-					var tmpNick = this.getNick(payload.origin);
-					if (tmpNick === this.nick)
-					{
-						this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
-					}
-					tmpNick.updateNickName(payload.params[0]);
-					break;				
-					
-				case 'INVITE':
-					if (prefs.get().inviteAction != 'ignore') 
-					{
-						var tmpNick = this.getNick(payload.origin);
-						if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
-						{	// if to me and from a nick
-							tmpChan = this.getChannel(payload.params[1]);
-							if (!tmpChan || !tmpChan.containsNick(this.nick)) 
-							{	// if chan doesn't exist or it does and i'm not in it, pop invite
-								this.openInvite(tmpNick.name, payload.params[1]);
-							}
-						}
-					}
-					break;
-					
-				case '324': // CHANNELMODEIS
-					var tmpChan = this.getChannel(payload.params[1]);
-					if (tmpChan)
-					{
-						tmpChan.channelMode(payload.params[2]);
-					}
-					break;
-
-				case '1':		// WELCOME
-				case '2':		// YOURHOST
-				case '3':		// CREATED
-				case '4':		// MYINFO
-				case '5':		// BOUNCE
-				case '251':		// LUSERCLIENT
-				case '255':		// LUSERME
-				case '265':		// ???
-				case '266':		// ???
-				case '250':		// ???
-				case '372':		// MOTD
-				case '901':		// ???
-					this.newMessage('type2', false, payload.params[1], true);
-					break;
-					
-				case '253':		// LUSERUNKNOWN
-				case '252':		// LUSEROP
-				case '254':		// LUSERCHANNELS
-				case '256':		// ADMINME
-					this.newMessage('debug', false, payload.params[1] + ' ' + payload.params[2]);
-					break;
-					
-				case '305':		// NOTAWAY
-					this.isAway = false;
-					this.newMessage('debug', false, payload.params[1]);
-					break;
-				case '306':		// AWAY
-					this.isAway = true;
-					this.newMessage('debug', false, payload.params[1]);
-					break;
-				
-				case '301':		// ??? WHOISAWAY?
-				case '311':		// WHOISUSER
-				case '312':		// WHOISSERVER
-				case '313':		// WHOISOPERATOR
-				case '317':		// WHOISIDLE
-				case '318':		// ENDOFWHOIS
-				case '319':		// WHOISCHANNELS
-				case '320':		// ??? WHOISIDENT?
-					var tmpNick = this.getNick(payload.params[1]);
-					if (tmpNick)
-					{
-						// forward all whois stuff to nick object for parsing/display
-						tmpNick.whoisEvent(payload.event, payload.params);
-					}
-					break;
-					
-				case '321':		// LISTSTART
-					this.listStart();
-					break;
-				case '322':		// LIST
-					this.listAddChannel(payload.params[1], payload.params[2], payload.params[3]);
-					break;
-				case '323':		// LISTEND
-					this.listEnd();
-					break;
-				
-				case '332':		// TOPIC
-					var tmpChan = this.getChannel(payload.params[1]);
-					if (tmpChan) 
-					{
-						tmpChan.topicUpdate(payload.params[2]);
-						if (tmpChan.containsNick(this.nick)) 
-						{
-							tmpChan.newMessage('type8', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
-						}
-					} 
-					else 
-					{
-						this.newMessage('type8', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
-					}
-					break;
-
-				case '333':		// TOPIC SET TIME
-					var newDate = new Date();
-					newDate.setTime(payload.params[3]*1000);
-					dateString = newDate.toUTCString();
-					var tmpChan = this.getChannel(payload.params[1]);
-					if (tmpChan) 
-					{
-						if (tmpChan.containsNick(this.nick)) 
-						{
-							tmpChan.newMessage('type8', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
-						}
-					} 
-					else 
-					{
-						this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
-					}
-					break;
-					
-				case 'TOPIC': 	// TOPIC CHANGED
-					var tmpChan = this.getChannel(payload.params[0]);
-					if (tmpChan)
-					{
-						var tmpNick = this.getNick(payload.origin);
-						tmpChan.topicUpdate(payload.params[1]);
-						tmpChan.newMessage('action', false, tmpNick&&tmpNick.name + ' changed the topic to: ' + payload.params[1]);
-					}
-					break;
-				case '328':		// ???
-				case '329':		// ???
-				case '331':		// NO TOPIC
-					this.debugPayload(payload, false);
-					break;
-				case '353':		// NAMREPLY
-					var nicks = payload.params[3].split(" ");
-					var tmpChan = this.getChannel(payload.params[2]);
-					var tmpNick;
-					if (tmpChan)
-					{
-						for (var i = 0; i < nicks.length; i++)
-						{
-							if (nicks[i])
-							{
-								var prefixNick = '';
-								var onlyNick = nicks[i];
-								if (ircNick.hasPrefix(onlyNick))
-								{
-									prefixNick = nicks[i].substr(0, 1);
-									onlyNick = nicks[i].substr(1);
-								}
-								
-								tmpNick = this.getNick(onlyNick);
-								if (tmpNick)
-								{
-									tmpNick.addChannel(tmpChan, ircNick.getPrefixMode(prefixNick));
-								}
-							}
-						}
-					}
-					break;
-				case '366':		// ENDOFNAMES
-					this.debugPayload(payload, false);
-					break;
-					
-				case '375':		// MOTDSTART
-				case '376':		// ENDOFMOTD
-					this.updateStatusList();
-					//this.newMessage('action', false, payload.params[1]);
-					break;
-					
-				case '433':		// NAMEINUSE
-					this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
-					this.nextNick = (this.nextNick < prefs.get().nicknames.length - 1) ? this.nextNick + 1 : 0;
-					this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
-					wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick])
-
-					break;
-					
-				default:
-					this.debugPayload(payload, true);
-					break;
-			}
-		}
-		else
-		{
-			// hmm
-		}
-		
-		// for debugging all messages
-		//this.debugPayload(payload, false);
-	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, "ircServer#connectionHandler");
-	}
-}
 ircServer.prototype.debugPayload = function(payload, visible)
 {
 	alert('------');
@@ -722,24 +359,14 @@ ircServer.prototype.genericHandler = function(payload)
 
 ircServer.prototype.disconnect = function(reason)
 {
-	// disconnecting...
-	// TODO: Jump to server status scene and display disconnecting
-	this.state = this.STATE_DISCONNECTING;
-	if (reason)
-	{
-		this.reconnect = false;
-		this.newMessage('type3', false, 'Quitting (' + reason + ')...');
-		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
-	}
-	else
-	{
-		this.newMessage('type3', false, 'Disconnecting...');
-		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
-		//wIRCd.disconnect(null, this.sessionToken);
-	}
+	this.setState(this.STATE_DISCONNECTING);
+	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
+
 ircServer.prototype.disconnectHandler = function(payload)
 {
+	this.cleanupSubscriptions();
+	this.setState(this.STATE_DISCONNECTED);
 	//this.newMessage('status', false, 'dc handler');
 	/*
 	if (payload.returnValue == 0)
@@ -925,20 +552,20 @@ ircServer.prototype.joinChannel = function(name, key)
 		tmpChan.join();
 	}
 }
+
 ircServer.prototype.getChannel = function(name)
 {
-	if (this.channels.length > 0)
+	if (name.substr(0, 1) != '#')
+		return false;
+	else if (this.channels.length < 1)
+		return false;
+	for (var c = 0; c < this.channels.length; c++)
 	{
-		for (var c = 0; c < this.channels.length; c++)
-		{
-			if (this.channels[c].name == name.toLowerCase())
-			{
-				return this.channels[c];
-			}
-		}
+		if (this.channels[c].name == name.toLowerCase())
+			return this.channels[c];
 	}
-	return false;
 }
+
 ircServer.prototype.removeChannel = function(channel)
 {
 	this.channels = this.channels.without(channel);
@@ -1154,10 +781,14 @@ ircServer.prototype.getListObject = function()
 	
 	switch (this.state)
 	{
+		case this.STATE_SERVICE_UNAVAILABLE:
+			obj.rowStyle = obj.rowStyle + ' error';
+			break;
 		case this.STATE_DISCONNECTED:
 			obj.rowStyle = obj.rowStyle + ' disconnected';
 			break;
 		case this.STATE_CONNECTING:
+		case this.STATE_DISCONNECTING:
 			obj.rowStyle = obj.rowStyle + ' changing';
 			break;
 		case this.STATE_CONNECTED:
@@ -1211,6 +842,390 @@ ircServer.prototype.saveInfo = function(params)
 	}
 }
 
+/* ==================== START OF CALLBACK SUBSCRIPTIONS ==================== */
+
+ircServer.prototype.eventConnectHandler = function(payload)
+{
+	this.nick		= this.getNick(payload.params[0]); 
+	this.nick.me	= true;
+	
+	this.setState(this.STATE_CONNECTED);
+
+	this.runOnConnect.bind(this).defer();
+}
+
+ircServer.prototype.eventPartHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		tmpNick.removeChannel(tmpChan);
+		if (tmpNick.me)
+			this.removeChannel(tmpChan);
+		tmpChan.newMessage('type5', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + payload.params[1] + ')');
+	}	
+}
+
+ircServer.prototype.eventInviteHandler = function(payload)
+{
+	if (prefs.get().inviteAction != 'ignore') 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		if (tmpNick && payload.params[0].toLowerCase() === this.nick.name.toLowerCase())
+		{
+			tmpChan = this.getChannel(payload.params[1]);
+			if (!tmpChan || !tmpChan.containsNick(this.nick)) 
+				this.openInvite(tmpNick.name, payload.params[1]);
+		}
+	}
+}
+
+ircServer.prototype.eventChannelHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		tmpNick.addChannel(tmpChan);
+		tmpChan.newMessage('privmsg', tmpNick, payload.params[1]);
+	}
+}
+
+ircServer.prototype.eventPrivmsgHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	var tmpQuery = this.getQuery(tmpNick);
+	if (tmpQuery)
+		tmpQuery.newMessage('privmsg', tmpNick, payload.params[1]);
+	else
+		this.startQuery(tmpNick, false, 'message', payload.params[1]);
+}
+
+ircServer.prototype.eventNickHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	if (tmpNick === this.nick)
+		this.newMessage('type9', false, tmpNick.name + ' is now known as ' + payload.params[0]);
+	tmpNick.updateNickName(payload.params[0]);
+}
+
+ircServer.prototype.eventModeHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var modeNick = this.getNick(payload.params[2]);
+		if (modeNick)
+			modeNick.updateMode(payload.params[1], tmpChan);
+		tmpChan.newMessage('type3', false, 'Mode ' + payload.params[0] + ' ' + payload.params[1] + ' ' + payload.params[2] + ' by ' + tmpNick.name);
+	}
+}
+
+ircServer.prototype.eventUmodeHandler = function(payload)
+{
+	this.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + payload.params[0] + ' by ' + payload.origin);
+}
+	
+ircServer.prototype.eventJoinHandler = function(payload)
+{
+	var tmpChan = this.getOrCreateChannel(payload.params[0], null);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.origin);
+		if (tmpNick.me)
+			tmpChan.openStage();
+		tmpNick.addChannel(tmpChan, '');
+		tmpChan.newMessage('type4', false, tmpNick.name + ' (' + payload.origin.split("!")[1] + ') has joined ' + tmpChan.name);
+	}
+}
+
+ircServer.prototype.eventQuitHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	if (tmpNick)
+	{
+		for (var i = 0; i< tmpNick.channels.length; i++)
+			tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + payload.params + ')');
+		this.removeNick(tmpNick);
+	}	
+}
+
+ircServer.prototype.eventTopicHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan)
+	{
+		var tmpNick = this.getNick(payload.origin);
+		tmpChan.topicUpdate(payload.params[1]);
+		tmpChan.newMessage('action', false, tmpNick&&tmpNick.name + ' changed the topic to: ' + payload.params[1]);
+	}
+}
+
+/*
+ * These are notices that are directed towards the active/signed-on nick.
+ * These should probably spawn a query window, but that might get really
+ * annoying for commom notices such as those from Nickserv/Chanserv, etc.
+ * For now all of these notices will get directed to the server status
+ * window until a better solution is implemented.
+ */	
+ircServer.prototype.eventNoticeHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	this.newMessage('type6', tmpNick, payload.params[1]);
+}
+
+/*
+ * These are notices that are directed towards a specific channel.
+ */
+ircServer.prototype.eventChannelNoticeHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) tmpChan.newMessage('type6', tmpNick, payload.params[1]);
+	else this.newMessage('type6', tmpNick, payload.params[1]);
+}
+
+/*
+ * These are actions (generated only by /me it seems). These messages should
+ * show up in a channel or query message only (I think).
+ */
+ircServer.prototype.eventCTCPActionHandler = function(payload)
+{
+	var tmpNick = this.getNick(payload.origin);
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan)
+		tmpChan.newMessage('type7', tmpNick, payload.params[1]);
+	else
+	{
+		var tmpQuery = this.getQuery(tmpNick);
+		if (tmpQuery)
+			tmpQuery.newMessage('type7', tmpNick, payload.params[1]);
+		else
+			this.startQuery(tmpNick, false, 'type7', payload.params[1]);
+	}					
+}
+
+ircServer.prototype.eventKickHandler = function(payload)
+{
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) 
+	{
+		var tmpNick = this.getNick(payload.params[1]);
+		var tmpNick2 = this.getNick(payload.origin);
+		var reason = payload.params[2];
+		if (tmpNick)
+		{
+			tmpNick.removeChannel(tmpChan); 
+			if (tmpNick.me)
+			{
+				tmpChan.close();
+				this.removeChannel(tmpChan);
+			}
+			tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + payload.params[0] + ' (' + payload.params[2] + ')');
+		}
+	}
+}
+
+/*
+ * We need to figure out a more generic way to handle all these numeric events.
+ * There must be some sort of rule/heuristic we can follow to format them.
+ */
+ircServer.prototype.eventNumericHandler = function(payload)
+{
+	switch(payload.event)
+	{								
+		case '324': // CHANNELMODEIS
+			var tmpChan = this.getChannel(payload.params[1]);
+			if (tmpChan)
+				tmpChan.channelMode(payload.params[2]);
+			break;
+
+		case '1':		// WELCOME
+		case '2':		// YOURHOST
+		case '3':		// CREATED
+		case '4':		// MYINFO
+		case '5':		// BOUNCE
+		case '251':		// LUSERCLIENT
+		case '255':		// LUSERME
+		case '265':		// ???
+		case '266':		// ???
+		case '250':		// ???
+		case '372':		// MOTD
+		case '901':		// ???
+			this.newMessage('type2', false, payload.params[1], true);
+			break;
+					
+		case '42':		// YOURID					
+		case '253':		// LUSERUNKNOWN
+		case '252':		// LUSEROP
+		case '254':		// LUSERCHANNELS
+		case '256':		// ADMINME
+			this.newMessage('type2', false, payload.params[1] + ' ' + payload.params[2]);
+			break;
+					
+		case '439':		// TARGETTOOFAST
+			this.newMessage('type2', false, payload.params[0] + ' ' + payload.params[1]);
+			break;					
+					
+		case '305':		// NOTAWAY
+			this.isAway = false;
+			this.newMessage('type2', false, payload.params[1]);
+			break;
+		
+		case '306':		// AWAY
+			this.isAway = true;
+			this.newMessage('type2', false, payload.params[1]);
+			break;
+				
+		case '301':		// ??? WHOISAWAY?
+		case '311':		// WHOISUSER
+		case '312':		// WHOISSERVER
+		case '313':		// WHOISOPERATOR
+		case '317':		// WHOISIDLE
+		case '318':		// ENDOFWHOIS
+		case '319':		// WHOISCHANNELS
+		case '320':		// ??? WHOISIDENT?
+			var tmpNick = this.getNick(payload.params[1]);
+			if (tmpNick)
+				tmpNick.whoisEvent(payload.event, payload.params);
+			break;
+					
+		case '321':		// LISTSTART
+			this.listStart();
+			break;
+	
+		case '322':		// LIST
+			this.listAddChannel(payload.params[1], payload.params[2], payload.params[3]);
+			break;
+	
+		case '323':		// LISTEND
+			this.listEnd();
+			break;
+				
+		case '332':		// TOPIC
+			var tmpChan = this.getChannel(payload.params[1]);
+			if (tmpChan) 
+			{
+				tmpChan.topicUpdate(payload.params[2]);
+				if (tmpChan.containsNick(this.nick)) 
+					tmpChan.newMessage('type8', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
+			} 
+			else 
+				this.newMessage('type8', false, 'Topic for ' + payload.params[1] + ' is "' + payload.params[2] + '"');
+			break;
+
+		case '333':		// TOPIC SET TIME
+			var newDate = new Date();
+			newDate.setTime(payload.params[3]*1000);
+			dateString = newDate.toUTCString();
+			var tmpChan = this.getChannel(payload.params[1]);
+			if (tmpChan) 
+			{
+				if (tmpChan.containsNick(this.nick)) 
+					tmpChan.newMessage('type8', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
+			} 
+			else 
+				this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
+			break;
+					
+			
+		case '328':		// ???
+		case '329':		// ???
+		case '331':		// NO TOPIC
+			this.debugPayload(payload, false);
+			break;
+		
+		case '353':		// NAMREPLY
+			var nicks = payload.params[3].split(" ");
+			var tmpChan = this.getChannel(payload.params[2]);
+			var tmpNick;
+			if (tmpChan)
+			{
+				for (var i = 0; i < nicks.length; i++)
+				{
+					if (nicks[i])
+					{
+						var prefixNick = '';
+						var onlyNick = nicks[i];
+						if (ircNick.hasPrefix(onlyNick))
+						{
+							prefixNick = nicks[i].substr(0, 1);
+							onlyNick = nicks[i].substr(1);
+						}
+								
+						tmpNick = this.getNick(onlyNick);
+						if (tmpNick)
+							tmpNick.addChannel(tmpChan, ircNick.getPrefixMode(prefixNick));
+					}
+				}
+			}
+			break;
+	
+		case '366':		// ENDOFNAMES
+			this.debugPayload(payload, false);
+			break;
+					
+		case '375':		// MOTDSTART
+		case '376':		// ENDOFMOTD
+			this.updateStatusList();
+			break;
+					
+		case '433':		// NAMEINUSE
+			this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
+			this.nextNick = (this.nextNick < prefs.get().nicknames.length - 1) ? this.nextNick + 1 : 0;
+			this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
+			wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick])
+			break;
+					
+		default:
+			this.debugPayload(payload, true);
+			break;
+	}
+}
+
+ircServer.prototype.eventUnknownHandler = function(payload)
+{
+	this.debugPayload(payload,true);
+}
+
+ircServer.prototype.errorHandler = function(payload)
+{
+	if (payload.errorCode==-1 && this.state!=this.STATE_SERVICE_UNAVAILABLE)
+	{
+		this.setState(this.STATE_SERVICE_UNAVAILABLE);
+		this.cleanupSubscriptions();
+	}
+}
+
+/* ===================== END OF CALLBACK SUBSCRIPTIONS ===================== */
+
+ircServer.prototype.setupSubscriptions = function()
+{
+	this.subscriptions['event_connect']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventConnectHandler.bindAsEventListener(this),this.sessionToken, 'event_connect');
+	this.subscriptions['event_nick']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventNickHandler.bindAsEventListener(this),this.sessionToken, 'event_nick');
+	this.subscriptions['event_quit']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventQuitHandler.bindAsEventListener(this),this.sessionToken, 'event_quit');
+	this.subscriptions['event_join']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventJoinHandler.bindAsEventListener(this),this.sessionToken, 'event_join');
+	this.subscriptions['event_part']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventPartHandler.bindAsEventListener(this),this.sessionToken, 'event_part');
+	this.subscriptions['event_mode']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventModeHandler.bindAsEventListener(this),this.sessionToken, 'event_mode');
+	this.subscriptions['event_umode']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventUmodeHandler.bindAsEventListener(this),this.sessionToken, 'event_umode');
+	this.subscriptions['event_topic']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventTopicHandler.bindAsEventListener(this),this.sessionToken, 'event_topic');
+	this.subscriptions['event_kick']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventKickHandler.bindAsEventListener(this),this.sessionToken, 'event_kick');
+	this.subscriptions['event_channel']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventChannelHandler.bindAsEventListener(this),this.sessionToken, 'event_channel');
+	this.subscriptions['event_privmsg']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventPrivmsgHandler.bindAsEventListener(this),this.sessionToken, 'event_privmsg');
+	this.subscriptions['event_notice']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventNoticeHandler.bindAsEventListener(this),this.sessionToken, 'event_notice');
+	this.subscriptions['event_channel_notice']	= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventChannelNoticeHandler.bindAsEventListener(this),this.sessionToken, 'event_channel_notice');
+	this.subscriptions['event_invite']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventInviteHandler.bindAsEventListener(this),this.sessionToken, 'event_invite');
+	//this.subscriptions['event_ctcp_req']		= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_req');
+	//this.subscriptions['event_ctcp_rep']		= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.connectionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_rep');
+	this.subscriptions['event_ctcp_action']		= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventCTCPActionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_action');
+	this.subscriptions['event_unknown']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventUnknownHandler.bindAsEventListener(this),this.sessionToken, 'event_unknown');
+	this.subscriptions['event_numeric']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventNumericHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
+}
+
+/* ========================= START OF STATIC METHODS ======================== */
+
 ircServer.getBlankServerObject = function()
 {
 	var obj = 
@@ -1245,3 +1260,5 @@ ircServer.validateNewServer = function(params, assistant, verbose)
 	// for now, we don't really care about you... don't screw it up!
 	return true;
 }
+
+/* ========================= END OF STATIC METHODS ========================= */

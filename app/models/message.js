@@ -61,6 +61,7 @@ function ircMessage(params)
 	switch(this.type)
 	{
 				
+		// NO LONGER NEEDED
 		case 'type1':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '[]';
@@ -101,6 +102,7 @@ function ircMessage(params)
 			this.message		= params.message;
 			break;
 			
+		// notice	
 		case 'type6':
 			this.rowClass		= 'no-seperator';
 			this.nick			= params.nick;
@@ -108,6 +110,7 @@ function ircMessage(params)
 			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
 			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
 			this.message		= params.message;
+			break;
 
 		case 'type7':
 			this.rowClass		= 'no-seperator';

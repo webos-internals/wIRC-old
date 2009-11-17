@@ -140,6 +140,10 @@ br.clear
 {
 	background-image: url(../images/list-button-disconnected.png);
 }
+.server-list .palm-list .palm-row-wrapper.error .button.status
+{
+	background-image: url(../images/list-button-error.png);
+}
 .server-list .palm-list .palm-row-wrapper .button.spinner
 {
 	display: none;
