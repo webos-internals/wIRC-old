@@ -119,5 +119,58 @@ var preconfigured = [
 	{network: 'Undernet',	region: 'US',				subregion: 'SantaAna, CA',			address: 'SantaAna.CA.US.Undernet.org'},
 	{network: 'Undernet',	region: 'US',				subregion: 'Tampa, FL',				address: 'Tampa.FL.US.Undernet.org'},
 
-];
+	// DALnet
+	{network: 'DALnet',		region: '',					subregion: '',						address: 'oper2-e.dal.net'},
+	{network: 'DALnet',		region: '',					subregion: '',						address: 'renew.hub.dal.net'},
+	{network: 'DALnet',		region: '',					subregion: '',						address: 'tranquility.hub.dal.net'},
+	{network: 'DALnet',		region: '',					subregion: '',						address: 'diamond.hub.dal.net'},
+	{network: 'DALnet',		region: '',					subregion: '',						address: 'global.hub.dal.net'},
+	{network: 'DALnet',		region: '',					subregion: '',						address: 'ninja.hub.dal.net'},
 
+	// DALnet (US)	
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'aeon.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'Atlanta.ga.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'broadway.ny.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'hollywood.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'hope.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'jade.fl.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'jingo.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'krypt.ca.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'loyalty.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'masters.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'noname.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'novel.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'punch.va.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'rangers.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'rapport.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'redemption.ix.us.dal.net'},	
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'riga-r.ca.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'serenity.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'serverbuffet.wa.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'soho.ix.us.dal.net'},
+	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'swiftco.wa.us.dal.net'},
+	
+	// DALnet (EU)
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'matrix.de.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'mozilla.se.eu.dal.net'},	
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'aqua.se.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'arcor.de.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'brain.hub.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'gaston.se.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'genesis.uk.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'powertech.no.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'valhall.no.eu.dal.net'},
+	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'waffle.ix.eu.dal.net'},
+	
+	// DALnet (AU)
+	{network: 'DALnet',		region: 'AU',				subregion: '',						address: 'hoon.ix.au.dal.net'},
+	{network: 'DALnet',		region: 'AU',				subregion: '',						address: 'oi.ix.au.dal.net'},
+	
+	// DALnet (CA)
+	{network: 'DALnet',		region: 'CA',				subregion: '',						address: 'maple.ix.ca.dal.net'},
+	{network: 'DALnet',		region: 'CA',				subregion: '',						address: 'toronto.on.ca.dal.net'},
+	
+	// DALnet (AS)
+	{network: 'DALnet',		region: 'AS',				subregion: '',						address: 'hotspeed.sg.as.dal.net'},
+	
+];
