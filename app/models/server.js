@@ -356,26 +356,14 @@ ircServer.prototype.genericHandler = function(payload)
 
 ircServer.prototype.disconnect = function(reason)
 {
-	// disconnecting...
-	// TODO: Jump to server status scene and display disconnecting
-	
 	this.setState(this.STATE_DISCONNECTING);
-	if (reason)
-	{
-		this.reconnect = false;
-		this.newMessage('type3', false, 'Quitting (' + reason + ')...');
-		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
-	}
-	else
-	{
-		this.newMessage('type3', false, 'Disconnecting...');
-		wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
-		//wIRCd.disconnect(null, this.sessionToken);
-	}
+	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
+
 ircServer.prototype.disconnectHandler = function(payload)
 {
 	this.cleanupSubscriptions();
+	this.setState(this.STATE_DISCONNECTED);
 	//this.newMessage('status', false, 'dc handler');
 	/*
 	if (payload.returnValue == 0)
@@ -1187,9 +1175,7 @@ ircServer.prototype.eventNumericHandler = function(payload)
 
 ircServer.prototype.eventUnknownHandler = function(payload)
 {
-	Mojo.Log.error(payload.params[0]);
-	if (payload.params[0].include('Closing Link'))
-		this.setState(this.STATE_DISCONNECTED);
+	this.debugPayload(payload,true);
 }
 
 /* ===================== END OF CALLBACK SUBSCRIPTIONS ===================== */
