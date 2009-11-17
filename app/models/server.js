@@ -984,7 +984,7 @@ ircServer.prototype.eventChannelNoticeHandler = function(payload)
 	var tmpNick = this.getNick(payload.origin);
 	var tmpChan = this.getChannel(payload.params[0]);
 	if (tmpChan) tmpChan.newMessage('type6', tmpNick, payload.params[1]);
-	else Mojo.Log.error("Channel notice recieved from unknown source!");
+	else this.newMessage('type6', tmpNick, payload.params[1]);
 }
 
 /*
