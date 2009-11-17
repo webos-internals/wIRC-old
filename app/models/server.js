@@ -990,21 +990,18 @@ ircServer.prototype.eventChannelNoticeHandler = function(payload)
 	else Mojo.Log.error("Channel notice recieved from unknown source!");
 }
 
+/*
+ * These are actions (generated only by /me it seems). These messages should
+ * show up in a channel or query message only (I think).
+ */
 ircServer.prototype.eventCTCPActionHandler = function(payload)
 {
-	if (payload.params[0].substr(0, 1) == '#')
+	var tmpNick = this.getNick(payload.origin);
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan)
+		tmpChan.newMessage('type7', tmpNick, payload.params[1]);
+	else
 	{
-		var tmpChan = this.getChannel(payload.params[0]);
-		if (tmpChan)
-		{
-			var tmpNick = this.getNick(payload.origin);
-			tmpNick.addChannel(tmpChan);
-			tmpChan.newMessage('type7', tmpNick, payload.params[1]);
-		}
-	}
-	else if (payload.params[0].toLowerCase() == this.nick.name.toLowerCase())
-	{
-		var tmpNick = this.getNick(payload.origin);
 		var tmpQuery = this.getQuery(tmpNick);
 		if (tmpQuery)
 			tmpQuery.newMessage('type7', tmpNick, payload.params[1]);
