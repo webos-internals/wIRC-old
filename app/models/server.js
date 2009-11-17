@@ -110,9 +110,6 @@ ircServer.prototype.newCommand = function(message)
 {
 	if (this.isConnected())
 	{
-		var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
-		var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{0,1}(.*)$/);
-		var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{0,1}(.*)$/);
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{
@@ -648,8 +645,7 @@ ircServer.prototype.getNick = function(name)
 {
 	try
 	{
-		var cmdRegExp = new RegExp(/^([^\s]*)!(.*)$/);
-		var match = cmdRegExp.exec(name);
+		var match = nickParser.exec(name);
 		if (match) 
 		{
 			var getNick = match[1];

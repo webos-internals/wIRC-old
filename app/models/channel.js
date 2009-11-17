@@ -22,9 +22,6 @@ function ircChannel(params)
 
 ircChannel.prototype.newCommand = function(message)
 {
-	var cmdRegExp =			new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
-	var twoValRegExp =		new RegExp(/^([^\s]*)[\s]{0,1}(.*)$/);
-	var threeValRegExp =	new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{0,1}(.*)$/);
 	var match = cmdRegExp.exec(message);
 	if (match)
 	{

@@ -1,4 +1,5 @@
 [
+	{"source": "app/models/regularExpressions.js"},
     {"source": "app/models/database.js"},
     {"source": "app/models/utility.js"},
     {"source": "app/models/cookie.js"},
