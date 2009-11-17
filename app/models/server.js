@@ -976,21 +976,18 @@ ircServer.prototype.eventTopicHandler = function(payload)
 ircServer.prototype.eventNoticeHandler = function(payload)
 {
 	var tmpNick = this.getNick(payload.origin);
-	Mojo.Log.error("Notice from "+tmpNick.name);
 	this.newMessage('type6', tmpNick, payload.params[1]);
 }
 
+/*
+ * These are notices that are directed towards a specific channel.
+ */
 ircServer.prototype.eventChannelNoticeHandler = function(payload)
 {
 	var tmpNick = this.getNick(payload.origin);
-	if (payload.params[0].substr(0, 1) == '#') // it's a channel
-	{
-		var tmpChan = this.getChannel(payload.params[0]);
-		if (tmpChan) 
-			tmpChan.newMessage('type6', tmpNick, payload.params[1]);
-	}
-	else
-		this.newMessage('type3', false, payload.params[1]);					
+	var tmpChan = this.getChannel(payload.params[0]);
+	if (tmpChan) tmpChan.newMessage('type6', tmpNick, payload.params[1]);
+	else Mojo.Log.error("Channel notice recieved from unknown source!");
 }
 
 ircServer.prototype.eventCTCPActionHandler = function(payload)
