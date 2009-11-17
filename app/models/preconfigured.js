@@ -5,8 +5,6 @@ var preconfigured = [
 
 	// Freenode
 	{network: 'Freenode',	region: '',			 		subregion: '', 						address: 'irc.freenode.net'},
-		
-	// Freenode (Europe)
 	{network: 'Freenode',	region: 'Europe', 			subregion: '', 						address: 'chat.eu.freenode.net'},
 	{network: 'Freenode',	region: 'Europe', 			subregion: 'Frankfurt, DE',			address: 'kornbluth.freenode.net'},
 	{network: 'Freenode',	region: 'Europe', 			subregion: 'Helsinki, FI',			address: 'orwell.freenode.net'},
@@ -21,8 +19,6 @@ var preconfigured = [
 	{network: 'Freenode',	region: 'Europe', 			subregion: 'Paris, FR',				address: 'barjavel.freenode.net'},
 	{network: 'Freenode',	region: 'Europe', 			subregion: 'Luxembourg, LU',		address: 'bartol.freenode.net'},
 	{network: 'Freenode',	region: 'Europe',			subregion: 'Rennes, FR',			address: 'pratchett.freenode.net'},
-	
-	// Freenode (United States)
 	{network: 'Freenode',	region: 'United States',	subregion: '',						address: 'chat.us.freenode.net'},
 	{network: 'Freenode',	region: 'United States',	subregion: 'Corvallis, OR',			address: 'niven.freenode.net'},
 	{network: 'Freenode',	region: 'United States',	subregion: 'Corvallis, OR',			address: 'zelazny.freenode.net'},
@@ -37,15 +33,11 @@ var preconfigured = [
 	
 	// Rizon
 	{network: 'Rizon',		region: '',					subregion: '',						address: 'irc.rizon.net'},
-	
-	// Rizon (Europe)
 	{network: 'Rizon',		region: 'Europe',			subregion: 'DE',					address: 'irc.zipd.de'},
 	{network: 'Rizon',		region: 'Europe',			subregion: 'FR',					address: 'irc.lolipower.org'},
 	{network: 'Rizon',		region: 'Europe',			subregion: 'NL',					address: 'irc.impact-media.me.uk'},
 	{network: 'Rizon',		region: 'Europe',			subregion: 'NO',					address: 'irc.rizon.no'},
 	{network: 'Rizon',		region: 'Europe',			subregion: 'UK',					address: 'irc.shakeababy.net'},
-	
-	// Rizon (North America)
 	{network: 'Rizon',		region: 'North America',	subregion: 'CA',					address: 'irc.thefear.ca'},
 	{network: 'Rizon',		region: 'North America',	subregion: 'US',					address: 'irc.ashenworlds.net'},
 	{network: 'Rizon',		region: 'North America',	subregion: 'US',					address: 'irc.cccp-project.net'},
@@ -56,16 +48,12 @@ var preconfigured = [
 	{network: 'Rizon',		region: 'North America',	subregion: 'US',					address: 'irc.nuu.cc'},
 	{network: 'Rizon',		region: 'North America',	subregion: 'US',					address: 'irc.pantsuland.net'},
 	{network: 'Rizon',		region: 'North America',	subregion: 'US',					address: 'irc.x1n.org'},
-
-	// Rizon (Asia)
 	{network: 'Rizon',		region: 'Asia',				subregion: 'RU',					address: 'irc.fujibayashi.jp'},
 	
-	// EFnet (CA)
+	// EFnet
 	{network: 'EFnet',		region: 'CA',				subregion: 'Calgary, AB',			address: 'irc.arcti.ca'},
 	{network: 'EFnet',		region: 'CA',				subregion: 'Montreal, QC',			address: 'irc.choopa.ca'},
 	{network: 'EFnet',		region: 'CA',				subregion: 'Toronto, ON',			address: 'irc.igs.ca'},
-	
-	// EFnet (EU)
 	{network: 'EFnet',		region: 'EU',				subregion: 'Helsinki, FI',			address: 'efnet.cs.hut.fi'},
 	{network: 'EFnet',		region: 'EU',				subregion: 'Stockholm, Sweden',		address: 'efnet.port80.se'},
 	{network: 'EFnet',		region: 'EU',				subregion: 'Amsterdam, NL',			address: 'efnet.xs4all.nl'},
@@ -82,8 +70,6 @@ var preconfigured = [
 	{network: 'EFnet',		region: 'EU',				subregion: 'Aarhus, Denmark',		address: 'irc.inet.tele.dk'},
 	{network: 'EFnet',		region: 'EU',				subregion: 'Tel Aviv, Israel',		address: 'irc.inter.net.il'},
 	{network: 'EFnet',		region: 'EU',				subregion: 'Stockholm, Sweden',		address: 'irc.swepipe.se'},
-	
-	// EFnet (US)
 	{network: 'EFnet',		region: 'US',				subregion: 'Dallas, TX',			address: 'irc.blessed.net'},
 	{network: 'EFnet',		region: 'US',				subregion: 'New York, NY',			address: 'irc.choopa.net'},
 	{network: 'EFnet',		region: 'US',				subregion: 'Orlando, FL',			address: 'irc.colosolutions.net'},
@@ -126,8 +112,6 @@ var preconfigured = [
 	{network: 'DALnet',		region: '',					subregion: '',						address: 'diamond.hub.dal.net'},
 	{network: 'DALnet',		region: '',					subregion: '',						address: 'global.hub.dal.net'},
 	{network: 'DALnet',		region: '',					subregion: '',						address: 'ninja.hub.dal.net'},
-
-	// DALnet (US)	
 	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'aeon.ix.us.dal.net'},
 	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'Atlanta.ga.us.dal.net'},
 	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'broadway.ny.us.dal.net'},
@@ -149,8 +133,6 @@ var preconfigured = [
 	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'serverbuffet.wa.us.dal.net'},
 	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'soho.ix.us.dal.net'},
 	{network: 'DALnet',		region: 'US',				subregion: '',						address: 'swiftco.wa.us.dal.net'},
-	
-	// DALnet (EU)
 	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'matrix.de.eu.dal.net'},
 	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'mozilla.se.eu.dal.net'},	
 	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'aqua.se.eu.dal.net'},
@@ -161,16 +143,29 @@ var preconfigured = [
 	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'powertech.no.eu.dal.net'},
 	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'valhall.no.eu.dal.net'},
 	{network: 'DALnet',		region: 'EU',				subregion: '',						address: 'waffle.ix.eu.dal.net'},
-	
-	// DALnet (AU)
 	{network: 'DALnet',		region: 'AU',				subregion: '',						address: 'hoon.ix.au.dal.net'},
 	{network: 'DALnet',		region: 'AU',				subregion: '',						address: 'oi.ix.au.dal.net'},
-	
-	// DALnet (CA)
 	{network: 'DALnet',		region: 'CA',				subregion: '',						address: 'maple.ix.ca.dal.net'},
 	{network: 'DALnet',		region: 'CA',				subregion: '',						address: 'toronto.on.ca.dal.net'},
-	
-	// DALnet (AS)
 	{network: 'DALnet',		region: 'AS',				subregion: '',						address: 'hotspeed.sg.as.dal.net'},
+	
+	// QuakeNet
+	{network: 'QuakeNet',	region: 'Denmark',			subregion: '',						address: 'jubii.dk.quakenet.org'},
+	{network: 'QuakeNet',	region: 'France',			subregion: '',						address: 'euroserv.fr.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Germany',			subregion: '',						address: 'clanserver4u.de.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Ireland',			subregion: '',						address: 'ign.ie.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Netherlands',		subregion: '',						address: 'xs4all.nl.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Norway',			subregion: '',						address: 'underworld.no.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Sweden',			subregion: '',						address: 'port80.se.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Sweden',			subregion: '',						address: 'stockholm.se.quakenet.org'},
+	{network: 'QuakeNet',	region: 'Sweden',			subregion: '',						address: 'wineasy.se.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United Kingdom',	subregion: '',						address: 'blueyonder.uk.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United Kingdom',	subregion: '',						address: 'multiplay.uk.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United States',	subregion: '',						address: 'gameservers.il.us.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United States',	subregion: '',						address: 'gameservers.nj.us.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United States',	subregion: '',						address: 'gameservers.tx.us.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United States',	subregion: '',						address: 'idsoftware.ca.us.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United States',	subregion: '',						address: 'servercentral.il.us.quakenet.org'},
+	{network: 'QuakeNet',	region: 'United States',	subregion: '',						address: 'velocity.ca.us.quakenet.org'},
 	
 ];
