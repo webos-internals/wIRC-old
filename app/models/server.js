@@ -1028,6 +1028,10 @@ ircServer.prototype.eventKickHandler = function(payload)
 	}
 }
 
+/*
+ * We need to figure out a more generic way to handle all these numeric events.
+ * There must be some sort of rule/heuristic we can follow to format them.
+ */
 ircServer.prototype.eventNumericHandler = function(payload)
 {
 	switch(payload.event)
@@ -1053,21 +1057,26 @@ ircServer.prototype.eventNumericHandler = function(payload)
 			this.newMessage('type2', false, payload.params[1], true);
 			break;
 					
+		case '42':		// YOURID					
 		case '253':		// LUSERUNKNOWN
 		case '252':		// LUSEROP
 		case '254':		// LUSERCHANNELS
 		case '256':		// ADMINME
-			this.newMessage('debug', false, payload.params[1] + ' ' + payload.params[2]);
+			this.newMessage('type2', false, payload.params[1] + ' ' + payload.params[2]);
 			break;
+					
+		case '439':		// TARGETTOOFAST
+			this.newMessage('type2', false, payload.params[0] + ' ' + payload.params[1]);
+			break;					
 					
 		case '305':		// NOTAWAY
 			this.isAway = false;
-			this.newMessage('debug', false, payload.params[1]);
+			this.newMessage('type2', false, payload.params[1]);
 			break;
 		
 		case '306':		// AWAY
 			this.isAway = true;
-			this.newMessage('debug', false, payload.params[1]);
+			this.newMessage('type2', false, payload.params[1]);
 			break;
 				
 		case '301':		// ??? WHOISAWAY?
