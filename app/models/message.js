@@ -101,6 +101,7 @@ function ircMessage(params)
 			this.message		= params.message;
 			break;
 			
+		// notice	
 		case 'type6':
 			this.rowClass		= 'no-seperator';
 			this.nick			= params.nick;
