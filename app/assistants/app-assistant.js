@@ -103,6 +103,7 @@ AppAssistant.prototype.cleanup = function()
 			s && s.disconnect();
 		});
 	}
+	this.controller.closeAllStages();
 }
 
 
