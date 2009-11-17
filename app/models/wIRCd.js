@@ -2,7 +2,7 @@ wIRCd.identifier = 'palm://us.ryanhope.wIRCd';
 
 function wIRCd() {}
 
-wIRCd.subscribe = function(callback, sessionToken, type)
+wIRCd.subscribe = function(onFailure, onSuccess, sessionToken, type)
 {
 	
 	var method = '';
@@ -36,8 +36,8 @@ wIRCd.subscribe = function(callback, sessionToken, type)
 			"sessionToken": sessionToken,
 			"subscribe": true
 		},
-		onSuccess: callback,
-		onFailure: callback
+		onSuccess: onSuccess,
+		onFailure: onFailure
 	});
 	return request;
 	
