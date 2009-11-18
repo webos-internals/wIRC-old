@@ -21,6 +21,9 @@ function ircServer(params)
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
 	
+	this.sessionIpAddress =		'';
+	this.sessionInterface = 	'';
+	
 	this.subscriptions =		[];
 	
 	this.isAway =				false;
@@ -844,6 +847,14 @@ ircServer.prototype.eventConnectHandler = function(payload)
 {
 	this.nick		= this.getNick(payload.params[0]); 
 	this.nick.me	= true;
+	
+	this.sessionIpAddress = payload.sessionIpAddress;
+	if (connectionInfo.wifi.ipAddress==this.sessionIpAddress)
+		this.sessionInterface = "wifi";
+	else if (connectionInfo.wan.ipAddress==this.sessionIpAddress)
+		this.sessionInterface = "wan";
+		
+	Mojo.Log.error("SessionIP: "+this.sessionIpAddress+", SessionInterface: "+this.sessionInterface);
 	
 	this.setState(this.STATE_CONNECTED);
 
