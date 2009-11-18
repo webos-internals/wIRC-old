@@ -136,6 +136,14 @@ br.clear
 {
 	background-image: url(../images/list-button-connected.png);
 }
+.server-list .palm-list .palm-row-wrapper.connected-wifi .button.status
+{
+	background-image: url(../images/list-button-connected-wifi.png);
+}
+.server-list .palm-list .palm-row-wrapper.connected-wan .button.status
+{
+	background-image: url(../images/list-button-connected-wan.png);
+}
 .server-list .palm-list .palm-row-wrapper.disconnected .button.status
 {
 	background-image: url(../images/list-button-disconnected.png);
