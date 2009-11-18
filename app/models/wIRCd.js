@@ -92,20 +92,6 @@ wIRCd.quit = function(callback, sessionToken, reason)
 	return request;
 }
 
-wIRCd.get_session_ip = function(callback, sessionToken)
-{
-	var request = new Mojo.Service.Request(wIRCd.identifier,
-	{
-		method: 'get_session_ip',
-		parameters: {
-			"sessionToken": sessionToken,
-		},
-		onSuccess: callback,
-		onFailure: callback
-	});
-	return request;
-}
-
 wIRCd.nick = function(callback, sessionToken, nick)
 {
 	var request = new Mojo.Service.Request(wIRCd.identifier,
