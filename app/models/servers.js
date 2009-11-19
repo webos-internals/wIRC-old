@@ -7,13 +7,13 @@ function ircServers()
 	
 	this.servers =			[];
 	this.listAssistant =	false;
-
-	this.load();
 }
 
 ircServers.prototype.cmHandler = function(payload)
 {
 	connectionInfo = payload;
+	if (payload.returnValue)
+		this.load();
 }
 
 /*ircServers.prototype.cmHandler = function(payload)

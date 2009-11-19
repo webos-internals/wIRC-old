@@ -1,6 +1,7 @@
 function ircServer(params)
 {
-	this.STATE_SERVICE_UNAVAILABLE	= -1;
+	this.STATE_SERVICE_UNAVAILABLE	= -2;
+	this.STATE_PIFACE_UNAVAILABLE	= -1;
 	this.STATE_DISCONNECTED			= 0;
 	this.STATE_TOKEN_REQUEST		= 1 
 	this.STATE_CONNECTING			= 2; 
@@ -68,17 +69,18 @@ ircServer.prototype.setState = function(state)
 	switch (state)
 	{
 		case this.STATE_SERVICE_UNAVAILABLE: message = "wIRCd is not running!"; break;
+		case this.STATE_PIFACE_UNAVAILABLE: message = "Preferred interface is not avaliable!"; break;
 		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
 		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;
 		case this.STATE_CONNECTING: message = "Connecting..."; break;
-		case this.STATE_CONNECTED: message = "Connected!"; break;  
+		case this.STATE_CONNECTED: message = "Connected!"; break;
 	}	
 	this.state = state;
 	if (message.length>0) {
 		this.newMessage('type3', false, message);
-		if (servers.listAssistant && servers.listAssistant.controller)
-			servers.listAssistant.updateList();		
 	}
+	if (servers.listAssistant && servers.listAssistant.controller)
+		servers.listAssistant.updateList();		
 }
 
 ircServer.prototype.cleanupSubscriptions = function()
@@ -101,7 +103,20 @@ ircServer.prototype.initHandler = function(payload)
 
 ircServer.prototype.init = function()
 {
-	this.setState(this.STATE_TOKEN_REQUEST);
+	if (!prefs.get().aiface)
+	{
+		var state = '';
+		switch (prefs.get().piface)
+		{
+			case 'ppp0': state = connectionInfo.wan.state; break;
+			case 'eth0': state = connectionInfo.wifi.state; break;
+		}
+		if (state == 'disconnected')
+		{
+			this.setState(this.STATE_PIFACE_UNAVAILABLE);
+			return;
+		}
+	}
 	wIRCd.init(this.initHandler.bindAsEventListener(this));
 }
 
@@ -259,21 +274,6 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {	
-	if (!prefs.get().aiface)
-	{
-		var state = '';
-		switch (prefs.get().piface)
-		{
-			case 'ppp0': state = connectionInfo.wan.state; break;
-			case 'eth0': state = connectionInfo.wifi.state; break;
-		}
-		if (state == 'disconnected')
-		{
-			this.newMessage('type3', false, 'Preferred interface is not avaliable and use fallbacks is false... not connecting.');
-			return;
-		}
-	}
-
 	wIRCd.connect
 	(
 		null,
