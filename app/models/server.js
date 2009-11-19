@@ -792,12 +792,7 @@ ircServer.prototype.getListObject = function()
 			obj.rowStyle = obj.rowStyle + ' changing';
 			break;
 		case this.STATE_CONNECTED:
-			if (this.sessionInterface=='wifi')
-				obj.rowStyle = obj.rowStyle + ' connected-wifi';
-			else if (this.sessionInterface=='wan')
-				obj.rowStyle = obj.rowStyle + ' connected-wan';				
-			else
-				obj.rowStyle = obj.rowStyle + ' connected';
+			obj.rowStyle = obj.rowStyle + ' connected';
 			break;
 	}
 
