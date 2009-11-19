@@ -1,5 +1,7 @@
 function ircServers()
 {
+	this.cmSubscription =	connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this));
+	
 	this.cookie =			new Mojo.Model.Cookie('servers');
 	this.cookieData =		false;
 	
@@ -7,6 +9,11 @@ function ircServers()
 	this.listAssistant =	false;
 
 	this.load();
+}
+
+ircServers.prototype.cmHandler = function(payload)
+{
+	connectionInfo = payload;
 }
 
 /*ircServers.prototype.cmHandler = function(payload)
