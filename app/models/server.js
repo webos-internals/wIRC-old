@@ -77,7 +77,7 @@ ircServer.prototype.setState = function(state)
 	if (message.length>0) {
 		this.newMessage('type3', false, message);
 		if (servers.listAssistant && servers.listAssistant.controller)
-			servers.listAssistant.updateList();
+			servers.listAssistant.updateList();		
 	}
 }
 
@@ -776,7 +776,8 @@ ircServer.prototype.getListObject = function()
 		address:	this.address,
 		connected: 	this.isConnected(),	
 		spinning:	true,
-		rowStyle:	''
+		rowStyle:	'',
+		networkLag:	''
 	};
 	
 	switch (this.state)
@@ -793,6 +794,11 @@ ircServer.prototype.getListObject = function()
 			break;
 		case this.STATE_CONNECTED:
 			obj.rowStyle = obj.rowStyle + ' connected';
+			obj.networkLag = obj.networkLag + 'network wifi lag-0';
+			/*if (this.sessionInterface=='wifi')
+				obj.networkLag = obj.networkLag + 'network wifi lag-0';
+			else
+				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' lag-0';*/
 			break;
 	}
 
