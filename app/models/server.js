@@ -794,11 +794,10 @@ ircServer.prototype.getListObject = function()
 			break;
 		case this.STATE_CONNECTED:
 			obj.rowStyle = obj.rowStyle + ' connected';
-			obj.networkLag = obj.networkLag + 'network wifi lag-0';
-			/*if (this.sessionInterface=='wifi')
-				obj.networkLag = obj.networkLag + 'network wifi lag-0';
+			if (this.sessionInterface=='wan')
+				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' lag-0';
 			else
-				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' lag-0';*/
+				obj.networkLag = obj.networkLag + 'network wifi lag-0';
 			break;
 	}
 
@@ -856,15 +855,15 @@ ircServer.prototype.eventConnectHandler = function(payload)
 	this.nick.me	= true;
 	
 	this.sessionIpAddress = payload.sessionIpAddress;
-	if (connectionInfo.wifi.ipAddress==this.sessionIpAddress)
-	{
-		this.sessionInterface = "wifi";
-		this.sessionNetwork = '';
-	}
-	else if (connectionInfo.wan.ipAddress==this.sessionIpAddress)
+	if (connectionInfo.wan.state=='connected' && connectionInfo.wan.ipAddress==this.sessionIpAddress)
 	{
 		this.sessionInterface = "wan";
 		this.sessionNetwork = connectionInfo.wan.network;
+	}
+	else
+	{
+		this.sessionInterface = "wifi";
+		this.sessionNetwork = '';
 	}
 	this.setState(this.STATE_CONNECTED);
 

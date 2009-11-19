@@ -6,10 +6,10 @@ function ircServers()
 	this.servers =			[];
 	this.listAssistant =	false;
 
-	this.cmSubscription =	connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this)); 
+	this.load();
 }
 
-ircServers.prototype.cmHandler = function(payload)
+/*ircServers.prototype.cmHandler = function(payload)
 {
 	connectionInfo = payload;
 	if (payload.returnValue)
@@ -83,7 +83,7 @@ ircServers.prototype.cmHandler = function(payload)
 
 		this.newMessage('status', false, '--- CM f ---');
 	}
-}
+}*/
 
 ircServers.prototype.setListAssistant = function(assistant)
 {

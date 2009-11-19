@@ -1,5 +1,3 @@
-function AppAssistant() {}
-
 // our main stage
 var serverStage = 'serverStage';
 
@@ -11,6 +9,16 @@ var prefs = new prefCookie();
 
 // holds the servers
 var servers = new ircServers();
+
+function AppAssistant()
+{
+	this.cmSubscription =	connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this));
+}
+
+AppAssistant.prototype.cmHandler = function(payload)
+{
+	connectionInfo = payload;
+}
 
 AppAssistant.prototype.handleLaunch = function(params)
 {
