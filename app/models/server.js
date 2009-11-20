@@ -870,6 +870,9 @@ ircServer.prototype.eventConnectHandler = function(payload)
 		this.sessionInterface = "wifi";
 		this.sessionNetwork = '';
 	}
+	
+	Mojo.Log.error('!!!!!!!!!!!!!!' + this.sessionNetwork);
+	
 	this.setState(this.STATE_CONNECTED);
 
 	this.runOnConnect.bind(this).defer();
@@ -1223,7 +1226,8 @@ ircServer.prototype.autoPingHandler = function(payload)
 		this.lag = 'lag-2';
 	else
 		this.lag = 'lag-1';
-	this.setState(this.STATE_CONNECTED);		
+	if (servers.listAssistant && servers.listAssistant.controller)
+		servers.listAssistant.updateList();		
 }
 
 ircServer.prototype.errorHandler = function(payload)
