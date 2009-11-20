@@ -21,7 +21,8 @@ function ircServer(params)
 	this.onConnect =			params.onConnect;
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
-	
+
+	this.realServer =			'';	
 	this.sessionIpAddress =		'';
 	this.sessionInterface = 	'';
 	this.sessionNetwork =		'';
@@ -851,6 +852,9 @@ ircServer.prototype.saveInfo = function(params)
 
 ircServer.prototype.eventConnectHandler = function(payload)
 {
+	
+	this.realServer = payload.origin;
+	
 	this.nick		= this.getNick(payload.params[0]); 
 	this.nick.me	= true;
 	
