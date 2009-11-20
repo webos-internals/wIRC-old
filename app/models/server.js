@@ -853,7 +853,12 @@ ircServer.prototype.saveInfo = function(params)
 
 ircServer.prototype.eventConnectHandler = function(payload)
 {
-	
+	if (payload.event=='MAXRETRIES')
+	{
+		this.setState(this.STATE_CONNECTED);
+		return;	
+	}
+
 	this.realServer = payload.origin;
 	
 	this.nick		= this.getNick(payload.params[0]); 
