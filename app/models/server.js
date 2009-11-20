@@ -22,6 +22,7 @@ function ircServer(params)
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
 
+	this.lagHistory = 			[];
 	this.lag =					'lag-0';
 	this.realServer =			'';	
 	this.sessionIpAddress =		'';
@@ -1221,13 +1222,22 @@ ircServer.prototype.eventUnknownHandler = function(payload)
 
 ircServer.prototype.autoPingHandler = function(payload)
 {
-	if (payload.rtt<200)
+	this.lagHistory.push(payload.rtt);
+	if (this.lagHistory.length>5)
+		this.lagHistory.shift();
+	
+	var lagSum = 0;
+	this.lagHistory.forEach(function(x) {lagSum += x;});
+	var aveLag = lagSum / this.lagHistory.length;
+	Mojo.Log.error('Average lag on ' + payload.server + ': ' + aveLag);
+		
+	if (aveLag<200)
 		this.lag = 'lag-5';
-	else if (payload.rtt<500)
+	else if (aveLag<500)
 		this.lag = 'lag-4';
-	else if (payload.rtt<900)
+	else if (aveLag<900)
 		this.lag = 'lag-3';
-	else if (payload.rtt<1400)
+	else if (aveLag<1400)
 		this.lag = 'lag-2';
 	else
 		this.lag = 'lag-1';
