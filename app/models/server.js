@@ -22,6 +22,7 @@ function ircServer(params)
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
 
+	this.lag =					'lag-0';
 	this.realServer =			'';	
 	this.sessionIpAddress =		'';
 	this.sessionInterface = 	'';
@@ -796,9 +797,9 @@ ircServer.prototype.getListObject = function()
 		case this.STATE_CONNECTED:
 			obj.rowStyle = obj.rowStyle + ' connected';
 			if (this.sessionInterface=='wan')
-				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' lag-0';
+				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' ' + this.lag;
 			else
-				obj.networkLag = obj.networkLag + 'network wifi lag-0';
+				obj.networkLag = obj.networkLag + 'network wifi ' + this.lag;
 			break;
 	}
 
@@ -1207,7 +1208,22 @@ ircServer.prototype.eventNumericHandler = function(payload)
 
 ircServer.prototype.eventUnknownHandler = function(payload)
 {
-	this.debugPayload(payload,true);
+	this.debugPayload(payload,false);
+}
+
+ircServer.prototype.autoPingHandler = function(payload)
+{
+	if (payload.rtt<200)
+		this.lag = 'lag-5';
+	else if (payload.rtt<500)
+		this.lag = 'lag-4';
+	else if (payload.rtt<900)
+		this.lag = 'lag-3';
+	else if (payload.rtt<1400)
+		this.lag = 'lag-2';
+	else
+		this.lag = 'lag-1';
+	this.setState(this.STATE_CONNECTED);		
 }
 
 ircServer.prototype.errorHandler = function(payload)
@@ -1242,6 +1258,7 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_ctcp_action']		= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventCTCPActionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_action');
 	this.subscriptions['event_unknown']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventUnknownHandler.bindAsEventListener(this),this.sessionToken, 'event_unknown');
 	this.subscriptions['event_numeric']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventNumericHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
+	this.subscriptions['auto_ping']				= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.autoPingHandler.bindAsEventListener(this),this.sessionToken, 'auto_ping');
 }
 
 /* ========================= START OF STATIC METHODS ======================== */

@@ -27,6 +27,7 @@ wIRCd.subscribe = function(onFailure, onSuccess, sessionToken, type)
 	case 'event_ctcp_action': method = 'event_ctcp_action'; break;
 	case 'event_unknown': method = 'event_unknown'; break;
 	case 'event_numeric': method = 'event_numeric'; break;
+	case 'auto_ping': method = 'auto_ping'; break;
 	}
 
 	var request = new Mojo.Service.Request(wIRCd.identifier+'/subscriptions',
