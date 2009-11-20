@@ -1231,13 +1231,13 @@ ircServer.prototype.autoPingHandler = function(payload)
 	var aveLag = lagSum / this.lagHistory.length;
 	Mojo.Log.error('Average lag on ' + payload.server + ': ' + aveLag);
 		
-	if (aveLag<200)
+	if (aveLag<300)
 		this.lag = 'lag-5';
-	else if (aveLag<500)
+	else if (aveLag<600)
 		this.lag = 'lag-4';
-	else if (aveLag<900)
+	else if (aveLag<1200)
 		this.lag = 'lag-3';
-	else if (aveLag<1400)
+	else if (aveLag<2400)
 		this.lag = 'lag-2';
 	else
 		this.lag = 'lag-1';
