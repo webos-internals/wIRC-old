@@ -201,6 +201,11 @@ ircServer.prototype.newCommand = function(message)
 					if (val) this.ping(val);
 					break;*/
 					
+				case 'notice':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch)
+						wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);
+					
 				case 'topic':
 					if (val) 
 					{
