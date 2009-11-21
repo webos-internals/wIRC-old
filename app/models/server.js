@@ -877,8 +877,6 @@ ircServer.prototype.eventConnectHandler = function(payload)
 		this.sessionNetwork = '';
 	}
 	
-	Mojo.Log.error('!!!!!!!!!!!!!!' + this.sessionNetwork);
-	
 	this.setState(this.STATE_CONNECTED);
 
 	this.runOnConnect.bind(this).defer();
@@ -1159,10 +1157,22 @@ ircServer.prototype.eventNumericHandler = function(payload)
 			else 
 				this.newMessage('action', false, 'Topic set by ' + payload.params[2] + ' on ' + dateString);
 			break;
-					
+
+		case '329':
+			var newDate = new Date();
+			newDate.setTime(payload.params[2]*1000);
+			dateString = newDate.toUTCString();
+			var tmpChan = this.getChannel(payload.params[1]);
+			if (tmpChan) 
+			{
+				if (tmpChan.containsNick(this.nick)) 
+					tmpChan.newMessage('type8', false, 'Channel ' + payload.params[1] + ' created on ' + dateString);
+			} 
+			else 
+				this.newMessage('action', false, 'Channel ' + payload.params[1] + ' created on ' + dateString);
+			break;					
 			
 		case '328':		// ???
-		case '329':		// ???
 		case '331':		// NO TOPIC
 			this.debugPayload(payload, false);
 			break;
@@ -1194,7 +1204,6 @@ ircServer.prototype.eventNumericHandler = function(payload)
 			break;
 	
 		case '366':		// ENDOFNAMES
-			this.debugPayload(payload, false);
 			break;
 					
 		case '375':		// MOTDSTART
@@ -1217,7 +1226,8 @@ ircServer.prototype.eventNumericHandler = function(payload)
 
 ircServer.prototype.eventUnknownHandler = function(payload)
 {
-	this.debugPayload(payload,false);
+	if (payload.event!='PONG')
+		this.debugPayload(payload,false);
 }
 
 ircServer.prototype.autoPingHandler = function(payload)
@@ -1229,7 +1239,6 @@ ircServer.prototype.autoPingHandler = function(payload)
 	var lagSum = 0;
 	this.lagHistory.forEach(function(x) {lagSum += x;});
 	var aveLag = lagSum / this.lagHistory.length;
-	Mojo.Log.error('Average lag on ' + payload.server + ': ' + aveLag);
 		
 	if (aveLag<300)
 		this.lag = 'lag-5';
