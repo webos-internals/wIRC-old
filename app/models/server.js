@@ -1233,7 +1233,15 @@ ircServer.prototype.eventNumericHandler = function(payload)
 			break;
 		
 		case '477':
-			this.newMessage('type2', false, payload.params[2]);
+		case '482':
+			var tmpChan = this.getChannel(payload.params[1]);
+			if (tmpChan) 
+			{
+				if (tmpChan.containsNick(this.nick))
+					tmpChan.newMessage('type2', false, payload.params[2]);
+			}
+			else
+				this.newMessage('type2', false, payload.params[2]);
 			break;
 					
 		default:
