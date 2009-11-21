@@ -1,7 +1,8 @@
 function ircServer(params)
 {
-	this.STATE_SERVICE_UNAVAILABLE	= -2;
-	this.STATE_PIFACE_UNAVAILABLE	= -1;
+	this.STATE_SERVICE_UNAVAILABLE	= -3;
+	this.STATE_PIFACE_UNAVAILABLE	= -2;
+	this.STATE_MAX_RETRIES			= -1;
 	this.STATE_DISCONNECTED			= 0;
 	this.STATE_TOKEN_REQUEST		= 1 
 	this.STATE_CONNECTING			= 2; 
@@ -73,6 +74,7 @@ ircServer.prototype.setState = function(state)
 	{
 		case this.STATE_SERVICE_UNAVAILABLE: message = "wIRCd is not running!"; break;
 		case this.STATE_PIFACE_UNAVAILABLE: message = "Preferred interface is not avaliable!"; break;
+		case this.STATE_MAX_RETRIES: message = "Exceeded max retries, not connecting!"; break;
 		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
 		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;
 		case this.STATE_CONNECTING: message = "Connecting..."; break;
@@ -786,8 +788,14 @@ ircServer.prototype.getListObject = function()
 	switch (this.state)
 	{
 		case this.STATE_SERVICE_UNAVAILABLE:
+			obj.rowStyle = obj.rowStyle + ' error2';
+			break;
+		case this.STATE_PIFACE_UNAVAILABLE:
 			obj.rowStyle = obj.rowStyle + ' error';
 			break;
+		case this.STATE_MAX_RETRIES:
+			obj.rowStyle = obj.rowStyle + ' warning';
+			break;			
 		case this.STATE_DISCONNECTED:
 			obj.rowStyle = obj.rowStyle + ' disconnected';
 			break;
@@ -856,7 +864,7 @@ ircServer.prototype.eventConnectHandler = function(payload)
 {
 	if (payload.event=='MAXRETRIES')
 	{
-		this.setState(this.STATE_DISCONNECTED);
+		this.setState(this.STATE_MAX_RETRIES);
 		return;	
 	}
 
@@ -1216,6 +1224,10 @@ ircServer.prototype.eventNumericHandler = function(payload)
 			this.nextNick = (this.nextNick < prefs.get().nicknames.length - 1) ? this.nextNick + 1 : 0;
 			this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
 			wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick])
+			break;
+		
+		case '477':
+			this.newMessage('type2', false, payload.params[2]);
 			break;
 					
 		default:
