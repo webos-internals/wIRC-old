@@ -995,7 +995,7 @@ ircServer.prototype.eventTopicHandler = function(payload)
 	{
 		var tmpNick = this.getNick(payload.origin);
 		tmpChan.topicUpdate(payload.params[1]);
-		tmpChan.newMessage('action', false, tmpNick&&tmpNick.name + ' changed the topic to: ' + payload.params[1]);
+		tmpChan.newMessage('type8', false, tmpNick.name + ' changed the topic to: ' + payload.params[1]);
 	}
 }
 
