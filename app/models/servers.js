@@ -10,10 +10,31 @@ function ircServers()
 }
 
 ircServers.prototype.cmHandler = function(payload)
-{
-	connectionInfo = payload;
+{	
 	if (payload.returnValue)
+	{
+		connectionInfo = payload;
 		this.load();
+		return;	
+	}
+	
+	var connectionInfoOld = connectionInfo;
+	connectionInfo = payload;
+	
+	for (var s=0; s<this.servers.length; s++)
+	{
+		if (!connectionInfo.isInternetConnectionAvailable)
+		{
+			if (this.servers[s].isConnected())
+				this.servers[s].setState(this.servers[s].STATE_DISRUPTED);	
+		}
+		else
+		{
+			if (this.servers[s].isDisrupted())
+				this.servers[s].init();
+		}
+	}
+		
 }
 
 /*ircServers.prototype.cmHandler = function(payload)

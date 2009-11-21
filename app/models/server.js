@@ -8,6 +8,7 @@ function ircServer(params)
 	this.STATE_CONNECTING			= 2; 
 	this.STATE_CONNECTED			= 3; 
 	this.STATE_DISCONNECTING		= 4;
+	this.STATE_DISRUPTED			= 5;
 
 	this.id =					params.id;
 	this.alias =				params.alias;
@@ -128,6 +129,11 @@ ircServer.prototype.init = function()
 ircServer.prototype.isConnected = function(message)
 {
 	return (this.state === this.STATE_CONNECTED);
+}
+
+ircServer.prototype.isDisrupted = function(message)
+{
+	return (this.state === this.STATE_DISRUPTED);
 }
 
 ircServer.prototype.newCommand = function(message)
@@ -830,6 +836,9 @@ ircServer.prototype.getListObject = function()
 				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' ' + this.lag;
 			else
 				obj.networkLag = obj.networkLag + 'network wifi ' + this.lag;
+			break;
+		case this.STATE_DISRUPTED:
+			obj.rowStyle = obj.rowStyle + ' unknown';
 			break;
 	}
 

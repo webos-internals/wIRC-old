@@ -152,6 +152,10 @@ br.clear
 {
 	background-image: url(../images/list-button-error2.png);
 }
+.server-list .palm-list .palm-row-wrapper.unknown .button.status
+{
+	background-image: url(../images/list-button-unknown.png);
+}
 .server-list .palm-list .palm-row-wrapper .button.spinner
 {
 	display: none;
