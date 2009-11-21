@@ -203,8 +203,21 @@ ircServer.prototype.newCommand = function(message)
 					
 				case 'notice':
 					var tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch)
-						wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);
+					if (tmpMatch[2].length>0)
+					{
+						var tmpNick = this.getNick(tmpMatch[1]);
+						var tmpChan = this.getChannel(tmpMatch[1]);
+						if (tmpChan)
+						{
+							tmpChan.newMessage('type6', this.nick, tmpMatch[2]);
+							wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);	
+						}
+						else if (tmpNick)
+						{
+							this.startQuery(tmpNick, true, 'type6', tmpMatch[2]);
+							wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);	
+						}
+					}
 					break;
 					
 				case 'topic':
@@ -660,6 +673,8 @@ ircServer.prototype.getNick = function(name)
 {
 	try
 	{
+		if (name.substr(0, 1) == '#')
+			return false;	
 		var match = nickParser.exec(name);
 		if (match) 
 		{
