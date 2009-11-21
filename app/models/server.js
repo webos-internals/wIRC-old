@@ -143,7 +143,7 @@ ircServer.prototype.newCommand = function(message)
 			switch (cmd.toLowerCase())
 			{
 				case 'nick':
-					wIRCd.nick(null, this.sessionToken, val)
+					wIRCd.nick(null, this.sessionToken, val);
 					break;
 						
 				case 'j':
