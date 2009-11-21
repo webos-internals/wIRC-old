@@ -205,6 +205,7 @@ ircServer.prototype.newCommand = function(message)
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch)
 						wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);
+					break;
 					
 				case 'topic':
 					if (val) 
