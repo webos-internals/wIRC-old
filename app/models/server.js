@@ -197,9 +197,9 @@ ircServer.prototype.newCommand = function(message)
 					this.away(val?val:null);
 					break;
 					
-				case 'ping':
+				/*case 'ping':
 					if (val) this.ping(val);
-					break;
+					break;*/
 					
 				case 'topic':
 					if (val) 
