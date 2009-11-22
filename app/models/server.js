@@ -1257,9 +1257,16 @@ ircServer.prototype.eventNumericHandler = function(payload)
 					
 		case '433':		// NAMEINUSE
 			this.newMessage('debug', false, payload.params[1] + " : " + payload.params[2]);
-			this.nextNick = (this.nextNick < prefs.get().nicknames.length - 1) ? this.nextNick + 1 : 0;
-			this.newMessage('debug', false, 'try next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
-			wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick])
+			if (this.nextNick < prefs.get().nicknames.length-1)
+			{
+				this.newMessage('debug', false, 'Trying next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
+				this.nextNick = this.nextNick + 1;
+				wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick]);	
+			}
+			else {
+				this.newMessage('debug', false, 'No more nicks to try!');
+				this.disconnect();
+			}
 			break;
 		
 		case '477':
