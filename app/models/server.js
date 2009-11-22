@@ -394,6 +394,12 @@ ircServer.prototype.disconnect = function(reason)
 	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
 }
 
+ircServer.prototype.disrupt = function()
+{
+	this.setState(this.STATE_DISRUPTED);
+	wIRCd.quit(false, this.sessionToken, false);
+}
+
 ircServer.prototype.disconnectHandler = function(payload)
 {
 	this.cleanupSubscriptions();
