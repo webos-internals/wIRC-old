@@ -4,253 +4,281 @@
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div id="pageSelector" class="page-selector">
+				<div id="pageName" class="page-name">none</div>
+			</div>
 			<div class="icon"></div>
 			<div class="title">Preferences</div>
 		</div>
 	</div>
 	
-	<div class="palm-group">
-		<div class="palm-group-title">Global</div>
-		<div class="palm-list">
-			
-			<div class="palm-row single">
-				<div class="palm-row-wrapper">
-					<div id="theme" x-mojo-element="ListSelector"></div>
+	
+	
+	<div id="prefPage_General">
+	
+		<div class="palm-group">
+			<div class="palm-group-title">Global</div>
+			<div class="palm-list">
+				
+				<div class="palm-row single">
+					<div class="palm-row-wrapper">
+						<div id="theme" x-mojo-element="ListSelector"></div>
+					</div>
 				</div>
+				
 			</div>
-			
 		</div>
+		
+		<div class="palm-group">
+			<div class="palm-group-title">Server Status</div>
+			<div class="palm-list">
+				
+				<div class="palm-row single">
+					<div class="palm-row-wrapper">
+						<div class="label left">Default In New Card</div>
+						<div id="statusPop" x-mojo-element="ToggleButton"></div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div class="palm-group">
+			<div class="palm-group-title">Preferred Interface</div>
+			<div class="palm-list">
+				
+				<div class="palm-row first" id="interfaceWrapper">
+					<div class="palm-row-wrapper">
+						<div id="piface" x-mojo-element="ListSelector"></div>
+					</div>
+				</div>
+				
+				<div id="fallbackInfo">
+				
+					<div class="palm-row last">
+						<div class="palm-row-wrapper">
+							<div class="label left">Use fallback</div>
+							<div id="aiface" x-mojo-element="ToggleButton"></div>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+	
 	</div>
 	
-	<div class="palm-group">
-		<div class="palm-group-title">Server Status</div>
-		<div class="palm-list">
-			
-			<div class="palm-row single">
-				<div class="palm-row-wrapper">
-					<div class="label left">Default In New Card</div>
-					<div id="statusPop" x-mojo-element="ToggleButton"></div>
-				</div>
-			</div>
-			
-		</div>
-	</div>
 	
-	<div class="palm-group">
-		<div class="palm-group-title">Preferred Interface</div>
-		<div class="palm-list">
-			
-			<div class="palm-row first" id="interfaceWrapper">
-				<div class="palm-row-wrapper">
-					<div id="piface" x-mojo-element="ListSelector"></div>
+	
+	
+	
+	<div id="prefPage_Messages">
+		
+		<div class="palm-group">
+			<div class="palm-group-title">Input</div>
+			<div class="palm-list">
+	
+				<div class="palm-row first">
+					<div class="palm-row-wrapper">
+						<div id="tabSuffix" x-mojo-element="ListSelector"></div>
+					</div>
 				</div>
-			</div>
-			
-			<div id="fallbackInfo">
-			
+					
+				<div class="palm-row">
+					<div class="palm-row-wrapper">
+						<div class="label left">Auto Capitalization</div>
+						<div id="autoCap" x-mojo-element="ToggleButton"></div>
+					</div>
+				</div>
+				
 				<div class="palm-row last">
 					<div class="palm-row-wrapper">
-						<div class="label left">Use fallback</div>
-						<div id="aiface" x-mojo-element="ToggleButton"></div>
+						<div class="label left">Smart Text Engine</div>
+						<div id="autoReplace" x-mojo-element="ToggleButton"></div>
+					</div>
+				</div>
+	
+			</div>
+		</div>
+		
+		
+		<div class="palm-group">
+			<div class="palm-group-title">Messages</div>
+			<div class="palm-list">
+				
+				<div class="palm-row first">
+					<div class="palm-row-wrapper">
+						<div id="messagesStyle" x-mojo-element="ListSelector"></div>
 					</div>
 				</div>
 				
-			</div>
-			
-		</div>
-	</div>
-	
-	<div class="palm-group">
-		<div class="palm-group-title">Input</div>
-		<div class="palm-list">
-
-			<div class="palm-row first">
-				<div class="palm-row-wrapper">
-					<div id="tabSuffix" x-mojo-element="ListSelector"></div>
+				<div class="palm-row" id="messageFixedSplit">
+					<div class="palm-row-wrapper">
+						<div id="messageSplit" x-mojo-element="ListSelector"></div>
+					</div>
 				</div>
-			</div>
 				
-			<div class="palm-row">
-				<div class="palm-row-wrapper">
-					<div class="label left">Auto Capitalization</div>
-					<div id="autoCap" x-mojo-element="ToggleButton"></div>
+				<div class="palm-row last">
+					<div class="palm-row-wrapper">
+						<div class="label left">Font Size</div>
+						<div class="title right sliderTitle" id="fontSizeTest">&nbsp;</div>
+						<div id="fontSize" x-mojo-element="Slider" class="slider"></div>
+					</div>
 				</div>
+				
+				<div class="palm-row last">
+					<div class="palm-row-wrapper">
+						<div class="label left">Sender Coloring</div>
+						<div id="senderColoring" x-mojo-element="ToggleButton"></div>
+					</div>
+				</div>			
+				
 			</div>
-			
-			<div class="palm-row last">
-				<div class="palm-row-wrapper">
-					<div class="label left">Smart Text Engine</div>
-					<div id="autoReplace" x-mojo-element="ToggleButton"></div>
-				</div>
-			</div>
-
 		</div>
-	</div>
-	
-	
-	<div class="palm-group">
-		<div class="palm-group-title">Messages</div>
-		<div class="palm-list">
-			
-			<div class="palm-row first">
-				<div class="palm-row-wrapper">
-					<div id="messagesStyle" x-mojo-element="ListSelector"></div>
+		
+		<div class="palm-group">
+			<div class="palm-group-title">Mention Highlighting</div>
+			<div class="palm-list">
+				
+				<div class="palm-row first">
+					<div class="palm-row-wrapper">
+						<div id="highlightStyle" x-mojo-element="ListSelector"></div>
+					</div>
 				</div>
+				
+				<div class="palm-row last">
+					<div class="palm-row-wrapper">
+						<div id="highlightPart" x-mojo-element="ListSelector"></div>
+					</div>
+				</div>
+							
 			</div>
-			
-			<div class="palm-row" id="messageFixedSplit">
-				<div class="palm-row-wrapper">
-					<div id="messageSplit" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-			
-			<div class="palm-row last">
-				<div class="palm-row-wrapper">
-					<div class="label left">Font Size</div>
-					<div class="title right sliderTitle" id="fontSizeTest">&nbsp;</div>
-					<div id="fontSize" x-mojo-element="Slider" class="slider"></div>
-				</div>
-			</div>
-			
-			<div class="palm-row last">
-				<div class="palm-row-wrapper">
-					<div class="label left">Sender Coloring</div>
-					<div id="senderColoring" x-mojo-element="ToggleButton"></div>
-				</div>
-			</div>			
-			
 		</div>
-	</div>
 	
-	<div class="palm-group">
-		<div class="palm-group-title">Mention Highlighting</div>
-		<div class="palm-list">
-			
-			<div class="palm-row first">
-				<div class="palm-row-wrapper">
-					<div id="highlightStyle" x-mojo-element="ListSelector"></div>
+		<div class="palm-group">
+			<div class="palm-group-title">Color Scheme</div>
+			<div class="palm-list">
+				
+				<div class="palm-row first">
+					<div class="palm-row-wrapper">
+						<div id="colorNotice" x-mojo-element="ListSelector"></div>
+					</div>
 				</div>
-			</div>
-			
-			<div class="palm-row last">
-				<div class="palm-row-wrapper">
-					<div id="highlightPart" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-						
-		</div>
-	</div>
-
-	<div class="palm-group">
-		<div class="palm-group-title">Color Scheme</div>
-		<div class="palm-list">
-			
-			<div class="palm-row first">
-				<div class="palm-row-wrapper">
-					<div id="colorNotice" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-			
-			<div class="palm-row">
-				<div class="palm-row-wrapper">
-					<div id="colorAction" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-			
-			<div class="palm-row">
-				<div class="palm-row-wrapper">
-					<div id="colorStatus" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>			
-			
-			<div class="palm-row">
-				<div class="palm-row-wrapper">
-					<div id="colorText" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-			
-			
-			<div class="palm-row">
-				<div class="palm-row-wrapper">
-					<div id="colorOwnNick" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-
-			<div id="OtherNicksWrapper">
 				
 				<div class="palm-row">
 					<div class="palm-row-wrapper">
-						<div id="colorOtherNicks" x-mojo-element="ListSelector"></div>
+						<div id="colorAction" x-mojo-element="ListSelector"></div>
+					</div>
+				</div>
+				
+				<div class="palm-row">
+					<div class="palm-row-wrapper">
+						<div id="colorStatus" x-mojo-element="ListSelector"></div>
+					</div>
+				</div>			
+				
+				<div class="palm-row">
+					<div class="palm-row-wrapper">
+						<div id="colorText" x-mojo-element="ListSelector"></div>
+					</div>
+				</div>
+				
+				
+				<div class="palm-row">
+					<div class="palm-row-wrapper">
+						<div id="colorOwnNick" x-mojo-element="ListSelector"></div>
+					</div>
+				</div>
+	
+				<div id="OtherNicksWrapper">
+					
+					<div class="palm-row">
+						<div class="palm-row-wrapper">
+							<div id="colorOtherNicks" x-mojo-element="ListSelector"></div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div id="highlightColorOptions">
+				
+					<div class="palm-row">
+						<div class="palm-row-wrapper">
+							<div id="colorHighlightFG" x-mojo-element="ListSelector"></div>
+						</div>
+					</div>
+				
+					<div class="palm-row">
+						<div class="palm-row-wrapper">
+							<div id="colorHighlightBG" x-mojo-element="ListSelector"></div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div class="palm-row last">
+					<div class="palm-row-wrapper">
+						<div id="colorMarker" x-mojo-element="ListSelector"></div>
 					</div>
 				</div>
 				
 			</div>
-			
-			<div id="highlightColorOptions">
-			
-				<div class="palm-row">
-					<div class="palm-row-wrapper">
-						<div id="colorHighlightFG" x-mojo-element="ListSelector"></div>
-					</div>
-				</div>
-			
-				<div class="palm-row">
-					<div class="palm-row-wrapper">
-						<div id="colorHighlightBG" x-mojo-element="ListSelector"></div>
-					</div>
-				</div>
-				
-			</div>
-			
-			<div class="palm-row last">
-				<div class="palm-row-wrapper">
-					<div id="colorMarker" x-mojo-element="ListSelector"></div>
-				</div>
-			</div>
-			
 		</div>
+	
 	</div>
 	
-	<div class="palm-group">
-		<div class="palm-group-title">Dashboard/Banner Notifications</div>
-		<div class="palm-list">
-			
-			<div class="palm-row first">
-				<div class="palm-row-wrapper">
-					<div class="label left">On Channel Mention</div>
-					<div id="dashboardChannel" x-mojo-element="ToggleButton"></div>
+	
+	
+	
+	
+	<div id="prefPage_Notifications">
+		
+		<div class="palm-group">
+			<div class="palm-group-title">Dashboard/Banner Notifications</div>
+			<div class="palm-list">
+				
+				<div class="palm-row first">
+					<div class="palm-row-wrapper">
+						<div class="label left">On Channel Mention</div>
+						<div id="dashboardChannel" x-mojo-element="ToggleButton"></div>
+					</div>
 				</div>
-			</div>
-			
-			<div class="palm-row" id="dashboardChannelSoundRow">
-				<div class="palm-row-wrapper">
-					<div class="label left">Mention Banner Sound</div>
-					<div id="dashboardChannelSound" x-mojo-element="ToggleButton"></div>
+				
+				<div class="palm-row" id="dashboardChannelSoundRow">
+					<div class="palm-row-wrapper">
+						<div class="label left">Mention Banner Sound</div>
+						<div id="dashboardChannelSound" x-mojo-element="ToggleButton"></div>
+					</div>
 				</div>
-			</div>
-			
-			<div class="palm-row">
-				<div class="palm-row-wrapper">
-					<div class="label left">Query Banner Sound</div>
-					<div id="dashboardQuerySound" x-mojo-element="ToggleButton"></div>
+				
+				<div class="palm-row">
+					<div class="palm-row-wrapper">
+						<div class="label left">Query Banner Sound</div>
+						<div id="dashboardQuerySound" x-mojo-element="ToggleButton"></div>
+					</div>
 				</div>
-			</div>
-			
-			<div class="palm-row last" id="inviteContainer">
-				<div class="palm-row-wrapper">
-					<div id="inviteAction" x-mojo-element="ListSelector"></div>
+				
+				<div class="palm-row last" id="inviteContainer">
+					<div class="palm-row-wrapper">
+						<div id="inviteAction" x-mojo-element="ListSelector"></div>
+					</div>
 				</div>
-			</div>
-			
-			<div class="palm-row last" id="dashboardInviteSoundRow">
-				<div class="palm-row-wrapper">
-					<div class="label left">Invite Sound</div>
-					<div id="dashboardInviteSound" x-mojo-element="ToggleButton"></div>
+				
+				<div class="palm-row last" id="dashboardInviteSoundRow">
+					<div class="palm-row-wrapper">
+						<div class="label left">Invite Sound</div>
+						<div id="dashboardInviteSound" x-mojo-element="ToggleButton"></div>
+					</div>
 				</div>
+				
 			</div>
-			
 		</div>
+	
 	</div>
+	
+	
+	
 	
 	
 	<div class="palm-group" id="secretPreferences">

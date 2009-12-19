@@ -36,6 +36,46 @@ br.clear
 }
 
 
+/*
+ * Preferences Scene Styles
+ */
+.prefs .page-selector 
+{
+	display: inline-block;
+	position: relative;
+	float: right;
+	/*margin: 8px -16px 0px 0px;*/
+	font-size: 14px;
+	text-transform: uppercase;
+	height: 35px;
+	line-height: 33px;
+	border-width: 0px 22px 0px 16px;
+	-webkit-border-image:url(../images/palm-default/header-selector.png) 0 22 0 16 stretch stretch;
+	-webkit-box-sizing: border-box;
+	
+	margin: 9px 9px 0px 0px;
+	color: #555;
+}
+body.palm-dark .prefs .page-selector
+{
+	-webkit-border-image:url(../images/palm-dark/header-selector.png) 0 22 0 16 stretch stretch;
+	color: #c0c0c0;
+}
+.prefs .page-name
+{
+	margin-left: -5px;
+	padding-right: 2px;
+	background: transparent;
+	display: inline-block;
+	min-width: 12px;
+	max-width: 95px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	-webkit-palm-mouse-target: ignore;
+}
+
+
 
 /*
  * Server List Scene Styles
