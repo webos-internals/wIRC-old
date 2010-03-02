@@ -282,8 +282,19 @@ ircMessage.prototype.highlightTest = function()
 		}
 	}
 	
-	// eventually we will move to a last one, which is to test it against a highlight words list from prefs
-	// but that list doesn't exist yet.
+	// lastly, we check the alert words preference
+	var testWords = prefs.get().alertWords;
+	if (testWords.length > 0)
+	{
+		for (var w = 0; w < testWords.length; w++)
+		{
+			if (this.message.toLowerCase().include(testWords[w].toLowerCase())) 
+			{
+				this.highlightMessage();
+				return;
+			}
+		}
+	}
 	
 }
 
