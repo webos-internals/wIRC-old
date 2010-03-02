@@ -19,6 +19,9 @@ function ChannelListAssistant(server)
 
 ChannelListAssistant.prototype.setup = function()
 {
+	// set theme
+	this.controller.document.body.className = prefs.get().theme;
+	
 	this.headerElement =		this.controller.get('listHeader');
 	this.searchElement =		this.controller.get('searchText');
 	this.searchSpinnerElement =	this.controller.get('searchSpinner');

@@ -180,6 +180,9 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	// set the theme right away with the body class
 	this.controller.document.body.className = event.value;
 	this.listChanged();
+	
+	// set theme on all other open stages
+	Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 }
 PreferencesGeneralAssistant.prototype.pifaceChanged = function(event)
 {

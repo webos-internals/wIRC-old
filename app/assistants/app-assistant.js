@@ -107,45 +107,66 @@ AppAssistant.prototype.cleanup = function()
 }
 
 
-AppAssistant.prototype.getStageCount = function()
+AppAssistant.prototype.getStages = function()
 {
-	var count = 0;
+	var stages = [];
 	
 	// test server list stage
-	if (this.controller.getStageController(serverStage)) count++;
+	if (this.controller.getStageController(serverStage)) stages.push(serverStage);
 	
 	if (servers.servers.length > 0)
 	{
 		for (var s = 0; s < servers.servers.length; s++)
 		{
 			// test server status stage
-			if (this.controller.getStageController(servers.servers[s].stageName)) count++;
+			if (this.controller.getStageController(servers.servers[s].stageName)) stages.push(servers.servers[s].stageName);
 			
+			// test server channel list stage
+			if (this.controller.getStageController(servers.servers[s].listStageName)) stages.push(servers.servers[s].listStageName);
+
+			// test channel chat stages
 			if (servers.servers[s].channels.length > 0)
 			{
 				for (var c = 0; c < servers.servers[s].channels.length; c++) 
 				{
-					// test channel chat stage
-					if (this.controller.getStageController(servers.servers[s].channels[c].stageName)) count++;
-					
-					// test channel dashboard stage
-					if (this.controller.getStageController(servers.servers[s].channels[c].dashName)) count++;
+					if (this.controller.getStageController(servers.servers[s].channels[c].stageName)) stages.push(servers.servers[s].channels[c].stageName);
 				}
 			}
-			
+
+			// test query chat stages
 			if (servers.servers[s].queries.length > 0)
 			{
 				for (var q = 0; q < servers.servers[s].queries.length; q++) 
 				{
-					// test query chat stage
-					if (this.controller.getStageController(servers.servers[s].queries[q].stageName)) count++;
-					
-					// test query dashboard stage
-					if (this.controller.getStageController(servers.servers[s].queries[q].dashName)) count++;
+					if (this.controller.getStageController(servers.servers[s].queries[q].stageName)) stages.push(servers.servers[s].queries[q].stageName);
+				}
+			}
+
+			// test nick whois stages
+			if (servers.servers[s].nicks.length > 0)
+			{
+				for (var n = 0; n < servers.servers[s].nicks.length; n++) 
+				{
+					if (this.controller.getStageController(servers.servers[s].nicks[n].whoisStageName)) stages.push(servers.servers[s].nicks[n].whoisStageName);
 				}
 			}
 		}
 	}
 	
-	return count;
+	return stages;
+}
+AppAssistant.prototype.updateTheme = function(theme)
+{
+	stages = this.getStages();
+	if (stages.length > 0)
+	{
+		for (var s = 0; s < stages.length; s++)
+		{
+			try
+			{
+				this.controller.getStageController(stages[s]).activeScene().assistant.controller.document.body.className = theme;
+			}
+			catch (e) {}
+		}
+	}
 }

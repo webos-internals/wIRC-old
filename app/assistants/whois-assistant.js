@@ -5,6 +5,9 @@ function WhoisAssistant(nick)
 
 WhoisAssistant.prototype.setup = function()
 {
+	// set theme
+	this.controller.document.body.className = prefs.get().theme;
+	
 	this.titleElement =			this.controller.get('title');
 	this.dataElement =			this.controller.get('whoisData');
 	
