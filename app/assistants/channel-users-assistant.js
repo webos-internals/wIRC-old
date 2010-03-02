@@ -212,7 +212,7 @@ ChannelUsersAssistant.prototype.handleCommand = function(event)
 		switch (event.command)
 		{
 			case 'do-prefs':
-				this.controller.stageController.pushScene('preferences');
+				this.controller.stageController.pushScene('preferences-general');
 				break;
 		}
 	}

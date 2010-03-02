@@ -438,7 +438,7 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 				this.updateAppMenu();
 				break;
 			case 'do-prefs':
-				this.controller.stageController.pushScene('preferences');
+				this.controller.stageController.pushScene('preferences-general');
 				break;
 			case 'do-prefs':
 				this.test++;

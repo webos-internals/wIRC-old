@@ -5,6 +5,7 @@ function ServerListAssistant()
 	[
 		{weight: 30, text: 'The webOS IRC Client'},
 		{weight:  5, text: 'Now you can IRC from the crapper'},
+		{weight:  2, text: 'You can, but can\'t'},
 		{weight:  2, text: 'Random Taglines Are Awesome'}
 	];
 	
@@ -225,7 +226,7 @@ ServerListAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'do-prefs':
-				this.controller.stageController.pushScene('preferences');
+				this.controller.stageController.pushScene('preferences-general');
 				break;
 				
 			case 'do-about':

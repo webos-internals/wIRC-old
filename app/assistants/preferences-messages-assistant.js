@@ -1,21 +1,15 @@
-function PreferencesAssistant()
+function PreferencesMessagesAssistant()
 {
 	// setup default preferences in the prefCookie.js model
 	this.cookie = new prefCookie();
 	this.prefs = this.cookie.get();
 	
-	// for secret group
-	this.secretString = '';
-	this.secretAnswer = 'iknowwhatimdoing';
-	
-	this.interfaceWrapper =		false;
-	
 	this.pageList = [
-		{label: 'General',			command: 'General'},
-		{label: 'Messages',			command: 'Messages'},
-		{label: 'Notifications',	command: 'Notifications'}
+		{label: 'General',			command: 'general'},
+		{label: 'Messages',			command: 'messages'},
+		{label: 'Notifications',	command: 'notifications'}
 	];
-	this.currentPage = 'General';
+	this.currentPage = 'messages';
 	
 	// setup menu
 	this.menuModel =
@@ -175,7 +169,7 @@ function PreferencesAssistant()
 
 }
 
-PreferencesAssistant.prototype.setup = function()
+PreferencesMessagesAssistant.prototype.setup = function()
 {
 	try
 	{
@@ -192,86 +186,15 @@ PreferencesAssistant.prototype.setup = function()
 		this.pageSwitcher =			this.pageSwitch.bindAsEventListener(this);
 		this.controller.listen(this.pageSelectorElement, Mojo.Event.tap, this.pageTapHandler);
 		
+		this.pageNameElement.update(this.currentPage);
+		
 		// setup handlers for preferences
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
 		this.senderColoringHandler = this.senderColoringChanged.bindAsEventListener(this);
 		
-		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);
 		
-		// Global Group
-		this.controller.setupWidget
-		(
-			'theme',
-			{
-				label: 'Theme',
-				choices:
-				[
-					{label:'Palm Default',	value:'palm-default'},
-					{label:'Palm Dark',		value:'palm-dark'}
-				],
-				modelProperty: 'theme'
-			},
-			this.prefs
-		);
-		
-		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
-		
-		
-		
-		// Server Status Group
-		this.controller.setupWidget
-		(
-			'statusPop',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-	  			fieldName:  'statusPop'
-			},
-			{
-				value : this.prefs.statusPop,
-	 			disabled: false
-			}
-		);
-		
-		this.controller.listen('statusPop',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-		
-		// Connection details group
-		this.interfaceWrapper =		this.controller.get('interfaceWrapper');
-		this.pifaceChanged();
-		this.controller.setupWidget
-		(
-			'piface',
-			{
-				label: 'Interface',
-				choices:
-				[
-					{label:'None', value:''},
-					{label:'Wan (ppp0)', value:'ppp0'},
-					{label:'Wifi (eth0)', value:'eth0'}
-				],
-				modelProperty: 'piface'
-			},
-			this.prefs
-		);
-		this.controller.listen('piface',		Mojo.Event.propertyChange, this.pifaceChangedHandler);
-		this.controller.setupWidget
-		(
-			'aiface',
-			{
-	  			trueLabel:  'Yes',
-	  			trueValue:	true,
-	 			falseLabel: 'No',
-	 			falseValue: false,
-	  			fieldName:  'aiface'
-			},
-			{
-				value : this.prefs.aiface,
-	 			disabled: false
-			}
-		);
-		this.controller.listen('aiface',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		// Input Group
 		this.controller.setupWidget
@@ -551,89 +474,8 @@ PreferencesAssistant.prototype.setup = function()
 		this.controller.listen('colorOwnNick',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('colorOtherNicks',	Mojo.Event.propertyChange, this.listChangedHandler);		
 		
-		// Dashboard/Banner Group
-		this.controller.setupWidget
-		(
-			'dashboardChannel',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-	  			fieldName:  'dashboardChannel'
-			},
-			{
-				value : this.prefs.dashboardChannel,
-	 			disabled: false
-			}
-		);
-		this.controller.setupWidget
-		(
-			'dashboardChannelSound',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-	  			fieldName:  'dashboardChannelSound'
-			},
-			{
-				value : this.prefs.dashboardChannelSound,
-	 			disabled: false
-			}
-		);
-		this.controller.setupWidget
-		(
-			'dashboardQuerySound',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-	  			fieldName:  'dashboardQuerySound'
-			},
-			{
-				value : this.prefs.dashboardQuerySound,
-	 			disabled: false
-			}
-		);
-		
-		this.controller.setupWidget
-		(
-			'inviteAction',
-			{
-				label: 'Invite Action',
-				choices:
-				[
-					{label:'Always Accept',	value:'accept'},
-					{label:'Prompt',		value:'prompt'},
-					{label:'Always Ignore',	value:'ignore'}
-				],
-				modelProperty: 'inviteAction'
-			},
-			this.prefs
-		);
-		this.controller.setupWidget
-		(
-			'dashboardInviteSound',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-	  			fieldName:  'dashboardInviteSound'
-			},
-			{
-				value : this.prefs.dashboardInviteSound,
-	 			disabled: false
-			}
-		);
-		
-		this.dashboardChannelChanged();
-		this.controller.listen('dashboardChannel',		Mojo.Event.propertyChange, this.dashboardChannelChanged.bindAsEventListener(this));
-		
-		this.controller.listen('dashboardChannelSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-		this.controller.listen('dashboardQuerySound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-		
-		this.inviteActionChanged();
-		this.controller.listen('inviteAction',			Mojo.Event.propertyChange, this.inviteActionChanged.bindAsEventListener(this));
-		this.controller.listen('dashboardInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		
-		// hide secret group
-		this.controller.get('secretPreferences').style.display = 'none';
 		
 	}
 	catch (e)
@@ -643,21 +485,21 @@ PreferencesAssistant.prototype.setup = function()
 
 }
 
-PreferencesAssistant.prototype.toggleChanged = function(event)
+PreferencesMessagesAssistant.prototype.toggleChanged = function(event)
 {
 	this.prefs[event.target.id] = event.value;
 	this.cookie.put(this.prefs);
 }
-PreferencesAssistant.prototype.sliderChanged = function(event)
+PreferencesMessagesAssistant.prototype.sliderChanged = function(event)
 {
 	this.cookie.put(this.prefs);
 }
-PreferencesAssistant.prototype.listChanged = function(event)
+PreferencesMessagesAssistant.prototype.listChanged = function(event)
 {
 	this.cookie.put(this.prefs);
 }
 
-PreferencesAssistant.prototype.senderColoringChanged = function(event)
+PreferencesMessagesAssistant.prototype.senderColoringChanged = function(event)
 {
 	if (event) 
 	{
@@ -672,13 +514,7 @@ PreferencesAssistant.prototype.senderColoringChanged = function(event)
 		this.controller.get('OtherNicksWrapper').style.display = '';
 	}	
 }
-PreferencesAssistant.prototype.themeChanged = function(event)
-{
-	// set the theme right away with the body class
-	this.controller.document.body.className = event.value;
-	this.listChanged();
-}
-PreferencesAssistant.prototype.messageStyleChanged = function(event)
+PreferencesMessagesAssistant.prototype.messageStyleChanged = function(event)
 {
 	if (event) 
 	{
@@ -693,7 +529,7 @@ PreferencesAssistant.prototype.messageStyleChanged = function(event)
 		this.controller.get('messageFixedSplit').style.display = '';
 	}
 }
-PreferencesAssistant.prototype.highlightStyleChanged = function(event)
+PreferencesMessagesAssistant.prototype.highlightStyleChanged = function(event)
 {
 	if (event) 
 	{
@@ -708,66 +544,16 @@ PreferencesAssistant.prototype.highlightStyleChanged = function(event)
 		this.controller.get('highlightColorOptions').style.display = 'none';
 	}
 }
-PreferencesAssistant.prototype.pifaceChanged = function(event)
-{
-	if (event) 
-	{
-		this.listChanged(event);
-	}
-	if (this.prefs['piface']=='')
-	{
-		this.interfaceWrapper.className = 'palm-row single';
-		this.controller.get('fallbackInfo').style.display = 'none';
-	}
-	else
-	{
-		this.interfaceWrapper.className = 'palm-row first';
-		this.controller.get('fallbackInfo').style.display = '';
-	}
-}
-PreferencesAssistant.prototype.dashboardChannelChanged = function(event)
-{
-	if (event) 
-	{
-		this.toggleChanged(event);
-	}
-	if (this.prefs['inviteAction'])
-	{
-		this.controller.get('dashboardChannelSoundRow').style.display = '';
-	}
-	else
-	{
-		this.controller.get('dashboardChannelSoundRow').style.display = 'none';
-	}
-}
-PreferencesAssistant.prototype.inviteActionChanged = function(event)
-{
-	if (event) 
-	{
-		this.listChanged(event);
-	}
-	if (this.prefs['inviteAction'] == 'prompt')
-	{
-		this.controller.get('inviteContainer').className = 'palm-row';
-		this.controller.get('dashboardInviteSoundRow').style.display = '';
-	}
-	else
-	{
-		this.controller.get('inviteContainer').className = 'palm-row last';
-		this.controller.get('dashboardInviteSoundRow').style.display = 'none';
-	}
-}
-
-PreferencesAssistant.prototype.sliderGetPrefValue = function(min, max, slider)
+PreferencesMessagesAssistant.prototype.sliderGetPrefValue = function(min, max, slider)
 {
 	return Math.round(min + (slider * (max - min)));
 }
-PreferencesAssistant.prototype.sliderGetSlideValue = function(min, max, pref)
+PreferencesMessagesAssistant.prototype.sliderGetSlideValue = function(min, max, pref)
 {
 	return ((pref - min) / (max - min));
 }
 
-PreferencesAssistant.prototype.fontSizeChanged = function(event)
+PreferencesMessagesAssistant.prototype.fontSizeChanged = function(event)
 {
 	var value = this.sliderGetPrefValue(9, 22, event.value);
 	
@@ -778,19 +564,12 @@ PreferencesAssistant.prototype.fontSizeChanged = function(event)
 	this.sliderChanged();
 }
 
-PreferencesAssistant.prototype.pageSwitch = function(page)
+PreferencesMessagesAssistant.prototype.pageSwitch = function(page)
 {
-	var pagePrefix = 'prefPage_';
-	
-	if (page === null || page == "" || page == undefined) return;
-	
-	this.currentPage = page;
-	this.pageNameElement.update(this.currentPage);
-	
-	this.pageList.each(function(p) { this.controller.get(pagePrefix + p.command).hide(); }.bind(this));
-	this.controller.get(pagePrefix + page).show();
+	if (page === null || page == "" || page == undefined || page == this.currentPage) return;
+	this.controller.stageController.swapScene({name: 'preferences-'+page, transition: Mojo.Transition.crossFade});
 }
-PreferencesAssistant.prototype.pageTap = function(event)
+PreferencesMessagesAssistant.prototype.pageTap = function(event)
 {
 	this.controller.popupSubmenu(
 	{
@@ -802,7 +581,7 @@ PreferencesAssistant.prototype.pageTap = function(event)
 	});
 }
 
-PreferencesAssistant.prototype.handleCommand = function(event)
+PreferencesMessagesAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
 	{
@@ -815,31 +594,7 @@ PreferencesAssistant.prototype.handleCommand = function(event)
 	}
 }
 
-PreferencesAssistant.prototype.keyPress = function(event)
-{
-	this.secretString += String.fromCharCode(event.originalEvent.charCode);
-	
-	if (event.originalEvent.charCode == 8)
-	{
-		this.secretString = '';
-	}
-	
-	if (this.secretString.length == this.secretAnswer.length)
-	{
-		if (this.secretString === this.secretAnswer)
-		{
-			//this.controller.get('secretPreferences').style.display = '';
-			//this.controller.getSceneScroller().mojo.revealElement(this.controller.get('secretPreferences'));
-			this.secretString = '';
-		}
-	}
-	else if (this.secretString.length > this.secretAnswer.length)
-	{
-		this.secretString = '';
-	}
-}
-
-PreferencesAssistant.prototype.activate = function(event)
+PreferencesMessagesAssistant.prototype.activate = function(event)
 {
 	if (!this.hasBennActivated)
 	{
@@ -848,23 +603,16 @@ PreferencesAssistant.prototype.activate = function(event)
 	this.hasBennActivated = true;
 }
 
-PreferencesAssistant.prototype.deactivate = function(event)
+PreferencesMessagesAssistant.prototype.deactivate = function(event)
 {
 	// reload global storage of preferences when we get rid of this stage
 	var tmp = prefs.get(true);
 }
 
-PreferencesAssistant.prototype.cleanup = function(event)
+PreferencesMessagesAssistant.prototype.cleanup = function(event)
 {
 	this.controller.stopListening(this.pageSelectorElement, Mojo.Event.tap,			   this.pageTapHandler);
 	
-	this.controller.stopListening('theme',					Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
-	
-	this.controller.stopListening('statusPop',				Mojo.Event.propertyChange, this.toggleChangeHandler);
-	
-	this.controller.stopListening('piface',					Mojo.Event.propertyChange, this.pifaceChangedHandler);
-	this.controller.stopListening('aiface',					Mojo.Event.propertyChange, this.listChangedHandler);
-		
 	this.controller.stopListening('tabSuffix',				Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('autoCap',				Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('autoReplace',			Mojo.Event.propertyChange, this.toggleChangeHandler);
@@ -887,10 +635,4 @@ PreferencesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('colorOwnNick',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorOtherNicks',		Mojo.Event.propertyChange, this.listChangedHandler);
 
-	this.controller.stopListening('dashboardChannel',		Mojo.Event.propertyChange, this.dashboardChannelChanged.bindAsEventListener(this));
-	this.controller.stopListening('dashboardChannelSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-	this.controller.stopListening('dashboardQuerySound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-	
-	this.controller.stopListening('inviteAction',			Mojo.Event.propertyChange, this.inviteActionChanged.bindAsEventListener(this));
-	this.controller.stopListening('dashboardInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 }
