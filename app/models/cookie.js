@@ -42,6 +42,7 @@ prefCookie.prototype.get = function(reload)
 				// Highlight Group
 				highlightStyle:		'color',
 				highlightPart:		'all',
+				alertWords:			'',
 				
 				// Dashboard/Banner Group
 				dashboardChannel:		true,

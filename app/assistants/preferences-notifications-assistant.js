@@ -24,6 +24,19 @@ function PreferencesNotificationsAssistant()
 		]
 	}
 
+	this.alertList =		false;
+	this.alertListModel =	{items:[]};
+	this.alertListData =	[];
+	this.alertListCount =	0;
+	
+	if (this.prefs.alertWords && this.prefs.alertWords.length > 0)
+	{
+		for (var n = 0; n < this.prefs.alertWords.length; n++)
+		{
+			this.alertListCount++;
+			this.alertListData.push({id: this.alertListCount, index: this.alertListCount-1, value: this.prefs.alertWords[n]});
+		}
+	}
 }
 
 PreferencesNotificationsAssistant.prototype.setup = function()
@@ -134,6 +147,51 @@ PreferencesNotificationsAssistant.prototype.setup = function()
 		this.controller.listen('dashboardInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		
+		
+		
+		this.alertList	= this.controller.get('alertList');
+		
+		this.alertListBuildList();
+		this.controller.setupWidget
+		(
+			'alertList',
+			{
+				itemTemplate: "preferences-notifications/alert-row",
+				swipeToDelete: true,
+				reorderable: true,
+				addItemLabel: 'Add',
+				
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'value',
+				changeOnKeyPress: true,
+				charsAllow: this.validChars,
+				maxLength: 16,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.alertListModel
+		);
+		this.controller.setupWidget
+		(
+			'alertField',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'value',
+				changeOnKeyPress: true,
+				charsAllow: this.validChars,
+				maxLength: 16,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			}
+		);
+		
+		this.controller.listen(this.alertList, Mojo.Event.listAdd,			this.alertListAdd.bindAsEventListener(this));
+		this.controller.listen(this.alertList, Mojo.Event.propertyChanged,	this.alertListChange.bindAsEventListener(this));
+		this.controller.listen(this.alertList, Mojo.Event.listReorder,		this.alertListReorder.bindAsEventListener(this));
+		this.controller.listen(this.alertList, Mojo.Event.listDelete,		this.alertListDelete.bindAsEventListener(this));
+		
 	}
 	catch (e)
 	{
@@ -229,6 +287,131 @@ PreferencesNotificationsAssistant.prototype.handleCommand = function(event)
 }
 
 
+PreferencesNotificationsAssistant.prototype.alertListBuildList = function()
+{
+	this.alertListModel.items = [];
+	if (this.alertListData.length > 0)
+	{
+		for (var d = 0; d < this.alertListData.length; d++)
+		{
+			this.alertListModel.items.push(this.alertListData[d]);
+		}
+	}
+}
+PreferencesNotificationsAssistant.prototype.alertListAdd = function(event)
+{
+	this.alertListCount++;
+	this.alertListData.push({id: this.alertListCount, index: this.alertListData.length, value: ''});
+	
+	this.alertListBuildList();
+	
+	this.alertList.mojo.noticeUpdatedItems(0, this.alertListModel.items);
+	this.alertList.mojo.setLength(this.alertListModel.items.length);
+	
+	this.alertList.mojo.focusItem(this.alertListModel.items[this.alertListModel.items.length-1]);
+	
+	this.alertListSave();
+}
+PreferencesNotificationsAssistant.prototype.alertListChange = function(event)
+{
+	this.alertListSave();
+}
+PreferencesNotificationsAssistant.prototype.alertListReorder = function(event)
+{
+	for (var d = 0; d < this.alertListData.length; d++) 
+	{
+		if (this.alertListData[d].index == event.fromIndex) 
+		{
+			this.alertListData[d].index = event.toIndex;
+		}
+		else 
+		{
+			if (event.fromIndex > event.toIndex) 
+			{
+				if (this.alertListData[d].index < event.fromIndex &&
+				this.alertListData[d].index >= event.toIndex) 
+				{
+					this.alertListData[d].index++;
+				}
+			}
+			else if (event.fromIndex < event.toIndex) 
+			{
+				if (this.alertListData[d].index > event.fromIndex &&
+				this.alertListData[d].index <= event.toIndex) 
+				{
+					this.alertListData[d].index--;
+				}
+			}
+		}
+	}
+	this.alertListSave();
+}
+PreferencesNotificationsAssistant.prototype.alertListDelete = function(event)
+{
+	var newData = [];
+	if (this.alertListData.length > 0) 
+	{
+		for (var d = 0; d < this.alertListData.length; d++) 
+		{
+			if (this.alertListData[d].id == event.item.id) 
+			{
+				// ignore
+			}
+			else 
+			{
+				if (this.alertListData[d].index > event.index) 
+				{
+					this.alertListData[d].index--;
+				}
+				newData.push(this.alertListData[d]);
+			}
+		}
+	}
+	this.alertListData = newData;
+	this.alertListSave();
+}
+PreferencesNotificationsAssistant.prototype.alertListSave = function()
+{
+	if (this.alertListData.length > 0) 
+	{
+		if (this.alertListData.length > 1) 
+		{
+			this.alertListData.sort(function(a, b)
+			{
+				return a.index - b.index;
+			});
+		}
+		
+		for (var i = 0; i < this.alertListModel.items.length; i++) 
+		{
+			for (var d = 0; d < this.alertListData.length; d++) 
+			{
+				if (this.alertListData[d].id == this.alertListModel.items[i].id) 
+				{
+					this.alertListData[d].value = this.alertListModel.items[i].value;
+				}
+			}
+		}
+	}
+	
+	this.prefs.alertWords = [];
+	if (this.alertListData.length > 0) 
+	{
+		for (var d = 0; d < this.alertListData.length; d++) 
+		{
+			if (this.alertListData[d].value) 
+			{
+				this.prefs.alertWords.push(this.alertListData[d].value);
+			}
+		}
+	}
+	
+	this.cookie.put(this.prefs);
+}
+
+
+
+
 PreferencesNotificationsAssistant.prototype.activate = function(event)
 {
 	if (!this.hasBennActivated)
@@ -240,6 +423,8 @@ PreferencesNotificationsAssistant.prototype.activate = function(event)
 
 PreferencesNotificationsAssistant.prototype.deactivate = function(event)
 {
+	this.alertListSave();
+	
 	// reload global storage of preferences when we get rid of this stage
 	var tmp = prefs.get(true);
 }
@@ -254,4 +439,10 @@ PreferencesNotificationsAssistant.prototype.cleanup = function(event)
 	
 	this.controller.stopListening('inviteAction',			Mojo.Event.propertyChange, this.inviteActionChanged.bindAsEventListener(this));
 	this.controller.stopListening('dashboardInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+	
+	
+	this.controller.stopListening(this.alertList, Mojo.Event.listAdd,			this.alertListAdd.bindAsEventListener(this));
+	this.controller.stopListening(this.alertList, Mojo.Event.propertyChanged,	this.alertListChange.bindAsEventListener(this));
+	this.controller.stopListening(this.alertList, Mojo.Event.listReorder,		this.alertListReorder.bindAsEventListener(this));
+	this.controller.stopListening(this.alertList, Mojo.Event.listDelete,			this.alertListDelete.bindAsEventListener(this));
 }
