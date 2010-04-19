@@ -400,9 +400,7 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate)
 	}
 	
 	this.menuModel.items.push({label: "Preferences", command: 'do-prefs'});
-	
-	//if (!this.test) this.test=1;
-	//this.menuModel.items.push({label: "Test " + this.test, command: 'do-test'});
+	this.menuModel.items.push({label: "Clear Backlog", command: 'clear-backlog'});
 	
 	if (!skipUpdate)
 	{
@@ -437,13 +435,18 @@ ChannelChatAssistant.prototype.handleCommand = function(event)
 				}
 				this.updateAppMenu();
 				break;
+				
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences-general');
 				break;
-			case 'do-prefs':
-				this.test++;
-				alert(this.test);
-				this.updateAppMenu();
+				
+			case 'clear-backlog':
+				this.channel.clearMessages();
+				this.listModel.items = [];
+				this.lastFocusMarker = false;
+				this.lastFocusMessage = false;
+				this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+				this.messageListElement.mojo.setLength(0);
 				break;
 		}
 	}

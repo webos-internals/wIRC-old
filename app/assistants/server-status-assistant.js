@@ -36,6 +36,7 @@ function ServerStatusAssistant(server, popped)
 	this.menuModel.items.push({ label: 'Change Nick',	command: 'change-nick' });
 	this.menuModel.items.push({ label: 'Channel List',	command: 'channel-list' });
 	this.menuModel.items.push({ label: 'Join Channel',	command: 'join-channel' });
+	this.menuModel.items.push({ label: 'Clear Backlog',	command: 'clear-backlog' });
 }
 
 ServerStatusAssistant.prototype.setup = function()
@@ -351,6 +352,13 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 				
 			case 'server-list':
 				this.alertDialog('This doesn\'t work yet.');
+				break;
+				
+			case 'clear-backlog':
+				this.server.clearMessages();
+				this.listModel.items = [];
+				this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+				this.messageListElement.mojo.setLength(0);
 				break;
 		}
 	}

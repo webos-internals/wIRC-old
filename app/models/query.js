@@ -113,6 +113,11 @@ ircQuery.prototype.getLastMessage = function()
 	return this.messages[this.messages.length-1];
 }
 
+ircQuery.prototype.clearMessages = function()
+{
+	this.messages = [];
+}
+
 ircQuery.prototype.openDash = function()
 {
 	try

@@ -106,7 +106,6 @@ ircServer.prototype.initHandler = function(payload)
 	}
 	else this.setState(this.STATE_SERVICE_UNAVAILABLE);
 }
-
 ircServer.prototype.init = function()
 {
 	if (!prefs.get().aiface)
@@ -130,7 +129,6 @@ ircServer.prototype.isConnected = function(message)
 {
 	return (this.state === this.STATE_CONNECTED);
 }
-
 ircServer.prototype.isDisrupted = function(message)
 {
 	return (this.state === this.STATE_DISRUPTED);
@@ -398,6 +396,7 @@ ircServer.prototype.whois = function(nick)
 ircServer.prototype.genericHandler = function(payload)
 {
 	// idk what to do here if anything
+	this.debugPayload(payload, false);
 }
 
 ircServer.prototype.disconnect = function(reason)
@@ -436,6 +435,11 @@ ircServer.prototype.disconnectHandler = function(payload)
 	}
 	*/
 	//this.newMessage('status', false, 'ending dc handle');
+}
+
+ircServer.prototype.clearMessages = function()
+{
+	this.statusMessages = [];
 }
 
 ircServer.prototype.showStatusScene = function(popit)
@@ -1301,8 +1305,10 @@ ircServer.prototype.eventNumericHandler = function(payload)
 
 ircServer.prototype.eventUnknownHandler = function(payload)
 {
-	if (payload.event!='PONG')
-		this.debugPayload(payload,false);
+	if (payload.event != 'PONG')
+	{
+		this.debugPayload(payload, false);
+	}
 }
 
 ircServer.prototype.autoPingHandler = function(payload)

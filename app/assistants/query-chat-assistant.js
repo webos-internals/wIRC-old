@@ -31,14 +31,10 @@ function QueryChatAssistant(query)
 	this.menuModel =
 	{
 		visible: true,
-		items:
-		[
-			{
-				label: "Preferences",
-				command: 'do-prefs'
-			}
-		]
+		items: []
 	}
+	this.menuModel.items.push({ label: 'Preferences',	command: 'do-prefs' });
+	this.menuModel.items.push({ label: 'Clear Backlog',	command: 'clear-backlog' });
 }
 
 QueryChatAssistant.prototype.setup = function()
@@ -263,6 +259,15 @@ QueryChatAssistant.prototype.handleCommand = function(event)
 		{
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences-general');
+				break;
+				
+			case 'clear-backlog':
+				this.query.clearMessages();
+				this.listModel.items = [];
+				this.lastFocusMarker = false;
+				this.lastFocusMessage = false;
+				this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+				this.messageListElement.mojo.setLength(0);
 				break;
 		}
 	}

@@ -316,6 +316,11 @@ ircChannel.prototype.partHandler = function(payload)
 	}
 }
 
+ircChannel.prototype.clearMessages = function()
+{
+	this.messages = [];
+}
+
 ircChannel.prototype.close = function()
 {
 	if (this.chatAssistant && this.chatAssistant.controller)
