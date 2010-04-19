@@ -785,6 +785,30 @@ body.palm-dark .message-row .message
 	border-bottom: 1px solid;
 }
 
+.hide-divider table.date-row
+{
+	display: none;
+}
+
+table.date-row
+{
+	margin-bottom: -8px;
+	margin-top: -8px;
+}
+table.date-row tr td.label
+{
+	color: #aaa;
+}
+table.date-row.palm-divider.labeled tr td.left
+{
+	width: 100%;
+	background: url(../images/date-stamp-line.png) right center no-repeat;
+}
+table.date-row.palm-divider.labeled tr td.right
+{
+	width: 10px;
+	background: url(../images/date-stamp-line.png) left center no-repeat;
+}
 
 
 /*

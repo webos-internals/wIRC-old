@@ -94,7 +94,9 @@ ServerStatusAssistant.prototype.setup = function()
 				itemTemplate: "message/message-row",
 				swipeToDelete: false,
 				reorderable: false,
-				renderLimit: 50
+				renderLimit: 50,
+				dividerTemplate: "message/date-divider",
+				dividerFunction: this.getDivider.bind(this)
 			},
 			this.listModel
 		);
@@ -129,10 +131,11 @@ ServerStatusAssistant.prototype.setup = function()
 
 ServerStatusAssistant.prototype.loadPrefs = function(initial)
 {
-	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize;
+	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 ServerStatusAssistant.prototype.activate = function(event)
-{	
+{
+	this.loadPrefs();
 	if (this.alreadyActivated)
 	{
 		this.loadPrefs();
@@ -182,6 +185,48 @@ ServerStatusAssistant.prototype.updateList = function(initial)
 	{
 		Mojo.Log.logException(e, 'server-status#updateList');
 	}
+}
+ServerStatusAssistant.prototype.getDivider = function(item)
+{
+	var string = "";
+	
+	var pm = false;
+	if (item.date.getHours() > 12) pm = true;
+	
+	if (!pm)
+	{
+		if (item.date.getHours() < 1) string += '12';
+		if (item.date.getHours() > 0) string += dateObj.getHours();
+		string += ':';
+		var mins = item.date.getMinutes();
+		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
+		{
+			mins = 0;
+		}
+		else
+		{
+			if ((mins%prefs.get().timeStamp) > 0) mins = mins - (mins%prefs.get().timeStamp);
+		}
+		if (mins < 10) string += '0'
+		string += mins + ' AM';
+	}
+	else
+	{
+		string += (item.date.getHours() - 12) + ':';
+		var mins = item.date.getMinutes();
+		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
+		{
+			mins = 0;
+		}
+		else
+		{
+			if ((mins%prefs.get().timeStamp) > 0) mins = mins - (mins%prefs.get().timeStamp);
+		}
+		if (mins < 10) string += '0'
+		string += mins + ' PM';
+	}
+	
+	return string;
 }
 
 ServerStatusAssistant.prototype.startAutoFocus = function()

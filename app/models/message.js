@@ -41,6 +41,8 @@ function ircMessage(params)
 	
 	this.channel =		false;
 	
+	this.date =			new Date();
+	
 	this.rowClass =		'';
 	this.rowStyle =		'';
 	this.nickStyle =	'';
@@ -352,6 +354,7 @@ ircMessage.prototype.getListObject = function()
 	var obj =
 	{
 		nick:			this.nickDisplay,
+		date:			this.date,
 		message:		formatLinks(this.message),
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,

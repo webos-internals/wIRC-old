@@ -325,6 +325,26 @@ PreferencesMessagesAssistant.prototype.setup = function()
 	 			disabled: false
 			}
 		);
+		this.controller.setupWidget
+		(
+			'timeStamp',
+			{
+				label: 'Timestamp',
+				choices:
+				[
+					{label:'None',		value:0},
+					{label:'Every Min',	value:1},
+					{label:'Every 5',	value:5},
+					{label:'Every 10',	value:10},
+					{label:'Every 15',	value:15},
+					{label:'Every 30',	value:30},
+					{label:'Every Hour',value:60},
+				],
+				modelProperty: 'timeStamp'
+			},
+			this.prefs
+		);
+		
 		this.controller.listen('senderColoring',		Mojo.Event.propertyChange, this.senderColoringHandler);
 		this.senderColoringChanged();
 		
@@ -334,6 +354,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.controller.listen('messagesStyle',		Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
 		this.controller.listen('messageSplit',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('fontSize',			Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
+		this.controller.listen('timeStamp',			Mojo.Event.propertyChange, this.listChangedHandler);
 		
 		
 		// Highlight Group
@@ -621,6 +642,7 @@ PreferencesMessagesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('messageSplit',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('fontSize',				Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
 	this.controller.stopListening('senderColoring',			Mojo.Event.propertyChange, this.senderColoringHandler);
+	this.controller.stopListening('timeStamp',				Mojo.Event.propertyChange, this.listChangedHandler);
 	
 	this.controller.stopListening('highlightStyle',			Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 	this.controller.stopListening('highlightPart',			Mojo.Event.propertyChange, this.listChangedHandler);
