@@ -446,3 +446,11 @@ ircChannel.prototype.updateChatList = function()
 		this.usersAssistant.updateList();
 	}
 }
+ircChannel.prototype.updateAppMenu = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateAppMenu();
+	}
+}
+

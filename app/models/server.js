@@ -1160,11 +1160,21 @@ ircServer.prototype.eventNumericHandler = function(payload)
 		case '305':		// NOTAWAY
 			this.isAway = false;
 			this.newMessage('type2', false, payload.params[1]);
+			// update app menu to show "away" option again
+			for (var c = 0; c < this.channels.length; c++)
+			{
+				this.channels[c].updateAppMenu();
+			}
 			break;
 		
 		case '306':		// AWAY
 			this.isAway = true;
 			this.newMessage('type2', false, payload.params[1]);
+			// update app menu to show "back" option
+			for (var c = 0; c < this.channels.length; c++)
+			{
+				this.channels[c].updateAppMenu();
+			}
 			break;
 				
 		case '301':		// ??? WHOISAWAY?
