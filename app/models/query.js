@@ -15,29 +15,48 @@ function ircQuery(params)
 
 ircQuery.prototype.newCommand = function(message)
 {
-	var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
-	var match = cmdRegExp.exec(message);
-	if (match)
+	if (this.server.isConnected())
 	{
-		var cmd = match[1];
-		var val = match[2];
-		
-		switch(cmd.toLowerCase())
+		var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
+		var match = cmdRegExp.exec(message);
+		if (match)
 		{
-			case 'me':
-				this.me(val);
-				break;
-				
-			default:
-				// forward unknown to the server object
-				this.server.newCommand(message);
-				break;
+			var cmd = match[1];
+			var val = match[2];
+			
+			switch(cmd.toLowerCase())
+			{
+				case 'me':
+					this.me(val);
+					break;
+					
+				default:
+					// forward unknown to the server object
+					this.server.newCommand(message);
+					break;
+			}
+		}
+		else
+		{
+			// normal message
+			this.msg(message);
 		}
 	}
 	else
 	{
-		// normal message
-		this.msg(message);
+		// not connected
+		this.newMessage('type3', false, $L('Not Connected.'));
+		if (this.chatAssistant && this.chatAssistant.controller) 
+		{
+			this.chatAssistant.controller.showAlertDialog(
+			{
+			    title:				this.server.alias,
+				allowHTMLMessage:	true,
+			    message:			$L('Not Connected.'),
+			    choices:			[{label:$L('Ok'), value:''}],
+				onChoose:			function(value){}
+		    });
+		}
 	}
 }
 

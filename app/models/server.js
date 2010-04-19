@@ -266,7 +266,19 @@ ircServer.prototype.newCommand = function(message)
 	}
 	else
 	{
-		this.newMessage('status', false, 'Not Connected.');
+		// not connected
+		this.newMessage('type3', false, 'Not Connected.');
+		if (this.statusAssistant && this.statusAssistant.controller) 
+		{
+			this.statusAssistant.controller.showAlertDialog(
+			{
+			    title:				this.alias,
+				allowHTMLMessage:	true,
+			    message:			$L('Not Connected.'),
+			    choices:			[{label:$L('Ok'), value:''}],
+				onChoose:			function(value){}
+		    });
+		}
 	}
 }
 

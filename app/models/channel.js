@@ -22,72 +22,91 @@ function ircChannel(params)
 
 ircChannel.prototype.newCommand = function(message)
 {
-	var match = cmdRegExp.exec(message);
-	if (match)
+	if (this.server.isConnected())
 	{
-		var cmd = match[1];
-		var val = match[2];
-		
-		switch(cmd.toLowerCase())
+		var match = cmdRegExp.exec(message);
+		if (match)
 		{
-			case 'part':
-			case 'leave':
-				this.part();
-				break;
-				
-			case 'me':
-				this.me(val);
-				break;
-				
-			case 'j':
-			case 'join':
-				var vals = val.split(" ");
-				this.server.joinChannel(vals[0],vals[1]);
-				break;				
+			var cmd = match[1];
+			var val = match[2];
 			
-			case 'topic':
-				if (val) 
-				{
-					tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch) 
-					{
-						this.server.topic(tmpMatch[1],tmpMatch[2]);
-					}
-					else
-					{
-						if (val.substr(0, 1) == '#') 
-						{
-							this.server.topic(val);
-						}
-						else 
-						{
-							this.server.topic(this.name, val);
-						}
-					}
-				} 
-				else 
-				{
-					this.server.topic(this.name);
-				}			
-				
-				case 'away':
-					this.server.away(val?val:null);
+			switch(cmd.toLowerCase())
+			{
+				case 'part':
+				case 'leave':
+					this.part();
 					break;
 					
-				case 'ping':
-					if (val) this.server.ping(val);
+				case 'me':
+					this.me(val);
+					break;
+					
+				case 'j':
+				case 'join':
+					var vals = val.split(" ");
+					this.server.joinChannel(vals[0],vals[1]);
 					break;				
 				
-			default:
-				// forward unknown to the server object
-				this.server.newCommand(message);
-				break;
+				case 'topic':
+					if (val) 
+					{
+						tmpMatch = twoValRegExp.exec(val);
+						if (tmpMatch) 
+						{
+							this.server.topic(tmpMatch[1],tmpMatch[2]);
+						}
+						else
+						{
+							if (val.substr(0, 1) == '#') 
+							{
+								this.server.topic(val);
+							}
+							else 
+							{
+								this.server.topic(this.name, val);
+							}
+						}
+					} 
+					else 
+					{
+						this.server.topic(this.name);
+					}			
+					
+					case 'away':
+						this.server.away(val?val:null);
+						break;
+						
+					case 'ping':
+						if (val) this.server.ping(val);
+						break;				
+					
+				default:
+					// forward unknown to the server object
+					this.server.newCommand(message);
+					break;
+			}
+		}
+		else
+		{
+			// normal message
+			this.msg(message);
 		}
 	}
 	else
 	{
-		// normal message
-		this.msg(message);
+		// not connected
+		this.newMessage('type3', false, $L('Not Connected.'));
+		if (this.chatAssistant && this.chatAssistant.controller) 
+		{
+			this.chatAssistant.controller.showAlertDialog(
+			{
+			    title:				this.server.alias,
+				allowHTMLMessage:	true,
+			    message:			$L('Not Connected.'),
+			    choices:			[{label:$L('Ok'), value:''}],
+				onChoose:			function(value){}
+		    });
+		}
 	}
 }
 
