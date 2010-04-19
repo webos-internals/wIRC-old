@@ -223,3 +223,10 @@ ircQuery.prototype.updateChatList = function()
 		this.openDash();
 	}
 }
+ircQuery.prototype.updateLagMeter = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateLagMeter();
+	}
+}

@@ -453,4 +453,10 @@ ircChannel.prototype.updateAppMenu = function()
 		this.chatAssistant.updateAppMenu();
 	}
 }
-
+ircChannel.prototype.updateLagMeter = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateLagMeter();
+	}
+}

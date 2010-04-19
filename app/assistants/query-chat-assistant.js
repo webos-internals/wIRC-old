@@ -49,6 +49,7 @@ QueryChatAssistant.prototype.setup = function()
 		this.documentElement =			this.controller.stageController.document;
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
+		this.networkLagElement =		this.controller.get('networkLag');
 		this.messageListElement =		this.controller.get('messageList');
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
@@ -125,6 +126,7 @@ QueryChatAssistant.prototype.loadPrefs = function(initial)
 }
 QueryChatAssistant.prototype.activate = function(event)
 {
+	this.updateLagMeter();
 	this.loadPrefs();
 	if (this.alreadyActivated)
 	{
@@ -197,7 +199,7 @@ QueryChatAssistant.prototype.getDivider = function(item)
 	if (!pm)
 	{
 		if (item.date.getHours() < 1) string += '12';
-		if (item.date.getHours() > 0) string += dateObj.getHours();
+		if (item.date.getHours() > 0) string += item.date.getHours();
 		string += ':';
 		var mins = item.date.getMinutes();
 		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
@@ -293,6 +295,19 @@ QueryChatAssistant.prototype.inputFocus = function(event)
 	{
 		this.inputElement.focus();
 	}
+}
+
+QueryChatAssistant.prototype.updateLagMeter = function()
+{
+	var netClass = '';
+	if (this.query.server.isConnected())
+	{
+		if (this.query.server.sessionInterface == 'wan')
+			netClass = 'network ' + this.query.server.sessionNetwork + ' ' + this.query.server.lag;
+		else
+			netClass = 'network wifi ' + this.query.server.lag;
+	}
+	this.networkLagElement.className = netClass;
 }
 
 QueryChatAssistant.prototype.handleCommand = function(event)

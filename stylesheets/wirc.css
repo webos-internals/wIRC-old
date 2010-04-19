@@ -824,6 +824,14 @@ table.date-row.palm-divider.labeled tr td.right
 	background-image: url(../images/network-lag.png);
 	background-repeat: no-repeat;
 }
+.palm-header .network
+{
+	float: left;
+	margin: 0px;
+	margin-left: -5px;
+	margin-top: 15px;
+	margin-right: 5px; 
+}
 .network.1x.lag-0						{ background-position:    0px    0px; }
 .network.1x.lag-1						{ background-position:    0px  -18px; }
 .network.1x.lag-2						{ background-position:    0px  -36px; }

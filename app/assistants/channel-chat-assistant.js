@@ -58,6 +58,7 @@ ChannelChatAssistant.prototype.setup = function()
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.headerElement =			this.controller.get('header');
 		this.titleElement =				this.controller.get('title');
+		this.networkLagElement =		this.controller.get('networkLag');
 		this.userButtonElement =		this.controller.get('userButton');
 		this.userCountElement =			this.controller.get('userCount');
 		this.topicContainerElement =	this.controller.get('topicContainer');
@@ -149,6 +150,7 @@ ChannelChatAssistant.prototype.loadPrefs = function(initial)
 }
 ChannelChatAssistant.prototype.activate = function(event)
 {
+	this.updateLagMeter();
 	this.loadPrefs();
 	if (this.alreadyActivated)
 	{
@@ -221,7 +223,7 @@ ChannelChatAssistant.prototype.getDivider = function(item)
 	if (!pm)
 	{
 		if (item.date.getHours() < 1) string += '12';
-		if (item.date.getHours() > 0) string += dateObj.getHours();
+		if (item.date.getHours() > 0) string += item.date.getHours();
 		string += ':';
 		var mins = item.date.getMinutes();
 		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
@@ -369,6 +371,19 @@ ChannelChatAssistant.prototype.inputFocus = function(event)
 	{
 		this.inputElement.focus();
 	}
+}
+
+ChannelChatAssistant.prototype.updateLagMeter = function()
+{
+	var netClass = '';
+	if (this.channel.server.isConnected())
+	{
+		if (this.channel.server.sessionInterface == 'wan')
+			netClass = 'network ' + this.channel.server.sessionNetwork + ' ' + this.channel.server.lag;
+		else
+			netClass = 'network wifi ' + this.channel.server.lag;
+	}
+	this.networkLagElement.className = netClass;
 }
 
 ChannelChatAssistant.prototype.keyHandler = function(event)

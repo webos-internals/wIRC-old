@@ -50,6 +50,7 @@ ServerStatusAssistant.prototype.setup = function()
 		
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
+		this.networkLagElement =		this.controller.get('networkLag');
 		this.popButtonElement =			this.controller.get('popButton');
 		this.connectButtonElement =		this.controller.get('connectButton');
 		this.messageListElement =		this.controller.get('messageList');
@@ -135,6 +136,7 @@ ServerStatusAssistant.prototype.loadPrefs = function(initial)
 }
 ServerStatusAssistant.prototype.activate = function(event)
 {
+	this.updateLagMeter();
 	this.loadPrefs();
 	if (this.alreadyActivated)
 	{
@@ -196,7 +198,7 @@ ServerStatusAssistant.prototype.getDivider = function(item)
 	if (!pm)
 	{
 		if (item.date.getHours() < 1) string += '12';
-		if (item.date.getHours() > 0) string += dateObj.getHours();
+		if (item.date.getHours() > 0) string += item.date.getHours();
 		string += ':';
 		var mins = item.date.getMinutes();
 		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
@@ -312,6 +314,19 @@ ServerStatusAssistant.prototype.inputFocus = function(event)
 	{
 		this.inputElement.focus();
 	}
+}
+
+ServerStatusAssistant.prototype.updateLagMeter = function()
+{
+	var netClass = '';
+	if (this.server.isConnected())
+	{
+		if (this.server.sessionInterface == 'wan')
+			netClass = 'network ' + this.server.sessionNetwork + ' ' + this.server.lag;
+		else
+			netClass = 'network wifi ' + this.server.lag;
+	}
+	this.networkLagElement.className = netClass;
 }
 
 ServerStatusAssistant.prototype.alertDialog = function(message)

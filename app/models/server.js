@@ -855,9 +855,9 @@ ircServer.prototype.getListObject = function()
 		case this.STATE_CONNECTED:
 			obj.rowStyle = obj.rowStyle + ' connected';
 			if (this.sessionInterface=='wan')
-				obj.networkLag = obj.networkLag + 'network ' + this.sessionNetwork + ' ' + this.lag;
+				obj.networkLag = 'network ' + this.sessionNetwork + ' ' + this.lag;
 			else
-				obj.networkLag = obj.networkLag + 'network wifi ' + this.lag;
+				obj.networkLag = 'network wifi ' + this.lag;
 			break;
 		case this.STATE_DISRUPTED:
 			obj.rowStyle = obj.rowStyle + ' unknown';
@@ -1341,8 +1341,23 @@ ircServer.prototype.autoPingHandler = function(payload)
 		this.lag = 'lag-2';
 	else
 		this.lag = 'lag-1';
+	
 	if (servers.listAssistant && servers.listAssistant.controller)
-		servers.listAssistant.updateList();		
+	{
+		servers.listAssistant.updateList();	
+	}
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateLagMeter();
+	}
+	for (var c = 0; c < this.channels.length; c++)
+	{
+		this.channels[c].updateLagMeter();
+	}
+	for (var q = 0; q < this.queries.length; q++)
+	{
+		this.queries[q].updateLagMeter();
+	}
 }
 
 ircServer.prototype.errorHandler = function(payload)
