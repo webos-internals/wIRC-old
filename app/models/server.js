@@ -854,10 +854,13 @@ ircServer.prototype.getListObject = function()
 			break;
 		case this.STATE_CONNECTED:
 			obj.rowStyle = obj.rowStyle + ' connected';
-			if (this.sessionInterface=='wan')
-				obj.networkLag = 'network ' + this.sessionNetwork + ' ' + this.lag;
-			else
-				obj.networkLag = 'network wifi ' + this.lag;
+			if (prefs.get().lagMeter)
+			{
+				if (this.sessionInterface == 'wan')
+					obj.networkLag = 'network ' + this.sessionNetwork + ' ' + this.lag;
+				else
+					obj.networkLag = 'network wifi ' + this.lag;
+			}
 			break;
 		case this.STATE_DISRUPTED:
 			obj.rowStyle = obj.rowStyle + ' unknown';
@@ -1323,40 +1326,47 @@ ircServer.prototype.eventUnknownHandler = function(payload)
 
 ircServer.prototype.autoPingHandler = function(payload)
 {
-	this.lagHistory.push(payload.rtt);
-	if (this.lagHistory.length>5)
-		this.lagHistory.shift();
-	
-	var lagSum = 0;
-	this.lagHistory.forEach(function(x) {lagSum += x;});
-	var aveLag = lagSum / this.lagHistory.length;
+	if (prefs.get().lagMeter)
+	{
+		this.lagHistory.push(payload.rtt);
+		if (this.lagHistory.length>5)
+			this.lagHistory.shift();
 		
-	if (aveLag<300)
-		this.lag = 'lag-5';
-	else if (aveLag<600)
-		this.lag = 'lag-4';
-	else if (aveLag<1200)
-		this.lag = 'lag-3';
-	else if (aveLag<2400)
-		this.lag = 'lag-2';
+		var lagSum = 0;
+		this.lagHistory.forEach(function(x) {lagSum += x;});
+		var aveLag = lagSum / this.lagHistory.length;
+			
+		if (aveLag<300)
+			this.lag = 'lag-5';
+		else if (aveLag<600)
+			this.lag = 'lag-4';
+		else if (aveLag<1200)
+			this.lag = 'lag-3';
+		else if (aveLag<2400)
+			this.lag = 'lag-2';
+		else
+			this.lag = 'lag-1';
+		
+		if (servers.listAssistant && servers.listAssistant.controller)
+		{
+			servers.listAssistant.updateList();	
+		}
+		if (this.statusAssistant && this.statusAssistant.controller)
+		{
+			this.statusAssistant.updateLagMeter();
+		}
+		for (var c = 0; c < this.channels.length; c++)
+		{
+			this.channels[c].updateLagMeter();
+		}
+		for (var q = 0; q < this.queries.length; q++)
+		{
+			this.queries[q].updateLagMeter();
+		}
+	}
 	else
-		this.lag = 'lag-1';
-	
-	if (servers.listAssistant && servers.listAssistant.controller)
 	{
-		servers.listAssistant.updateList();	
-	}
-	if (this.statusAssistant && this.statusAssistant.controller)
-	{
-		this.statusAssistant.updateLagMeter();
-	}
-	for (var c = 0; c < this.channels.length; c++)
-	{
-		this.channels[c].updateLagMeter();
-	}
-	for (var q = 0; q < this.queries.length; q++)
-	{
-		this.queries[q].updateLagMeter();
+		this.clearAutoPingSubscription();
 	}
 }
 
@@ -1392,7 +1402,36 @@ ircServer.prototype.setupSubscriptions = function()
 	this.subscriptions['event_ctcp_action']		= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventCTCPActionHandler.bindAsEventListener(this),this.sessionToken, 'event_ctcp_action');
 	this.subscriptions['event_unknown']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventUnknownHandler.bindAsEventListener(this),this.sessionToken, 'event_unknown');
 	this.subscriptions['event_numeric']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.eventNumericHandler.bindAsEventListener(this),this.sessionToken, 'event_numeric');
-	this.subscriptions['auto_ping']				= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.autoPingHandler.bindAsEventListener(this),this.sessionToken, 'auto_ping');
+	this.startAutoPingSubscription(false);
+}
+
+ircServer.prototype.clearAutoPingSubscription = function()
+{
+	this.subscriptions['auto_ping'].cancel();
+		
+	if (servers.listAssistant && servers.listAssistant.controller)
+	{
+		servers.listAssistant.updateList();	
+	}
+	if (this.statusAssistant && this.statusAssistant.controller)
+	{
+		this.statusAssistant.updateLagMeter();
+	}
+	for (var c = 0; c < this.channels.length; c++)
+	{
+		this.channels[c].updateLagMeter();
+	}
+	for (var q = 0; q < this.queries.length; q++)
+	{
+		this.queries[q].updateLagMeter();
+	}
+}
+ircServer.prototype.startAutoPingSubscription = function(skip)
+{
+	if (prefs.get().lagMeter || skip)
+	{
+		this.subscriptions['auto_ping']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.autoPingHandler.bindAsEventListener(this),this.sessionToken, 'auto_ping');
+	}
 }
 
 /* ========================= START OF STATIC METHODS ======================== */

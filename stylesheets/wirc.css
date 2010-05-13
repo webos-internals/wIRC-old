@@ -39,6 +39,10 @@ br.clear
 /*
  * Preferences Scene Styles
  */
+.prefs .palm-row .label
+{
+	max-width: 300px;
+}
 .prefs .page-selector 
 {
 	display: inline-block;

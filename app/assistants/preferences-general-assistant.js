@@ -56,6 +56,7 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
 		
+		this.lagMeterChangedHandler = this.latMeterChanged.bindAsEventListener(this);
 		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);
 		
 		
@@ -97,14 +98,31 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		
 		this.controller.listen('statusPop',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
+		
 		// Connection details group
+		this.controller.setupWidget
+		(
+			'lagMeter',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+	  			fieldName:  'lagMeter'
+			},
+			{
+				value : this.prefs.lagMeter,
+	 			disabled: false
+			}
+		);
+		
+		this.controller.listen('lagMeter',	Mojo.Event.propertyChange, this.lagMeterChangedHandler);
+		
 		this.interfaceWrapper =		this.controller.get('interfaceWrapper');
 		this.pifaceChanged();
 		this.controller.setupWidget
 		(
 			'piface',
 			{
-				label: 'Interface',
+				label: 'Preferred Interface',
 				choices:
 				[
 					{label:'None', value:''},
@@ -160,21 +178,6 @@ PreferencesGeneralAssistant.prototype.listChanged = function(event)
 	this.cookie.put(this.prefs);
 }
 
-PreferencesGeneralAssistant.prototype.senderColoringChanged = function(event)
-{
-	if (event) 
-	{
-		this.toggleChanged(event);
-	}
-	if (this.prefs['senderColoring'])
-	{
-		this.controller.get('OtherNicksWrapper').style.display = 'none';
-	}
-	else
-	{
-		this.controller.get('OtherNicksWrapper').style.display = '';
-	}	
-}
 PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 {
 	// set the theme right away with the body class
@@ -184,6 +187,40 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	// set theme on all other open stages
 	Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 }
+PreferencesGeneralAssistant.prototype.latMeterChanged = function(event)
+{
+	if (event) 
+	{
+		this.toggleChanged(event);
+		var tmp = prefs.get(true);
+	}
+	if (this.prefs['lagMeter'])
+	{
+		if (servers.servers.length > 0)
+		{
+			for (var s = 0; s < servers.servers.length; s++)
+			{
+				if (servers.servers[s].isConnected())
+				{
+					servers.servers[s].startAutoPingSubscription(true);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (servers.servers.length > 0)
+		{
+			for (var s = 0; s < servers.servers.length; s++)
+			{
+				if (servers.servers[s].isConnected())
+				{
+					servers.servers[s].clearAutoPingSubscription();
+				}
+			}
+		}
+	}	
+}
 PreferencesGeneralAssistant.prototype.pifaceChanged = function(event)
 {
 	if (event) 
@@ -192,12 +229,12 @@ PreferencesGeneralAssistant.prototype.pifaceChanged = function(event)
 	}
 	if (this.prefs['piface']=='')
 	{
-		this.interfaceWrapper.className = 'palm-row single';
+		this.interfaceWrapper.className = 'palm-row last';
 		this.controller.get('fallbackInfo').style.display = 'none';
 	}
 	else
 	{
-		this.interfaceWrapper.className = 'palm-row first';
+		this.interfaceWrapper.className = 'palm-row';
 		this.controller.get('fallbackInfo').style.display = '';
 	}
 }

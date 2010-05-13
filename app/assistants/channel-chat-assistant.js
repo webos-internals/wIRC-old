@@ -376,12 +376,15 @@ ChannelChatAssistant.prototype.inputFocus = function(event)
 ChannelChatAssistant.prototype.updateLagMeter = function()
 {
 	var netClass = '';
-	if (this.channel.server.isConnected())
+	if (prefs.get().lagMeter)
 	{
-		if (this.channel.server.sessionInterface == 'wan')
-			netClass = 'network ' + this.channel.server.sessionNetwork + ' ' + this.channel.server.lag;
-		else
-			netClass = 'network wifi ' + this.channel.server.lag;
+		if (this.channel.server.isConnected())
+		{
+			if (this.channel.server.sessionInterface == 'wan')
+				netClass = 'network ' + this.channel.server.sessionNetwork + ' ' + this.channel.server.lag;
+			else
+				netClass = 'network wifi ' + this.channel.server.lag;
+		}
 	}
 	this.networkLagElement.className = netClass;
 }
@@ -561,6 +564,7 @@ ChannelChatAssistant.prototype.visibleWindow = function(event)
 		this.isVisible = true;
 	}
 	this.channel.closeDash();
+	this.updateLagMeter();
 }
 ChannelChatAssistant.prototype.invisibleWindow = function(event)
 {

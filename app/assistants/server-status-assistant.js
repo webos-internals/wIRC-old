@@ -319,12 +319,15 @@ ServerStatusAssistant.prototype.inputFocus = function(event)
 ServerStatusAssistant.prototype.updateLagMeter = function()
 {
 	var netClass = '';
-	if (this.server.isConnected())
+	if (prefs.get().lagMeter)
 	{
-		if (this.server.sessionInterface == 'wan')
-			netClass = 'network ' + this.server.sessionNetwork + ' ' + this.server.lag;
-		else
-			netClass = 'network wifi ' + this.server.lag;
+		if (this.server.isConnected())
+		{
+			if (this.server.sessionInterface == 'wan')
+				netClass = 'network ' + this.server.sessionNetwork + ' ' + this.server.lag;
+			else
+				netClass = 'network wifi ' + this.server.lag;
+		}
 	}
 	this.networkLagElement.className = netClass;
 }

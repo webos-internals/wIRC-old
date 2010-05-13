@@ -300,12 +300,15 @@ QueryChatAssistant.prototype.inputFocus = function(event)
 QueryChatAssistant.prototype.updateLagMeter = function()
 {
 	var netClass = '';
-	if (this.query.server.isConnected())
+	if (prefs.get().lagMeter)
 	{
-		if (this.query.server.sessionInterface == 'wan')
-			netClass = 'network ' + this.query.server.sessionNetwork + ' ' + this.query.server.lag;
-		else
-			netClass = 'network wifi ' + this.query.server.lag;
+		if (this.query.server.isConnected())
+		{
+			if (this.query.server.sessionInterface == 'wan')
+				netClass = 'network ' + this.query.server.sessionNetwork + ' ' + this.query.server.lag;
+			else
+				netClass = 'network wifi ' + this.query.server.lag;
+		}
 	}
 	this.networkLagElement.className = netClass;
 }
@@ -381,6 +384,7 @@ QueryChatAssistant.prototype.visibleWindow = function(event)
 		this.isVisible = true;
 	}
 	this.query.closeDash();
+	this.updateLagMeter();
 }
 QueryChatAssistant.prototype.invisibleWindow = function(event)
 {
