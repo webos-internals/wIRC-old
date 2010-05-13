@@ -36,7 +36,7 @@ prefCookie.prototype.get = function(reload)
 				messagesStyle:		'lefta',
 				messageSplit:		'25',
 				fontSize:			'15',
-				timeStamp:			0,
+				timeStamp:			5,
 				senderColoring:		true,
 				
 				// Highlight Group
