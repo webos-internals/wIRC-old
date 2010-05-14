@@ -8,6 +8,10 @@ if [ -z "$IPKG_OFFLINE_ROOT" ]; then
   mount -o remount,rw /
 fi
 
+APPS=/media/cryptofs/apps
+
+[ -d $APPS ] || { echo "Requires webOS 1.3.5 or later" ; exit 1 ; }
+
 # Remove the old application
 if [ -f $APPS/usr/lib/ipkg/info/ws.junk.wirc.prerm ] ; then
   IPKG_OFFLINE_ROOT=$APPS sh $APPS/usr/lib/ipkg/info/ws.junk.wirc.prerm || true
