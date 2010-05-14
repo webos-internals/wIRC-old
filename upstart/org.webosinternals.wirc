@@ -1,0 +1,6 @@
+start on stopped finish
+
+console output
+
+exec /var/usr/sbin/org.webosinternals.wirc
+respawn

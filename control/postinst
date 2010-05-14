@@ -1,0 +1,27 @@
+#!/bin/sh                                                                                       
+
+PID="org.webosinternals.wirc"
+
+# Handle execution as pmPostInstall.script
+if [ -z "$IPKG_OFFLINE_ROOT" ]; then
+  IPKG_OFFLINE_ROOT=/media/cryptofs/apps
+  mount -o remount,rw /
+fi
+
+# Stop any existing service
+/sbin/stop ${PID} || true
+killall -9 ${PID} || true
+
+# Install the upstart script
+rm -f /etc/event.d/${PID}
+cp $IPKG_OFFLINE_ROOT/usr/palm/applications/${PID}/upstart/${PID} /etc/event.d/${PID}
+
+# Copy executable outside of encrypted mount
+mkdir -p /var/usr/sbin/
+rm -f /var/usr/sbin/${PID}
+install -m 755 $IPKG_OFFLINE_ROOT/usr/palm/applications/${PID}/bin/${PID} /var/usr/sbin/${PID}
+
+# Start the service
+/sbin/start ${PID}
+
+exit 0

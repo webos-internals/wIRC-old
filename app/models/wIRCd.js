@@ -1,4 +1,4 @@
-wIRCd.identifier = 'palm://us.ryanhope.wIRCd';
+wIRCd.identifier = 'palm://org.webosinternals.wirc';
 
 function wIRCd() {}
 
