@@ -1,8 +1,10 @@
 {
 	"title": "wIRC",
-	"id": "ws.junk.wirc",
-	"version": "0.1.0",
-	"vendor": "oil",
+	"id": "org.webosinternals.wirc",
+	"version": "0.2.3",
+	"vendor": "WebOS Internals",
+	"vendor_email":	"support@webos-internals.org",
+	"vendor_url": "http://www.webos-internals.org/wiki/Application:WIRC",
 	"type": "web",
 	"main": "index.html",
 	"icon": "icon.png",
