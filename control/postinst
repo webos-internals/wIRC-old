@@ -8,6 +8,12 @@ if [ -z "$IPKG_OFFLINE_ROOT" ]; then
   mount -o remount,rw /
 fi
 
+# Remove the obsolete daemon
+if [ -f $APPS/usr/lib/ipkg/info/us.ryanhope.wircd.prerm ] ; then
+  IPKG_OFFLINE_ROOT=$APPS sh $APPS/usr/lib/ipkg/info/us.ryanhope.wircd.prerm || true
+fi
+/usr/bin/ipkg -o $APPS -force-depends remove us.ryanhope.wircd || true
+
 # Stop any existing service
 /sbin/stop ${PID} || true
 killall -9 ${PID} || true
