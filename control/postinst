@@ -8,6 +8,12 @@ if [ -z "$IPKG_OFFLINE_ROOT" ]; then
   mount -o remount,rw /
 fi
 
+# Remove the old application
+if [ -f $APPS/usr/lib/ipkg/info/ws.junk.wirc.prerm ] ; then
+  IPKG_OFFLINE_ROOT=$APPS sh $APPS/usr/lib/ipkg/info/ws.junk.wirc.prerm || true
+fi
+/usr/bin/ipkg -o $APPS -force-depends remove ws.junk.wirc || true
+
 # Remove the obsolete daemon
 if [ -f $APPS/usr/lib/ipkg/info/us.ryanhope.wircd.prerm ] ; then
   IPKG_OFFLINE_ROOT=$APPS sh $APPS/usr/lib/ipkg/info/us.ryanhope.wircd.prerm || true
