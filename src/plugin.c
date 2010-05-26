@@ -29,7 +29,7 @@ void plugin_initialize() {
 	PDL_MojoRegistrationComplete();
 }
 
-void luna_service_start() {
+void plugin_start() {
 
 	//setup_event_callbacks();
 

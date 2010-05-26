@@ -24,8 +24,12 @@ OBJECTS		:=	libircclient/src/libircclient.a \
 				plugin_client.o \
 				plugin.o \
 				main.o \
+				
+PROGRAM		:=	org.webosinternals.wirc
 
-org.webosinternals.wirc: $(OBJECTS)
+.PHONY		:	clean clobber
+
+$(PROGRAM): $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o org.webosinternals.wirc
 
 libircclient/src/libircclient.a:
@@ -43,6 +47,6 @@ main.o: %.o: %.c
 push: 
 
 clobber:
-	rm -rf *.o
+	rm -rf *.o $(PROGRAM)
 
 clean: clobber

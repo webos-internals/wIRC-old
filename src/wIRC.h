@@ -56,5 +56,6 @@ typedef enum {
 } irc_callbacks;
 
 void plugin_client_init();
+void plugin_start();
 
 #endif /* WIRC_H_ */

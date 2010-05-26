@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 
     plugin_initialize();
-	//plugin_start();
+	plugin_start();
 
 	return 0;
 
