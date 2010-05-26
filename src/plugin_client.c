@@ -16,8 +16,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  =============================================================================*/
 
-#include <PDL.h>
-#include <libircclient.h>
+#include "wIRC.h"
 
 static irc_session_t *session;
 

@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <getopt.h>
 
-#include "wIRCd.h"
+#include "wIRC.h"
 
 static struct option long_options[] = {
 		{ "help",		no_argument,		0, 'h' },
@@ -95,8 +95,8 @@ int main(int argc, char *argv[]) {
 	if (getopts(argc, argv) == 1)
 		return 1;
 
-    if (luna_service_initialize())
-            luna_service_start();
+    plugin_initialize();
+	plugin_start();
 
 	return 0;
 
