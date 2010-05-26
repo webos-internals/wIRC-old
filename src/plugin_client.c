@@ -17,6 +17,9 @@
  =============================================================================*/
 
 #include <PDL.h>
+#include <libircclient.h>
+
+static irc_session_t *session;
 
 #define IRC_MSG_BUF	512
 
@@ -104,11 +107,11 @@ PDL_bool process_command(PDL_MojoParameters *params, irc_cmd type) {
 	case whois_: retVal = irc_cmd_whois(session, nick); break;
 	case user_mode_: retVal = irc_cmd_user_mode(session, mode); break;
 	case ping_:
-		if (pthread_mutex_trylock(&client->ping_mutex)==0) {
+		/*if (pthread_mutex_trylock(&client->ping_mutex)==0) {
 			ftime(&client->ping);
 			irc_send_raw(session, "PING %s", server);
 			retVal = 0;
-		} else retVal = 1;
+		} else retVal = 1;*/
 		break;
 	case away_: retVal = irc_custom_cmd_away(session, reason); break;
 	case raw_: retVal = irc_send_raw(session, "%s", command); break;

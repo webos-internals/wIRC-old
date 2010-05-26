@@ -19,11 +19,11 @@ LDFLAGS  := -g -L$(ROOT)/usr/lib -llunaservice -lmjson -lglib-2.0 -lgmodule-2.0 
 ARCHIVES = libircclient/src/libircclient.a
 
 plugin_client.o: %.o: %.c
-	$(CC) $(CFLAGS) -c $<  -o $@ $(INCLUDES) $(PDL_CFLAGS)
+	$(CC) $(CFLAGS) -c $<  -o $@ $(INCLUDES) $(PDL_CFLAGS) -Ilibircclient/include
 
 push: 
 
 clobber:
 	rm -rf *.o
 
-	
+clean: clobber

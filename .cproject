@@ -102,6 +102,7 @@
 <pathentry include="/usr/arm-none-linux-gnueabi/usr/include/SDL" kind="inc" path="" system="true"/>
 <pathentry include="/usr/arm-none-linux-gnueabi/usr/include/lunaservice" kind="inc" path="" system="true"/>
 <pathentry include="/usr/arm-none-linux-gnueabi/usr/include/pdl" kind="inc" path="" system="true"/>
+<pathentry base-path="wIRC" include="src/libircclient/include" kind="inc" path="" system="true"/>
 <pathentry kind="src" path=""/>
 <pathentry kind="out" path=""/>
 </storageModule>
