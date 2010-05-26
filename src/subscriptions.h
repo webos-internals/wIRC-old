@@ -19,7 +19,7 @@
 #ifndef SUBSCRIPTIONS_H_
 #define SUBSCRIPTIONS_H_
 
-#include <lunaservice.h>
+#include <PDL.h>
 
 bool register_subscriptions(LSPalmService *serviceHandle, LSError lserror);
 

@@ -21,7 +21,7 @@
 
 #include <stdbool.h>
 
-#include <lunaservice.h>
+#include <PDL.h>
 
 LSPalmService	*serviceHandle;
 LSHandle		*pub_serviceHandle;

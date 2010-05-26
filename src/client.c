@@ -449,7 +449,8 @@ bool client_cmd_ping(LSHandle* lshandle, LSMessage *message, void *ctx) {
 	return process_command(lshandle, message, ping_);
 }
 
-bool client_cmd_away(LSHandle* lshandle, LSMessage *message, void *ctx) {
+bool client_cmd_away(LSHandle* lshandle, LSMessage *message, void *ctx) {// Random info
+
 	return process_command(lshandle, message, away_);
 }
 
@@ -461,29 +462,21 @@ bool client_send_raw(LSHandle* lshandle, LSMessage *message, void *ctx) {
 	return process_command(lshandle, message, raw_);
 }
 
-// Random info
 
-bool client_get_version(LSHandle* lshandle, LSMessage *message, void *ctx) {
-
-	bool retVal = true;
-
-	LSError lserror;
-	LSErrorInit(&lserror);
+PDL_bool client_get_version(PDL_MojoParameters *params) {
 
 	char *jsonResponse = 0;
 	int len = 0;
 
 	len = asprintf(&jsonResponse, "{\"serviceVersion\":\"%s\"}", VERSION);
 	if (jsonResponse) {
-		LSMessageReply(lshandle,message,jsonResponse,&lserror);
+		PDL_MojoReply(params, jsonResponse);
 		free(jsonResponse);
 	} else
-		LSMessageReply(lshandle,message,"{\"returnValue\":-1,\"errorText\":\"Generic error\"}",&lserror);
+		PDL_MojoReply(params, "{\"returnValue\":-1,\"errorText\":\"Generic error\"}");
+	}
 
-	LSErrorFree(&lserror);
-
-	return retVal;
-
+	return PDL_TRUE;
 }
 
 bool client_init(LSHandle* lshandle, LSMessage *message, void *ctx) {
