@@ -2,8 +2,6 @@ VERSION=3.0
 
 CFLAGS		:=	-DVERSION=\"${VERSION}\" 
 
-LIBS		:=	-lpdl
-
 INCLUDES	:=	-I${ROOT}/include \
 				-I${ROOT}/usr/include \
 				-I$(ROOT)/usr/include/glib-2.0 \
@@ -11,19 +9,27 @@ INCLUDES	:=	-I${ROOT}/include \
 				-I$(ROOT)/usr/include/SDL \
 				-I$(ROOT)/usr/include/pdl \
 				-Ilibircclient/include
- 
-#	-I$(ROOT)/usr/include/lunaservice \
-	 \
-	-I$(ROOT)/usr/include/mjson \
-	 \
-	-I$(ROOT)/usr/include \
-	-Ilibircclient/include
+				
+LIBDIRS		:=	-L$(ROOT)/usr/lib
 	
-#LDFLAGS  := -L$(ROOT)/usr/lib -llunaservice -lmjson -lglib-2.0 -lgmodule-2.0 -lgthread-2.0 -lgobject-2.0
+LIBS		:=  -lpdl \
+				-lglib-2.0 \
+				-lgmodule-2.0 \
+				-lgthread-2.0 \
+				-lgobject-2.0
 
-#ARCHIVES = libircclient/src/libircclient.a
+ARCHIVES	:=	libircclient/src/libircclient.a
 
-all: plugin_client.o plugin.o main.o
+OBJECTS		:=	libircclient/src/libircclient.a \
+				plugin_client.o \
+				plugin.o \
+				main.o \
+
+org.webosinternals.wirc: $(OBJECTS)
+	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o org.webosinternals.wirc
+
+libircclient/src/libircclient.a:
+	cd libircclient; ./configure --host=$(CHOST); make
 
 plugin_client.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

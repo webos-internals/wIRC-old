@@ -45,6 +45,15 @@ typedef enum {
 	ip_,
 } irc_cmd;
 
+int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
+	int retVal = -1;
+	if (reason)
+		retVal = irc_send_raw(session,"AWAY :%s",reason);
+	else
+		retVal = irc_send_raw(session,"AWAY");
+	return retVal;
+}
+
 PDL_bool process_command(PDL_MojoParameters *params, irc_cmd type) {
 
 	char *jsonResponse = 0;
