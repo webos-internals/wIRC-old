@@ -18,6 +18,8 @@
 
 #include <PDL.h>
 
+#define IRC_MSG_BUF	512
+
 typedef enum {
 	msg_,
 	me_,
@@ -41,9 +43,87 @@ typedef enum {
 	ip_,
 } irc_cmd;
 
-
 PDL_bool process_command(PDL_MojoParameters *params, irc_cmd type) {
-	return PDL_TRUE;
+
+	char *jsonResponse = 0;
+
+	char nch[IRC_MSG_BUF];
+	char txt[IRC_MSG_BUF];
+	char channel[IRC_MSG_BUF];
+	char key[IRC_MSG_BUF];
+	char nick[IRC_MSG_BUF];
+	char topic[IRC_MSG_BUF];
+	char reason[IRC_MSG_BUF];
+	char mode[IRC_MSG_BUF];
+	char server[IRC_MSG_BUF];
+	char command[IRC_MSG_BUF];
+
+	PDL_GetParamString((PDL_ServiceParameters*)params, "nch", nch, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "text", txt, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "channel", channel, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "key", key, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "nick", nick, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "topic", topic, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "reason", reason, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "mode", mode, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "server", server, IRC_MSG_BUF);
+	PDL_GetParamString((PDL_ServiceParameters*)params, "command", command, IRC_MSG_BUF);
+
+	int len = 0;
+	if (txt)
+		len = strlen(txt);
+
+	char text[len];
+
+	int i = 0;
+	int c = 0;
+	while(txt && txt[c]) {
+		if (txt[c] == '\\' && txt[c+1] == '"') {
+			c++;
+		}
+		text[i++] = txt[c++];
+	}
+
+	text[i] = '\0';
+
+	int retVal = -1;
+	switch (type) {
+	case msg_: retVal = irc_cmd_msg(session, nch, text); break;
+	case me_: retVal = irc_cmd_me(session, nch, text); break;
+	case notice_: retVal = irc_cmd_notice(session, nch, text); break;
+	case join_: retVal = irc_cmd_join(session, channel, key); break;
+	case part_: retVal = irc_cmd_part(session, channel); break;
+	case invite_: retVal = irc_cmd_invite(session, nick, channel); break;
+	case names_: retVal = irc_cmd_names(session, channel); break;
+	case list_: retVal = irc_cmd_list(session, channel); break;
+	case topic_: retVal = irc_cmd_topic(session, channel, topic); break;
+	case channel_mode_: retVal = irc_cmd_channel_mode(session, channel, mode); break;
+	case kick_: retVal = irc_cmd_kick(session, nick, channel, reason); break;
+	case nick_: retVal = irc_cmd_nick(session, nick); break;
+	case quit_: retVal = irc_cmd_quit(session, reason); break;
+	case whois_: retVal = irc_cmd_whois(session, nick); break;
+	case user_mode_: retVal = irc_cmd_user_mode(session, mode); break;
+	case ping_:
+		if (pthread_mutex_trylock(&client->ping_mutex)==0) {
+			ftime(&client->ping);
+			irc_send_raw(session, "PING %s", server);
+			retVal = 0;
+		} else retVal = 1;
+		break;
+	case away_: retVal = irc_custom_cmd_away(session, reason); break;
+	case raw_: retVal = irc_send_raw(session, "%s", command); break;
+	case disconnect_: irc_disconnect(session); break;
+	}
+	len = asprintf(&jsonResponse, "{\"returnValue\":%d}", retVal);
+	if (jsonResponse) {
+		PDL_MojoReply(params, jsonResponse);
+		free(jsonResponse);
+	} else {
+		PDL_MojoReply(params, "{\"returnValue\":-1,\"errorText\":\"Generic error\"}");
+	}
+
+	return retVal;
+
 }
 
 PDL_bool client_cmd_msg(PDL_MojoParameters *params) {
@@ -137,4 +217,27 @@ PDL_bool client_get_version(PDL_MojoParameters *params) {
 	}
 
 	return PDL_TRUE;
+}
+
+void plugin_client_init() {
+	PDL_RegisterMojoHandler("client_cmd_msg",			client_cmd_msg);
+	PDL_RegisterMojoHandler("client_cmd_me",			client_cmd_me);
+	PDL_RegisterMojoHandler("client_cmd_notice",		client_cmd_notice);
+	PDL_RegisterMojoHandler("client_cmd_join",			client_cmd_join);
+	PDL_RegisterMojoHandler("client_cmd_part",			client_cmd_part);
+	PDL_RegisterMojoHandler("client_cmd_invite",		client_cmd_invite);
+	PDL_RegisterMojoHandler("client_cmd_names",			client_cmd_names);
+	PDL_RegisterMojoHandler("client_cmd_list",			client_cmd_list);
+	PDL_RegisterMojoHandler("client_cmd_topic",			client_cmd_topic);
+	PDL_RegisterMojoHandler("client_cmd_channel_mode",	client_cmd_channel_mode);
+	PDL_RegisterMojoHandler("client_cmd_kick",			client_cmd_kick);
+	PDL_RegisterMojoHandler("client_cmd_nick",			client_cmd_nick);
+	PDL_RegisterMojoHandler("client_cmd_quit",			client_cmd_quit);
+	PDL_RegisterMojoHandler("client_cmd_whois",			client_cmd_whois);
+	PDL_RegisterMojoHandler("client_cmd_user_mode",		client_cmd_user_mode);
+	PDL_RegisterMojoHandler("client_cmd_ping",			client_cmd_ping);
+	PDL_RegisterMojoHandler("client_cmd_away",			client_cmd_away);
+	PDL_RegisterMojoHandler("client_cmd_disconnect",	client_cmd_disconnect);
+	PDL_RegisterMojoHandler("client_send_raw",			client_send_raw);
+	PDL_RegisterMojoHandler("client_get_version",		client_get_version);
 }
