@@ -6,7 +6,7 @@
 	"vendor_email":	"support@webos-internals.org",
 	"vendor_url": "http://www.webos-internals.org/wiki/Application:WIRC",
 	"type": "web",
-	"Plug-ins": true,
+	"plug-ins": true,
 	"main": "index.html",
 	"icon": "icon.png",
 	"noWindow": true,
