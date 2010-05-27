@@ -85,9 +85,9 @@ typedef struct {
 	int				auto_ping;
 	pthread_mutex_t ping_mutex;
 	struct timeb 	ping;
-} wIRCd_client_t;
+} wIRC_client_t;
 
-wIRCd_client_t *client;
+wIRC_client_t *client;
 
 void plugin_client_init();
 void plugin_start();
