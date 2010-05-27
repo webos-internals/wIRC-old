@@ -7,3 +7,7 @@
 *.swn
 *.eg
 *~
+*.o
+*.log
+*.a
+*.status
