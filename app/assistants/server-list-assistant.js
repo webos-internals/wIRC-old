@@ -1,8 +1,5 @@
 function ServerListAssistant()
-{
-	
-	this.plugin = null;
-	
+{	
 	// subtitle random list
 	this.randomSub = 
 	[
@@ -54,10 +51,12 @@ function ServerListAssistant()
 
 ServerListAssistant.prototype.setup = function()
 {
+	Mojo.Log.info('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+	Mojo.Log.info('Plugin Version: ', $('wIRCplugin').client_get_version());
+	Mojo.Log.info('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+	
 	try
-	{
-		this.plugin = this.controller.get('wIRCplugin');
-		
+	{	
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
 		

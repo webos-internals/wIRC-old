@@ -1,8 +1,8 @@
 # $Id: Makefile.in 84 2009-01-10 01:37:29Z chromerium $
 CC = arm-none-linux-gnueabi-gcc
 CFLAGS = -Wall -DIN_BUILDING_LIBIRC -g -O2 -O3 -DENABLE_THREADS -D_REENTRANT
-AR=arm-none-linux-gnueabi-ar cr
-RANLIB=arm-none-linux-gnueabi-ranlib
+AR=ar cr
+RANLIB=ranlib
 INCLUDES=-I../include
 DESTDIR=
 

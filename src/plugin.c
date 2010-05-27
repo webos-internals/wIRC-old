@@ -24,6 +24,7 @@ GMainLoop *loop = NULL;
 PDL_Err plugin_initialize() {
 
 	SDL_Init(SDL_INIT_VIDEO);
+	PDL_Init(0);
 
 	if (plugin_client_init() > 0) {
 		g_message("JSRegistration Failed!");

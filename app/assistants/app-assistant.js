@@ -13,7 +13,7 @@ var servers = new ircServers();
 function AppAssistant() {}
 
 AppAssistant.prototype.handleLaunch = function(params)
-{
+{	
 	try
 	{
 		var serverController = this.controller.getStageController(serverStage);

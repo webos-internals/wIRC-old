@@ -213,26 +213,15 @@ PDL_bool client_send_raw(PDL_MojoParameters *params) {
 
 PDL_bool client_get_version(PDL_MojoParameters *params) {
 
-	char *jsonResponse = 0;
-	int len = 0;
+	return PDL_MojoReply(params, VERSION);
 
-	len = asprintf(&jsonResponse, "{\"serviceVersion\":\"%s\"}", VERSION);
-
-	if (jsonResponse) {
-		PDL_MojoReply(params, jsonResponse);
-		free(jsonResponse);
-	} else {
-		PDL_MojoReply(params, "{\"returnValue\":-1,\"errorText\":\"Generic error\"}");
-	}
-
-	return PDL_TRUE;
 }
 
 int plugin_client_init() {
 
 	int ret = 0;
 
-	ret += PDL_RegisterJSHandler("client_cmd_msg",			client_cmd_msg);
+	/*ret += PDL_RegisterJSHandler("client_cmd_msg",			client_cmd_msg);
 	ret += PDL_RegisterJSHandler("client_cmd_me",			client_cmd_me);
 	ret += PDL_RegisterJSHandler("client_cmd_notice",		client_cmd_notice);
 	ret += PDL_RegisterJSHandler("client_cmd_join",			client_cmd_join);
@@ -250,7 +239,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("client_cmd_ping",			client_cmd_ping);
 	ret += PDL_RegisterJSHandler("client_cmd_away",			client_cmd_away);
 	ret += PDL_RegisterJSHandler("client_cmd_disconnect",	client_cmd_disconnect);
-	ret += PDL_RegisterJSHandler("client_send_raw",			client_send_raw);
+	ret += PDL_RegisterJSHandler("client_send_raw",			client_send_raw);*/
 	ret += PDL_RegisterJSHandler("client_get_version",		client_get_version);
 
 	return ret;

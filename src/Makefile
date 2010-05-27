@@ -52,7 +52,7 @@ main.o: %.o: %.c
 push: 
 
 clobber: clobber-$(IRCLIB)
-	rm -rf *.o $(PROGRAM)
+	rm -rf *.o $(PROGRAM) ../$(PROGRAM)
 
 clobber-$(IRCLIB):
 	cd $(IRCLIB); make clean
