@@ -1,4 +1,4 @@
-PROGRAM         :=      wirc-plugin
+PROGRAM         :=      wirc
 VERSION         :=      3.0
 
 IRCLIB          :=      libircclient
@@ -19,7 +19,8 @@ LIBS		:=  	-lpdl \
 			-lglib-2.0 \
 			-lgmodule-2.0 \
 			-lgthread-2.0 \
-			-lgobject-2.0
+			-lgobject-2.0 \
+			-lSDL
 
 ARCHIVES	:=	$(IRCLIB)/src/$(IRCLIB).a
 
@@ -58,5 +59,8 @@ clobber-$(IRCLIB):
 
 clean: clobber
 
-install:
+install: $(PROGRAM) package.properties
 	cp $(PROGRAM) ../
+
+package.properties:
+	echo "filemode.755=$(PROGRAM)" > ../package.properties

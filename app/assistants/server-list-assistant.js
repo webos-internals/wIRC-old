@@ -56,7 +56,7 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
-		this.plugin = this.controller.get('wirc-plugin');
+		this.plugin = this.controller.get('wIRCplugin');
 		
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;

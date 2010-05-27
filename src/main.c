@@ -95,10 +95,11 @@ int main(int argc, char *argv[]) {
 	if (getopts(argc, argv) == 1)
 		return 1;
 
-    if (plugin_initialize() == PDL_NOERROR)
+	int ret = plugin_initialize();
+    if (ret == PDL_NOERROR)
     	plugin_start();
     else
-    	g_message("Failed to initialize plugin!");
+    	g_message("Failed to initialize plugin. PDL_Err: %d", ret);
 
 	return 0;
 

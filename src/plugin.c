@@ -17,17 +17,13 @@
  =============================================================================*/
 
 #include "wIRC.h"
+#include "SDL.h"
 
 GMainLoop *loop = NULL;
 
 PDL_Err plugin_initialize() {
-	loop = g_main_loop_new(NULL, FALSE);
 
-	client = calloc(1,sizeof(wIRC_client_t));
-
-	client->estabilshed = 0;
-	client->worker_thread = 0;
-	client->ping_server = 1;
+	SDL_Init(SDL_INIT_VIDEO);
 
 	if (plugin_client_init() > 0) {
 		g_message("JSRegistration Failed!");
@@ -43,6 +39,15 @@ void plugin_start() {
 
 	//wIRCd_clients = g_hash_table_new(g_str_hash, g_str_equal);
 	//if (wIRCd_clients)
+
+	loop = g_main_loop_new(NULL, FALSE);
+
+	client = calloc(1,sizeof(wIRC_client_t));
+
+	client->estabilshed = 0;
+	client->worker_thread = 0;
+	client->ping_server = 1;
+
 	g_main_loop_run(loop);
 
 }
