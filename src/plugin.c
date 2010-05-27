@@ -23,7 +23,7 @@ GMainLoop *loop = NULL;
 void plugin_initialize() {
 	loop = g_main_loop_new(NULL, FALSE);
 
-	client = calloc(1,sizeof(wIRCd_client_t));
+	client = calloc(1,sizeof(wIRC_client_t));
 
 	client->estabilshed = 0;
 	client->worker_thread = 0;
@@ -31,7 +31,7 @@ void plugin_initialize() {
 
 	plugin_client_init();
 
-	PDL_MojoRegistrationComplete();
+	PDL_JSRegistrationComplete();
 }
 
 void plugin_start() {

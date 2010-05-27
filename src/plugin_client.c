@@ -229,24 +229,24 @@ PDL_bool client_get_version(PDL_MojoParameters *params) {
 }
 
 void plugin_client_init() {
-	PDL_RegisterMojoHandler("client_cmd_msg",			client_cmd_msg);
-	PDL_RegisterMojoHandler("client_cmd_me",			client_cmd_me);
-	PDL_RegisterMojoHandler("client_cmd_notice",		client_cmd_notice);
-	PDL_RegisterMojoHandler("client_cmd_join",			client_cmd_join);
-	PDL_RegisterMojoHandler("client_cmd_part",			client_cmd_part);
-	PDL_RegisterMojoHandler("client_cmd_invite",		client_cmd_invite);
-	PDL_RegisterMojoHandler("client_cmd_names",			client_cmd_names);
-	PDL_RegisterMojoHandler("client_cmd_list",			client_cmd_list);
-	PDL_RegisterMojoHandler("client_cmd_topic",			client_cmd_topic);
-	PDL_RegisterMojoHandler("client_cmd_channel_mode",	client_cmd_channel_mode);
-	PDL_RegisterMojoHandler("client_cmd_kick",			client_cmd_kick);
-	PDL_RegisterMojoHandler("client_cmd_nick",			client_cmd_nick);
-	PDL_RegisterMojoHandler("client_cmd_quit",			client_cmd_quit);
-	PDL_RegisterMojoHandler("client_cmd_whois",			client_cmd_whois);
-	PDL_RegisterMojoHandler("client_cmd_user_mode",		client_cmd_user_mode);
-	PDL_RegisterMojoHandler("client_cmd_ping",			client_cmd_ping);
-	PDL_RegisterMojoHandler("client_cmd_away",			client_cmd_away);
-	PDL_RegisterMojoHandler("client_cmd_disconnect",	client_cmd_disconnect);
-	PDL_RegisterMojoHandler("client_send_raw",			client_send_raw);
-	PDL_RegisterMojoHandler("client_get_version",		client_get_version);
+	PDL_RegisterJSHandler("client_cmd_msg",			client_cmd_msg);
+	PDL_RegisterJSHandler("client_cmd_me",			client_cmd_me);
+	PDL_RegisterJSHandler("client_cmd_notice",		client_cmd_notice);
+	PDL_RegisterJSHandler("client_cmd_join",			client_cmd_join);
+	PDL_RegisterJSHandler("client_cmd_part",			client_cmd_part);
+	PDL_RegisterJSHandler("client_cmd_invite",		client_cmd_invite);
+	PDL_RegisterJSHandler("client_cmd_names",			client_cmd_names);
+	PDL_RegisterJSHandler("client_cmd_list",			client_cmd_list);
+	PDL_RegisterJSHandler("client_cmd_topic",			client_cmd_topic);
+	PDL_RegisterJSHandler("client_cmd_channel_mode",	client_cmd_channel_mode);
+	PDL_RegisterJSHandler("client_cmd_kick",			client_cmd_kick);
+	PDL_RegisterJSHandler("client_cmd_nick",			client_cmd_nick);
+	PDL_RegisterJSHandler("client_cmd_quit",			client_cmd_quit);
+	PDL_RegisterJSHandler("client_cmd_whois",			client_cmd_whois);
+	PDL_RegisterJSHandler("client_cmd_user_mode",		client_cmd_user_mode);
+	PDL_RegisterJSHandler("client_cmd_ping",			client_cmd_ping);
+	PDL_RegisterJSHandler("client_cmd_away",			client_cmd_away);
+	PDL_RegisterJSHandler("client_cmd_disconnect",	client_cmd_disconnect);
+	PDL_RegisterJSHandler("client_send_raw",			client_send_raw);
+	PDL_RegisterJSHandler("client_get_version",		client_get_version);
 }
