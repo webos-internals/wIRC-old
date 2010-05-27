@@ -11,3 +11,4 @@
 *.log
 *.a
 *.status
+libircclient/include/config.h

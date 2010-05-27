@@ -1,40 +1,40 @@
-VERSION=3.0
+PROGRAM         :=      wirc-plugin
+VERSION         :=      3.0
+
+IRCLIB          :=      libircclient
 
 CFLAGS		:=	-DVERSION=\"${VERSION}\" 
 
 INCLUDES	:=	-I${ROOT}/include \
-				-I${ROOT}/usr/include \
-				-I$(ROOT)/usr/include/glib-2.0 \
-				-I$(ROOT)/usr/lib/glib-2.0/include \
-				-I$(ROOT)/usr/include/SDL \
-				-I$(ROOT)/usr/include/pdl \
-				-Ilibircclient/include
+			-I${ROOT}/usr/include \
+			-I$(ROOT)/usr/include/glib-2.0 \
+			-I$(ROOT)/usr/lib/glib-2.0/include \
+			-I$(ROOT)/usr/include/SDL \
+			-I$(ROOT)/usr/include/pdl \
+			-I$(IRCLIB)/include
 				
 LIBDIRS		:=	-L$(ROOT)/usr/lib
 	
-LIBS		:=  -lpdl \
-				-lglib-2.0 \
-				-lgmodule-2.0 \
-				-lgthread-2.0 \
-				-lgobject-2.0
+LIBS		:=  	-lpdl \
+			-lglib-2.0 \
+			-lgmodule-2.0 \
+			-lgthread-2.0 \
+			-lgobject-2.0
 
-ARCHIVES	:=	libircclient/src/libircclient.a
+ARCHIVES	:=	$(IRCLIB)/src/$(IRCLIB).a
 
-OBJECTS		:=	libircclient/src/libircclient.a \
-				plugin_client.o \
-				plugin_events.o \
-				plugin.o \
-				main.o \
-				
-PROGRAM		:=	wirc-plugin
+OBJECTS		:=	plugin_client.o \
+			plugin_events.o \
+			plugin.o \
+			main.o
 
 .PHONY		:	clean clobber
 
-$(PROGRAM): $(OBJECTS)
+$(PROGRAM): $(ARCHIVES) $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PROGRAM)
 
-libircclient/src/libircclient.a:
-	cd libircclient; ./configure --host=$(CHOST); make
+$(IRCLIB)/src/$(IRCLIB).a:
+	cd $(IRCLIB); ./configure --host=$(CHOST); make
 
 plugin_client.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -50,8 +50,11 @@ main.o: %.o: %.c
 
 push: 
 
-clobber:
+clobber: clobber-$(IRCLIB)
 	rm -rf *.o $(PROGRAM)
+
+clobber-$(IRCLIB):
+	cd $(IRCLIB); make clean
 
 clean: clobber
 
