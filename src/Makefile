@@ -26,12 +26,12 @@ OBJECTS		:=	libircclient/src/libircclient.a \
 				plugin.o \
 				main.o \
 				
-PROGRAM		:=	org.webosinternals.wirc
+PROGRAM		:=	wirc-plugin
 
 .PHONY		:	clean clobber
 
 $(PROGRAM): $(OBJECTS)
-	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o org.webosinternals.wirc
+	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PROGRAM)
 
 libircclient/src/libircclient.a:
 	cd libircclient; ./configure --host=$(CHOST); make
@@ -54,3 +54,6 @@ clobber:
 	rm -rf *.o $(PROGRAM)
 
 clean: clobber
+
+install:
+	cp $(PROGRAM) ../
