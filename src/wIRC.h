@@ -89,7 +89,8 @@ typedef struct {
 
 wIRC_client_t *client;
 
-void plugin_client_init();
+int plugin_client_init();
 void plugin_start();
+PDL_Err plugin_initialize();
 
 #endif /* WIRC_H_ */

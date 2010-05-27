@@ -20,7 +20,7 @@
 
 GMainLoop *loop = NULL;
 
-void plugin_initialize() {
+PDL_Err plugin_initialize() {
 	loop = g_main_loop_new(NULL, FALSE);
 
 	client = calloc(1,sizeof(wIRC_client_t));
@@ -29,9 +29,12 @@ void plugin_initialize() {
 	client->worker_thread = 0;
 	client->ping_server = 1;
 
-	plugin_client_init();
+	if (plugin_client_init() > 0) {
+		g_message("JSRegistration Failed!");
+		return -1;
+	}
 
-	PDL_JSRegistrationComplete();
+	return PDL_JSRegistrationComplete();
 }
 
 void plugin_start() {
