@@ -1,5 +1,8 @@
 function ServerListAssistant()
 {
+	
+	this.plugin = null;
+	
 	// subtitle random list
 	this.randomSub = 
 	[
@@ -53,6 +56,8 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
+		this.plugin = this.controller.get('wirc-plugin');
+		
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
 		
