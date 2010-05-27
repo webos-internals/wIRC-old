@@ -16,16 +16,21 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  =============================================================================*/
 
-#include <string.h>
-#include <glib.h>
-
 #include "wIRC.h"
 
 GMainLoop *loop = NULL;
 
 void plugin_initialize() {
 	loop = g_main_loop_new(NULL, FALSE);
+
+	client = calloc(1,sizeof(wIRCd_client_t));
+
+	client->estabilshed = 0;
+	client->worker_thread = 0;
+	client->ping_server = 1;
+
 	plugin_client_init();
+
 	PDL_MojoRegistrationComplete();
 }
 

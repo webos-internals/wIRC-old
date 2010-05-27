@@ -22,6 +22,7 @@ ARCHIVES	:=	libircclient/src/libircclient.a
 
 OBJECTS		:=	libircclient/src/libircclient.a \
 				plugin_client.o \
+				plugin_events.o \
 				plugin.o \
 				main.o \
 				
@@ -36,6 +37,9 @@ libircclient/src/libircclient.a:
 	cd libircclient; ./configure --host=$(CHOST); make
 
 plugin_client.o: %.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+plugin_events.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 plugin.o: %.o: %.c

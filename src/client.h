@@ -35,13 +35,7 @@ typedef pthread_mutex_t port_mutex_t;
 #include <libirc_session.h>
 
 typedef struct {
-	pthread_mutex_t mutex;
-	pthread_t		worker_thread;
-	pthread_t		live_or_die_thread;
-	pthread_t		ping_thread;
-	bool			ping_server;
 	irc_session_t	*session;
-	char 			*sessionToken;
 	char	 		*server;
 	char 			*server_password;
 	char 			*nick;
@@ -51,26 +45,6 @@ typedef struct {
 	char			*realServer;
 	int				estabilshed;
 	int			 	port;
-	LSMessage		*msg_event_connect;
-	LSMessage		*msg_event_nick;
-	LSMessage		*msg_event_quit;
-	LSMessage		*msg_event_join;
-	LSMessage		*msg_event_part;
-	LSMessage		*msg_event_mode;
-	LSMessage		*msg_event_umode;
-	LSMessage		*msg_event_topic;
-	LSMessage		*msg_event_kick;
-	LSMessage		*msg_event_channel;
-	LSMessage		*msg_event_privmsg;
-	LSMessage		*msg_event_notice;
-	LSMessage		*msg_event_channel_notice;
-	LSMessage		*msg_event_invite;
-	LSMessage		*msg_event_ctcp_req;
-	LSMessage		*msg_event_ctcp_rep;
-	LSMessage		*msg_event_ctcp_action;
-	LSMessage		*msg_event_unknown;
-	LSMessage		*msg_event_numeric;
-	LSMessage		*msg_auto_ping;
 	pthread_mutex_t ping_mutex;
 	struct timeb 	ping;
 } wIRCd_client_t;

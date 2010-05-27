@@ -1,5 +1,5 @@
 /*=============================================================================
- Copyright (C) 2009 Ryan Hope <rmh3093@gmail.com>
+ Copyright (C) 2009-2010 Ryan Hope <rmh3093@gmail.com>
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -19,8 +19,20 @@
 #ifndef WIRC_H_
 #define WIRC_H_
 
+#include <pthread.h>
+#include <time.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <sys/timeb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
 #include <PDL.h>
 #include <libircclient.h>
+#include <glib.h>
 
 #define DEFAULT_MAX_RETRIES 10
 #define DEFAULT_PRE_RUN_USLEEP 0
@@ -29,8 +41,6 @@
 int debug;
 int max_retries;
 int pre_run_usleep;
-
-irc_callbacks_t	callbacks;
 
 typedef enum {
 	event_connect_,				// 0
@@ -54,6 +64,30 @@ typedef enum {
 	event_numeric_,				// 18
 	auto_ping_,					// 19
 } irc_callbacks;
+
+irc_callbacks_t callbacks;
+
+typedef struct {
+	pthread_mutex_t mutex;
+	pthread_t		worker_thread;
+	pthread_t		ping_thread;
+	int				ping_server;
+	irc_session_t	*session;
+	char	 		*server;
+	char 			*server_password;
+	char 			*nick;
+	char 			*username;
+	char 			*realname;
+	char			*interface;
+	char			*realServer;
+	int				estabilshed;
+	int			 	port;
+	int				auto_ping;
+	pthread_mutex_t ping_mutex;
+	struct timeb 	ping;
+} wIRCd_client_t;
+
+wIRCd_client_t *client;
 
 void plugin_client_init();
 void plugin_start();

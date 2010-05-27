@@ -1,5 +1,5 @@
 /*=============================================================================
- Copyright (C) 2009 Ryan Hope <rmh3093@gmail.com>
+ Copyright (C) 2009-2010 Ryan Hope <rmh3093@gmail.com>
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -17,8 +17,6 @@
  =============================================================================*/
 
 #include "wIRC.h"
-
-static irc_session_t *session;
 
 #define IRC_MSG_BUF	512
 
@@ -99,31 +97,31 @@ PDL_bool process_command(PDL_MojoParameters *params, irc_cmd type) {
 
 	int retVal = -1;
 	switch (type) {
-	case msg_: retVal = irc_cmd_msg(session, nch, text); break;
-	case me_: retVal = irc_cmd_me(session, nch, text); break;
-	case notice_: retVal = irc_cmd_notice(session, nch, text); break;
-	case join_: retVal = irc_cmd_join(session, channel, key); break;
-	case part_: retVal = irc_cmd_part(session, channel); break;
-	case invite_: retVal = irc_cmd_invite(session, nick, channel); break;
-	case names_: retVal = irc_cmd_names(session, channel); break;
-	case list_: retVal = irc_cmd_list(session, channel); break;
-	case topic_: retVal = irc_cmd_topic(session, channel, topic); break;
-	case channel_mode_: retVal = irc_cmd_channel_mode(session, channel, mode); break;
-	case kick_: retVal = irc_cmd_kick(session, nick, channel, reason); break;
-	case nick_: retVal = irc_cmd_nick(session, nick); break;
-	case quit_: retVal = irc_cmd_quit(session, reason); break;
-	case whois_: retVal = irc_cmd_whois(session, nick); break;
-	case user_mode_: retVal = irc_cmd_user_mode(session, mode); break;
+	case msg_: retVal = irc_cmd_msg(client->session, nch, text); break;
+	case me_: retVal = irc_cmd_me(client->session, nch, text); break;
+	case notice_: retVal = irc_cmd_notice(client->session, nch, text); break;
+	case join_: retVal = irc_cmd_join(client->session, channel, key); break;
+	case part_: retVal = irc_cmd_part(client->session, channel); break;
+	case invite_: retVal = irc_cmd_invite(client->session, nick, channel); break;
+	case names_: retVal = irc_cmd_names(client->session, channel); break;
+	case list_: retVal = irc_cmd_list(client->session, channel); break;
+	case topic_: retVal = irc_cmd_topic(client->session, channel, topic); break;
+	case channel_mode_: retVal = irc_cmd_channel_mode(client->session, channel, mode); break;
+	case kick_: retVal = irc_cmd_kick(client->session, nick, channel, reason); break;
+	case nick_: retVal = irc_cmd_nick(client->session, nick); break;
+	case quit_: retVal = irc_cmd_quit(client->session, reason); break;
+	case whois_: retVal = irc_cmd_whois(client->session, nick); break;
+	case user_mode_: retVal = irc_cmd_user_mode(client->session, mode); break;
 	case ping_:
 		/*if (pthread_mutex_trylock(&client->ping_mutex)==0) {
 			ftime(&client->ping);
-			irc_send_raw(session, "PING %s", server);
+			irc_send_raw(client->session, "PING %s", server);
 			retVal = 0;
 		} else retVal = 1;*/
 		break;
-	case away_: retVal = irc_custom_cmd_away(session, reason); break;
-	case raw_: retVal = irc_send_raw(session, "%s", command); break;
-	case disconnect_: irc_disconnect(session); break;
+	case away_: retVal = irc_custom_cmd_away(client->session, reason); break;
+	case raw_: retVal = irc_send_raw(client->session, "%s", command); break;
+	case disconnect_: irc_disconnect(client->session); break;
 	}
 	len = asprintf(&jsonResponse, "{\"returnValue\":%d}", retVal);
 	if (jsonResponse) {
