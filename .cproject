@@ -95,6 +95,7 @@
 </profile>
 </storageModule>
 <storageModule moduleId="org.eclipse.cdt.core.pathentry">
+<pathentry include="/usr/arm-none-linux-gnueabi/libc/usr/include" kind="inc" path="" system="true"/>
 <pathentry include="/usr/arm-none-linux-gnueabi/usr/include" kind="inc" path="" system="true"/>
 <pathentry include="/usr/arm-none-linux-gnueabi/include" kind="inc" path="" system="true"/>
 <pathentry include="/usr/arm-none-linux-gnueabi/usr/include/glib-2.0" kind="inc" path="" system="true"/>
