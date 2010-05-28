@@ -29,7 +29,7 @@ OBJECTS		:=	plugin_client.o \
 			plugin.o \
 			main.o
 
-.PHONY		:	clean clobber
+.PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
 
 $(PROGRAM): $(ARCHIVES) $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PROGRAM)
@@ -52,7 +52,7 @@ main.o: %.o: %.c
 push: 
 
 clobber: clobber-$(IRCLIB)
-	rm -rf *.o $(PROGRAM) ../$(PROGRAM)
+	rm -rf *.o $(PROGRAM) ../$(PROGRAM) ../package.properties
 
 clobber-$(IRCLIB):
 	cd $(IRCLIB); make clean
