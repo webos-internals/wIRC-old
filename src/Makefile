@@ -1,5 +1,4 @@
 PROGRAM         :=      wirc
-VERSION         :=      3.0
 
 IRCLIB          :=      libircclient
 

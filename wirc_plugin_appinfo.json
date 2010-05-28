@@ -1,4 +1,4 @@
-{                             
-	"type": "game",                               
-	"requiredMemory": 20                
+{
+	"type" : "game",
+	"requiredMemory" : "1",
 }
