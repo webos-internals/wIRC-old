@@ -15,4 +15,3 @@ libircclient/include/config.h
 src/wirc
 wirc
 src/libircclient/config.*
-src/libircclient/Makefile
