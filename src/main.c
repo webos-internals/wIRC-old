@@ -88,6 +88,8 @@ int getopts(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
 
+	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
+
 	max_retries = DEFAULT_MAX_RETRIES;
 	pre_run_usleep = DEFAULT_PRE_RUN_USLEEP;
 	debug = DEFAULT_DEBUG_LEVEL;
@@ -96,10 +98,14 @@ int main(int argc, char *argv[]) {
 		return 1;
 
 	int ret = plugin_initialize();
-    if (ret == PDL_NOERROR)
+    if (ret == PDL_NOERROR) {
+    	syslog(LOG_NOTICE, "JS handler registration complete");
     	plugin_start();
-    else
-    	g_message("Failed to initialize plugin. PDL_Err: %d", ret);
+    } else {
+    	syslog(LOG_ERR, "JS handler registration failed: %d", ret);
+    }
+
+    closelog();
 
 	return 0;
 

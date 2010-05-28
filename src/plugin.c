@@ -27,7 +27,7 @@ PDL_Err plugin_initialize() {
 	PDL_Init(0);
 
 	if (plugin_client_init() > 0) {
-		g_message("JSRegistration Failed!");
+		syslog(LOG_ERR, "JS handler registration failed");
 		return -1;
 	}
 
