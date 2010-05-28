@@ -125,10 +125,10 @@ PDL_bool process_command(PDL_MojoParameters *params, irc_cmd type) {
 	}
 	len = asprintf(&jsonResponse, "{\"returnValue\":%d}", retVal);
 	if (jsonResponse) {
-		PDL_MojoReply(params, jsonResponse);
+		PDL_JSReply(params, jsonResponse);
 		free(jsonResponse);
 	} else {
-		PDL_MojoReply(params, "{\"returnValue\":-1,\"errorText\":\"Generic error\"}");
+		PDL_JSReply(params, "{\"returnValue\":-1,\"errorText\":\"Generic error\"}");
 	}
 
 	return retVal;
@@ -213,7 +213,7 @@ PDL_bool client_send_raw(PDL_MojoParameters *params) {
 
 PDL_bool client_get_version(PDL_MojoParameters *params) {
 
-	return PDL_MojoReply(params, VERSION);
+	return PDL_JSReply(params, VERSION);
 
 }
 
