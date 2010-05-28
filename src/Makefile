@@ -1,8 +1,12 @@
-PROGRAM         :=      wirc
+include ../Makefile.inc
 
 IRCLIB          :=      libircclient
 
-CFLAGS		:=	-DVERSION=\"${VERSION}\" 
+CFLAGS		:=	-DID=\"${ID}\" \
+				-DVERSION=\"${VERSION}\" \
+				-DVENDOR=\"${VENDOR}\" \
+				-DVENDOR_EMAIL=\"${VENDOR_EMAIL}\" \
+				-DVENDOR_URL=\"${VENDOR_URL}\"
 
 INCLUDES	:=	-I${ROOT}/include \
 			-I${ROOT}/usr/include \
@@ -30,8 +34,8 @@ OBJECTS		:=	plugin_client.o \
 
 .PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
 
-$(PROGRAM): $(ARCHIVES) $(OBJECTS)
-	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PROGRAM)
+$(PLUGIN): $(ARCHIVES) $(OBJECTS)
+	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PLUGIN)
 
 $(IRCLIB)/src/$(IRCLIB).a:
 	cd $(IRCLIB); ./configure --host=$(CHOST); make
@@ -51,15 +55,15 @@ main.o: %.o: %.c
 push: 
 
 clobber: clobber-$(IRCLIB)
-	rm -rf *.o $(PROGRAM) ../$(PROGRAM) ../package.properties
+	rm -rf *.o $(PLUGIN) ../$(PLUGIN) ../package.properties
 
 clobber-$(IRCLIB):
 	cd $(IRCLIB); make clean
 
 clean: clobber
 
-install: $(PROGRAM) package.properties
-	cp $(PROGRAM) ../
+install: $(PLUGIN) package.properties
+	cp $(PLUGIN) ../
 
 package.properties:
-	echo "filemode.755=$(PROGRAM)" > ../package.properties
+	echo "filemode.755=$(PLUGIN)" > ../package.properties
