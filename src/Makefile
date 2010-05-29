@@ -25,21 +25,18 @@ LIBS		:=  	-lpdl \
 			-lgobject-2.0 \
 			-lSDL
 
-ARCHIVES	:=	$(IRCLIB)/src/$(IRCLIB).a
-
-OBJECTS		:=	plugin_client.o \
-			plugin_events.o \
-			plugin.o \
-			main.o
+OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
+				plugin_client.o plugin_events.o plugin.o \
+				main.o
 
 .PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
 
-$(PLUGIN): $(ARCHIVES) $(OBJECTS)
-	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PLUGIN)
+$(PLUGIN): $(OBJECTS)
+	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) -o $(PLUGIN)
 
-$(IRCLIB)/src/$(IRCLIB).a:
-	cd $(IRCLIB); ./configure --host=$(CHOST); make
-
+$(IRCLIB)/$(IRCLIB).o:
+	cd $(IRCLIB); $(MAKE)
+		
 plugin_client.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
@@ -58,7 +55,7 @@ clobber: clobber-$(IRCLIB)
 	rm -rf *.o $(PLUGIN) ../$(PLUGIN) ../package.properties
 
 clobber-$(IRCLIB):
-	cd $(IRCLIB); make clean
+	cd $(IRCLIB); $(MAKE) clean
 
 clean: clobber
 

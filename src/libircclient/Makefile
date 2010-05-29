@@ -1,26 +1,14 @@
-# $Id: Makefile 84 2009-01-10 01:37:29Z chromerium $
+include ../../Makefile.inc
 
-SUBDIRS = src
+CFLAGS		:=	$(CFLAGS) -DIN_BUILDING_LIBIRC -DENABLE_THREADS -D_REENTRANT
+INCLUDES	:=	$(INCLUDES) -I./include
 
-all:
-	for subdir in $(SUBDIRS); do \
-		$(MAKE) -C $$subdir || exit 1; \
-	done
+IRCLIB		:=	libircclient.o
+
+$(IRCLIB): utils.c dcc.c errors.c portable.c sockets.c colors.c
 
 clean:
-	-for subdir in $(SUBDIRS); do \
-		$(MAKE) -C $$subdir clean || exit 1; \
-	done
-	-rm -f core
+	rm -f $(IRCLIB)
 
-distclean:
-	-for subdir in $(SUBDIRS); do \
-		$(MAKE) -C $$subdir distclean || exit 1; \
-	done
-	-rm -f include/config.h config.cache config.status config.log core
-
-distro: distclean
-	(cd .. && tar zcf libircclient-1.2.tar.gz libircclient-1.2)
-
-install: all
-	-cd src && make install
+.c.o:
+	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
