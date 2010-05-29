@@ -19,7 +19,9 @@
 #include "wIRC.h"
 #include "SDL.h"
 
-GMainLoop *loop = NULL;
+int isPlugin = 1;
+pthread_mutex_t plugin_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 PDL_Err plugin_initialize() {
 
@@ -41,15 +43,25 @@ void plugin_start() {
 	//wIRCd_clients = g_hash_table_new(g_str_hash, g_str_equal);
 	//if (wIRCd_clients)
 
-	loop = g_main_loop_new(NULL, FALSE);
-
 	client = calloc(1,sizeof(wIRC_client_t));
 
 	client->estabilshed = 0;
 	client->worker_thread = 0;
 	client->ping_server = 1;
 
-	g_main_loop_run(loop);
+	pthread_mutex_lock(&plugin_mutex);
+	while (isPlugin) {
+		pthread_cond_wait(&cond, &plugin_mutex);
+	}
+	pthread_mutex_unlock(&plugin_mutex);
+}
+
+void plugin_stop() {
+
+	pthread_mutex_lock(&plugin_mutex);
+	isPlugin = 0;
+	pthread_cond_signal(&cond);
+	pthread_mutex_unlock(&plugin_mutex);
 
 }
 

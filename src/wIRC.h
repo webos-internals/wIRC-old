@@ -33,7 +33,6 @@
 
 #include <PDL.h>
 #include <libircclient.h>
-#include <glib.h>
 
 #define DEFAULT_MAX_RETRIES 10
 #define DEFAULT_PRE_RUN_USLEEP 0

@@ -10,20 +10,13 @@ CFLAGS		:=	-DID=\"${ID}\" \
 
 INCLUDES	:=	-I${ROOT}/include \
 			-I${ROOT}/usr/include \
-			-I$(ROOT)/usr/include/glib-2.0 \
-			-I$(ROOT)/usr/lib/glib-2.0/include \
 			-I$(ROOT)/usr/include/SDL \
 			-I$(ROOT)/usr/include/pdl \
 			-I$(IRCLIB)/include
 				
 LIBDIRS		:=	-L$(ROOT)/usr/lib
 	
-LIBS		:=  	-lpdl \
-			-lglib-2.0 \
-			-lgmodule-2.0 \
-			-lgthread-2.0 \
-			-lgobject-2.0 \
-			-lSDL
+LIBS		:=  -lpdl -lSDL
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 				plugin_client.o plugin_events.o plugin.o \
