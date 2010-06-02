@@ -54,7 +54,7 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 	payload[1] = origin ? origin : "";
 	payload[2] = parms;
 	if (type == event_connect_) {
-		payload[3] = 0;//inet_ntoa(session->local_addr);
+		payload[3] = "192.168.1.103";//inet_ntoa(session->local_addr);
 	} else {
 		payload[3] = 0;
 	}
@@ -99,11 +99,10 @@ void *do_ping_server(void *ptr) {
 
 void handle_event_connect(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
 
-	realServer = strdup(origin);
-	pthread_create(&ping_thread, NULL, do_ping_server, NULL);
+	//realServer = strdup(origin);
+	//pthread_create(&ping_thread, NULL, do_ping_server, NULL);
 
-	if (debug)
-		syslog(LOG_INFO, "Connection established");
+	syslog(LOG_INFO, "Connection established");
 	process_event(session, event, origin, params, count, event_connect_);
 
 }

@@ -1,10 +1,10 @@
 function ircServer(params)
 {
-	this.STATE_SERVICE_UNAVAILABLE	= -3;
+	//this.STATE_SERVICE_UNAVAILABLE	= -3;
 	this.STATE_PIFACE_UNAVAILABLE	= -2;
 	this.STATE_MAX_RETRIES			= -1;
 	this.STATE_DISCONNECTED			= 0;
-	this.STATE_TOKEN_REQUEST		= 1 
+	//this.STATE_TOKEN_REQUEST		= 1 
 	this.STATE_CONNECTING			= 2; 
 	this.STATE_CONNECTED			= 3; 
 	this.STATE_DISCONNECTING		= 4;
@@ -62,57 +62,6 @@ function ircServer(params)
 	this.listDisplay =			0;
 	this.channelList =			[];
 	
-	if (this.autoConnect) this.init();
-}
-
-ircServer.prototype.setState = function(state)
-{
-	if (this.state==-1 && state<this.STATE_CONNECTING)
-		return;
-		
-	var message = '';
-	switch (state)
-	{
-		case this.STATE_SERVICE_UNAVAILABLE: message = "wIRCd is not running!"; break;
-		case this.STATE_PIFACE_UNAVAILABLE: message = "Preferred interface is not avaliable!"; break;
-		case this.STATE_MAX_RETRIES: message = "Exceeded max retries, not connecting!"; break;
-		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
-		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;
-		case this.STATE_CONNECTING: message = "Connecting..."; break;
-		case this.STATE_CONNECTED: message = "Connected!"; break;
-	}	
-	this.state = state;
-	if (message.length>0) {
-		this.newMessage('type3', false, message);
-	}
-	if (servers.listAssistant && servers.listAssistant.controller)
-		servers.listAssistant.updateList();		
-}
-
-ircServer.prototype.cleanupSubscriptions = function()
-{
-	for (var i=0; i<this.subscriptions.length; i++)
-		this.subscriptions[i].cancel();
-}
-
-ircServer.prototype.init = function()
-{
-	if (!prefs.get().aiface)
-	{
-		var state = '';
-		switch (prefs.get().piface)
-		{
-			case 'ppp0': state = connectionInfo.wan.state; break;
-			case 'eth0': state = connectionInfo.wifi.state; break;
-		}
-		if (state == 'disconnected')
-		{
-			this.setState(this.STATE_PIFACE_UNAVAILABLE);
-			return;
-		}
-	}
-	
-	plugin.event_connect = this.event_connect_handler.bind(this);
 	plugin.event_connect = this.event_connect_handler.bind(this);
 	plugin.event_nick = this.event_nick_handler.bind(this);
 	plugin.event_quit = this.event_quit_handler.bind(this);
@@ -132,6 +81,49 @@ ircServer.prototype.init = function()
 	plugin.event_ctcp_action = this.event_ctcp_action_handler.bind(this);
 	plugin.event_unknown = this.event_unknown_handler.bind(this);
 	plugin.event_numeric = this.event_numeric_handler.bind(this);
+	
+	if (this.autoConnect) this.init();
+}
+
+ircServer.prototype.setState = function(state)
+{
+	if (this.state==-1 && state<this.STATE_CONNECTING)
+		return;
+		
+	var message = '';
+	switch (state)
+	{
+		case this.STATE_PIFACE_UNAVAILABLE: message = "Preferred interface is not avaliable!"; break;
+		case this.STATE_MAX_RETRIES: message = "Exceeded max retries, not connecting!"; break;
+		case this.STATE_DISCONNECTING: message = "Disconnecting..."; break;
+		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;
+		case this.STATE_CONNECTING: message = "Connecting..."; break;
+		case this.STATE_CONNECTED: message = "Connected!"; break;
+	}	
+	this.state = state;
+	if (message.length>0) {
+		this.newMessage('type3', false, message);
+	}
+	if (servers.listAssistant && servers.listAssistant.controller)
+		servers.listAssistant.updateList();		
+}
+
+ircServer.prototype.init = function()
+{
+	if (!prefs.get().aiface)
+	{
+		var state = '';
+		switch (prefs.get().piface)
+		{
+			case 'ppp0': state = connectionInfo.wan.state; break;
+			case 'eth0': state = connectionInfo.wifi.state; break;
+		}
+		if (state == 'disconnected')
+		{
+			this.setState(this.STATE_PIFACE_UNAVAILABLE);
+			return;
+		}
+	}
 	
 	this.setState(this.STATE_CONNECTING);
 	this.connect();
@@ -937,7 +929,7 @@ ircServer.prototype.saveInfo = function(params)
 
 ircServer.prototype.event_connect_handler = function(event, origin, params, ip)
 {
-	if (payload.event=='MAXRETRIES')
+	if (event=='MAXRETRIES')
 	{
 		this.setState(this.STATE_MAX_RETRIES);
 		return;	
