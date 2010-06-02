@@ -14,15 +14,7 @@ AboutAssistant.prototype.setup = function()
 	//this.webPageElement.update(Mojo.Format.runTextIndexer('http://www.webos-internals.org/wiki/Application:WIRC'));
 	this.guiVersionElement.update(Mojo.Controller.appInfo.version);
 	
-	wIRCd.version(this.serviceVersionHandler.bindAsEventListener(this));
-}
-
-AboutAssistant.prototype.serviceVersionHandler = function(payload)
-{
-	if (payload && payload.serviceVersion)
-		this.serviceVersionElement.update(payload.serviceVersion);
-	else
-		this.serviceVersionElement.update('unavailable');
+	this.serviceVersionElement.update(plugin.get_version());
 }
 
 AboutAssistant.prototype.activate = function(event)

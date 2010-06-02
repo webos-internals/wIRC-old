@@ -61,8 +61,4 @@ void plugin_stop() {
 }
 
 void luna_service_cleanup() {
-
-	//if (wIRCd_clients)
-		//g_hash_table_destroy(wIRCd_clients);
-
 }

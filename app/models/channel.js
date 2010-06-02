@@ -121,7 +121,7 @@ ircChannel.prototype.topicUpdate = function(topic)
 
 ircChannel.prototype.me = function(message)
 {
-	wIRCd.me(this.meHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
+	plugin.cmd_me(this.name, message);
 	this.newMessage('type7', this.server.nick, message);
 }
 ircChannel.prototype.meHandler = function(payload)
@@ -131,7 +131,7 @@ ircChannel.prototype.meHandler = function(payload)
 
 ircChannel.prototype.msg = function(message)
 {
-	wIRCd.msg(this.msgHandler.bindAsEventListener(this), this.server.sessionToken, this.name, message);
+	plugin.cmd_msg(this.name, message);
 	this.newMessage('privmsg', this.server.nick, message);
 }
 ircChannel.prototype.msgHandler = function(payload)
@@ -252,7 +252,7 @@ ircChannel.prototype.setMode = function(mode)
 {	// i would just call this "mode" but thats the name of the variable that holds the mode for this channel
 	if (mode)
 	{
-		wIRCd.channel_mode(this.modeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, mode);
+		plugin.cmd_channel_mode(this.name, mode);
 	}
 }
 ircChannel.prototype.modeHandler = function(payload)
@@ -265,7 +265,7 @@ ircChannel.prototype.kick = function(nick, reason)
 	if (!reason) reason = 'No Reason';
 	if (nick && this.containsNick(nick))
 	{
-		wIRCd.kick(this.kickHandler.bindAsEventListener(this), this.server.sessionToken, this.name, nick.name, reason);
+		plugin.cmd_kick(this.name, nick.name, reason);
 	}
 }
 ircChannel.prototype.kickHandler = function(payload)
@@ -275,8 +275,8 @@ ircChannel.prototype.kickHandler = function(payload)
 
 ircChannel.prototype.join = function()
 {
-	wIRCd.join(this.joinHandler.bindAsEventListener(this), this.server.sessionToken, this.name, this.key?this.key:null);
-	wIRCd.channel_mode(this.channelModeHandler.bindAsEventListener(this), this.server.sessionToken, this.name, null);
+	plugin.cmd_join(this.name, this.key?this.key:null);
+	plugin.cmd_channel_mode(this.name, null);
 }
 ircChannel.prototype.joinHandler = function(payload)
 {
@@ -306,14 +306,8 @@ ircChannel.prototype.channelModeHandler = function(payload)
 
 ircChannel.prototype.part = function()
 {
-	wIRCd.part(this.partHandler.bindAsEventListener(this), this.server.sessionToken, this.name);
-}
-ircChannel.prototype.partHandler = function(payload)
-{
-	if (payload.returnValue == 0)
-	{
-		this.close();
-	}
+	plugin.cmd_part(this.name);
+	this.close();
 }
 
 ircChannel.prototype.clearMessages = function()
