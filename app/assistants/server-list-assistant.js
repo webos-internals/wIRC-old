@@ -49,17 +49,22 @@ function ServerListAssistant()
 	}
 }
 
-ServerListAssistant.prototype.getver = function()
+ServerListAssistant.prototype.tryPlugin = function()
 {
 	try
 	{
-		Mojo.Log.info('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-		Mojo.Log.info('Plugin Version: ', this.controller.get('wIRCplugin').get_version());
-		Mojo.Log.info('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+		this.controller.get('wIRCplugin').get_version();
+		pluginReady = true;
 	}
 	catch (e)
 	{
-		this.timerID = setTimeout(this.getver.bind(this), 100);
+		this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
+	}
+	finally
+	{
+		Mojo.Log.info("#######################################################");
+		Mojo.Log.info("PluginReady: ", pluginReady);
+		Mojo.Log.info("#######################################################");
 	}
 }
 
@@ -67,7 +72,7 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{	
-		this.getver();
+		this.tryPlugin();
 		
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
