@@ -20,6 +20,9 @@
 
 int main(int argc, char *argv[]) {
 
+	if (PDL_IsPlugin())
+		return -1;
+
 	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
 
 	max_retries = DEFAULT_MAX_RETRIES;
