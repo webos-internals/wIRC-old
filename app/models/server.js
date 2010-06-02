@@ -127,8 +127,8 @@ ircServer.prototype.init = function()
 	plugin.event_notice = this.event_notice_handler.bind(this);
 	plugin.event_channel_notice = this.event_channel_notice_handler.bind(this);
 	plugin.event_invite = this.event_invite_handler.bind(this);
-	plugin.event_ctcp_req = this.event_ctcp_req_handler.bind(this);
-	plugin.event_ctcp_rep = this.event_ctcp_rep_handler.bind(this);
+	//plugin.event_ctcp_req = this.event_ctcp_req_handler.bind(this);
+	//plugin.event_ctcp_rep = this.event_ctcp_rep_handler.bind(this);
 	plugin.event_ctcp_action = this.event_ctcp_action_handler.bind(this);
 	plugin.event_unknown = this.event_unknown_handler.bind(this);
 	plugin.event_numeric = this.event_numeric_handler.bind(this);
@@ -327,18 +327,25 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {	
-	plugin.connect
-	(
-		null,
-		this.sessionToken,
-		this.address,
-		this.port,
-		(this.serverUser?this.serverUser:null),
-		(this.serverPassword?this.serverPassword:null),
-		this.defaultNick?this.defaultNick:prefs.get().nicknames[this.nextNick],
-		prefs.get().realname,
-		prefs.get().piface
-	);
+	try
+	{
+		plugin.cmd_connect(
+			this.address,
+			(this.port?this.port:6667),
+			(this.serverUser?this.serverUser:"wicer"),
+			(this.serverPassword?this.serverPassword:null),
+			this.defaultNick?this.defaultNick:prefs.get().nicknames[this.nextNick],
+			prefs.get().realname,
+			prefs.get().piface
+		);	
+	}
+	catch(e)
+	{
+		Mojo.Log.info("########################################################");
+		Mojo.Log.info(e);
+		Mojo.Log.info("########################################################");
+	}
+	
 }
 /*ircServer.prototype.maybeReconnect = function(network)
 {
@@ -1074,7 +1081,7 @@ ircServer.prototype.event_topic_handler = function(event, origin, params)
  * For now all of these notices will get directed to the server status
  * window until a better solution is implemented.
  */	
-ircServer.prototype.eventNoticeHandler = function(event, origin, params)
+ircServer.prototype.event_notice_handler = function(event, origin, params)
 {
 	var tmpNick = this.getNick(origin);
 	this.newMessage('type6', tmpNick, params[1]);
@@ -1083,7 +1090,7 @@ ircServer.prototype.eventNoticeHandler = function(event, origin, params)
 /*
  * These are notices that are directed towards a specific channel.
  */
-ircServer.prototype.eventChannelNoticeHandler = function(event, origin, params)
+ircServer.prototype.event_channel_notice_handler = function(event, origin, params)
 {
 	var tmpNick = this.getNick(origin);
 	var tmpChan = this.getChannel(params[0]);

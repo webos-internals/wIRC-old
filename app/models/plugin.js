@@ -1,10 +1,10 @@
-function wIRCd() {}
+function plugin() {}
 
-wIRCd.connect = function(callback, sessionToken, server, port, username, password, nick, realname, interfaces)
+plugin.connect = function(callback, sessionToken, server, port, username, password, nick, realname, interfaces)
 {
 	var iface = null;
 	if (interfaces && interfaces.length > 0) iface = interfaces;
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_connect',
 		parameters: {
@@ -22,9 +22,9 @@ wIRCd.connect = function(callback, sessionToken, server, port, username, passwor
 	});
 	return request;
 }
-wIRCd.quit = function(callback, sessionToken, reason)
+plugin.quit = function(callback, sessionToken, reason)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_quit',
 		parameters: {
@@ -37,9 +37,9 @@ wIRCd.quit = function(callback, sessionToken, reason)
 	return request;
 }
 
-wIRCd.nick = function(callback, sessionToken, nick)
+plugin.nick = function(callback, sessionToken, nick)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_nick',
 		parameters: {
@@ -51,9 +51,9 @@ wIRCd.nick = function(callback, sessionToken, nick)
 	});
 	return request;
 }
-wIRCd.user_mode = function(callback, sessionToken, mode)
+plugin.user_mode = function(callback, sessionToken, mode)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_user_mode',
 		parameters: {
@@ -65,9 +65,9 @@ wIRCd.user_mode = function(callback, sessionToken, mode)
 	});
 	return request;
 }
-wIRCd.whois = function(callback, sessionToken, nick)
+plugin.whois = function(callback, sessionToken, nick)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_whois',
 		parameters: {
@@ -80,9 +80,9 @@ wIRCd.whois = function(callback, sessionToken, nick)
 	return request;
 }
 
-wIRCd.join = function(callback, sessionToken, channel, key)
+plugin.join = function(callback, sessionToken, channel, key)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_join',
 		parameters: {
@@ -95,9 +95,9 @@ wIRCd.join = function(callback, sessionToken, channel, key)
 	});
 	return request;
 }
-wIRCd.part = function(callback, sessionToken, channel)
+plugin.part = function(callback, sessionToken, channel)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_part',
 		parameters: {
@@ -109,9 +109,9 @@ wIRCd.part = function(callback, sessionToken, channel)
 	});
 	return request;
 }
-wIRCd.invite = function(callback, sessionToken, channel, nick)
+plugin.invite = function(callback, sessionToken, channel, nick)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_invite',
 		parameters: {
@@ -124,9 +124,9 @@ wIRCd.invite = function(callback, sessionToken, channel, nick)
 	});
 	return request;
 }
-wIRCd.names = function(callback, sessionToken, channel)
+plugin.names = function(callback, sessionToken, channel)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_names',
 		parameters: {
@@ -138,9 +138,9 @@ wIRCd.names = function(callback, sessionToken, channel)
 	});
 	return request;
 }
-wIRCd.list = function(callback, sessionToken, channel)
+plugin.list = function(callback, sessionToken, channel)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_list',
 		parameters: {
@@ -153,9 +153,9 @@ wIRCd.list = function(callback, sessionToken, channel)
 	return request;
 }
 
-wIRCd.msg = function(callback, sessionToken, nch, text)
+plugin.msg = function(callback, sessionToken, nch, text)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_msg',
 		parameters: {
@@ -168,9 +168,9 @@ wIRCd.msg = function(callback, sessionToken, nch, text)
 	});
 	return request;
 }
-wIRCd.me = function(callback, sessionToken, nch, text)
+plugin.me = function(callback, sessionToken, nch, text)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_me',
 		parameters: {
@@ -183,9 +183,9 @@ wIRCd.me = function(callback, sessionToken, nch, text)
 	});
 	return request;
 }
-wIRCd.notice = function(callback, sessionToken, nch, text)
+plugin.notice = function(callback, sessionToken, nch, text)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_notice',
 		parameters: {
@@ -198,9 +198,9 @@ wIRCd.notice = function(callback, sessionToken, nch, text)
 	});
 	return request;
 }
-wIRCd.kick = function(callback, sessionToken, channel, nick, reason)
+plugin.kick = function(callback, sessionToken, channel, nick, reason)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_kick',
 		parameters: {
@@ -214,9 +214,9 @@ wIRCd.kick = function(callback, sessionToken, channel, nick, reason)
 	});
 	return request;
 }
-wIRCd.topic = function(callback, sessionToken, channel, topic)
+plugin.topic = function(callback, sessionToken, channel, topic)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_topic',
 		parameters: {
@@ -229,9 +229,9 @@ wIRCd.topic = function(callback, sessionToken, channel, topic)
 	});
 	return request;
 }
-wIRCd.channel_mode = function(callback, sessionToken, channel, mode)
+plugin.channel_mode = function(callback, sessionToken, channel, mode)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_channel_mode',
 		parameters: {
@@ -244,9 +244,9 @@ wIRCd.channel_mode = function(callback, sessionToken, channel, mode)
 	});
 	return request;
 }
-wIRCd.ping = function(callback, sessionToken, server)
+plugin.ping = function(callback, sessionToken, server)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_ping',
 		parameters: {
@@ -258,9 +258,9 @@ wIRCd.ping = function(callback, sessionToken, server)
 	});
 	return request;
 }
-wIRCd.away = function(callback, sessionToken, reason)
+plugin.away = function(callback, sessionToken, reason)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_away',
 		parameters: {
@@ -272,9 +272,9 @@ wIRCd.away = function(callback, sessionToken, reason)
 	});
 	return request;
 }
-wIRCd.raw = function(callback, sessionToken, command)
+plugin.raw = function(callback, sessionToken, command)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_send_raw',
 		parameters: {
@@ -287,9 +287,9 @@ wIRCd.raw = function(callback, sessionToken, command)
 	return request;
 }
 
-wIRCd.disconnect = function(callback, sessionToken)
+plugin.disconnect = function(callback, sessionToken)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_cmd_disconnect',
 		parameters: {
@@ -300,9 +300,9 @@ wIRCd.disconnect = function(callback, sessionToken)
 	});
 	return request;
 }
-wIRCd.version = function(callback)
+plugin.version = function(callback)
 {
-	var request = new Mojo.Service.Request(wIRCd.identifier,
+	var request = new Mojo.Service.Request(plugin.identifier,
 	{
 		method: 'client_get_version',
 		parameters: {},

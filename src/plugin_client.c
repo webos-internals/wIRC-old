@@ -167,12 +167,12 @@ PDL_bool client_cmd_connect(PDL_MojoParameters *params) {
 	PDL_bool retVal = PDL_TRUE;
 
 	server = PDL_GetMojoParamString(params, 0);
-	username = PDL_GetMojoParamString(params, 1);
-	server_password = PDL_GetMojoParamString(params, 2);
-	nick = PDL_GetMojoParamString(params, 3);
-	realname = PDL_GetMojoParamString(params, 4);
-	interface = PDL_GetMojoParamString(params, 5);
-	port = PDL_GetMojoParamInt(params, 6);
+	port = PDL_GetMojoParamInt(params, 1);
+	username = PDL_GetMojoParamString(params, 2);
+	server_password = PDL_GetMojoParamString(params, 3);
+	nick = PDL_GetMojoParamString(params, 4);
+	realname = PDL_GetMojoParamString(params, 5);
+	interface = PDL_GetMojoParamString(params, 6);
 
 	if (pthread_create(&worker_thread, NULL, client_run, NULL)) {
 		PDL_JSReply(params, "{\"returnValue\":-1,\"errorText\":\"Failed to create thread\"}");
