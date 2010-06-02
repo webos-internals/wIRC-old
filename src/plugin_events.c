@@ -18,7 +18,7 @@
 
 #include "wIRC.h"
 
-void process_event(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count, irc_callbacks type) {
+void process_event(const char * event, const char * origin, const char ** params, unsigned int count, irc_callbacks type) {
 
 	estabilshed = 1;
 
@@ -54,7 +54,7 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 	payload[1] = origin ? origin : "";
 	payload[2] = parms;
 	if (type == event_connect_) {
-		payload[3] = "192.168.1.103";//inet_ntoa(session->local_addr);
+		payload[3] = inet_ntoa(session->local_addr);
 	} else {
 		payload[3] = 0;
 	}
@@ -103,72 +103,72 @@ void handle_event_connect(irc_session_t * session, const char * event, const cha
 	//pthread_create(&ping_thread, NULL, do_ping_server, NULL);
 
 	syslog(LOG_INFO, "Connection established");
-	process_event(session, event, origin, params, count, event_connect_);
+	process_event(event, origin, params, count, event_connect_);
 
 }
 
 void handle_event_nick(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_nick_);
+	process_event(event, origin, params, count, event_nick_);
 }
 
 void handle_event_quit(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_quit_);
+	process_event(event, origin, params, count, event_quit_);
 }
 
 void handle_event_join(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_join_);
+	process_event(event, origin, params, count, event_join_);
 }
 
 void handle_event_part(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_part_);
+	process_event(event, origin, params, count, event_part_);
 }
 
 void handle_event_mode(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_mode_);
+	process_event(event, origin, params, count, event_mode_);
 }
 
 void handle_event_umode(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_umode_);
+	process_event(event, origin, params, count, event_umode_);
 }
 
 void handle_event_topic(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_topic_);
+	process_event(event, origin, params, count, event_topic_);
 }
 
 void handle_event_kick(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_kick_);
+	process_event(event, origin, params, count, event_kick_);
 }
 
 void handle_event_channel(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_channel_);
+	process_event(event, origin, params, count, event_channel_);
 }
 
 void handle_event_privmsg(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_privmsg_);
+	process_event(event, origin, params, count, event_privmsg_);
 }
 
 void handle_event_notice(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_notice_);
+	process_event(event, origin, params, count, event_notice_);
 }
 
 void handle_event_channel_notice(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_channel_notice_);
+	process_event(event, origin, params, count, event_channel_notice_);
 }
 
 void handle_event_invite(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_invite_);
+	process_event(event, origin, params, count, event_invite_);
 }
 
 void handle_event_ctcp_req(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_ctcp_req_);
+	process_event(event, origin, params, count, event_ctcp_req_);
 }
 
 void handle_event_ctcp_rep(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_ctcp_rep_);
+	process_event(event, origin, params, count, event_ctcp_rep_);
 }
 
 void handle_event_ctcp_action(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
-	process_event(session, event, origin, params, count, event_ctcp_action_);
+	process_event(event, origin, params, count, event_ctcp_action_);
 }
 
 void handle_event_unknown(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
@@ -190,13 +190,13 @@ void handle_event_unknown(irc_session_t * session, const char * event, const cha
 		pthread_mutex_unlock(&ping_mutex);
 	}
 
-	process_event(session, event, origin, params, count, event_unknown_);
+	process_event(event, origin, params, count, event_unknown_);
 }
 
 void handle_event_numeric(irc_session_t * session, unsigned int event, const char * origin, const char ** params, unsigned int count) {
 	char buf[24];
 	sprintf(buf, "%d", event);
-	process_event(session, buf, origin, params, count, event_numeric_);
+	process_event(buf, origin, params, count, event_numeric_);
 }
 
 void setup_event_callbacks() {

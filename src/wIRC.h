@@ -21,8 +21,9 @@
 
 #include <pthread.h>
 #include <time.h>
-#include <netinet/in.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <time.h>
 #include <sys/timeb.h>
 #include <stdio.h>
