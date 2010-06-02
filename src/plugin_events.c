@@ -54,11 +54,11 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 	const char *payload[4];
 	payload[0] = event;
 	payload[1] = origin ? origin : "";
-	payload[3] = parms;
+	payload[2] = parms;
 	if (type == event_connect_) {
-		payload[4] = 0;//inet_ntoa(client->session->local_addr);
+		payload[3] = 0;//inet_ntoa(client->session->local_addr);
 	} else {
-		payload[4] = 0;
+		payload[3] = 0;
 	}
 
 	switch (type) {

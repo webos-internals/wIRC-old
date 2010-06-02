@@ -53,7 +53,7 @@ ServerListAssistant.prototype.tryPlugin = function()
 {
 	try
 	{
-		this.controller.get('wIRCplugin').get_version();
+		plugin.get_version();
 		pluginReady = true;
 		this.checkPlugin();
 	}
@@ -73,6 +73,7 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{	
+		plugin = this.controller.get('wIRCplugin');
 		this.tryPlugin();
 		
 		// set theme

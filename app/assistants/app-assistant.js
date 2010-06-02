@@ -10,8 +10,12 @@ var prefs = new prefCookie();
 // holds the servers
 var servers = new ircServers();
 
+// the plugin
+var plugin = null;
+
 // plugin readiness
 var pluginReady = false;
+
 
 function AppAssistant() {}
 
