@@ -20,9 +20,7 @@
 
 void process_event(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count, irc_callbacks type) {
 
-	wIRC_client_t *client = (wIRC_client_t*)irc_get_ctx(session);
-
-	client->estabilshed = 1;
+	estabilshed = 1;
 
 	char buf[1024];
 	int cnt;
@@ -56,7 +54,7 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 	payload[1] = origin ? origin : "";
 	payload[2] = parms;
 	if (type == event_connect_) {
-		payload[3] = 0;//inet_ntoa(client->session->local_addr);
+		payload[3] = 0;//inet_ntoa(session->local_addr);
 	} else {
 		payload[3] = 0;
 	}
@@ -87,12 +85,11 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 
 }
 
-void *ping_server(void *ptr) {
-	wIRC_client_t *client = (wIRC_client_t *)ptr;
-	while (client->ping_server) {
-		if (pthread_mutex_trylock(&client->ping_mutex)==0) {
-			ftime(&client->ping);
-			irc_send_raw(client->session, "PING %s", client->realServer);
+void *do_ping_server(void *ptr) {
+	while (ping_server) {
+		if (pthread_mutex_trylock(&ping_mutex)==0) {
+			ftime(&ping);
+			irc_send_raw(session, "PING %s", realServer);
 		}
 		sleep(5);
 	}
@@ -100,10 +97,8 @@ void *ping_server(void *ptr) {
 
 void handle_event_connect(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
 
-	wIRC_client_t *client = (wIRC_client_t*)irc_get_ctx(session);
-
-	client->realServer = strdup(origin);
-	pthread_create(&client->ping_thread, NULL, ping_server, (void*)client);
+	realServer = strdup(origin);
+	pthread_create(&ping_thread, NULL, do_ping_server, NULL);
 
 	if (debug)
 		syslog(LOG_INFO, "Connection established");
@@ -177,12 +172,10 @@ void handle_event_ctcp_action(irc_session_t * session, const char * event, const
 
 void handle_event_unknown(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
 
-	wIRC_client_t *client = (wIRC_client_t*)irc_get_ctx(session);
-
 	if (strcmp(event,"PONG")==0) {
 		struct timeb pong;
 		ftime(&pong);
-		long rtt = (pong.time*1000+pong.millitm)-(client->ping.time*1000+client->ping.millitm);
+		long rtt = (pong.time*1000+pong.millitm)-(ping.time*1000+ping.millitm);
 		if (debug)
 			syslog(LOG_INFO, "PING/PONG RTT from %s: %ld", params[0], rtt);
 		int len = 0;
@@ -193,7 +186,7 @@ void handle_event_unknown(irc_session_t * session, const char * event, const cha
 		payload[1] = rtt_string;
 		PDL_CallJS("auto_ping", payload, 2);
 		if (rtt_string) free(rtt_string);
-		pthread_mutex_unlock(&client->ping_mutex);
+		pthread_mutex_unlock(&ping_mutex);
 	}
 
 	process_event(session, event, origin, params, count, event_unknown_);

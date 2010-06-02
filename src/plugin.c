@@ -38,16 +38,9 @@ PDL_Err plugin_initialize() {
 
 void plugin_start() {
 
-	//setup_event_callbacks();
-
-	//wIRCd_clients = g_hash_table_new(g_str_hash, g_str_equal);
-	//if (wIRCd_clients)
-
-	client = calloc(1,sizeof(wIRC_client_t));
-
-	client->estabilshed = 0;
-	client->worker_thread = 0;
-	client->ping_server = 1;
+	estabilshed = 0;
+	worker_thread = 0;
+	ping_server = 1;
 
 	pthread_mutex_lock(&plugin_mutex);
 	while (isPlugin) {

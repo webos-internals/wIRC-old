@@ -67,27 +67,23 @@ typedef enum {
 
 irc_callbacks_t callbacks;
 
-typedef struct {
-	pthread_mutex_t mutex;
-	pthread_t		worker_thread;
-	pthread_t		ping_thread;
-	int				ping_server;
-	irc_session_t	*session;
-	char	 		*server;
-	char 			*server_password;
-	char 			*nick;
-	char 			*username;
-	char 			*realname;
-	char			*interface;
-	char			*realServer;
-	int				estabilshed;
-	int			 	port;
-	int				auto_ping;
-	pthread_mutex_t ping_mutex;
-	struct timeb 	ping;
-} wIRC_client_t;
-
-wIRC_client_t *client;
+pthread_mutex_t mutex;
+pthread_t		worker_thread;
+pthread_t		ping_thread;
+int				ping_server;
+irc_session_t	*session;
+const char	 	*server;
+const char		*server_password;
+const char		*nick;
+const char		*username;
+const char		*realname;
+const char		*interface;
+const char		*realServer;
+int				estabilshed;
+int			 	port;
+int				auto_ping;
+pthread_mutex_t ping_mutex;
+struct timeb 	ping;
 
 int plugin_client_init();
 void plugin_start();

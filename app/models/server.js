@@ -133,10 +133,9 @@ ircServer.prototype.init = function()
 	plugin.event_unknown = this.event_unknown_handler.bind(this);
 	plugin.event_numeric = this.event_numeric_handler.bind(this);
 	
-	this.sessionToken = payload.sessionToken;
-	this.setupSubscriptions();
 	this.setState(this.STATE_CONNECTING);
 	this.connect();
+	
 }
 
 ircServer.prototype.isConnected = function(message)
@@ -328,7 +327,7 @@ ircServer.prototype.getStatusMessages = function(start)
 
 ircServer.prototype.connect = function()
 {	
-	wIRCd.connect
+	plugin.connect
 	(
 		null,
 		this.sessionToken,
