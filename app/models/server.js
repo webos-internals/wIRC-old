@@ -152,13 +152,13 @@ ircServer.prototype.newCommand = function(message)
 			switch (cmd.toLowerCase())
 			{
 				case 'nick':
-					wIRCd.nick(null, this.sessionToken, val);
+					plugin.cmd_nick(val);
 					break;
 						
 				case 'j':
 				case 'join':
 					var vals = val.split(" ");
-					this.joinChannel(vals[0],vals[1]);
+					plugin.cmd_join(vals[0],vals[1]);
 					break;
 					
 				case 'msg':
@@ -219,12 +219,12 @@ ircServer.prototype.newCommand = function(message)
 						if (tmpChan)
 						{
 							tmpChan.newMessage('type6', this.nick, tmpMatch[2]);
-							wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);	
+							plugin.cmd_notice(tmpMatch[1], tmpMatch[2]);	
 						}
 						else if (tmpNick)
 						{
 							this.startQuery(tmpNick, true, 'type6', tmpMatch[2]);
-							wIRCd.notice(null, this.sessionToken, tmpMatch[1], tmpMatch[2]);	
+							plugin.cmd_notice(tmpMatch[1], tmpMatch[2]);	
 						}
 					}
 					break;
@@ -250,7 +250,7 @@ ircServer.prototype.newCommand = function(message)
 					
 				case 'raw':
 				case 'quote':
-					wIRCd.raw(null, this.sessionToken, val);
+					plugin.send_raw(val);
 					break;
 					
 				case 'whois':
@@ -383,15 +383,15 @@ ircServer.prototype.runOnConnect = function()
 
 ircServer.prototype.away = function(reason)
 {
-	wIRCd.away(this.genericHandler.bindAsEventListener(this), this.sessionToken, reason);
+	plugin.cmd_away(reason);
 }
 ircServer.prototype.ping = function(server)
 {
-	wIRCd.ping(this.genericHandler.bindAsEventListener(this), this.sessionToken, server);
+	plugin.cmd_ping(server);
 }
 ircServer.prototype.topic = function(channel, topic)
 {
-	wIRCd.topic(this.genericHandler.bindAsEventListener(this), this.sessionToken, channel, topic);
+	plugin.cmd_topic(channel, topic);
 }
 ircServer.prototype.whois = function(nick)
 {
@@ -403,50 +403,20 @@ ircServer.prototype.whois = function(nick)
 		tmpNick.server = this;
 		tmpNick.whois = false;
 	}
-	wIRCd.whois(this.genericHandler.bindAsEventListener(this), this.sessionToken, nick);
-}
-ircServer.prototype.genericHandler = function(payload)
-{
-	// idk what to do here if anything
-	this.debugPayload(payload, false);
+	plugin.cmd_whois(nick);
 }
 
 ircServer.prototype.disconnect = function(reason)
 {
 	this.setState(this.STATE_DISCONNECTING);
-	wIRCd.quit(this.disconnectHandler.bindAsEventListener(this), this.sessionToken, reason);
+	plugin.cmd_quit(reason);
+	this.setState(this.STATE_DISCONNECTED);
 }
 
 ircServer.prototype.disrupt = function()
 {
 	this.setState(this.STATE_DISRUPTED);
-	wIRCd.quit(false, this.sessionToken, false);
-}
-
-ircServer.prototype.disconnectHandler = function(payload)
-{
-	this.cleanupSubscriptions();
-	this.setState(this.STATE_DISCONNECTED);
-	//this.newMessage('status', false, 'dc handler');
-	/*
-	if (payload.returnValue == 0)
-	{
-		this.state = this.STATE_DISCONNECTED;
-		this.ipAddress = false;
-		this.reconnect = false;
-		this.removeNick(this.nick);
-		if (servers.listAssistant && servers.listAssistant.controller)
-		{
-			servers.listAssistant.updateList();
-		}
-	}
-	this.subscription.cancel();
-	if (this.autoReconnect && this.reconnect)
-	{
-		this.connect();
-	}
-	*/
-	//this.newMessage('status', false, 'ending dc handle');
+	plugin.cmd_quit(false);
 }
 
 ircServer.prototype.clearMessages = function()
@@ -524,7 +494,7 @@ ircServer.prototype.updateStatusList = function()
 
 ircServer.prototype.list = function(channel)
 {
-	wIRCd.list(this.listHandler.bindAsEventListener(this), this.sessionToken, channel);
+	plugin.cmd_list(channel);
 }
 ircServer.prototype.listHandler = function(payload)
 {
@@ -1302,7 +1272,7 @@ ircServer.prototype.event_numeric_handler = function(event, origin, params)
 			{
 				this.newMessage('debug', false, 'Trying next nick [' + this.nextNick + '] - ' + prefs.get().nicknames[this.nextNick]);
 				this.nextNick = this.nextNick + 1;
-				wIRCd.nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick]);	
+				plugin.cmd_nick(null, this.sessionToken, prefs.get().nicknames[this.nextNick]);	
 			}
 			else {
 				this.newMessage('debug', false, 'No more nicks to try!');
@@ -1407,7 +1377,7 @@ ircServer.prototype.startAutoPingSubscription = function(skip)
 {
 	if (prefs.get().lagMeter || skip)
 	{
-		this.subscriptions['auto_ping']			= wIRCd.subscribe(this.errorHandler.bindAsEventListener(this), this.autoPingHandler.bindAsEventListener(this),this.sessionToken, 'auto_ping');
+		this.subscriptions['auto_ping']			= plugin.cmd_subscribe(this.errorHandler.bindAsEventListener(this), this.autoPingHandler.bindAsEventListener(this),this.sessionToken, 'auto_ping');
 	}
 }
 
