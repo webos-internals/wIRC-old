@@ -329,7 +329,7 @@ ircServer.prototype.connect = function()
 {	
 	try
 	{
-		plugin.cmd_connect(
+		plugin.connect(
 			this.address,
 			(this.port?this.port:6667),
 			(this.serverUser?this.serverUser:"wicer"),

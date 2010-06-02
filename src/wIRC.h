@@ -88,5 +88,6 @@ struct timeb 	ping;
 int plugin_client_init();
 void plugin_start();
 PDL_Err plugin_initialize();
+void setup_event_callbacks();
 
 #endif /* WIRC_H_ */

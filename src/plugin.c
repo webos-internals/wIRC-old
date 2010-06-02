@@ -28,6 +28,8 @@ PDL_Err plugin_initialize() {
 	SDL_Init(SDL_INIT_VIDEO);
 	PDL_Init(0);
 
+	setup_event_callbacks();
+
 	if (plugin_client_init() > 0) {
 		syslog(LOG_ERR, "JS handler registration failed");
 		return -1;

@@ -52,7 +52,7 @@ int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
 	return retVal;
 }
 
-PDL_bool process_command(PDL_MojoParameters *params, irc_cmd type) {
+PDL_bool process_command(PDL_JSParameters *params, irc_cmd type) {
 
 	char *jsonResponse = 0;
 
@@ -162,17 +162,19 @@ void *client_run(void *ptr) {
 
 }
 
-PDL_bool client_cmd_connect(PDL_MojoParameters *params) {
+PDL_bool client_connect(PDL_JSParameters *params) {
+
+	syslog(LOG_INFO, "CLIENT_CONNECT");
 
 	PDL_bool retVal = PDL_TRUE;
 
-	server = PDL_GetMojoParamString(params, 0);
-	port = PDL_GetMojoParamInt(params, 1);
-	username = PDL_GetMojoParamString(params, 2);
-	server_password = PDL_GetMojoParamString(params, 3);
-	nick = PDL_GetMojoParamString(params, 4);
-	realname = PDL_GetMojoParamString(params, 5);
-	interface = PDL_GetMojoParamString(params, 6);
+	server = PDL_GetJSParamString(params, 0);
+	port = PDL_GetJSParamInt(params, 1);
+	username = PDL_GetJSParamString(params, 2);
+	server_password = PDL_GetJSParamString(params, 3);
+	nick = PDL_GetJSParamString(params, 4);
+	realname = PDL_GetJSParamString(params, 5);
+	interface = PDL_GetJSParamString(params, 6);
 
 	if (pthread_create(&worker_thread, NULL, client_run, NULL)) {
 		PDL_JSReply(params, "{\"returnValue\":-1,\"errorText\":\"Failed to create thread\"}");
@@ -184,83 +186,83 @@ PDL_bool client_cmd_connect(PDL_MojoParameters *params) {
 
 }
 
-PDL_bool client_cmd_msg(PDL_MojoParameters *params) {
+PDL_bool client_cmd_msg(PDL_JSParameters *params) {
 	return process_command(params, msg_);
 }
 
-PDL_bool client_cmd_me(PDL_MojoParameters *params) {
+PDL_bool client_cmd_me(PDL_JSParameters *params) {
 	return process_command(params, me_);
 }
 
-PDL_bool client_cmd_notice(PDL_MojoParameters *params) {
+PDL_bool client_cmd_notice(PDL_JSParameters *params) {
 	return process_command(params, notice_);
 }
 
-PDL_bool client_cmd_join(PDL_MojoParameters *params) {
+PDL_bool client_cmd_join(PDL_JSParameters *params) {
 	return process_command(params, join_);
 }
 
-PDL_bool client_cmd_part(PDL_MojoParameters *params) {
+PDL_bool client_cmd_part(PDL_JSParameters *params) {
 	return process_command(params, part_);
 }
 
-PDL_bool client_cmd_invite(PDL_MojoParameters *params) {
+PDL_bool client_cmd_invite(PDL_JSParameters *params) {
 	return process_command(params, invite_);
 }
 
-PDL_bool client_cmd_names(PDL_MojoParameters *params) {
+PDL_bool client_cmd_names(PDL_JSParameters *params) {
 	return process_command(params, names_);
 }
 
-PDL_bool client_cmd_list(PDL_MojoParameters *params) {
+PDL_bool client_cmd_list(PDL_JSParameters *params) {
 	return process_command(params, list_);
 }
 
-PDL_bool client_cmd_topic(PDL_MojoParameters *params) {
+PDL_bool client_cmd_topic(PDL_JSParameters *params) {
 	return process_command(params, topic_);
 }
 
-PDL_bool client_cmd_channel_mode(PDL_MojoParameters *params) {
+PDL_bool client_cmd_channel_mode(PDL_JSParameters *params) {
 	return process_command(params, channel_mode_);
 }
 
-PDL_bool client_cmd_kick(PDL_MojoParameters *params) {
+PDL_bool client_cmd_kick(PDL_JSParameters *params) {
 	return process_command(params, kick_);
 }
 
-PDL_bool client_cmd_nick(PDL_MojoParameters *params) {
+PDL_bool client_cmd_nick(PDL_JSParameters *params) {
 	return process_command(params, nick_);
 }
 
-PDL_bool client_cmd_quit(PDL_MojoParameters *params) {
+PDL_bool client_cmd_quit(PDL_JSParameters *params) {
 	return process_command(params, quit_);
 }
 
-PDL_bool client_cmd_whois(PDL_MojoParameters *params) {
+PDL_bool client_cmd_whois(PDL_JSParameters *params) {
 	return process_command(params, whois_);
 }
 
-PDL_bool client_cmd_user_mode(PDL_MojoParameters *params) {
+PDL_bool client_cmd_user_mode(PDL_JSParameters *params) {
 	return process_command(params, user_mode_);
 }
 
-PDL_bool client_cmd_ping(PDL_MojoParameters *params) {
+PDL_bool client_cmd_ping(PDL_JSParameters *params) {
 	return process_command(params, ping_);
 }
 
-PDL_bool client_cmd_away(PDL_MojoParameters *params) {
+PDL_bool client_cmd_away(PDL_JSParameters *params) {
 	return process_command(params, away_);
 }
 
-PDL_bool client_cmd_disconnect(PDL_MojoParameters *params) {
+PDL_bool client_cmd_disconnect(PDL_JSParameters *params) {
 	return process_command(params, disconnect_);
 }
 
-PDL_bool client_send_raw(PDL_MojoParameters *params) {
+PDL_bool client_send_raw(PDL_JSParameters *params) {
 	return process_command(params, raw_);
 }
 
-PDL_bool client_get_version(PDL_MojoParameters *params) {
+PDL_bool client_get_version(PDL_JSParameters *params) {
 
 	return PDL_JSReply(params, VERSION);
 
@@ -272,8 +274,8 @@ int plugin_client_init() {
 	int tmp = 0;
 	char *name = "";
 
-	name = "cmd_connect";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_connect);
+	name = "connect";
+	tmp = PDL_RegisterJSHandler(name, client_connect);
 	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
 	ret +=tmp;
 
