@@ -55,6 +55,7 @@ ServerListAssistant.prototype.tryPlugin = function()
 	{
 		this.controller.get('wIRCplugin').get_version();
 		pluginReady = true;
+		this.checkPlugin();
 	}
 	catch (e)
 	{
@@ -111,8 +112,26 @@ ServerListAssistant.prototype.setup = function()
 	}
 }
 
+ServerListAssistant.prototype.checkPlugin = function()
+{
+	if (pluginReady)
+	{
+		this.controller.get('noPlugin').style.display = 'none';
+		this.controller.get('yesPlugin').style.display = '';
+	}
+	else
+	{
+		this.controller.get('noPlugin').style.display = '';
+		this.controller.get('yesPlugin').style.display = 'none';
+	}
+	this.updateCommandMenu();
+}
+
 ServerListAssistant.prototype.activate = function(event)
 {
+	
+	this.checkPlugin();
+	
 	if (this.alreadyActivated)
 	{
 		this.updateList();
@@ -192,6 +211,8 @@ ServerListAssistant.prototype.updateCommandMenu = function(skipUpdate)
 {
 	try
 	{
+		this.cmdMenuModel.visible = pluginReady;
+		
 		this.cmdMenuModel.items = [];
 		this.cmdMenuModel.items.push({});
 		this.cmdMenuModel.items.push({label: $L('New'), icon: 'new', command: 'new-server'});
