@@ -10,19 +10,20 @@ CC			:=	"/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc"
 
 else 
 
+CC              :=      gcc
+prefix          :=      /usr
 CFLAGS		:=	-DID=\"${ID}\" \
 				-DVERSION=\"${VERSION}\" \
 				-DVENDOR=\"${VENDOR}\" \
 				-DVENDOR_EMAIL=\"${VENDOR_EMAIL}\" \
 				-DVENDOR_URL=\"${VENDOR_URL}\"
 
-INCLUDES	:=	-I${ROOT}/include \
-				-I${ROOT}/usr/include \
-				-I$(ROOT)/usr/include/SDL \
-				-I$(ROOT)/usr/include/pdl \
+INCLUDES	:=	-I${prefix}/include \
+				-I${prefix}/include/SDL \
+				-I/${prefix}/include/pdl \
 				-I$(IRCLIB)/include
-				
-LIBDIRS		:=	-L$(ROOT)/usr/lib
+
+LIBDIRS		:=	-L${prefix}/lib -Wl,-rpath-link,${prefix}/lib
 	
 LIBS		:=  -lpdl -lSDL
 
