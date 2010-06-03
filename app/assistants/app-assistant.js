@@ -16,8 +16,28 @@ var plugin = null;
 // plugin readiness
 var pluginReady = false;
 
+var pdkObject;
 
-function AppAssistant() {}
+var df;
+
+function AppAssistant() {
+  pdkObject = window.document.createElement("object");
+  pdkObject.id = "wIRCplugin";
+  pdkObject.type = "application/x-palm-remote";
+  pdkObject.width=1;
+  pdkObject.height=1;
+  pdkObject['x-palm-pass-event']=false;
+  var param = window.document.createElement("param");
+  param.name="appid";
+  param.value="org.webosinternals.wirc";
+  var param2 = window.document.createElement("param");
+  param2.name = "exe";
+  param2.value="wirc";
+  pdkObject.appendChild(param);
+  pdkObject.appendChild(param2);
+  df = window.document.createDocumentFragment();
+  df.appendChild(pdkObject);
+}
 
 AppAssistant.prototype.handleLaunch = function(params)
 {	
@@ -36,12 +56,14 @@ AppAssistant.prototype.handleLaunch = function(params)
 			{
 				var f = function(controller)
 				{
+          controller.window.document.body.appendChild(df);
+          this.plugin = controller.get('wIRCplugin');
 					if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
 						controller.pushScene('identity', true, true);
 					else
 						controller.pushScene('server-list');
 				};
-				this.controller.createStageWithCallback({name: serverStage, lightweight: true}, f);
+				this.controller.createStageWithCallback({name: serverStage, lightweight: true}, f.bind(this));
 			}
 		}
 		else if (params.type == 'query')
