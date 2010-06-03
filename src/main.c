@@ -19,7 +19,7 @@
 #include "wIRC.h"
 
 void cleanup() {
-	remove("/tmp/.wirc");
+	PDL_Quit();
 }
 
 void sighandler(int sig) {
@@ -32,11 +32,6 @@ int main(int argc, char *argv[]) {
 	signal(SIGINT, sighandler);
 	signal(SIGTERM, sighandler);
 	signal(SIGQUIT, sighandler);
-
-	int fd = open("/tmp/.wirc", O_CREAT|O_EXCL);
-	if (fd==-1)
-		sighandler(0);
-	close(fd);
 
 	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
 
@@ -53,6 +48,8 @@ int main(int argc, char *argv[]) {
     }
 
     closelog();
+
+    cleanup();
 
 	return 0;
 
