@@ -325,6 +325,11 @@ ServerListAssistant.prototype.cleanup = function(event)
 ServerListAssistant.prototype.event_connect_handler = function(id, event, origin, params_s, ip)
 {
 	var id = parseInt(id);
+	
+	Mojo.Log.info("########################################################################");
+	Mojo.Log.info("ID: %d Params:%s", id, params_s);
+	Mojo.Log.info("########################################################################");
+	
 	var params = JSON.parse(params_s);
 	
 	if (event=='MAXRETRIES')
@@ -355,7 +360,7 @@ ServerListAssistant.prototype.event_connect_handler = function(id, event, origin
 	servers.servers[id].runOnConnect.bind(servers.servers[id]).defer();
 }
 
-ServerListAssistant.prototype.event_part_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_part_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);	
 	var params = JSON.parse(params_s);
@@ -371,7 +376,7 @@ ServerListAssistant.prototype.event_part_handler = function(event, origin, param
 	}	
 }
 
-ServerListAssistant.prototype.event_invite_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_invite_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -388,7 +393,7 @@ ServerListAssistant.prototype.event_invite_handler = function(event, origin, par
 	}
 }
 
-ServerListAssistant.prototype.event_channel_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_channel_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -402,7 +407,7 @@ ServerListAssistant.prototype.event_channel_handler = function(event, origin, pa
 	}
 }
 
-ServerListAssistant.prototype.event_privmsg_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_privmsg_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -415,7 +420,7 @@ ServerListAssistant.prototype.event_privmsg_handler = function(event, origin, pa
 		this.startQuery(tmpNick, false, 'message', params[1]);
 }
 
-ServerListAssistant.prototype.event_nick_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_nick_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -426,7 +431,7 @@ ServerListAssistant.prototype.event_nick_handler = function(event, origin, param
 	tmpNick.updateNickName(params[0]);
 }
 
-ServerListAssistant.prototype.event_mode_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_mode_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -442,7 +447,7 @@ ServerListAssistant.prototype.event_mode_handler = function(event, origin, param
 	}
 }
 
-ServerListAssistant.prototype.event_umode_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_umode_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -450,7 +455,7 @@ ServerListAssistant.prototype.event_umode_handler = function(event, origin, para
 	servers.servers[id].newMessage('type3', false, 'Mode ' + servers.servers[id].nick.name + ' ' + params[0] + ' by ' + origin);
 }
 	
-ServerListAssistant.prototype.event_join_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_join_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -466,7 +471,7 @@ ServerListAssistant.prototype.event_join_handler = function(event, origin, param
 	}
 }
 
-ServerListAssistant.prototype.event_quit_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_quit_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -480,7 +485,7 @@ ServerListAssistant.prototype.event_quit_handler = function(event, origin, param
 	}	
 }
 
-ServerListAssistant.prototype.event_topic_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_topic_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -501,7 +506,7 @@ ServerListAssistant.prototype.event_topic_handler = function(event, origin, para
  * For now all of these notices will get directed to the server status
  * window until a better solution is implemented.
  */	
-ServerListAssistant.prototype.event_notice_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_notice_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -513,7 +518,7 @@ ServerListAssistant.prototype.event_notice_handler = function(event, origin, par
 /*
  * These are notices that are directed towards a specific channel.
  */
-ServerListAssistant.prototype.event_channel_notice_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_channel_notice_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -528,7 +533,7 @@ ServerListAssistant.prototype.event_channel_notice_handler = function(event, ori
  * These are actions (generated only by /me it seems). These messages should
  * show up in a channel or query message only (I think).
  */
-ServerListAssistant.prototype.event_ctcp_action_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_ctcp_action_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -547,7 +552,7 @@ ServerListAssistant.prototype.event_ctcp_action_handler = function(event, origin
 	}					
 }
 
-ServerListAssistant.prototype.event_kick_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_kick_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -575,7 +580,7 @@ ServerListAssistant.prototype.event_kick_handler = function(event, origin, param
  * We need to figure out a more generic way to handle all these numeric events.
  * There must be some sort of rule/heuristic we can follow to format them.
  */
-ServerListAssistant.prototype.event_numeric_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
@@ -771,7 +776,7 @@ ServerListAssistant.prototype.event_numeric_handler = function(event, origin, pa
 	}
 }
 
-ServerListAssistant.prototype.event_unknown_handler = function(event, origin, params_s)
+ServerListAssistant.prototype.event_unknown_handler = function(id, event, origin, params_s)
 {
 	/*if (event != 'PONG')
 	{
