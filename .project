@@ -58,7 +58,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.environment</key>
-					<value>ROOT=/usr/arm-none-linux-gnueabi|CHOST=arm-none-linux-gnueabi|CC=arm-none-linux-gnueabi-gcc|</value>
+					<value>CHOST=arm-none-linux-gnueabi|ROOT=/usr/arm-none-linux-gnueabi|CC=arm-none-linux-gnueabi-gcc|prefix=/usr|</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.stopOnError</key>
