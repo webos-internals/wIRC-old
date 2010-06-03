@@ -17,12 +17,12 @@ CFLAGS		:=	-DID=\"${ID}\" \
 				-DVENDOR_URL=\"${VENDOR_URL}\"
 
 INCLUDES	:=	-I${ROOT}/include \
-				-I${ROOT}/${prefix}/include \
-				-I$(ROOT)/${prefix}/include/SDL \
-				-I$(ROOT)/${prefix}/include/pdl \
+				-I${ROOT}${prefix}/include \
+				-I$(ROOT)${prefix}/include/SDL \
+				-I$(ROOT)${prefix}/include/pdl \
 				-I$(IRCLIB)/include
 				
-LIBDIRS		:=	-L$(ROOT)/${prefix}/lib -Wl,-rpath-link,$(ROOT)/${prefix}/lib
+LIBDIRS		:=	-L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib
 	
 LIBS		:=  -lpdl -lSDL
 
