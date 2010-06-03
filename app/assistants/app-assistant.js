@@ -56,8 +56,8 @@ AppAssistant.prototype.handleLaunch = function(params)
 			{
 				var f = function(controller)
 				{
-          controller.window.document.body.appendChild(df);
-          this.plugin = controller.get('wIRCplugin');
+					controller.window.document.body.appendChild(df);
+					plugin = controller.get('wIRCplugin');
 					if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
 						controller.pushScene('identity', true, true);
 					else
