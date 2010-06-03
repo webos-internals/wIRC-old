@@ -104,19 +104,19 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_msg(PDL_JSParameters *params) {
-	return irc_cmd_msg(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_msg(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_me(PDL_JSParameters *params) {
-	return irc_cmd_me(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_me(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_notice(PDL_JSParameters *params) {
-	return irc_cmd_notice(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_notice(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_join(PDL_JSParameters *params) {
-	return irc_cmd_join(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_join(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_part(PDL_JSParameters *params) {
@@ -124,7 +124,7 @@ PDL_bool client_cmd_part(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_invite(PDL_JSParameters *params) {
-	return irc_cmd_invite(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_invite(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_names(PDL_JSParameters *params) {
@@ -136,11 +136,11 @@ PDL_bool client_cmd_list(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_topic(PDL_JSParameters *params) {
-	return irc_cmd_topic(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_topic(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_channel_mode(PDL_JSParameters *params) {
-	return irc_cmd_channel_mode(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 0));
+	return irc_cmd_channel_mode(session, PDL_GetJSParamString(params, 0), PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_kick(PDL_JSParameters *params) {

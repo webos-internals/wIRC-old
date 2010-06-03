@@ -194,8 +194,36 @@ void handle_event_unknown(irc_session_t * session, const char * event, const cha
 }
 
 void handle_event_numeric(irc_session_t * session, unsigned int event, const char * origin, const char ** params, unsigned int count) {
-	char buf[24];
-	sprintf(buf, "%d", event);
+	char ebuf[24];
+	sprintf(ebuf, "%d", event);
+
+	char buf[1024];
+	int cnt;
+	int i;
+	int j = 0;
+
+	for (cnt = 0; cnt < count; cnt++) {
+		if (cnt)
+			buf[j++]=',';
+
+		buf[j++]='"';
+
+		for (i = 0; i < strlen(params[cnt]); i++) {
+			if (params[cnt][i] == '"')
+				buf[j++] = '\\';
+
+			buf[j++] = params[cnt][i];
+		}
+
+		buf[j++]='"';
+	}
+
+	buf[j]='\0';
+
+	int len = 0;
+	char *parms = 0;
+	len = asprintf(&parms, "[%s]", buf);
+	syslog(LOG_INFO, "numeric-event: %s %s %s", ebuf, origin, buf);
 	process_event(buf, origin, params, count, event_numeric_);
 }
 

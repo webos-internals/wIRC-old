@@ -31,6 +31,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <signal.h>
+#include <fcntl.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;

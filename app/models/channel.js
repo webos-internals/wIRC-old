@@ -277,6 +277,7 @@ ircChannel.prototype.join = function()
 {
 	plugin.cmd_join(this.name, this.key?this.key:null);
 	plugin.cmd_channel_mode(this.name, null);
+	this.openStage();
 }
 ircChannel.prototype.joinHandler = function(payload)
 {
@@ -370,6 +371,10 @@ ircChannel.prototype.closeDash = function()
 
 ircChannel.prototype.openStage = function()
 {
+	Mojo.Log.info("########################################################");
+	Mojo.Log.info("openStage");
+	Mojo.Log.info("########################################################");
+	
 	try
 	{
 		this.stageController = Mojo.Controller.appController.getStageController(this.stageName);

@@ -158,7 +158,7 @@ ircServer.prototype.newCommand = function(message)
 				case 'j':
 				case 'join':
 					var vals = val.split(" ");
-					plugin.cmd_join(vals[0],vals[1]);
+					this.joinChannel(vals[0],vals[1]);
 					break;
 					
 				case 'msg':
@@ -584,6 +584,7 @@ ircServer.prototype.joinChannel = function(name, key)
 	var tmpChan = this.getOrCreateChannel(name, key);
 	if (!tmpChan.containsNick(this.nick))
 	{
+		plugin.cmd_join(name, key);
 		tmpChan.join();
 	}
 }
