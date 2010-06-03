@@ -371,10 +371,6 @@ ircChannel.prototype.closeDash = function()
 
 ircChannel.prototype.openStage = function()
 {
-	Mojo.Log.info("########################################################");
-	Mojo.Log.info("openStage");
-	Mojo.Log.info("########################################################");
-	
 	try
 	{
 		this.stageController = Mojo.Controller.appController.getStageController(this.stageName);

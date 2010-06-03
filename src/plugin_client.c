@@ -81,8 +81,6 @@ void *client_run(void *ptr) {
 
 PDL_bool client_connect(PDL_JSParameters *params) {
 
-	syslog(LOG_INFO, "CLIENT_CONNECT");
-
 	PDL_bool retVal = PDL_TRUE;
 
 	server = PDL_GetJSParamString(params, 0);

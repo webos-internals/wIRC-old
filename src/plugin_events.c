@@ -59,7 +59,7 @@ void process_event(const char * event, const char * origin, const char ** params
 		payload[3] = 0;
 	}
 
-	syslog(LOG_INFO, "irc-event: %s %s %s", payload[0], payload[1], payload[2]);
+	//syslog(LOG_INFO, "irc-event: %s %s %s", payload[0], payload[1], payload[2]);
 
 	switch (type) {
 	case event_connect_: PDL_CallJS("event_connect", payload, 4); break;
@@ -102,7 +102,7 @@ void handle_event_connect(irc_session_t * session, const char * event, const cha
 	//realServer = strdup(origin);
 	//pthread_create(&ping_thread, NULL, do_ping_server, NULL);
 
-	syslog(LOG_INFO, "Connection established");
+	//syslog(LOG_INFO, "Connection established");
 	process_event(event, origin, params, count, event_connect_);
 
 }
@@ -223,7 +223,6 @@ void handle_event_numeric(irc_session_t * session, unsigned int event, const cha
 	int len = 0;
 	char *parms = 0;
 	len = asprintf(&parms, "[%s]", buf);
-	syslog(LOG_INFO, "numeric-event: %s %s %s", ebuf, origin, buf);
 	process_event(buf, origin, params, count, event_numeric_);
 }
 

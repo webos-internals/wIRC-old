@@ -898,8 +898,10 @@ ircServer.prototype.saveInfo = function(params)
 
 /* ==================== START OF CALLBACK SUBSCRIPTIONS ==================== */
 
-ircServer.prototype.event_connect_handler = function(event, origin, params, ip)
+ircServer.prototype.event_connect_handler = function(event, origin, params_s, ip)
 {
+	var params = JSON.parse(params_s);
+	
 	if (event=='MAXRETRIES')
 	{
 		this.setState(this.STATE_MAX_RETRIES);
@@ -928,8 +930,10 @@ ircServer.prototype.event_connect_handler = function(event, origin, params, ip)
 	this.runOnConnect.bind(this).defer();
 }
 
-ircServer.prototype.event_part_handler = function(event, origin, params)
+ircServer.prototype.event_part_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan) 
 	{
@@ -941,8 +945,10 @@ ircServer.prototype.event_part_handler = function(event, origin, params)
 	}	
 }
 
-ircServer.prototype.event_invite_handler = function(event, origin, params)
+ircServer.prototype.event_invite_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	if (prefs.get().inviteAction != 'ignore') 
 	{
 		var tmpNick = this.getNick(origin);
@@ -955,8 +961,10 @@ ircServer.prototype.event_invite_handler = function(event, origin, params)
 	}
 }
 
-ircServer.prototype.event_channel_handler = function(event, origin, params)
+ircServer.prototype.event_channel_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan) 
 	{
@@ -966,8 +974,10 @@ ircServer.prototype.event_channel_handler = function(event, origin, params)
 	}
 }
 
-ircServer.prototype.event_privmsg_handler = function(event, origin, params)
+ircServer.prototype.event_privmsg_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	var tmpQuery = this.getQuery(tmpNick);
 	if (tmpQuery)
@@ -976,16 +986,20 @@ ircServer.prototype.event_privmsg_handler = function(event, origin, params)
 		this.startQuery(tmpNick, false, 'message', params[1]);
 }
 
-ircServer.prototype.event_nick_handler = function(event, origin, params)
+ircServer.prototype.event_nick_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	if (tmpNick === this.nick)
 		this.newMessage('type9', false, tmpNick.name + ' is now known as ' + params[0]);
 	tmpNick.updateNickName(params[0]);
 }
 
-ircServer.prototype.event_mode_handler = function(event, origin, params)
+ircServer.prototype.event_mode_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan) 
@@ -997,13 +1011,17 @@ ircServer.prototype.event_mode_handler = function(event, origin, params)
 	}
 }
 
-ircServer.prototype.event_umode_handler = function(event, origin, params)
+ircServer.prototype.event_umode_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	this.newMessage('type3', false, 'Mode ' + this.nick.name + ' ' + params[0] + ' by ' + origin);
 }
 	
-ircServer.prototype.event_join_handler = function(event, origin, params)
+ircServer.prototype.event_join_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpChan = this.getOrCreateChannel(params[0], null);
 	if (tmpChan) 
 	{
@@ -1015,8 +1033,10 @@ ircServer.prototype.event_join_handler = function(event, origin, params)
 	}
 }
 
-ircServer.prototype.event_quit_handler = function(event, origin, params)
+ircServer.prototype.event_quit_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	if (tmpNick)
 	{
@@ -1026,8 +1046,10 @@ ircServer.prototype.event_quit_handler = function(event, origin, params)
 	}	
 }
 
-ircServer.prototype.event_topic_handler = function(event, origin, params)
+ircServer.prototype.event_topic_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan)
 	{
@@ -1044,8 +1066,10 @@ ircServer.prototype.event_topic_handler = function(event, origin, params)
  * For now all of these notices will get directed to the server status
  * window until a better solution is implemented.
  */	
-ircServer.prototype.event_notice_handler = function(event, origin, params)
+ircServer.prototype.event_notice_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	this.newMessage('type6', tmpNick, params[1]);
 }
@@ -1053,8 +1077,10 @@ ircServer.prototype.event_notice_handler = function(event, origin, params)
 /*
  * These are notices that are directed towards a specific channel.
  */
-ircServer.prototype.event_channel_notice_handler = function(event, origin, params)
+ircServer.prototype.event_channel_notice_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan) tmpChan.newMessage('type6', tmpNick, params[1]);
@@ -1065,8 +1091,10 @@ ircServer.prototype.event_channel_notice_handler = function(event, origin, param
  * These are actions (generated only by /me it seems). These messages should
  * show up in a channel or query message only (I think).
  */
-ircServer.prototype.event_ctcp_action_handler = function(event, origin, params)
+ircServer.prototype.event_ctcp_action_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpNick = this.getNick(origin);
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan)
@@ -1081,8 +1109,10 @@ ircServer.prototype.event_ctcp_action_handler = function(event, origin, params)
 	}					
 }
 
-ircServer.prototype.event_kick_handler = function(event, origin, params)
+ircServer.prototype.event_kick_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	var tmpChan = this.getChannel(params[0]);
 	if (tmpChan) 
 	{
@@ -1106,8 +1136,10 @@ ircServer.prototype.event_kick_handler = function(event, origin, params)
  * We need to figure out a more generic way to handle all these numeric events.
  * There must be some sort of rule/heuristic we can follow to format them.
  */
-ircServer.prototype.event_numeric_handler = function(event, origin, params)
+ircServer.prototype.event_numeric_handler = function(event, origin, params_s)
 {
+	var params = JSON.parse(params_s);
+	
 	switch(event)
 	{								
 		case '324': // CHANNELMODEIS
@@ -1173,7 +1205,7 @@ ircServer.prototype.event_numeric_handler = function(event, origin, params)
 		case '320':		// ??? WHOISIDENT?
 			var tmpNick = this.getNick(params[1]);
 			if (tmpNick)
-				tmpNick.whoisEvent(event, params);
+				tmpNick.whoisEvent(event, params_s);
 			break;
 					
 		case '321':		// LISTSTART
@@ -1299,7 +1331,7 @@ ircServer.prototype.event_numeric_handler = function(event, origin, params)
 	}
 }
 
-ircServer.prototype.event_unknown_handler = function(event, origin, params)
+ircServer.prototype.event_unknown_handler = function(event, origin, params_s)
 {
 	/*if (event != 'PONG')
 	{
@@ -1309,6 +1341,8 @@ ircServer.prototype.event_unknown_handler = function(event, origin, params)
 
 ircServer.prototype.autoPingHandler = function(payload)
 {
+	var params = JSON.parse(params_s);
+	
 	if (prefs.get().lagMeter)
 	{
 		this.lagHistory.push(payload.rtt);
