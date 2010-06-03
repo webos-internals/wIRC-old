@@ -25,6 +25,11 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 PDL_Err plugin_initialize() {
 
+	int i = 0;
+	for (;i<MAX_SERVERS;i++) {
+		servers[i].id = -1;
+	}
+
 	SDL_Init(SDL_INIT_VIDEO);
 	PDL_Init(0);
 
@@ -39,11 +44,6 @@ PDL_Err plugin_initialize() {
 }
 
 void plugin_start() {
-
-	estabilshed = 0;
-	worker_thread = 0;
-	ping_server = 1;
-
 	pthread_mutex_lock(&plugin_mutex);
 	while (isPlugin) {
 		pthread_cond_wait(&cond, &plugin_mutex);

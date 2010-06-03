@@ -41,6 +41,7 @@ typedef pthread_mutex_t port_mutex_t;
 #include <PDL.h>
 #include <libircclient.h>
 
+#define MAX_SERVERS 20
 #define DEFAULT_MAX_RETRIES 10
 #define DEFAULT_PRE_RUN_USLEEP 0
 #define DEFAULT_DEBUG_LEVEL 0
@@ -74,23 +75,28 @@ typedef enum {
 
 irc_callbacks_t callbacks;
 
-pthread_mutex_t mutex;
-pthread_t		worker_thread;
-pthread_t		ping_thread;
-int				ping_server;
-irc_session_t	*session;
-const char	 	*server;
-const char		*server_password;
-const char		*nick;
-const char		*username;
-const char		*realname;
-const char		*interface;
-const char		*realServer;
-int				estabilshed;
-int			 	port;
-int				auto_ping;
-pthread_mutex_t ping_mutex;
-struct timeb 	ping;
+typedef struct {
+	int				id;
+	pthread_mutex_t mutex;
+	pthread_t		worker_thread;
+	pthread_t		ping_thread;
+	int				ping_server;
+	irc_session_t	*session;
+	const char	 	*server;
+	const char		*server_password;
+	const char		*nick;
+	const char		*username;
+	const char		*realname;
+	const char		*interface;
+	const char		*realServer;
+	int				estabilshed;
+	int			 	port;
+	int				auto_ping;
+	pthread_mutex_t ping_mutex;
+	struct timeb 	ping;
+} wIRCd_client_t;
+
+wIRCd_client_t servers[MAX_SERVERS];
 
 int plugin_client_init();
 void plugin_start();
