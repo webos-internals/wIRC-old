@@ -54,28 +54,28 @@ int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
 
 void *client_run(void *ptr) {
 
-	wIRCd_client_t server = servers[*(int*)ptr];
+	wIRCd_client_t *server = &servers[*(int*)ptr];
 
 	int retry = 0;
 
 	while (retry<=max_retries) {
 
-		server.session = irc_create_session(&callbacks, server.interface);
-		if (!server.session)
+		server->session = irc_create_session(&callbacks, server->interface);
+		if (!server->session)
 			return;
 
-		irc_set_ctx(server.session, &server);
+		irc_set_ctx(server->session, server);
 
-		int c = irc_connect(server.session, server.server, server.port, server.server_password, server.nick, server.username, server.realname);
+		int c = irc_connect(server->session, server->server, server->port, server->server_password, server->nick, server->username, server->realname);
 		usleep(pre_run_usleep);
 
-		irc_run(server.session);
+		irc_run(server->session);
 
-		if (server.estabilshed) {
+		if (server->estabilshed) {
 			return;
 		} else {
-			irc_destroy_session(server.session);
-			server.session = 0;
+			irc_destroy_session(server->session);
+			server->session = 0;
 			retry++;
 			syslog(LOG_INFO, "Retry %d", retry);
 		}
