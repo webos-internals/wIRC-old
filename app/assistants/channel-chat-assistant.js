@@ -215,6 +215,9 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 }
 ChannelChatAssistant.prototype.getDivider = function(item)
 {
+	// this is cool we should use it
+	//return Mojo.Format.formatDate(item.date, {time: "medium"});
+	
 	var string = "";
 	
 	var pm = false;
