@@ -325,11 +325,6 @@ ServerListAssistant.prototype.cleanup = function(event)
 ServerListAssistant.prototype.event_connect_handler = function(id, event, origin, params_s, ip)
 {
 	var id = parseInt(id);
-	
-	Mojo.Log.info("########################################################################");
-	Mojo.Log.info("ID: %d Params:%s", id, params_s);
-	Mojo.Log.info("########################################################################");
-	
 	var params = JSON.parse(params_s);
 	
 	if (event=='MAXRETRIES')

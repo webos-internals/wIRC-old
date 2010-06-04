@@ -302,7 +302,7 @@ ircServer.prototype.connect = function()
 	try
 	{
 		plugin.connect(
-			this.id,
+			servers.getServerArrayKey(this.id),
 			this.address,
 			(this.port?this.port:6667),
 			(this.serverUser?this.serverUser:"wicer"),
