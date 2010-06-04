@@ -192,15 +192,19 @@ void handle_event_unknown(irc_session_t * session, const char * event, const cha
 		if (debug)
 			syslog(LOG_INFO, "PING/PONG RTT from %s: %ld", params[0], rtt);
 		int len = 0;
+		char *server = 0;
+		len = asprintf(&server, "%s", params[0]);
 		char *rtt_string = 0;
-		len = asprintf(&rtt_string, "{\"server\":\"%s\",\"rtt\":%ld}", params[0], rtt);
+		len = asprintf(&rtt_string, "%ld", rtt);
 		char *id = 0;
 		asprintf(&id, "%d", client->id);
 		const char *payload[3];
 		payload[0] = id;
-		payload[1] = params[0];
+		payload[1] = server;
 		payload[2] = rtt_string;
 		PDL_CallJS("auto_ping", payload, 3);
+		if (id) free(id);
+		if (server) free(server);
 		if (rtt_string) free(rtt_string);
 		pthread_mutex_unlock(&client->ping_mutex);
 	}

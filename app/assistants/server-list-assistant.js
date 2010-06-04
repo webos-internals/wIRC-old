@@ -780,7 +780,7 @@ ServerListAssistant.prototype.event_unknown_handler = function(id, event, origin
 	}*/
 }
 
-ServerListAssistant.prototype.auto_ping_handler = function(id, origin, rtt)
+ServerListAssistant.prototype.auto_ping_handler = function(id, server, rtt)
 {
 	var id = parseInt(id);
 	
@@ -793,6 +793,12 @@ ServerListAssistant.prototype.auto_ping_handler = function(id, origin, rtt)
 		var lagSum = 0;
 		servers.servers[id].lagHistory.forEach(function(x) {lagSum += x;});
 		var aveLag = lagSum / servers.servers[id].lagHistory.length;
+		
+		Mojo.Log.info("#############################################################");
+		Mojo.Log.info("History: %s", servers.servers[id].lagHistory);
+		Mojo.Log.info("#############################################################");
+		Mojo.Log.info("PING, RTT: %s, AVG RTT: %s", rtt, aveLag);
+		Mojo.Log.info("#############################################################");
 			
 		if (aveLag<300)
 			servers.servers[id].lag = 'lag-5';
