@@ -94,20 +94,23 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 
 }
 
-/*void *do_ping_server(void *ptr) {
-	while (ping_server) {
-		if (pthread_mutex_trylock(&ping_mutex)==0) {
-			ftime(&ping);
-			irc_send_raw(session, "PING %s", realServer);
+void *ping_server(void *ptr) {
+	wIRCd_client_t *client = (wIRCd_client_t *)ptr;
+	while (client->ping_server) {
+		if (pthread_mutex_trylock(&client->ping_mutex)==0) {
+			ftime(&client->ping);
+			irc_send_raw(client->session, "PING %s", client->realServer);
 		}
-		sleep(5);
+		sleep(10);
 	}
-}*/
+}
 
 void handle_event_connect(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
 
-	//realServer = strdup(origin);
-	//pthread_create(&ping_thread, NULL, do_ping_server, NULL);
+	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+
+	client->realServer = strdup(origin);
+	pthread_create(&client->ping_thread, NULL, ping_server, (void*)client);
 
 	syslog(LOG_INFO, "Connection established");
 	process_event(session, event, origin, params, count, event_connect_);
@@ -191,10 +194,13 @@ void handle_event_unknown(irc_session_t * session, const char * event, const cha
 		int len = 0;
 		char *rtt_string = 0;
 		len = asprintf(&rtt_string, "{\"server\":\"%s\",\"rtt\":%ld}", params[0], rtt);
-		const char *payload[2];
-		payload[0] = params[0];
-		payload[1] = rtt_string;
-		PDL_CallJS("auto_ping", payload, 2);
+		char *id = 0;
+		asprintf(&id, "%d", client->id);
+		const char *payload[3];
+		payload[0] = id;
+		payload[1] = params[0];
+		payload[2] = rtt_string;
+		PDL_CallJS("auto_ping", payload, 3);
 		if (rtt_string) free(rtt_string);
 		pthread_mutex_unlock(&client->ping_mutex);
 	}

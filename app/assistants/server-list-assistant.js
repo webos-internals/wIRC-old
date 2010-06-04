@@ -137,6 +137,7 @@ ServerListAssistant.prototype.checkPlugin = function()
 		plugin.event_ctcp_action = this.event_ctcp_action_handler.bind(this);
 		plugin.event_unknown = this.event_unknown_handler.bind(this);
 		plugin.event_numeric = this.event_numeric_handler.bind(this);
+		plugin.auto_ping = this.auto_ping_handler.bind(this);
 	}
 	else
 	{
@@ -779,14 +780,13 @@ ServerListAssistant.prototype.event_unknown_handler = function(id, event, origin
 	}*/
 }
 
-ServerListAssistant.prototype.autoPingHandler = function(payload)
+ServerListAssistant.prototype.auto_ping_handler = function(id, origin, rtt)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
 	
 	if (prefs.get().lagMeter)
 	{
-		servers.servers[id].lagHistory.push(payload.rtt);
+		servers.servers[id].lagHistory.push(rtt);
 		if (servers.servers[id].lagHistory.length>5)
 			servers.servers[id].lagHistory.shift();
 		
@@ -824,7 +824,7 @@ ServerListAssistant.prototype.autoPingHandler = function(payload)
 	}
 	else
 	{
-		servers.servers[id].clearAutoPingSubscription();
+		//servers.servers[id].clearAutoPingSubscription();
 	}
 }
 
