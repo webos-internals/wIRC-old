@@ -36,7 +36,7 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 		buf[j++]='"';
 
 		for (i = 0; i < strlen(params[cnt]); i++) {
-			if (params[cnt][i] == '"')
+			if (params[cnt][i] == '"' || params[cnt][i] == '\\')
 				buf[j++] = '\\';
 
 			buf[j++] = params[cnt][i];
