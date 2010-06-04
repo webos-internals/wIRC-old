@@ -10,7 +10,8 @@ CC			:=	"/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc"
 
 else 
 
-CFLAGS		:=	-DID=\"${ID}\" \
+CFLAGS		:=	$(MARCH_TUNE) \
+				-DID=\"${ID}\" \
 				-DVERSION=\"${VERSION}\" \
 				-DVENDOR=\"${VENDOR}\" \
 				-DVENDOR_EMAIL=\"${VENDOR_EMAIL}\" \
@@ -67,6 +68,3 @@ install: $(PLUGIN) package.properties
 
 package.properties:
 	echo "filemode.755=$(PLUGIN)" > ../package.properties
-
-pdk-build:
-	
