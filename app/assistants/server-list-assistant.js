@@ -329,7 +329,7 @@ ServerListAssistant.prototype.event_connect_handler = function(id, event, origin
 	
 	if (event=='MAXRETRIES')
 	{
-		this.servers[id].setState(this.STATE_MAX_RETRIES);
+		servers.servers[id].setState(this.STATE_MAX_RETRIES);
 		return;	
 	}
 
@@ -350,7 +350,7 @@ ServerListAssistant.prototype.event_connect_handler = function(id, event, origin
 		servers.servers[id].sessionNetwork = '';
 	}
 	
-	servers.servers[id].setState(this.STATE_CONNECTED);
+	servers.servers[id].setState(servers.servers[id].STATE_CONNECTED);
 
 	servers.servers[id].runOnConnect.bind(servers.servers[id]).defer();
 }
@@ -412,7 +412,7 @@ ServerListAssistant.prototype.event_privmsg_handler = function(id, event, origin
 	if (tmpQuery)
 		tmpQuery.newMessage('privmsg', tmpNick, params[1]);
 	else
-		this.startQuery(tmpNick, false, 'message', params[1]);
+		servers.servers[id].startQuery(tmpNick, false, 'message', params[1]);
 }
 
 ServerListAssistant.prototype.event_nick_handler = function(id, event, origin, params_s)

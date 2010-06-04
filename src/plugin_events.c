@@ -65,7 +65,7 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 		payload[4] = 0;
 	}
 
-	syslog(LOG_INFO, "irc-event: %s %s %s %s", payload[0], payload[1], payload[2], payload[3]);
+	//syslog(LOG_INFO, "irc-event: %s %s %s %s", payload[0], payload[1], payload[2], payload[3]);
 
 	switch (type) {
 	case event_connect_: PDL_CallJS("event_connect", payload, 5); break;
