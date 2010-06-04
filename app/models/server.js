@@ -132,7 +132,7 @@ ircServer.prototype.newCommand = function(message)
 			switch (cmd.toLowerCase())
 			{
 				case 'nick':
-					plugin.cmd_nick(val);
+					plugin.cmd_nick(servers.getServerArrayKey(this.id), val);
 					break;
 						
 				case 'j':
@@ -199,12 +199,12 @@ ircServer.prototype.newCommand = function(message)
 						if (tmpChan)
 						{
 							tmpChan.newMessage('type6', this.nick, tmpMatch[2]);
-							plugin.cmd_notice(tmpMatch[1], tmpMatch[2]);	
+							plugin.cmd_notice(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);	
 						}
 						else if (tmpNick)
 						{
 							this.startQuery(tmpNick, true, 'type6', tmpMatch[2]);
-							plugin.cmd_notice(tmpMatch[1], tmpMatch[2]);	
+							plugin.cmd_notice(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);	
 						}
 					}
 					break;
@@ -230,7 +230,7 @@ ircServer.prototype.newCommand = function(message)
 					
 				case 'raw':
 				case 'quote':
-					plugin.send_raw(val);
+					plugin.send_raw(servers.getServerArrayKey(this.id), val);
 					break;
 					
 				case 'whois':
@@ -364,15 +364,15 @@ ircServer.prototype.runOnConnect = function()
 
 ircServer.prototype.away = function(reason)
 {
-	plugin.cmd_away(reason);
+	plugin.cmd_away(servers.getServerArrayKey(this.id), reason);
 }
 ircServer.prototype.ping = function(server)
 {
-	plugin.cmd_ping(server);
+	plugin.cmd_ping(servers.getServerArrayKey(this.id), server);
 }
 ircServer.prototype.topic = function(channel, topic)
 {
-	plugin.cmd_topic(channel, topic);
+	plugin.cmd_topic(servers.getServerArrayKey(this.id), channel, topic);
 }
 ircServer.prototype.whois = function(nick)
 {
@@ -384,20 +384,20 @@ ircServer.prototype.whois = function(nick)
 		tmpNick.server = this;
 		tmpNick.whois = false;
 	}
-	plugin.cmd_whois(nick);
+	plugin.cmd_whois(servers.getServerArrayKey(this.id), nick);
 }
 
 ircServer.prototype.disconnect = function(reason)
 {
 	this.setState(this.STATE_DISCONNECTING);
-	plugin.cmd_quit(reason);
+	plugin.cmd_quit(servers.getServerArrayKey(this.id), reason);
 	this.setState(this.STATE_DISCONNECTED);
 }
 
 ircServer.prototype.disrupt = function()
 {
 	this.setState(this.STATE_DISRUPTED);
-	plugin.cmd_quit(false);
+	plugin.cmd_quit(servers.getServerArrayKey(this.id), false);
 }
 
 ircServer.prototype.clearMessages = function()
@@ -475,7 +475,7 @@ ircServer.prototype.updateStatusList = function()
 
 ircServer.prototype.list = function(channel)
 {
-	plugin.cmd_list(channel);
+	plugin.cmd_list(servers.getServerArrayKey(this.id), channel);
 }
 ircServer.prototype.listHandler = function(payload)
 {
@@ -565,7 +565,7 @@ ircServer.prototype.joinChannel = function(name, key)
 	var tmpChan = this.getOrCreateChannel(name, key);
 	if (!tmpChan.containsNick(this.nick))
 	{
-		plugin.cmd_join(name, key);
+		plugin.cmd_join(servers.getServerArrayKey(this.id), key);
 		tmpChan.join();
 	}
 }
