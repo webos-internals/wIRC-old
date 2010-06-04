@@ -5,7 +5,7 @@ function ircNick(params)
 	this.num =			ircNick.num;
 	this.name =			params.name;
 	this.server =		false; // set when whois is called, its the only time its needed
-	this.colorHex =		this.getRandomColor();
+	this.colorHex =		this.getRandomColor2();
 	this.channels =		[];
 	this.channelModes =	[];
 	this.me =			false;
@@ -97,6 +97,18 @@ ircNick.prototype.getListObject = function(channel)
 	};
 	
 	return obj;
+}
+
+ircNick.prototype.getRandomColor2 = function()
+{
+	var rgb = [];
+	rgb.push(Math.floor(Math.random()*256));
+	rgb.push(Math.floor(Math.random()*256));
+	if (rgb[0] <= 64 || rgb[1] <= 64)
+		rgb.push(Math.floor(Math.random()*256));
+	else
+		rgb.push(Math.floor(Math.random()*64));	
+    return "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
 }
 
 ircNick.prototype.getRandomColor = function()
