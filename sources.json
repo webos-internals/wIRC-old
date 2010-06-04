@@ -3,7 +3,6 @@
     {"source": "app/models/database.js"},
     {"source": "app/models/utility.js"},
     {"source": "app/models/cookie.js"},
-    {"source": "app/models/plugin.js"},
     {"source": "app/models/connectionmanager.js"},
     {"source": "app/models/preconfigured.js"},
     {"source": "app/models/servers.js"},
