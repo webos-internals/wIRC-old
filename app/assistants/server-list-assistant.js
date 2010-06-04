@@ -786,19 +786,13 @@ ServerListAssistant.prototype.auto_ping_handler = function(id, server, rtt)
 	
 	if (prefs.get().lagMeter)
 	{
-		servers.servers[id].lagHistory.push(rtt);
+		servers.servers[id].lagHistory.push(parseInt(rtt));
 		if (servers.servers[id].lagHistory.length>5)
 			servers.servers[id].lagHistory.shift();
 		
 		var lagSum = 0;
 		servers.servers[id].lagHistory.forEach(function(x) {lagSum += x;});
 		var aveLag = lagSum / servers.servers[id].lagHistory.length;
-		
-		Mojo.Log.info("#############################################################");
-		Mojo.Log.info("History: %s", servers.servers[id].lagHistory);
-		Mojo.Log.info("#############################################################");
-		Mojo.Log.info("PING, RTT: %s, AVG RTT: %s", rtt, aveLag);
-		Mojo.Log.info("#############################################################");
 			
 		if (aveLag<300)
 			servers.servers[id].lag = 'lag-5';
