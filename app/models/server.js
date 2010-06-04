@@ -121,7 +121,7 @@ ircServer.prototype.isDisrupted = function(message)
 
 ircServer.prototype.newCommand = function(message)
 {
-	if (this.isConnected())
+	if (this.state>this.STATE_DISCONNECTED)
 	{
 		var match = cmdRegExp.exec(message);
 		if (match)
