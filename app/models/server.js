@@ -565,7 +565,7 @@ ircServer.prototype.joinChannel = function(name, key)
 	var tmpChan = this.getOrCreateChannel(name, key);
 	if (!tmpChan.containsNick(this.nick))
 	{
-		plugin.cmd_join(servers.getServerArrayKey(this.id), key);
+		plugin.cmd_join(servers.getServerArrayKey(this.id), name, key);
 		tmpChan.join();
 	}
 }

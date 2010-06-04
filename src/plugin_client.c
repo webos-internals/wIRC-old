@@ -116,7 +116,7 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_msg(PDL_JSParameters *params) {
-	return irc_cmd_msg(servers[atoi(PDL_GetJSParamString(params, 0))].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_msg(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_me(PDL_JSParameters *params) {
@@ -128,7 +128,7 @@ PDL_bool client_cmd_notice(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_join(PDL_JSParameters *params) {
-	return irc_cmd_join(servers[atoi(PDL_GetJSParamString(params, 0))].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_join(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_part(PDL_JSParameters *params) {
