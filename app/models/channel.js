@@ -121,7 +121,7 @@ ircChannel.prototype.topicUpdate = function(topic)
 
 ircChannel.prototype.me = function(message)
 {
-	plugin.cmd_me(this.name, message);
+	plugin.cmd_me(servers.getServerArrayKey(this.server.id), this.name, message);
 	this.newMessage('type7', this.server.nick, message);
 }
 ircChannel.prototype.meHandler = function(payload)
@@ -131,7 +131,7 @@ ircChannel.prototype.meHandler = function(payload)
 
 ircChannel.prototype.msg = function(message)
 {
-	plugin.cmd_msg(this.name, message);
+	plugin.cmd_msg(servers.getServerArrayKey(this.server.id), this.name, message);
 	this.newMessage('privmsg', this.server.nick, message);
 }
 ircChannel.prototype.msgHandler = function(payload)
@@ -252,7 +252,7 @@ ircChannel.prototype.setMode = function(mode)
 {	// i would just call this "mode" but thats the name of the variable that holds the mode for this channel
 	if (mode)
 	{
-		plugin.cmd_channel_mode(this.name, mode);
+		plugin.cmd_channel_mode(servers.getServerArrayKey(this.server.id), this.name, mode);
 	}
 }
 ircChannel.prototype.modeHandler = function(payload)
@@ -265,7 +265,7 @@ ircChannel.prototype.kick = function(nick, reason)
 	if (!reason) reason = 'No Reason';
 	if (nick && this.containsNick(nick))
 	{
-		plugin.cmd_kick(this.name, nick.name, reason);
+		plugin.cmd_kick(servers.getServerArrayKey(this.server.id), this.name, nick.name, reason);
 	}
 }
 ircChannel.prototype.kickHandler = function(payload)
@@ -275,8 +275,8 @@ ircChannel.prototype.kickHandler = function(payload)
 
 ircChannel.prototype.join = function()
 {
-	plugin.cmd_join(this.name, this.key?this.key:null);
-	plugin.cmd_channel_mode(this.name, null);
+	plugin.cmd_join(servers.getServerArrayKey(this.server.id), this.name, this.key?this.key:null);
+	plugin.cmd_channel_mode(servers.getServerArrayKey(this.server.id), this.name, null);
 	this.openStage();
 }
 ircChannel.prototype.joinHandler = function(payload)
@@ -307,7 +307,7 @@ ircChannel.prototype.channelModeHandler = function(payload)
 
 ircChannel.prototype.part = function()
 {
-	plugin.cmd_part(this.name);
+	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name);
 	this.close();
 }
 
