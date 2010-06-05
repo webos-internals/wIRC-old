@@ -5,6 +5,10 @@ function ChannelChatAssistant(channel)
 	this.tabText = false;
 	this.action = false;
 	
+	this.timestamp = false;
+	this.lastTimestamp = "";
+	this.timestampTimer = null;
+	
 	this.documentElement =			false;
 	this.sceneScroller =			false;
 	this.headerElement =			false;
@@ -42,6 +46,12 @@ function ChannelChatAssistant(channel)
 		visible: true,
 		items: []
 	}
+}
+
+ChannelChatAssistant.prototype.setTimestamp = function()
+{
+	this.timestamp = true;
+	this.timestampTimer = setTimeout(this.setTimestamp.bind(this), 60000*prefs.get().timeStamp);
 }
 
 ChannelChatAssistant.prototype.setup = function()
@@ -134,6 +144,8 @@ ChannelChatAssistant.prototype.setup = function()
 		
 		this.sendButtonElement.style.display = 'none';
 		Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+		
+		this.setTimestamp();
 	} 
 	catch (e) 
 	{
@@ -215,48 +227,14 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 }
 ChannelChatAssistant.prototype.getDivider = function(item)
 {
-	// this is cool we should use it
-	//return Mojo.Format.formatDate(item.date, {time: "medium"});
-	
-	var string = "";
-	
-	var pm = false;
-	if (item.date.getHours() > 12) pm = true;
-	
-	if (!pm)
+	if (this.lastTimestamp.length==0 || this.timestamp)
 	{
-		if (item.date.getHours() < 1) string += '12';
-		if (item.date.getHours() > 0) string += item.date.getHours();
-		string += ':';
-		var mins = item.date.getMinutes();
-		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
-		{
-			mins = 0;
-		}
-		else
-		{
-			if ((mins%prefs.get().timeStamp) > 0) mins = mins - (mins%prefs.get().timeStamp);
-		}
-		if (mins < 10) string += '0'
-		string += mins + ' AM';
+		clearTimeout(this.timestampTimer);
+		this.timestamp = false;
+		this.lastTimestamp = Mojo.Format.formatDate(item.date, {time: "medium"});
+		this.timestampTimer = setTimeout(this.setTimestamp.bind(this), 60000*prefs.get().timeStamp);
 	}
-	else
-	{
-		string += (item.date.getHours() - 12) + ':';
-		var mins = item.date.getMinutes();
-		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
-		{
-			mins = 0;
-		}
-		else
-		{
-			if ((mins%prefs.get().timeStamp) > 0) mins = mins - (mins%prefs.get().timeStamp);
-		}
-		if (mins < 10) string += '0'
-		string += mins + ' PM';
-	}
-	
-	return string;
+	return this.lastTimestamp;
 }
 
 ChannelChatAssistant.prototype.updateUserCount = function()
