@@ -231,7 +231,7 @@ ChannelChatAssistant.prototype.getDivider = function(item)
 	{
 		clearTimeout(this.timestampTimer);
 		this.timestamp = false;
-		this.lastTimestamp = Mojo.Format.formatDate(item.date, {time: "medium"});
+		this.lastTimestamp = Mojo.Format.formatDate(item.date, {time: prefs.get().timeStampStyle});
 		this.timestampTimer = setTimeout(this.setTimestamp.bind(this), 60000*prefs.get().timeStamp);
 	}
 	return this.lastTimestamp;

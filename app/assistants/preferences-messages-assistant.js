@@ -344,6 +344,23 @@ PreferencesMessagesAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
+		this.controller.setupWidget
+		(
+			'timeStampStyle',
+			{
+				label: 'Timestamp Style',
+				choices:
+				[
+					{label:'short',		value:'short'},
+					{label:'medium',	value:'medium'},
+					{label:'long',		value:'long'},
+					{label:'full',		value:'full'},
+					{label:'default',	value:'default'}
+				],
+				modelProperty: 'timeStampStyle'
+			},
+			this.prefs
+		);
 		
 		this.controller.listen('senderColoring',		Mojo.Event.propertyChange, this.senderColoringHandler);
 		this.senderColoringChanged();
@@ -355,6 +372,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.controller.listen('messageSplit',		Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('fontSize',			Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
 		this.controller.listen('timeStamp',			Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('timeStampStyle',	Mojo.Event.propertyChange, this.listChangedHandler);
 		
 		
 		// Highlight Group
