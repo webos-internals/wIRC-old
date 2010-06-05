@@ -1,6 +1,6 @@
 TITLE			:=	wIRC
 ID				:=	org.webosinternals.wirc
-VERSION         :=	2.99.20100604
+VERSION         :=	2.99.$(shell date '+%Y%m%d')
 VENDOR			:=	webOS-Internals
 VENDOR_EMAIL	:=	support@webos-internals.org
 VENDOR_URL		:=	http://www.webos-internals.org/wiki/Application:WIRC
