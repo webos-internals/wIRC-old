@@ -5,10 +5,6 @@ function ChannelChatAssistant(channel)
 	this.tabText = false;
 	this.action = false;
 	
-	this.timestamp = false;
-	this.lastTimestamp = "";
-	this.timestampTimer = null;
-	
 	this.documentElement =			false;
 	this.sceneScroller =			false;
 	this.headerElement =			false;
@@ -29,6 +25,9 @@ function ChannelChatAssistant(channel)
 	this.lastFocusMarker =			false;
 	this.lastFocusMessage =			false;
 	
+	this.timestamp =				0;
+	this.timestamp_s =				"";
+	
 	this.listModel =
 	{
 		items: []
@@ -46,12 +45,6 @@ function ChannelChatAssistant(channel)
 		visible: true,
 		items: []
 	}
-}
-
-ChannelChatAssistant.prototype.setTimestamp = function()
-{
-	this.timestamp = true;
-	this.timestampTimer = setTimeout(this.setTimestamp.bind(this), 60000*prefs.get().timeStamp);
 }
 
 ChannelChatAssistant.prototype.setup = function()
@@ -144,8 +137,6 @@ ChannelChatAssistant.prototype.setup = function()
 		
 		this.sendButtonElement.style.display = 'none';
 		Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
-		
-		this.setTimestamp();
 	} 
 	catch (e) 
 	{
@@ -227,14 +218,17 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 }
 ChannelChatAssistant.prototype.getDivider = function(item)
 {
-	if (this.lastTimestamp.length==0 || this.timestamp)
+	var timestamp = Math.round(item.date.getTime()/1000.0);
+	Mojo.Log.info("############################################");
+	Mojo.Log.info("Delta Timestamp: %d", timestamp-this.timestamp);
+	Mojo.Log.info("############################################");
+	if ( timestamp - this.timestamp > prefs.get().timeStamp*60 )
 	{
-		clearTimeout(this.timestampTimer);
-		this.timestamp = false;
-		this.lastTimestamp = Mojo.Format.formatDate(item.date, {time: prefs.get().timeStampStyle});
-		this.timestampTimer = setTimeout(this.setTimestamp.bind(this), 60000*prefs.get().timeStamp);
+		this.timestamp = timestamp;
+		this.timestamp_s = Mojo.Format.formatDate(item.date, {time: prefs.get().timeStampStyle});
 	}
-	return this.lastTimestamp;
+	
+	return this.timestamp_s;
 }
 
 ChannelChatAssistant.prototype.updateUserCount = function()
