@@ -24,8 +24,8 @@ function AppAssistant() {
   pdkObject = window.document.createElement("object");
   pdkObject.id = "wIRCplugin";
   pdkObject.type = "application/x-palm-remote";
-  pdkObject.width=1;
-  pdkObject.height=1;
+  pdkObject.width=0;
+  pdkObject.height=0;
   pdkObject['x-palm-pass-event']=false;
   var param = window.document.createElement("param");
   param.name="appid";
