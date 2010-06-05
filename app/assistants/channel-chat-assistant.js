@@ -219,9 +219,6 @@ ChannelChatAssistant.prototype.updateList = function(initial)
 ChannelChatAssistant.prototype.getDivider = function(item)
 {
 	var timestamp = Math.round(item.date.getTime()/1000.0);
-	Mojo.Log.info("############################################");
-	Mojo.Log.info("Delta Timestamp: %d", timestamp-this.timestamp);
-	Mojo.Log.info("############################################");
 	if ( timestamp - this.timestamp > prefs.get().timeStamp*60 )
 	{
 		this.timestamp = timestamp;
