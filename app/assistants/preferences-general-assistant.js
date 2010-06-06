@@ -102,6 +102,33 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		// Connection details group
 		this.controller.setupWidget
 		(
+			'connectionTimeout',
+			{
+				label: 'Connection Timeout',
+				choices:
+				[
+					{label:'None',			value:0},
+					{label:'5s',		value:5},
+					{label:'10s',	value:10},
+					{label:'15s',	value:15},
+					{label:'20s',	value:20},
+					{label:'25s',	value:25},
+					{label:'30s',	value:30},
+					{label:'35s',	value:35},
+					{label:'40s',	value:40},
+					{label:'45s',	value:45},
+					{label:'50s',	value:50},
+					{label:'55s',	value:55},
+					{label:'60s',	value:60}
+				],
+				modelProperty: 'connectionTimeout'
+			},
+			this.prefs
+		);
+		this.controller.listen('connectionTimeout',	Mojo.Event.propertyChange, this.listChangedHandler);
+		
+		this.controller.setupWidget
+		(
 			'lagMeter',
 			{
 	  			trueLabel:  'Yes',
