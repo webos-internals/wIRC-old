@@ -818,7 +818,7 @@ ircServer.prototype.getVisibleScene = function()
 	{
 		if (this.queries[q].chatAssistant &&
 			this.queries[q].chatAssistant.isVisible)
-			return this.querys[q];
+			return this.queries[q];
 	}
 	return this;
 }
