@@ -358,11 +358,11 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 		if (this.popped) 
 			this.menuModel.items.push({
 				label: 'Server List',
-				command: 'server-list'
+				command: 'do-server-list'
 			});
 		
 		// Server menu options
-		serverItems.push({
+/*		serverItems.push({
 			label: "Preferences",
 			command: 'do-server-prefs'
 		});
@@ -393,7 +393,7 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 		serverItems.items.push({
 			label: 'Clear Backlog',
 			command: 'do-clear-backlog'
-		});
+		});*/
 		
 		// Channel menu options
 		var favorites = [];
@@ -411,12 +411,12 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 		});
 		
 		this.menuModel.items.push({
-			label: "Channel",
-			items: channelItems
-		});
-		this.menuModel.items.push({
 			label: "Server",
 			items: serverItems
+		});
+		this.menuModel.items.push({
+			label: "Channel",
+			items: channelItems
 		});
 		
 		if (!skipUpdate) {
@@ -424,7 +424,9 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 		}
 		
 	} catch (e) {
+		Mojo.Log.info("#################################################");
 		Mojo.Log.info(e);
+		Mojo.Log.info("#################################################");
 	}
 	
 }
@@ -462,7 +464,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
                     this.updateAppMenu();
                     break;
 										
-				case 'change-nick':
+				case 'do-change-nick':
 					if (this.server.isConnected()) 
 					{
 						SingleLineCommandDialog.pop
@@ -486,7 +488,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 					}
 					break;
 					
-				case 'channel-list':
+				case 'do-channel-list':
 					if (this.server.isConnected()) 
 					{
 						this.server.newCommand('/list');
@@ -497,7 +499,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 					}
 					break;
 					
-				case 'join-channel':
+				case 'do-join-channel':
 					if (this.server.isConnected()) 
 					{
 						SingleLineCommandDialog.pop
@@ -521,11 +523,11 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 					}
 					break;
 					
-				case 'server-list':
+				case 'do-server-list':
 					this.alertDialog('This doesn\'t work yet.');
 					break;
 					
-				case 'clear-backlog':
+				case 'do-clear-backlog':
 					this.server.clearMessages();
 					this.listModel.items = [];
 					this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
