@@ -251,10 +251,6 @@ ircChannel.prototype.setMode = function(mode)
 
 ircChannel.prototype.kick = function(nick, reason)
 {
-	alert('KICK!');
-	alert(nick.name);
-	alert(this.name);
-	
 	if (!reason) reason = 'No Reason';
 	if (nick && this.containsNick(nick))
 	{
