@@ -654,9 +654,9 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 			break;
 	
 		case '322':		// LIST
-			Mojo.Log.info("#######################################################");
-			Mojo.Log.info("P1: %s, P2: %s, P3: %s", params[1], params[2], params[3]);
-			Mojo.Log.info("#######################################################");
+			//Mojo.Log.info("#######################################################");
+			//Mojo.Log.info("P1: %s, P2: %s, P3: %s", params[1], params[2], params[3]);
+			//Mojo.Log.info("#######################################################");
 			servers.servers[id].listAddChannel(params[1], params[2], params[3]);
 			break;
 	

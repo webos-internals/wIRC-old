@@ -476,9 +476,6 @@ ircServer.prototype.updateStatusList = function()
 ircServer.prototype.list = function(channel)
 {
 	plugin.cmd_list(servers.getServerArrayKey(this.id), channel);
-}
-ircServer.prototype.listHandler = function(payload)
-{
 	this.openListStage();
 }
 ircServer.prototype.openListStage = function()
