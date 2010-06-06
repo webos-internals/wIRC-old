@@ -184,8 +184,9 @@ PDL_bool client_cmd_away(PDL_JSParameters *params) {
 	return irc_custom_cmd_away(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
 }
 
-PDL_bool client_cmd_disconnect(PDL_JSParameters *params) {
-	return irc_cmd_quit(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+PDL_bool client_disconnect(PDL_JSParameters *params) {
+	irc_disconnect(servers[PDL_GetJSParamInt(params, 0)].session);
+	return PDL_TRUE;
 }
 
 PDL_bool client_send_raw(PDL_JSParameters *params) {
@@ -294,8 +295,8 @@ int plugin_client_init() {
 	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
 	ret +=tmp;
 
-	name = "cmd_disconnect";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_disconnect);
+	name = "disconnect";
+	tmp = PDL_RegisterJSHandler(name, client_disconnect);
 	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
 	ret +=tmp;
 

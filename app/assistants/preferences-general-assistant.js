@@ -107,8 +107,8 @@ PreferencesGeneralAssistant.prototype.setup = function()
 				label: 'Connection Timeout',
 				choices:
 				[
-					{label:'None',			value:0},
-					{label:'5s',		value:5},
+					{label:'None',	value:0},
+					{label:'5s',	value:5},
 					{label:'10s',	value:10},
 					{label:'15s',	value:15},
 					{label:'20s',	value:20},

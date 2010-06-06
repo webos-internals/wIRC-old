@@ -590,6 +590,7 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 			break;
 
 		case '1':		// WELCOME
+			if (prefs.get().connectionTimeout) clearTimeout(this.connectionTimeout);
 		case '2':		// YOURHOST
 		case '3':		// CREATED
 		case '4':		// MYINFO

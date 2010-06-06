@@ -3,6 +3,7 @@ function ircServer(params)
 	//this.STATE_SERVICE_UNAVAILABLE	= -3;
 	this.STATE_PIFACE_UNAVAILABLE	= -2;
 	this.STATE_MAX_RETRIES			= -1;
+	this.STATE_TIMEOUT				= 0;
 	this.STATE_DISCONNECTED			= 0;
 	//this.STATE_TOKEN_REQUEST		= 1 
 	this.STATE_CONNECTING			= 2; 
@@ -42,6 +43,8 @@ function ircServer(params)
 	this.ipAddress =			false;
 	this.reconnectOnBetter =	false;
 	
+	this.connectionTimeout =	false;
+	
 	this.state =				this.STATE_DISCONNECTED;
 	this.channels =				[];
 	this.queries =				[];
@@ -79,6 +82,7 @@ ircServer.prototype.setState = function(state)
 		case this.STATE_DISCONNECTED: message = "Disconnected!"; break;
 		case this.STATE_CONNECTING: message = "Connecting..."; break;
 		case this.STATE_CONNECTED: message = "Connected!"; break;
+		case this.STATE_TIMEOUT: message = "Connection timed out!"; break;
 	}	
 	this.state = state;
 	if (message.length>0) {
@@ -86,6 +90,12 @@ ircServer.prototype.setState = function(state)
 	}
 	if (servers.listAssistant && servers.listAssistant.controller)
 		servers.listAssistant.updateList();		
+}
+
+ircServer.prototype.abortConnection = function()
+{
+	this.setState(this.STATE_TIMEOUT);
+	plugin.disconnect(servers.getServerArrayKey(this.id));
 }
 
 ircServer.prototype.init = function()
@@ -301,6 +311,9 @@ ircServer.prototype.connect = function()
 {	
 	try
 	{
+		var timeout = prefs.get().connectionTimeout;
+		if (timeout)
+			this.connectionTimeout = setTimeout(this.abortConnection.bind(this), 1000*timeout);
 		plugin.connect(
 			servers.getServerArrayKey(this.id),
 			this.address,
