@@ -826,37 +826,5 @@ ServerListAssistant.prototype.auto_ping_handler = function(id, server, rtt)
 			servers.servers[id].queries[q].updateLagMeter();
 		}
 	}
-	else
-	{
-		//servers.servers[id].clearAutoPingSubscription();
-	}
-}
-
-ServerListAssistant.prototype.clearAutoPingSubscription = function()
-{
-	servers.servers[id].subscriptions['auto_ping'].cancel();
-		
-	if (servers.listAssistant && servers.listAssistant.controller)
-	{
-		servers.listAssistant.updateList();	
-	}
-	if (servers.servers[id].statusAssistant && servers.servers[id].statusAssistant.controller)
-	{
-		servers.servers[id].statusAssistant.updateLagMeter();
-	}
-	for (var c = 0; c < servers.servers[id].channels.length; c++)
-	{
-		servers.servers[id].channels[c].updateLagMeter();
-	}
-	for (var q = 0; q < servers.servers[id].queries.length; q++)
-	{
-		servers.servers[id].queries[q].updateLagMeter();
-	}
-}
-ServerListAssistant.prototype.startAutoPingSubscription = function(skip)
-{
-	if (prefs.get().lagMeter || skip)
-	{
-		servers.servers[id].subscriptions['auto_ping']			= plugin.cmd_subscribe(servers.servers[id].errorHandler.bindAsEventListener(servers.servers[id]), servers.servers[id].autoPingHandler.bindAsEventListener(servers.servers[id]),servers.servers[id].sessionToken, 'auto_ping');
-	}
+	
 }
