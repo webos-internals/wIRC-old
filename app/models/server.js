@@ -152,6 +152,14 @@ ircServer.prototype.newCommand = function(message)
 					break;
 					
 				case 'msg':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						plugin.cmd_msg(servers.getServerArrayKey(this.id), this.getNick(tmpMatch[1]).name, tmpMatch[2]);
+						this.getVisibleScene().newMessage('type6', this.getNick(tmpMatch[1]), tmpMatch[2]);
+					}
+					break;
+					
 				case 'query':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
@@ -792,6 +800,23 @@ ircServer.prototype.closeInvite = function(nick, channel)
 	{
 		Mojo.Log.logException(e, "ircServer#closeInvite");
 	}
+}
+
+ircServer.prototype.getVisibleScene = function()
+{
+	for (var c = 0; c < this.channels.length; c++)
+	{
+		if (this.channels[c].chatAssistant &&
+			this.channels[c].chatAssistant.isVisible)
+			return this.channels[c];
+	}
+	for (var q = 0; q < this.queries.length; c++)
+	{
+		if (this.queries[q].chatAssistant &&
+			this.queries[q].chatAssistant.isVisible)
+			return this.querys[q];
+	}
+	return this;
 }
 
 ircServer.prototype.getListObject = function()

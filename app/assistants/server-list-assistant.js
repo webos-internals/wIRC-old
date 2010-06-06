@@ -508,7 +508,7 @@ ServerListAssistant.prototype.event_notice_handler = function(id, event, origin,
 	var params = JSON.parse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
-	servers.servers[id].newMessage('type6', tmpNick, params[1]);
+	servers.servers[id].getVisibleScene().newMessage('type6', tmpNick, params[1]);
 }
 
 /*
