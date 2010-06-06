@@ -14,10 +14,15 @@ function ServerAdvancedAssistant(serverInfoAssistant)
 	this.identifyPassword =			false;
 	this.saveButtFonElement =		false;
 	this.onConnectList =			false;
+	this.favoriteChannelsList = 	false;
 	
 	this.onConnectData =			[];
 	this.onConnectCount =			0;
 	this.onConnectModel =			{items:[]};
+	
+	this.favoriteChannelsData =		[];
+	this.favoriteChannelsCount = 	0;
+	this.favoriteChannelsModel =	{items:[]};
 	
 	if (this.server.onConnect && this.server.onConnect.length > 0)
 	{
@@ -25,6 +30,15 @@ function ServerAdvancedAssistant(serverInfoAssistant)
 		{
 			this.onConnectCount++;
 			this.onConnectData.push({id: this.onConnectCount, index: this.onConnectCount-1, value: this.server.onConnect[c]});
+		}
+	}
+	
+	if (this.server.favoriteChannels && this.server.favoriteChannels.length > 0)
+	{
+		for (var c = 0; c < this.server.favoriteChannels.length; c++)
+		{
+			this.favoriteChannelsCount++;
+			this.favoriteChannelsData.push({id: this.favoriteChannelsCount, index: this.favoriteChannelsCount-1, value: this.server.favoriteChannels[c]});
 		}
 	}
 		
@@ -48,6 +62,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		this.identifyServiceElement =	this.controller.get('identifyService');
 		this.identifyPasswordElement =	this.controller.get('identifyPassword');
 		this.onConnectList =			this.controller.get('onConnect');
+		this.favoriteChannelsList =		this.controller.get('favoriteChannels');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
 		this.toggleChanged =		this.toggleChanged.bindAsEventListener(this);
@@ -178,8 +193,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.identifyServiceElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.identifyPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		
-				
-		
+
 		this.onConnectBuildList();
 		this.controller.setupWidget
 		(
@@ -196,12 +210,35 @@ ServerAdvancedAssistant.prototype.setup = function()
 				changeOnKeyPress: true,
 			},
 			this.onConnectModel
-		);
-		
+		);				
+
 		Mojo.Event.listen(this.onConnectList, Mojo.Event.listAdd,			this.onConnectAdd.bindAsEventListener(this));
 		Mojo.Event.listen(this.onConnectList, Mojo.Event.propertyChanged,	this.onConnectChange.bindAsEventListener(this));
 		Mojo.Event.listen(this.onConnectList, Mojo.Event.listReorder,		this.onConnectReorder.bindAsEventListener(this));
 		Mojo.Event.listen(this.onConnectList, Mojo.Event.listDelete,		this.onConnectDelete.bindAsEventListener(this));
+				
+		this.favoriteChannelsBuildList();
+		this.controller.setupWidget
+		(
+			'favoriteChannels',
+			{
+				itemTemplate: "server-advanced/onConnect-row",
+				swipeToDelete: true,
+				reorderable: true,
+				addItemLabel: 'New',
+				
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'value',
+				changeOnKeyPress: true,
+			},
+			this.favoriteChannelsModel
+		);
+		
+		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listAdd,			this.favoriteChannelsAdd.bindAsEventListener(this));
+		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.propertyChanged,	this.favoriteChannelsChange.bindAsEventListener(this));
+		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listReorder,		this.favoriteChannelsReorder.bindAsEventListener(this));
+		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listDelete,			this.favoriteChannelsDelete.bindAsEventListener(this));
 	} 
 	catch (e) 
 	{
@@ -355,9 +392,129 @@ ServerAdvancedAssistant.prototype.onConnectSave = function()
 	}
 }
 
+ServerAdvancedAssistant.prototype.favoriteChannelsBuildList = function()
+{
+	this.favoriteChannelsModel.items = [];
+	if (this.favoriteChannelsData.length > 0)
+	{
+		for (var d = 0; d < this.favoriteChannelsData.length; d++)
+		{
+			this.favoriteChannelsModel.items.push(this.favoriteChannelsData[d]);
+		}
+	}
+}
+ServerAdvancedAssistant.prototype.favoriteChannelsAdd = function(event)
+{
+	this.favoriteChannelsCount++;
+	this.favoriteChannelsData.push({id: this.favoriteChannelsCount, index: this.favoriteChannelsData.length, value: ''});
+	
+	this.favoriteChannelsBuildList();
+	
+	this.favoriteChannelsList.mojo.noticeUpdatedItems(0, this.favoriteChannelsModel.items);
+	this.favoriteChannelsList.mojo.setLength(this.favoriteChannelsModel.items.length);
+	
+	this.favoriteChannelsList.mojo.focusItem(this.favoriteChannelsModel.items[this.favoriteChannelsModel.items.length-1]);
+	
+	this.favoriteChannelsSave();
+}
+ServerAdvancedAssistant.prototype.favoriteChannelsChange = function(event)
+{
+	this.favoriteChannelsSave();
+}
+ServerAdvancedAssistant.prototype.favoriteChannelsReorder = function(event)
+{
+	for (var d = 0; d < this.favoriteChannelsData.length; d++) 
+	{
+		if (this.favoriteChannelsData[d].index == event.fromIndex) 
+		{
+			this.favoriteChannelsData[d].index = event.toIndex;
+		}
+		else 
+		{
+			if (event.fromIndex > event.toIndex) 
+			{
+				if (this.favoriteChannelsData[d].index < event.fromIndex &&
+				this.favoriteChannelsData[d].index >= event.toIndex) 
+				{
+					this.favoriteChannelsData[d].index++;
+				}
+			}
+			else if (event.fromIndex < event.toIndex) 
+			{
+				if (this.favoriteChannelsData[d].index > event.fromIndex &&
+				this.favoriteChannelsData[d].index <= event.toIndex) 
+				{
+					this.favoriteChannelsData[d].index--;
+				}
+			}
+		}
+	}
+	this.favoriteChannelsSave();
+}
+ServerAdvancedAssistant.prototype.favoriteChannelsDelete = function(event)
+{
+	var newData = [];
+	if (this.favoriteChannelsData.length > 0) 
+	{
+		for (var d = 0; d < this.favoriteChannelsData.length; d++) 
+		{
+			if (this.favoriteChannelsData[d].id == event.item.id) 
+			{
+				// ignore
+			}
+			else 
+			{
+				if (this.favoriteChannelsData[d].index > event.index) 
+				{
+					this.favoriteChannelsData[d].index--;
+				}
+				newData.push(this.favoriteChannelsData[d]);
+			}
+		}
+	}
+	this.favoriteChannelsData = newData;
+	this.favoriteChannelsSave();
+}
+ServerAdvancedAssistant.prototype.favoriteChannelsSave = function()
+{
+	if (this.favoriteChannelsData.length > 0) 
+	{
+		if (this.favoriteChannelsData.length > 1) 
+		{
+			this.favoriteChannelsData.sort(function(a, b)
+			{
+				return a.index - b.index;
+			});
+		}
+		
+		for (var i = 0; i < this.favoriteChannelsModel.items.length; i++) 
+		{
+			for (var d = 0; d < this.favoriteChannelsData.length; d++) 
+			{
+				if (this.favoriteChannelsData[d].id == this.favoriteChannelsModel.items[i].id) 
+				{
+					this.favoriteChannelsData[d].value = this.favoriteChannelsModel.items[i].value;
+				}
+			}
+		}
+	}
+	
+	this.server.favoriteChannels = [];
+	if (this.favoriteChannelsData.length > 0) 
+	{
+		for (var d = 0; d < this.favoriteChannelsData.length; d++) 
+		{
+			if (this.favoriteChannelsData[d].value) 
+			{
+				this.server.favoriteChannels.push(this.favoriteChannelsData[d].value);
+			}
+		}
+	}
+}
+
 ServerAdvancedAssistant.prototype.deactivate = function(event)
 {
-	this.onConnectSave();
+	this.favoriteChannelsSave();
 	/*
 	if (this.serverKey !== false)
 	{
@@ -384,9 +541,14 @@ ServerAdvancedAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
 	Mojo.Event.stopListening(this.identifyServiceElement,	Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.identifyPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
-	
+
 	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listAdd,			this.onConnectAdd.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.propertyChanged,	this.onConnectChange.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listReorder,		this.onConnectReorder.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.onConnectList,			Mojo.Event.listDelete,		this.onConnectDelete.bindAsEventListener(this));
+	
+	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.listAdd,			this.favoriteChannelsAdd.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.propertyChanged,	this.favoriteChannelsChange.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.listReorder,		this.favoriteChannelsReorder.bindAsEventListener(this));
+	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.listDelete,		this.favoriteChannelsDelete.bindAsEventListener(this));
 }

@@ -94,13 +94,13 @@ database.prototype.saveServer = function(params, callback)
 {
 	if (params.id === false)
 	{
-		var query = "INSERT INTO servers (alias, address, port, serverUser, serverPassword, autoConnect, autoIdentify, identifyService, identifyPassword, onConnect) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		var data = [params.alias, params.address, params.port, params.serverUser, params.serverPassword, params.autoConnect, params.autoIdentify, params.identifyService, params.identifyPassword, params.onConnect];
+		var query = "INSERT INTO servers (alias, address, port, serverUser, serverPassword, autoConnect, autoIdentify, identifyService, identifyPassword, onConnect, favoriteChannels) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		var data = [params.alias, params.address, params.port, params.serverUser, params.serverPassword, params.autoConnect, params.autoIdentify, params.identifyService, params.identifyPassword, params.onConnect, params.favoriteChannels];
 	}
 	else
 	{
-		var query = "UPDATE servers SET alias=?, address=?, port=?, serverUser=?, serverPassword=?, autoConnect=?, autoIdentify=?, identifyService=?, identifyPassword=?, onConnect=? WHERE id=?";
-		var data = [params.alias, params.address, params.port, params.serverUser, params.serverPassword, params.autoConnect, params.autoIdentify, params.identifyService, params.identifyPassword, params.onConnect, params.id];
+		var query = "UPDATE servers SET alias=?, address=?, port=?, serverUser=?, serverPassword=?, autoConnect=?, autoIdentify=?, identifyService=?, identifyPassword=?, onConnect=?, favoriteChannels=? WHERE id=?";
+		var data = [params.alias, params.address, params.port, params.serverUser, params.serverPassword, params.autoConnect, params.autoIdentify, params.identifyService, params.identifyPassword, params.onConnect, params.favoriteChannels, params.id];
 	}
 	
 	this.db.transaction(function(tx)
@@ -151,7 +151,7 @@ database.prototype.createTables = function()
 	{
 		tx.executeSql
 		(
-			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, serverUser VARCHAR, serverPassword VARCHAR, autoConnect BOOL, autoIdentify BOOL, identifyService VARCHAR, identifyPassword VARCHAR, onConnect TEXT);",
+			"CREATE TABLE IF NOT EXISTS servers (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, alias VARCHAR NOT NULL, address VARCHAR NOT NULL, port INTEGER NOT NULL, serverUser VARCHAR, serverPassword VARCHAR, autoConnect BOOL, autoIdentify BOOL, identifyService VARCHAR, identifyPassword VARCHAR, onConnect TEXT, favoriteChannels TEXT);",
 			[], 
 			function(tx, result)
 			{

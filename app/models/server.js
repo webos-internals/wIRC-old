@@ -22,6 +22,7 @@ function ircServer(params)
 	this.identifyService =		params.identifyService;
 	this.identifyPassword =		params.identifyPassword;
 	this.onConnect =			params.onConnect;
+	this.favoriteChannels =		params.favoriteChannels;
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
 
