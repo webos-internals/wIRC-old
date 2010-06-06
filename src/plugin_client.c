@@ -156,7 +156,7 @@ PDL_bool client_cmd_channel_mode(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_kick(PDL_JSParameters *params) {
-	return irc_cmd_kick(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2), PDL_GetJSParamString(params, 3));
+	return irc_cmd_kick(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 2), PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 3));
 }
 
 PDL_bool client_cmd_nick(PDL_JSParameters *params) {

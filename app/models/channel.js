@@ -45,6 +45,14 @@ ircChannel.prototype.newCommand = function(message)
 				case 'join':
 					var vals = val.split(" ");
 					this.server.joinChannel(vals[0],vals[1]);
+					break;
+					
+				case 'kick':
+					var tmpMatch = twoValRegExp.exec(val);
+					alert('*******************************KICKING CHANNEL*******************************');
+					alert('Nick: %s, Chan: %s', tmpMatch[1],tmpMatch[2]);
+					alert('*******************************KICKING CHANNEL*******************************');
+					this.kick(tmpMatch[1],tmpMatch[2]);
 					break;				
 				
 				case 'topic':
@@ -254,7 +262,7 @@ ircChannel.prototype.kick = function(nick, reason)
 	if (!reason) reason = 'No Reason';
 	if (nick && this.containsNick(nick))
 	{
-		plugin.cmd_kick(servers.getServerArrayKey(this.server.id), this.name, nick.name, reason);
+		plugin.cmd_kick(servers.getServerArrayKey(this.server.id), this.name, nick, reason);
 	}
 }
 

@@ -177,6 +177,7 @@ ircServer.prototype.newCommand = function(message)
 					var tmpMatch = threeValRegExp.exec(val);
 					if (tmpMatch) 
 					{
+						alert('*******************************KICKING SERVER*******************************');
 						tmpChan = this.getChannel(tmpMatch[1]);
 						if (tmpChan)
 						{
