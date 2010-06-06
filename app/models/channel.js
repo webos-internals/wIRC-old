@@ -124,19 +124,11 @@ ircChannel.prototype.me = function(message)
 	plugin.cmd_me(servers.getServerArrayKey(this.server.id), this.name, message);
 	this.newMessage('type7', this.server.nick, message);
 }
-ircChannel.prototype.meHandler = function(payload)
-{
-	// this apparently doesn't return anything of importance
-}
 
 ircChannel.prototype.msg = function(message)
 {
 	plugin.cmd_msg(servers.getServerArrayKey(this.server.id), this.name, message);
 	this.newMessage('privmsg', this.server.nick, message);
-}
-ircChannel.prototype.msgHandler = function(payload)
-{
-	// this apparently doesn't return anything of importance
 }
 
 ircChannel.prototype.newMessage = function(type, nick, message)
@@ -255,10 +247,6 @@ ircChannel.prototype.setMode = function(mode)
 		plugin.cmd_channel_mode(servers.getServerArrayKey(this.server.id), this.name, mode);
 	}
 }
-ircChannel.prototype.modeHandler = function(payload)
-{
-	// this doesn't really need anything
-}
 
 ircChannel.prototype.kick = function(nick, reason)
 {
@@ -268,25 +256,12 @@ ircChannel.prototype.kick = function(nick, reason)
 		plugin.cmd_kick(servers.getServerArrayKey(this.server.id), this.name, nick.name, reason);
 	}
 }
-ircChannel.prototype.kickHandler = function(payload)
-{
-	// this doesn't really need anything
-}
 
 ircChannel.prototype.join = function()
 {
 	plugin.cmd_join(servers.getServerArrayKey(this.server.id), this.name, this.key?this.key:null);
 	plugin.cmd_channel_mode(servers.getServerArrayKey(this.server.id), this.name, null);
 	this.openStage();
-}
-ircChannel.prototype.joinHandler = function(payload)
-{
-	/*
-	if (payload.returnValue == 0)
-	{
-		this.openStage();
-	}
-	*/
 }
 
 ircChannel.prototype.channelMode = function(mode)
@@ -295,13 +270,6 @@ ircChannel.prototype.channelMode = function(mode)
 	if (this.chatAssistant && this.chatAssistant.controller) 
 	{
 		this.chatAssistant.updateTitle();
-	}
-}
-ircChannel.prototype.channelModeHandler = function(payload)
-{
-	if (payload.returnValue == 0)
-	{
-		// Do something ?
 	}
 }
 

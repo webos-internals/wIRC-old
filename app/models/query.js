@@ -65,19 +65,11 @@ ircQuery.prototype.me = function(message)
 	plugin.cmd_me(servers.getServerArrayKey(this.server.id), this.nick.name, message);
 	this.newMessage('action', this.server.nick, message);
 }
-ircQuery.prototype.meHandler = function(payload)
-{
-	// this apparently doesn't return anything of importance
-}
 
 ircQuery.prototype.msg = function(message)
 {
 	plugin.cmd_msg(servers.getServerArrayKey(this.server.id), this.nick.name, message);
 	this.newMessage('privmsg', this.server.nick, message);
-}
-ircQuery.prototype.msgHandler = function(payload)
-{
-	// this apparently doesn't return anything of importance
 }
 
 ircQuery.prototype.newMessage = function(type, nick, message)
