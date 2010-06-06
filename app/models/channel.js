@@ -70,15 +70,16 @@ ircChannel.prototype.newCommand = function(message)
 					else 
 					{
 						this.server.topic(this.name);
-					}			
+					}
+					break;
+				
+				case 'away':
+					this.server.away(val?val:null);
+					break;
 					
-					case 'away':
-						this.server.away(val?val:null);
-						break;
-						
-					case 'ping':
-						if (val) this.server.ping(val);
-						break;				
+				case 'ping':
+					if (val) this.server.ping(val);
+					break;
 					
 				default:
 					// forward unknown to the server object
@@ -250,6 +251,10 @@ ircChannel.prototype.setMode = function(mode)
 
 ircChannel.prototype.kick = function(nick, reason)
 {
+	alert('KICK!');
+	alert(nick.name);
+	alert(this.name);
+	
 	if (!reason) reason = 'No Reason';
 	if (nick && this.containsNick(nick))
 	{
