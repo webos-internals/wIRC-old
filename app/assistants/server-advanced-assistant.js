@@ -1,6 +1,6 @@
-function ServerAdvancedAssistant(serverInfoAssistant)
+function ServerAdvancedAssistant(serverobj)
 {
-	this.server = serverInfoAssistant.server;
+	this.server = serverobj;
 	
 	this.aliasElement =				false;
 	this.addressElement =			false;

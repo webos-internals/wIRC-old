@@ -224,7 +224,7 @@ ServerInfoAssistant.prototype.autoIdentifyChanged = function(event)
 
 ServerInfoAssistant.prototype.advancedButtonPressed = function(event)
 {
-	this.controller.stageController.pushScene('server-advanced', this);
+	this.controller.stageController.pushScene('server-advanced', this.server);
 }
 
 ServerInfoAssistant.prototype.saveButtonPressed = function(event)

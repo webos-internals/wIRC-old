@@ -31,12 +31,6 @@ function ServerStatusAssistant(server, popped)
 		visible: true,
 		items: []
 	}
-	if (this.popped) this.menuModel.items.push({ label: 'Server List',	command: 'server-list' });
-	this.menuModel.items.push({ label: 'Preferences',	command: 'do-prefs' });
-	this.menuModel.items.push({ label: 'Change Nick',	command: 'change-nick' });
-	this.menuModel.items.push({ label: 'Channel List',	command: 'channel-list' });
-	this.menuModel.items.push({ label: 'Join Channel',	command: 'join-channel' });
-	this.menuModel.items.push({ label: 'Clear Backlog',	command: 'clear-backlog' });
 }
 
 ServerStatusAssistant.prototype.setup = function()
@@ -46,7 +40,10 @@ ServerStatusAssistant.prototype.setup = function()
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
 		
-		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
+		this.updateAppMenu(true);
+        this.controller.setupWidget(Mojo.Menu.appMenu, {
+            omitDefaultItems: true
+        }, this.menuModel);
 		
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
@@ -344,86 +341,203 @@ ServerStatusAssistant.prototype.alertDialog = function(message)
     });
 }
 
+ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
+	
+	try {
+	
+		this.menuModel.items = [];
+		
+		var serverItems = [];
+		var channelItems = [];
+		
+		// Global menu options
+		this.menuModel.items.push({
+			label: "Global Preferences",
+			command: 'do-prefs'
+		});
+		if (this.popped) 
+			this.menuModel.items.push({
+				label: 'Server List',
+				command: 'server-list'
+			});
+		
+		// Server menu options
+		serverItems.push({
+			label: "Preferences",
+			command: 'do-server-prefs'
+		});
+		if (this.server.isAway) {
+			serverItems.push({
+				label: "Back",
+				command: 'do-away'
+			});
+		}
+		else {
+			serverItems.push({
+				label: "Away",
+				command: 'do-away'
+			});
+		}
+		serverItems.push({
+			label: 'Change Nick',
+			command: 'do-change-nick'
+		});
+		serverItems.push({
+			label: 'Channel List',
+			command: 'do-channel-list'
+		});
+		serverItems.push({
+			label: 'Join Channel',
+			command: 'do-join-channel'
+		});
+		serverItems.items.push({
+			label: 'Clear Backlog',
+			command: 'do-clear-backlog'
+		});
+		
+		// Channel menu options
+		var favorites = [];
+		if (this.server.favoriteChannels && this.server.favoriteChannels.length > 0) {
+			for (var c = 0; c < this.server.favoriteChannels.length; c++) {
+				favorites.push({
+					label: ' ' + this.server.favoriteChannels[c],
+					command: 'join-' + this.server.favoriteChannels[c]
+				});
+			}
+		}
+		channelItems.push({
+			label: "Favorites",
+			items: favorites
+		});
+		
+		this.menuModel.items.push({
+			label: "Channel",
+			items: channelItems
+		});
+		this.menuModel.items.push({
+			label: "Server",
+			items: serverItems
+		});
+		
+		if (!skipUpdate) {
+			this.controller.modelChanged(this.menuModel);
+		}
+		
+	} catch (e) {
+		Mojo.Log.info(e);
+	}
+	
+}
+
 ServerStatusAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
 	{
-		switch (event.command)
+		if (event.command.substring(0, 3) == 'do-')
 		{
-			case 'do-prefs':
-				this.controller.stageController.pushScene('preferences-general');
-				break;
-				
-			case 'change-nick':
-				if (this.server.isConnected()) 
-				{
-					SingleLineCommandDialog.pop
-					(
-						this,
-						{
-							command:		'nick',
-							onSubmit:		this.server.newCommand.bind(this.server),
-							dialogTitle:	'Change Nick',
-							textLabel:		'Nick',
-							textDefault:	this.server.nick.name,
-							okText:			'change',
-							onActivate:		this.stopAutoFocus.bind(this),
-							onDeactivate:	this.startAutoFocus.bind(this)
-						}
-					);
-				}
-				else
-				{
-					this.alertDialog('You must be connected to change your nick.');
-				}
-				break;
-				
-			case 'channel-list':
-				if (this.server.isConnected()) 
-				{
-					this.server.newCommand('/list');
-				}
-				else
-				{
-					this.alertDialog('You must be connected to get the channel list.');
-				}
-				break;
-				
-			case 'join-channel':
-				if (this.server.isConnected()) 
-				{
-					SingleLineCommandDialog.pop
-					(
-						this,
-						{
-							command:		'join',
-							onSubmit:		this.server.newCommand.bind(this.server),
-							dialogTitle:	'Join Channel',
-							textLabel:		'Channel',
-							textDefault:	'#',
-							okText:			'Join',
-							onActivate:		this.stopAutoFocus.bind(this),
-							onDeactivate:	this.startAutoFocus.bind(this)
-						}
-					);
-				}
-				else
-				{
-					this.alertDialog('You must be connected to join a channel.');
-				}
-				break;
-				
-			case 'server-list':
-				this.alertDialog('This doesn\'t work yet.');
-				break;
-				
-			case 'clear-backlog':
-				this.server.clearMessages();
-				this.listModel.items = [];
-				this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
-				this.messageListElement.mojo.setLength(0);
-				break;
+			switch (event.command)
+			{
+				case 'do-prefs':
+					this.controller.stageController.pushScene('preferences-general');
+					break;
+					
+				case 'do-server-prefs':
+					this.controller.stageController.pushScene('server-advanced', this.server);
+					break;
+
+                case 'do-away':
+                    if (!this.server.isAway) {
+                        SingleLineCommandDialog.pop(this, {
+                            command: 'away',
+                            onSubmit: this.newCommand.bind(this.server),
+                            dialogTitle: 'Set Away Status',
+                            textLabel: 'Reason',
+                            onActivate: this.stopAutoFocus.bind(this),
+                            onDeactivate: this.startAutoFocus.bind(this)
+                        });
+                    }
+                    else {
+                        this.newCommand('/away');
+                    }
+                    this.updateAppMenu();
+                    break;
+										
+				case 'change-nick':
+					if (this.server.isConnected()) 
+					{
+						SingleLineCommandDialog.pop
+						(
+							this,
+							{
+								command:		'nick',
+								onSubmit:		this.server.newCommand.bind(this.server),
+								dialogTitle:	'Change Nick',
+								textLabel:		'Nick',
+								textDefault:	this.server.nick.name,
+								okText:			'change',
+								onActivate:		this.stopAutoFocus.bind(this),
+								onDeactivate:	this.startAutoFocus.bind(this)
+							}
+						);
+					}
+					else
+					{
+						this.alertDialog('You must be connected to change your nick.');
+					}
+					break;
+					
+				case 'channel-list':
+					if (this.server.isConnected()) 
+					{
+						this.server.newCommand('/list');
+					}
+					else
+					{
+						this.alertDialog('You must be connected to get the channel list.');
+					}
+					break;
+					
+				case 'join-channel':
+					if (this.server.isConnected()) 
+					{
+						SingleLineCommandDialog.pop
+						(
+							this,
+							{
+								command:		'join',
+								onSubmit:		this.server.newCommand.bind(this.server),
+								dialogTitle:	'Join Channel',
+								textLabel:		'Channel',
+								textDefault:	'#',
+								okText:			'Join',
+								onActivate:		this.stopAutoFocus.bind(this),
+								onDeactivate:	this.startAutoFocus.bind(this)
+							}
+						);
+					}
+					else
+					{
+						this.alertDialog('You must be connected to join a channel.');
+					}
+					break;
+					
+				case 'server-list':
+					this.alertDialog('This doesn\'t work yet.');
+					break;
+					
+				case 'clear-backlog':
+					this.server.clearMessages();
+					this.listModel.items = [];
+					this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+					this.messageListElement.mojo.setLength(0);
+					break;
+			}
 		}
+		else if (event.command.substring(0,5) == 'join-')
+		{
+			this.server.joinChannel(event.command.substring(5), "");
+		}
+		
 	}
 }
 

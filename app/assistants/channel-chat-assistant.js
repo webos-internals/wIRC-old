@@ -355,8 +355,18 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
     
     var serverItems = [];
     var channelItems = [];
+	
+	// Global menu options
+	this.menuModel.items.push({
+        label: "Global Preferences",
+        command: 'do-prefs'
+    });
     
     // Server menu options
+	serverItems.push({
+        label: "Preferences",
+        command: 'do-server-prefs'
+    });
     if (this.channel.server.isAway) {
         serverItems.push({
             label: "Back",
@@ -369,10 +379,6 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
             command: 'do-away'
         });
     }
-    serverItems.push({
-        label: "Preferences",
-        command: 'do-prefs'
-    });
     
     // Channel menu options
     var favorites = [];
@@ -407,6 +413,7 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
         this.controller.modelChanged(this.menuModel);
     }
 }
+
 ChannelChatAssistant.prototype.handleCommand = function(event){
 	
     if (event.type == Mojo.Event.command) {
@@ -435,6 +442,10 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
                     this.controller.stageController.pushScene('preferences-general');
                     break;
                     
+				case 'do-server-prefs':
+					this.controller.stageController.pushScene('server-advanced', this.channel.server);
+					break;
+					
                 case 'do-clear-backlog':
                     this.channel.clearMessages();
                     this.listModel.items = [];
