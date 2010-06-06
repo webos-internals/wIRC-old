@@ -62,7 +62,7 @@ ircQuery.prototype.newCommand = function(message)
 
 ircQuery.prototype.me = function(message)
 {
-	plugin.cmd_me(this.nick.name, message);
+	plugin.cmd_me(servers.getServerArrayKey(this.server.id), this.nick.name, message);
 	this.newMessage('action', this.server.nick, message);
 }
 ircQuery.prototype.meHandler = function(payload)
@@ -72,7 +72,7 @@ ircQuery.prototype.meHandler = function(payload)
 
 ircQuery.prototype.msg = function(message)
 {
-	plugin.cmd_msg(this.nick.name, message);
+	plugin.cmd_msg(servers.getServerArrayKey(this.server.id), this.nick.name, message);
 	this.newMessage('privmsg', this.server.nick, message);
 }
 ircQuery.prototype.msgHandler = function(payload)
