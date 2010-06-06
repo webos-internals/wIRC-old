@@ -19,6 +19,7 @@ prefCookie.prototype.get = function(reload)
 				piface:				'',
 				aiface:				false,
 				lagMeter:			false,
+				connectionTimeout:	30,
 				
 				// Identity Scene
 				realname:			'',
