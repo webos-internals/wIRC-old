@@ -95,7 +95,7 @@ ircServer.prototype.setState = function(state)
 ircServer.prototype.abortConnection = function()
 {
 	this.setState(this.STATE_TIMEOUT);
-	plugin.disconnect(servers.getServerArrayKey(this.id));
+	//plugin.disconnect(servers.getServerArrayKey(this.id));
 }
 
 ircServer.prototype.init = function()
