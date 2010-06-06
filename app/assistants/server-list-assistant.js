@@ -309,6 +309,9 @@ ServerListAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
+	
+	// hey this works, cool!
+	Mojo.Controller.appController.closeAllStages();
 }
 
 
@@ -564,7 +567,7 @@ ServerListAssistant.prototype.event_kick_handler = function(id, event, origin, p
 			tmpNick.removeChannel(tmpChan); 
 			if (tmpNick.me)
 			{
-				tmpChan.close();
+				tmpChan.closeStage();
 				servers.servers[id].removeChannel(tmpChan);
 			}
 			tmpChan.newMessage('type10', false, tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + params[0] + ' (' + params[2] + ')');

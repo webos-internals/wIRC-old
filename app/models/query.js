@@ -190,6 +190,13 @@ ircQuery.prototype.openStageCallback = function(controller)
 {
 	controller.pushScene('query-chat', this);
 }
+ircQuery.prototype.closeStage = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.controller.window.close();
+	}
+}
 
 ircQuery.prototype.setDashAssistant = function(assistant)
 {

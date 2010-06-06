@@ -277,20 +277,12 @@ ircChannel.prototype.channelMode = function(mode)
 ircChannel.prototype.part = function()
 {
 	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name);
-	this.close();
+	this.closeStage();
 }
 
 ircChannel.prototype.clearMessages = function()
 {
 	this.messages = [];
-}
-
-ircChannel.prototype.close = function()
-{
-	if (this.chatAssistant && this.chatAssistant.controller)
-	{
-		this.chatAssistant.controller.window.close();
-	}
 }
 
 ircChannel.prototype.openDash = function(message)
@@ -369,6 +361,13 @@ ircChannel.prototype.openStage = function()
 ircChannel.prototype.openStageCallback = function(controller)
 {
 	controller.pushScene('channel-chat', this);
+}
+ircChannel.prototype.closeStage = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.controller.window.close();
+	}
 }
 
 ircChannel.prototype.setDashAssistant = function(assistant)
