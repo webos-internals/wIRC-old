@@ -150,6 +150,10 @@ ircServer.prototype.newCommand = function(message)
 					var vals = val.split(" ");
 					this.joinChannel(vals[0],vals[1]);
 					break;
+				
+				case 'ns':
+					this.newCommand('/msg NickServ ' + val);
+					break;
 					
 				case 'msg':
 					var tmpMatch = twoValRegExp.exec(val);
