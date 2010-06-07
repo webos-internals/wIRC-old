@@ -362,7 +362,7 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			});
 		
 		// Server menu options
-/*		serverItems.push({
+		serverItems.push({
 			label: "Preferences",
 			command: 'do-server-prefs'
 		});
@@ -390,10 +390,10 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			label: 'Join Channel',
 			command: 'do-join-channel'
 		});
-		serverItems.items.push({
+		serverItems.push({
 			label: 'Clear Backlog',
 			command: 'do-clear-backlog'
-		});*/
+		});
 		
 		// Channel menu options
 		var favorites = [];
