@@ -514,6 +514,73 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.controller.listen('colorOtherNicks',	Mojo.Event.propertyChange, this.listChangedHandler);		
 		
 		
+		// Events Group
+		this.controller.setupWidget
+		(
+			'eventJoin',
+			{
+	  			trueLabel:  'Show',
+	  			trueValue:	true,
+	 			falseLabel: 'Hide',
+	 			falseValue: false,
+	  			fieldName:  'eventJoin'
+			},
+			{
+				value : this.prefs.eventJoin,
+	 			disabled: false
+			}
+		);
+		this.controller.setupWidget
+		(
+			'eventPart',
+			{
+	  			trueLabel:  'Show',
+	  			trueValue:	true,
+	 			falseLabel: 'Hide',
+	 			falseValue: false,
+	  			fieldName:  'eventPart'
+			},
+			{
+				value : this.prefs.eventPart,
+	 			disabled: false
+			}
+		);
+		this.controller.setupWidget
+		(
+			'eventQuit',
+			{
+	  			trueLabel:  'Show',
+	  			trueValue:	true,
+	 			falseLabel: 'Hide',
+	 			falseValue: false,
+	  			fieldName:  'eventQuit'
+			},
+			{
+				value : this.prefs.eventQuit,
+	 			disabled: false
+			}
+		);
+		this.controller.setupWidget
+		(
+			'eventMode',
+			{
+	  			trueLabel:  'Show',
+	  			trueValue:	true,
+	 			falseLabel: 'Hide',
+	 			falseValue: false,
+	  			fieldName:  'eventMode'
+			},
+			{
+				value : this.prefs.eventMode,
+	 			disabled: false
+			}
+		);
+		
+		this.controller.listen('eventJoin',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		this.controller.listen('eventPart',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		this.controller.listen('eventQuit',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		this.controller.listen('eventMode',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		
 		
 		
 	}
@@ -674,5 +741,10 @@ PreferencesMessagesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('colorMarker',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorOwnNick',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorOtherNicks',		Mojo.Event.propertyChange, this.listChangedHandler);
+	
+	this.controller.stopListening('eventJoin',				Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('eventPart',				Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('eventQuit',				Mojo.Event.propertyChange, this.toggleChangeHandler);
+	this.controller.stopListening('eventMode',				Mojo.Event.propertyChange, this.toggleChangeHandler);
 
 }

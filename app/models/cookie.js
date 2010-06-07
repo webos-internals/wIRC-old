@@ -64,6 +64,12 @@ preferenceCookie.prototype.get = function(reload)
 				colorHighlightBG:	'lightpink',
 				colorOwnNick:		'black',
 				colorOtherNicks:	'green',
+				
+				// Events
+				eventJoin:			true,
+				eventPart:			true,
+				eventQuit:			true,
+				eventMode:			true
 			};
 			
 			// uncomment to delete cookie for testing

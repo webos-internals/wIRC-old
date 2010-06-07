@@ -375,7 +375,8 @@ ServerListAssistant.prototype.event_part_handler = function(id, event, origin, p
 		tmpNick.removeChannel(tmpChan);
 		if (tmpNick.me)
 			servers.servers[id].removeChannel(tmpChan);
-		tmpChan.newMessage('type5', false, tmpNick.name + ' (' + origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + params[1] + ')');
+		if (prefs.get().eventPart)
+			tmpChan.newMessage('type5', false, tmpNick.name + ' (' + origin.split("!")[1] + ') has left ' + tmpChan.name + ' (' + params[1] + ')');
 	}	
 }
 
@@ -446,7 +447,8 @@ ServerListAssistant.prototype.event_mode_handler = function(id, event, origin, p
 		var modeNick = servers.servers[id].getNick(params[2]);
 		if (modeNick)
 			modeNick.updateMode(params[1], tmpChan);
-		tmpChan.newMessage('type3', false, 'Mode ' + params[0] + ' ' + params[1] + ' ' + params[2] + ' by ' + tmpNick.name);
+		if (prefs.get().eventMode)
+			tmpChan.newMessage('type3', false, 'Mode ' + params[0] + ' ' + params[1] + ' ' + params[2] + ' by ' + tmpNick.name);
 	}
 }
 
@@ -470,7 +472,8 @@ ServerListAssistant.prototype.event_join_handler = function(id, event, origin, p
 		if (tmpNick.me)
 			tmpChan.openStage();
 		tmpNick.addChannel(tmpChan, '');
-		tmpChan.newMessage('type4', false, tmpNick.name + ' (' + origin.split("!")[1] + ') has joined ' + tmpChan.name);
+		if (prefs.get().eventJoin)
+			tmpChan.newMessage('type4', false, tmpNick.name + ' (' + origin.split("!")[1] + ') has joined ' + tmpChan.name);
 	}
 }
 
@@ -483,7 +486,12 @@ ServerListAssistant.prototype.event_quit_handler = function(id, event, origin, p
 	if (tmpNick)
 	{
 		for (var i = 0; i< tmpNick.channels.length; i++)
-			tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + params + ')');
+		{
+			if (prefs.get().eventQuit)
+			{
+				tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + params + ')');
+			}
+		}
 		servers.servers[id].removeNick(tmpNick);
 	}	
 }
