@@ -39,7 +39,7 @@ preferenceCookie.prototype.get = function(reload)
 				messageSplit:		'25',
 				fontSize:			'15',
 				timeStamp:			5,
-				timeStampStyle:		'medium',
+				timeStampStyle:		'short',
 				senderColoring:		true,
 				
 				// Highlight Group

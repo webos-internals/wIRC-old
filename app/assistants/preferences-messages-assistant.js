@@ -351,11 +351,11 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Timestamp Style',
 				choices:
 				[
-					{label:'short',		value:'short'},
-					{label:'medium',	value:'medium'},
-					{label:'long',		value:'long'},
-					{label:'full',		value:'full'},
-					{label:'default',	value:'default'}
+					{label:'Short',		value:'short'},
+					//{label:'Medium',	value:'medium'},
+					{label:'Long',		value:'long'},
+					{label:'Full',		value:'full'},
+					{label:'Default',	value:'default'}
 				],
 				modelProperty: 'timeStampStyle'
 			},
