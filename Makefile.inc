@@ -6,7 +6,7 @@ VENDOR_EMAIL	:=	support@webos-internals.org
 VENDOR_URL		:=	http://www.webos-internals.org/wiki/Application:WIRC
 
 PLUGIN			:=	wirc
-MEM_USAGE		:=	1
+MEM_USAGE		:=	8
 
 PLUGIN_DIR		:= 	src
 
