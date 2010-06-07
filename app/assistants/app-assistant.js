@@ -61,7 +61,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 				var scenes = serverController.getScenes();
 				if (scenes[0].sceneName == 'server-list')
 				{
-					mainStageController.popScenesTo('server-list');
+					serverController.popScenesTo('server-list');
 				}
 				serverController.activate();
 			}
