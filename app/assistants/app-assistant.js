@@ -58,16 +58,24 @@ AppAssistant.prototype.handleLaunch = function(params)
 		{
 	        if (serverController)
 			{
-				serverController.popScenesTo('server-list');
+				var scenes = serverController.getScenes();
+				if (scenes[0].sceneName == 'server-list')
+				{
+					mainStageController.popScenesTo('server-list');
+				}
 				serverController.activate();
 			}
 			else
 			{
 				var f = function(controller)
 				{
+					vers.init();
 					controller.window.document.body.appendChild(df);
 					plugin = controller.get('wIRCplugin');
-					if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
+					
+					if (vers.showStartupScene())
+						controller.pushScene('startup');
+					else if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
 						controller.pushScene('identity', true, true);
 					else
 						controller.pushScene('server-list');

@@ -39,6 +39,10 @@
         "source": "app/assistants/server-status-assistant.js"
     },
     {
+        "scenes": "startup",
+        "source": "app/assistants/startup-assistant.js"
+    },
+    {
         "scenes": "preferences-general",
         "source": "app/assistants/preferences-general-assistant.js"
     },

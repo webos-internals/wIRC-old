@@ -4,7 +4,7 @@ function IdentityAssistant(showButton, disableButton)
 	this.showButton = showButton;
 		
 	// setup default preferences in the prefCookie.js model
-	this.cookie = new prefCookie();
+	this.cookie = new preferenceCookie();
 	this.prefs = this.cookie.get();
 	
 	// setup menu
@@ -146,7 +146,10 @@ IdentityAssistant.prototype.identDoneTapped = function()
 {
 	try
 	{
-		this.controller.stageController.swapScene('server-list');
+		if (this.showButton)
+			this.controller.stageController.swapScene({name: 'server-list', transition: Mojo.Transition.crossFade});
+		else
+			this.controller.stageController.swapScene('server-list');
 	}
 	catch (e)
 	{
