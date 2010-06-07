@@ -1,11 +1,10 @@
-function prefCookie()
+function preferenceCookie()
 {
 	this.cookie = false;
 	this.prefs = false;
 	this.load();
-}
-
-prefCookie.prototype.get = function(reload)
+};
+preferenceCookie.prototype.get = function(reload)
 {
 	try 
 	{
@@ -67,6 +66,8 @@ prefCookie.prototype.get = function(reload)
 				colorOtherNicks:	'green',
 			};
 			
+			// uncomment to delete cookie for testing
+			//this.cookie.remove();
 			var cookieData = this.cookie.get();
 			if (cookieData) 
 			{
@@ -85,11 +86,10 @@ prefCookie.prototype.get = function(reload)
 	} 
 	catch (e) 
 	{
-		Mojo.Log.logException(e, 'prefCookie#get');
+		Mojo.Log.logException(e, 'preferenceCookie#get');
 	}
-}
-
-prefCookie.prototype.put = function(obj, value)
+};
+preferenceCookie.prototype.put = function(obj, value)
 {
 	try
 	{
@@ -106,11 +106,10 @@ prefCookie.prototype.put = function(obj, value)
 	} 
 	catch (e) 
 	{
-		Mojo.Log.logException(e, 'prefCookie#put');
+		Mojo.Log.logException(e, 'preferenceCookie#put');
 	}
-}
-
-prefCookie.prototype.load = function()
+};
+preferenceCookie.prototype.load = function()
 {
 	try
 	{
@@ -121,6 +120,66 @@ prefCookie.prototype.load = function()
 	} 
 	catch (e) 
 	{
-		Mojo.Log.logException(e, 'prefCookie#load');
+		Mojo.Log.logException(e, 'preferenceCookie#load');
 	}
-}
+};
+
+function versionCookie()
+{
+	this.cookie = false;
+	this.isFirst = false;
+	this.isNew = false;
+	//this.init();
+};
+versionCookie.prototype.init = function()
+{
+	try
+	{
+		// reset these
+		this.cookie = false;
+		this.isFirst = false;
+		this.isNew = false;
+		
+		this.cookie = new Mojo.Model.Cookie('version');
+		// uncomment to delete cookie for testing
+		//this.cookie.remove();
+		var data = this.cookie.get();
+		if (data)
+		{
+			if (data.version == Mojo.appInfo.version)
+			{
+				//alert('Same Version');
+			}
+			else
+			{
+				//alert('New Version');
+				this.isNew = true;
+				this.put();
+			}
+		}
+		else
+		{
+			//alert('First Launch');
+			this.isFirst = true;
+			this.isNew = true;
+			this.put();
+		}
+		// uncomment to delete cookie for testing
+		//this.cookie.remove();
+	}
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'versionCookie#init');
+	}
+};
+versionCookie.prototype.put = function()
+{
+	this.cookie.put({version: Mojo.appInfo.version});
+	// uncomment to set lower version for testing
+	//this.cookie.put({version: '0.0.1'});
+};
+versionCookie.prototype.showStartupScene = function()
+{
+	if (this.isNew || this.isFirst) return true;
+	else return false;
+};
