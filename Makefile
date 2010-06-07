@@ -30,13 +30,7 @@ $(APPINFO):
 	@echo -e '\t"vendor" : "$(VENDOR)",' >> $@
 	@echo -e '\t"vendor_email" : "$(VENDOR_EMAIL)",' >> $@
 	@echo -e '\t"vendor_url" : "$(VENDOR_URL)",' >> $@
-	@echo -e '\t"type" : "web",' >> $@
-	@echo -e '\t"plug-ins" : true,' >> $@
-	@echo -e '\t"main" : "index.html",' >> $@
-	@echo -e '\t"icon" : "icon.png",' >> $@
-	@echo -e '\t"noWindow" : true,' >> $@
-	@echo -e '\t"noDeprecatedStyles" : true,' >> $@
-	@echo -e '\t"keywords" : [ "IRC" ]' >> $@
+	@cat appinfo.static.json >> $@
 	@echo -e '}' >> $@
 
 $(PLUGIN)_plugin_$(APPINFO):

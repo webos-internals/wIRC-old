@@ -44,6 +44,10 @@ function ServerListAssistant()
 			{
 				label: "About",
 				command: 'do-about'
+			},
+			{
+				label: "Help",
+				command: 'do-help'
 			}
 		]
 	}
@@ -284,6 +288,9 @@ ServerListAssistant.prototype.handleCommand = function(event)
 	{
 		switch (event.command)
 		{
+			case 'do-help':
+				this.controller.stageController.pushAppSupportInfoScene();
+				break;
 			case 'do-ident':
 				this.controller.stageController.pushScene('identity', false, true);
 				break;
