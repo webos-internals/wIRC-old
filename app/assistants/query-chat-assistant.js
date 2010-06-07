@@ -126,6 +126,8 @@ QueryChatAssistant.prototype.loadPrefs = function(initial)
 }
 QueryChatAssistant.prototype.activate = function(event)
 {
+	if (prefs.get().blockScreenTimeout)
+		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
 	this.updateLagMeter();
 	this.loadPrefs();
 	if (this.alreadyActivated)
@@ -407,4 +409,8 @@ QueryChatAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
 	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
+}
+QueryChatAssistant.prototype.deactivate = function(event)
+{
+	Mojo.Controller.stageController.setWindowProperties({blockScreenTimeout: false, setSubtleLightbar: true});	
 }

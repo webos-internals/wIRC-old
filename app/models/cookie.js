@@ -20,6 +20,8 @@ prefCookie.prototype.get = function(reload)
 				aiface:				false,
 				lagMeter:			false,
 				connectionTimeout:	30,
+				blockScreenTimeout:	true,
+				dimScreen:			true,
 				
 				// Identity Scene
 				realname:			'',

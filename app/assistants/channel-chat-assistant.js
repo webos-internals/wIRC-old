@@ -136,6 +136,8 @@ ChannelChatAssistant.prototype.loadPrefs = function(initial){
     this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 ChannelChatAssistant.prototype.activate = function(event){
+	if (prefs.get().blockScreenTimeout)
+		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
     this.updateLagMeter();
     this.loadPrefs();
     if (this.alreadyActivated) {
@@ -529,4 +531,9 @@ ChannelChatAssistant.prototype.cleanup = function(event){
     if (this.channel.containsNick(this.channel.server.nick)) {
         this.channel.part();
     }
+}
+
+ChannelChatAssistant.prototype.deactivate = function(event)
+{
+	Mojo.Controller.stageController.setWindowProperties({blockScreenTimeout: false, setSubtleLightbar: true});
 }

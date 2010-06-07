@@ -149,7 +149,8 @@ ServerListAssistant.prototype.checkPlugin = function()
 
 ServerListAssistant.prototype.activate = function(event)
 {
-	
+	if (prefs.get().blockScreenTimeout)
+		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
 	this.checkPlugin();
 	
 	if (this.alreadyActivated)
@@ -304,7 +305,11 @@ ServerListAssistant.prototype.handleCommand = function(event)
 	}
 }
 
-ServerListAssistant.prototype.deactivate = function(event) {}
+ServerListAssistant.prototype.deactivate = function(event)
+{
+	Mojo.Controller.stageController.setWindowProperties({blockScreenTimeout: false, setSubtleLightbar: true});	
+}
+
 ServerListAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
