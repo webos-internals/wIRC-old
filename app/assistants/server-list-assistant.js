@@ -63,9 +63,9 @@ ServerListAssistant.prototype.tryPlugin = function()
 	}
 	finally
 	{
-		Mojo.Log.info("#######################################################");
-		Mojo.Log.info("PluginReady: ", pluginReady);
-		Mojo.Log.info("#######################################################");
+		//Mojo.Log.info("#######################################################");
+		//Mojo.Log.info("PluginReady: ", pluginReady);
+		//Mojo.Log.info("#######################################################");
 	}
 }
 
