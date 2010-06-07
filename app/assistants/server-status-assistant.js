@@ -417,7 +417,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 					break;
 					
 				case 'do-server-prefs':
-					this.controller.stageController.pushScene('server-advanced', this.server);
+					this.controller.stageController.pushScene('server-info', this.server.id);
 					break;
 
                 case 'do-away':

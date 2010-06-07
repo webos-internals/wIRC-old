@@ -444,7 +444,7 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
                     break;
                     
 				case 'do-server-prefs':
-					this.controller.stageController.pushScene('server-advanced', this.channel.server);
+					this.controller.stageController.pushScene('server-info', this.channel.server.id);
 					break;
 					
                 case 'do-clear-backlog':
