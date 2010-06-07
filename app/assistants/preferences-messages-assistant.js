@@ -352,7 +352,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices:
 				[
 					{label:'Short',		value:'short'},
-					//{label:'Medium',	value:'medium'},
+					{label:'Medium',	value:'medium'},
 					{label:'Long',		value:'long'},
 					{label:'Full',		value:'full'},
 					{label:'Default',	value:'default'}

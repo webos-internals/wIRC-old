@@ -13,6 +13,9 @@ function ServerStatusAssistant(server, popped)
 	this.sendButtonElement =		false;
 	
 	this.autoScroll =				true;
+    
+    this.timestamp = 0;
+    this.timestamp_s = "";
 	
 	this.listModel =
 	{
@@ -187,45 +190,15 @@ ServerStatusAssistant.prototype.updateList = function(initial)
 }
 ServerStatusAssistant.prototype.getDivider = function(item)
 {
-	var string = "";
-	
-	var pm = false;
-	if (item.date.getHours() > 12) pm = true;
-	
-	if (!pm)
-	{
-		if (item.date.getHours() < 1) string += '12';
-		if (item.date.getHours() > 0) string += item.date.getHours();
-		string += ':';
-		var mins = item.date.getMinutes();
-		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
-		{
-			mins = 0;
-		}
-		else
-		{
-			if ((mins%prefs.get().timeStamp) > 0) mins = mins - (mins%prefs.get().timeStamp);
-		}
-		if (mins < 10) string += '0'
-		string += mins + ' AM';
-	}
-	else
-	{
-		string += (item.date.getHours() - 12) + ':';
-		var mins = item.date.getMinutes();
-		if (prefs.get().timeStamp == 60 || prefs.get().timeStamp == 0)
-		{
-			mins = 0;
-		}
-		else
-		{
-			if ((mins%prefs.get().timeStamp) > 0) mins = mins - (mins%prefs.get().timeStamp);
-		}
-		if (mins < 10) string += '0'
-		string += mins + ' PM';
-	}
-	
-	return string;
+	var timestamp = Math.round(item.date.getTime() / 1000.0);
+    if (timestamp - this.timestamp > prefs.get().timeStamp * 60) {
+        this.timestamp = timestamp;
+        this.timestamp_s = Mojo.Format.formatDate(item.date, {
+            time: prefs.get().timeStampStyle
+        });
+    }
+    
+    return this.timestamp_s;
 }
 
 ServerStatusAssistant.prototype.startAutoFocus = function()
