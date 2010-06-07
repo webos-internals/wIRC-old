@@ -210,7 +210,7 @@ body.palm-dark .prefs .page-selector
 
 .server-list .palm-list .palm-row-wrapper .button
 {
-	background-image: url(../images/list-button-blank.png);
+	background-image: url(../images/palm-default/list-button-blank.png);
 	float: right;
 	width: 48px;
 	height: 49px;
@@ -271,6 +271,40 @@ body.palm-dark .prefs .page-selector
 	display: inline;
 }
 
+/*
+body.palm-dark .server-list .palm-list .palm-row-wrapper .button
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper .button.prefs
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper.connected .button.status
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper.disconnected .button.status
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper.warning .button.status
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper.error .button.status
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper.error2 .button.status
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+body.palm-dark .server-list .palm-list .palm-row-wrapper.unknown .button.status
+{
+	background-image: url(../images/palm-dark/list-button-blank.png);
+}
+*/
 
 
 /*
@@ -726,11 +760,17 @@ body.palm-dark .inputFooter #inputWidget *
 	margin: 0px;
 	right: 2px;
 	bottom: 2px;
-	background: url(../images/send-airplane-press.png) top left no-repeat;	
-	background: url(../images/send-airplane.png) top left no-repeat;
+	background: url(../images/palm-default/send-airplane-press.png) top left no-repeat;	
+	background: url(../images/palm-default/send-airplane.png) top left no-repeat;
+}
+body.palm-dark .inputFooter .sendButton {
+	background: url(../images/palm-dark/send-airplane.png) top left no-repeat;
 }
 .inputFooter .sendButton.selected {
-	background: url(../images/send-airplane-press.png) top left no-repeat;	
+	background: url(../images/palm-default/send-airplane-press.png) top left no-repeat;	
+}
+body.palm-dark .inputFooter .sendButton.selected {
+	background: url(../images/palm-default/send-airplane-press.png) top left no-repeat;	
 }
 
 
