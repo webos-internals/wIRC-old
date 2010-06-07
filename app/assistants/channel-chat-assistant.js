@@ -409,6 +409,10 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
         label: "Server",
         items: serverItems
     });
+	this.menuModel.items.push({
+		label: "Help",
+		command: 'do-help'
+	})
     
     if (!skipUpdate) {
         this.controller.modelChanged(this.menuModel);
@@ -422,6 +426,9 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
         if (event.command.substring(0,3) == 'do-') {
 			
             switch (event.command) {
+				case 'do-help':
+					this.controller.stageController.pushAppSupportInfoScene();
+					break;
                 case 'do-away':
                     if (!this.channel.server.isAway) {
                         SingleLineCommandDialog.pop(this, {

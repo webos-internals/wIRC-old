@@ -36,8 +36,9 @@ function QueryChatAssistant(query)
 		visible: true,
 		items: []
 	}
-	this.menuModel.items.push({ label: 'Preferences',	command: 'do-prefs' });
-	this.menuModel.items.push({ label: 'Clear Backlog',	command: 'clear-backlog' });
+	this.menuModel.items.push({ label: 'Global Preferences', command: 'do-prefs'});
+	this.menuModel.items.push({ label: 'Clear Backlog',	command: 'clear-backlog'});
+	this.menuModel.items.push({ label: 'Help', command: 'do-help'})
 }
 
 QueryChatAssistant.prototype.setup = function()
@@ -293,6 +294,10 @@ QueryChatAssistant.prototype.handleCommand = function(event)
 	{
 		switch (event.command)
 		{
+			case 'do-help':
+				this.controller.stageController.pushAppSupportInfoScene();
+				break;
+				
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences-general');
 				break;
