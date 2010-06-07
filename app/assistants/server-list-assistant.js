@@ -758,6 +758,17 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 		case '376':		// ENDOFMOTD
 			servers.servers[id].updateStatusList();
 			break;
+
+		case '404':
+			var tmpChan = servers.servers[id].getChannel(params[2]);
+			if (tmpChan)
+			{
+				if (tmpChan.containsNick(servers.servers[id].nick))
+					tmpChan.newMessage('type2', false, params[3]);
+			}
+			else
+				servers.servers[id].newMessage('type2', false, params[3]);
+			break;
 					
 		case '433':		// NAMEINUSE
 			servers.servers[id].newMessage('debug', false, params[1] + " : " + params[2]);
