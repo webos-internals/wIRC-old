@@ -27,14 +27,22 @@ function AppAssistant() {
   pdkObject.width=0;
   pdkObject.height=0;
   pdkObject['x-palm-pass-event']=false;
-  var param = window.document.createElement("param");
-  param.name="appid";
-  param.value="org.webosinternals.wirc";
+  var param1 = window.document.createElement("param");
+  param1.name="appid";
+  param1.value="org.webosinternals.wirc";
   var param2 = window.document.createElement("param");
   param2.name = "exe";
   param2.value="wirc";
-  pdkObject.appendChild(param);
+  var param3 = window.document.createElement("param");
+  param3.name = "Param1"; // MAX_SERVERS
+  param3.value="20";
+  var param4 = window.document.createElement("param");
+  param4.name = "Param2"; // AUTOPING_TIMEOUT
+  param4.value="10";
+  pdkObject.appendChild(param1);
   pdkObject.appendChild(param2);
+  pdkObject.appendChild(param3);
+  pdkObject.appendChild(param4);
   df = window.document.createDocumentFragment();
   df.appendChild(pdkObject);
 }

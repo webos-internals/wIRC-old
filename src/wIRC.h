@@ -41,7 +41,6 @@ typedef pthread_mutex_t port_mutex_t;
 #include <PDL.h>
 #include <libircclient.h>
 
-#define MAX_SERVERS 20
 #define DEFAULT_MAX_RETRIES 10
 #define DEFAULT_PRE_RUN_USLEEP 0
 #define DEFAULT_DEBUG_LEVEL 0
@@ -49,6 +48,8 @@ typedef pthread_mutex_t port_mutex_t;
 int debug;
 int max_retries;
 int pre_run_usleep;
+int max_connections;
+int autoping_timeout;
 
 typedef enum {
 	event_connect_,				// 0
@@ -96,7 +97,7 @@ typedef struct {
 	struct timeb 	ping;
 } wIRCd_client_t;
 
-wIRCd_client_t servers[MAX_SERVERS];
+wIRCd_client_t *servers;
 
 int plugin_client_init();
 void plugin_start();

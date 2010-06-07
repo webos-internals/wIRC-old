@@ -18,12 +18,15 @@
 
 #include "wIRC.h"
 
-void cleanup() {
+void cleanup(int sig) {
+	syslog(LOG_INFO, "Cleanup caused by: %d", sig);
+	if (servers) free(servers);
+	closelog();
 	PDL_Quit();
 }
 
 void sighandler(int sig) {
-	cleanup();
+	cleanup(sig);
 	exit(0);
 }
 
@@ -32,8 +35,15 @@ int main(int argc, char *argv[]) {
 	signal(SIGINT, sighandler);
 	signal(SIGTERM, sighandler);
 	signal(SIGQUIT, sighandler);
+	signal(SIGHUP, sighandler);
+	signal(SIGKILL, sighandler);
 
 	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
+
+	max_connections = *argv[1];
+	autoping_timeout = *argv[2];
+
+	servers = malloc(sizeof(wIRCd_client_t)*max_connections);
 
 	max_retries = DEFAULT_MAX_RETRIES;
 	pre_run_usleep = DEFAULT_PRE_RUN_USLEEP;
@@ -47,9 +57,7 @@ int main(int argc, char *argv[]) {
     	syslog(LOG_ERR, "JS handler registration failed: %d", ret);
     }
 
-    closelog();
-
-    cleanup();
+    cleanup(-1);
 
 	return 0;
 

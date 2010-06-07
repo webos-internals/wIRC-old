@@ -26,7 +26,7 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 PDL_Err plugin_initialize() {
 
 	int i = 0;
-	for (;i<MAX_SERVERS;i++) {
+	for (;i<max_connections;i++) {
 		servers[i].id = -1;
 	}
 
@@ -44,11 +44,10 @@ PDL_Err plugin_initialize() {
 }
 
 void plugin_start() {
-	pthread_mutex_lock(&plugin_mutex);
-	while (isPlugin) {
-		pthread_cond_wait(&cond, &plugin_mutex);
-	}
-	pthread_mutex_unlock(&plugin_mutex);
+	SDL_Event Event;
+	do {
+		SDL_WaitEvent(&Event);
+	} while (Event.type != SDL_QUIT);
 }
 
 void plugin_stop() {
