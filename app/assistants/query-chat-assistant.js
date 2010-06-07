@@ -126,8 +126,7 @@ QueryChatAssistant.prototype.loadPrefs = function(initial)
 }
 QueryChatAssistant.prototype.activate = function(event)
 {
-	if (prefs.get().blockScreenTimeout)
-		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
+	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
 	this.updateLagMeter();
 	this.loadPrefs();
 	if (this.alreadyActivated)

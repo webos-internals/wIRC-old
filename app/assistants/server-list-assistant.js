@@ -149,8 +149,7 @@ ServerListAssistant.prototype.checkPlugin = function()
 
 ServerListAssistant.prototype.activate = function(event)
 {
-	if (prefs.get().blockScreenTimeout)
-		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
+	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
 	this.checkPlugin();
 	
 	if (this.alreadyActivated)
