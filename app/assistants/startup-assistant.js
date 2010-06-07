@@ -19,6 +19,13 @@ function StartupAssistant()
 		}
 	];
 	
+	// random continue button message
+	this.randomContinue = 
+	[
+		{weight: 30, text: $L("Ok, I've read this. Let's continue ...")},
+		{weight: 10, text: $L("Yeah, Yeah, Whatever ...")}
+	];
+	
     // setup menu
     this.menuModel =
 	{
@@ -36,7 +43,7 @@ function StartupAssistant()
 	    [
 		    {},
 		    {
-				label: $L("Ok, I've read this. Let's continue ..."),
+				label: this.getRandomContinueMessage(),
 				command: 'do-continue'
 		    },
 		    {}
@@ -98,6 +105,35 @@ StartupAssistant.prototype.setup = function()
     // set this scene's default transition
     this.controller.setDefaultTransition(Mojo.Transition.zoomFade);
 };
+
+StartupAssistant.prototype.getRandomContinueMessage = function()
+{
+	// loop to get total weight value
+	var weight = 0;
+	for (var r = 0; r < this.randomContinue.length; r++)
+	{
+		weight += this.randomContinue[r].weight;
+	}
+	
+	// random weighted value
+	var rand = Math.floor(Math.random() * weight);
+	
+	// loop through to find the random title
+	for (var r = 0; r < this.randomContinue.length; r++)
+	{
+		if (rand <= this.randomContinue[r].weight)
+		{
+			return this.randomContinue[r].text;
+		}
+		else
+		{
+			rand -= this.randomContinue[r].weight;
+		}
+	}
+	
+	// if no random title was found (for whatever reason, wtf?) return first and best subtitle
+	return this.randomContinue[0].text;
+}
 
 StartupAssistant.prototype.activate = function(event)
 {
