@@ -152,6 +152,10 @@ ircServer.prototype.newCommand = function(message)
 					this.joinChannel(vals[0],vals[1]);
 					break;
 				
+				case 'authserv':
+					this.newCommand('/msg AuthServ ' + val);
+					break;
+				
 				case 'ns':
 					this.newCommand('/msg NickServ ' + val);
 					break;
