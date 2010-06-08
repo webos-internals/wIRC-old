@@ -238,6 +238,34 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	this.controller.document.body.className = event.value;
 	this.listChanged();
 	
+	switch (this.prefs.theme)
+	{
+		case 'palm-default':
+			this.prefs.colorNotice =		'orangered';
+			this.prefs.colorAction =		'firebrick';
+			this.prefs.colorStatus =		'mediumpurple';
+			this.prefs.colorText =			'black';
+			this.prefs.colorMarker =		'red';
+			this.prefs.colorHighlightFG =	'black';
+			this.prefs.colorHighlightBG =	'lightpink';
+			this.prefs.colorOwnNick =		'black';
+			this.prefs.colorOtherNicks =	'green';
+			break;
+			
+		case 'palm-dark':
+			this.prefs.colorNotice =		'orangered';
+			this.prefs.colorAction =		'firebrick';
+			this.prefs.colorStatus =		'mediumpurple';
+			this.prefs.colorText =			'black';
+			this.prefs.colorMarker =		'red';
+			this.prefs.colorHighlightFG =	'black';
+			this.prefs.colorHighlightBG =	'lightpink';
+			this.prefs.colorOwnNick =		'black';
+			this.prefs.colorOtherNicks =	'green';
+			break;
+	}
+	this.cookie.put(this.prefs);
+	
 	// set theme on all other open stages
 	Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 }
