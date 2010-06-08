@@ -574,6 +574,7 @@ ircServer.prototype.listEnd = function()
 
 ircServer.prototype.getOrCreateChannel = function(name, key)
 {
+	name = this.formatChannelName(name);
 	var tmpChan = this.getChannel(name);
 	if (!tmpChan)
 	{
@@ -590,6 +591,7 @@ ircServer.prototype.getOrCreateChannel = function(name, key)
 }
 ircServer.prototype.joinChannel = function(name, key)
 {
+	name = this.formatChannelName(name);
 	var tmpChan = this.getOrCreateChannel(name, key);
 	if (!tmpChan.containsNick(this.nick))
 	{
@@ -598,11 +600,19 @@ ircServer.prototype.joinChannel = function(name, key)
 	}
 }
 
+ircServer.prototype.formatChannelName = function(name)
+{
+	if (name.substr(0, 1) == '#')
+		return name;
+	else if (name.match(channelRegExp) != null)
+		return '#'+name;
+	else
+		return name;
+}
 ircServer.prototype.getChannel = function(name)
 {
-	if (name.substr(0, 1) != '#')
-		return false;
-	else if (this.channels.length < 1)
+	name = this.formatChannelName(name);
+	if (this.channels.length < 1)
 		return false;
 	for (var c = 0; c < this.channels.length; c++)
 	{
