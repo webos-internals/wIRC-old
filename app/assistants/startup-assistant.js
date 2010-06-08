@@ -32,6 +32,10 @@ function StartupAssistant()
 	    visible: true,
 	    items:
 	    [
+			{
+				label: "Help",
+				command: 'do-help'
+			}
 	     ]
 	};
 	
@@ -157,7 +161,11 @@ StartupAssistant.prototype.handleCommand = function(event)
 				else
 					this.controller.stageController.swapScene({name: 'server-list', transition: Mojo.Transition.crossFade});
 			
-				break;			
+				break;
+				
+			case 'do-help':
+				this.controller.stageController.pushScene('help');
+				break;		
 		}
 	}
 };

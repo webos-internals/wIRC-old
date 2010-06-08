@@ -392,6 +392,12 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			items: channelItems
 		});
 		
+		
+		this.menuModel.items.push({
+			label: "Help",
+			command: 'do-help'
+		});
+		
 		if (!skipUpdate) {
 			this.controller.modelChanged(this.menuModel);
 		}
@@ -505,6 +511,10 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 					this.listModel.items = [];
 					this.messageListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
 					this.messageListElement.mojo.setLength(0);
+					break;
+
+				case 'do-help':
+					this.controller.stageController.pushScene('help');
 					break;
 			}
 		}

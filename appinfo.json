@@ -9,32 +9,7 @@
 	"plug-ins" : true,
 	"main" : "index.html",
 	"icon" : "icon.png",
-	"smallicon": "icon-32.png",
 	"noWindow" : true,
 	"noDeprecatedStyles" : true,
-	"keywords" : [ "IRC" ],
-	"support": {
-    	"url": "http://git.webos-internals.org/trac/wIRC",
-    	"email": {
-        	"address": "rmh3093+wirc@gmail.com",
-        	"subject": "wIRC Support"
-		},
-		"resources": [
-			{
-    			"type": "scene",
-    			"label": "Help Topics",
-    			"sceneName": "topics"
-    		},
-			{
-				"type": "web",
-        		"label": "Bug Reports",
-        		"url": "http://git.webos-internals.org/trac/wIRC/report/3"
-			},
-			{
-				"type": "web",
-        		"label": "webOS-Internals Wiki",
-        		"url": "http://www.webos-internals.org/wiki/Application:WIRC"
-			}
-		]
-	}
+	"keywords" : [ "IRC" ]
 }

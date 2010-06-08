@@ -304,6 +304,18 @@ IdentityAssistant.prototype.nickListSave = function()
 	this.validateIdentity();
 }
 
+IdentityAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type == Mojo.Event.command)
+	{
+		switch (event.command)
+		{
+			case 'do-help':
+				this.controller.stageController.pushScene('help');
+				break;
+		}
+	}
+}
 
 IdentityAssistant.prototype.deactivate = function(event)
 {

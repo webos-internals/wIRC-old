@@ -25,6 +25,10 @@ function ChannelUsersAssistant(channel)
 			{
 				label: "Preferences",
 				command: 'do-prefs'
+			},
+			{
+				label: "Help",
+				command: 'do-help'
 			}
 		]
 	}
@@ -211,6 +215,10 @@ ChannelUsersAssistant.prototype.handleCommand = function(event)
 	{
 		switch (event.command)
 		{
+			case 'do-help':
+				this.controller.stageController.pushScene('help');
+				break;
+				
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences-general');
 				break;

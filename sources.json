@@ -39,6 +39,10 @@
         "source": "app/assistants/server-status-assistant.js"
     },
     {
+        "scenes": "help",
+        "source": "app/assistants/help-assistant.js"
+    },
+    {
         "scenes": "startup",
         "source": "app/assistants/startup-assistant.js"
     },
@@ -53,10 +57,6 @@
     {
         "scenes": "preferences-notifications",
         "source": "app/assistants/preferences-notifications-assistant.js"
-    },
-    {
-        "scenes": "about",
-        "source": "app/assistants/about-assistant.js"
     },
     {
         "scenes": "identity",

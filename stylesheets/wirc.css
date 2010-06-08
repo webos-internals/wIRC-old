@@ -335,55 +335,6 @@ body.palm-dark .server-list .palm-list .palm-row-wrapper.unknown .button.status
 
 
 /*
- * About scene
- */
-.about
-{
-	font-size: 12px;
-	text-align: center;
-	margin: auto;
-}
-.about .logo-block
-{
-	vertical-align: top;
-	text-align: center;
-	margin: auto;
-	margin-top: 8px;
-	width: 160px;
-	padding: 4px;
-	border-style: inset;
-	border-width: 5px;
-}
-.about .logo-block .logo
-{
-	height: 128px;
-	background: url(../images/no-servers.png) center top no-repeat;
-}
-.about .logo-block .versions
-{
-	display: inline;
-}
-.about .by
-{
-	margin-bottom: 6px;
-}
-.about .dev
-{
-	margin-top: 2px;
-}
-.about .dev-list
-{
-	margin: auto;
-	margin-top: 32px;
-}
-.about .dev-name
-{
-	font-weight: bold;
-}
-
-
-
-/*
  * Form Styles - Scene Inspecific
  */
 .form .palm-row-wrapper .label.left
@@ -899,6 +850,45 @@ table.date-row.palm-divider.labeled tr td.right
 {
 	width: 10px;
 	background: url(../images/date-stamp-line.png) left center no-repeat;
+}
+
+
+/*
+ * Help Scene Styles
+ */
+.help .list_scene
+{
+	position:relative;
+	left:48px;
+	top:10px;
+	width:32px; 
+	height:32px;
+	vertical-align:bottom;
+	padding: 0px 0px 0px 5px;
+	float:left;
+}
+.help .img_web
+{
+	position:relative;
+	left:8px;
+	top:10px;
+	width:32px; 
+	height:32px;
+	background: url(../images/help/application-web.png) no-repeat  bottom;
+	padding: 0px 0px 0px 5px;
+	float:left;
+}
+.help .img_email
+{
+	position:relative;
+	left:8px;
+	top:10px;
+	width:32px; 
+	height:32px;
+	background: url(../images/help/application-email.png) no-repeat bottom;
+	vertical-align:bottom;
+	padding: 0px 0px 0px 5px;
+	float:left;
 }
 
 

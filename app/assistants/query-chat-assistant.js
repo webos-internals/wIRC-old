@@ -295,7 +295,7 @@ QueryChatAssistant.prototype.handleCommand = function(event)
 		switch (event.command)
 		{
 			case 'do-help':
-				this.controller.stageController.pushAppSupportInfoScene();
+				this.controller.stageController.pushScene('help');
 				break;
 				
 			case 'do-prefs':
