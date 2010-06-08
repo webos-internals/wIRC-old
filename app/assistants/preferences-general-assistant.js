@@ -260,7 +260,7 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 			this.prefs.colorMarker =		'red';
 			this.prefs.colorHighlightFG =	'black';
 			this.prefs.colorHighlightBG =	'lightpink';
-			this.prefs.colorOwnNick =		'black';
+			this.prefs.colorOwnNick =		'white';
 			this.prefs.colorOtherNicks =	'green';
 			break;
 	}
