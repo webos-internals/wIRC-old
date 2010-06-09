@@ -22,23 +22,6 @@ install:
 
 clean: clean-plugin clean-package
 
-$(APPINFO):
-	@echo -e '{' > $@
-	@echo -e '\t"title" : "$(TITLE)",' >> $@
-	@echo -e '\t"id" : "$(ID)",' >> $@
-	@echo -e '\t"version" : "$(VERSION)",' >> $@
-	@echo -e '\t"vendor" : "$(VENDOR)",' >> $@
-	@echo -e '\t"vendor_email" : "$(VENDOR_EMAIL)",' >> $@
-	@echo -e '\t"vendor_url" : "$(VENDOR_URL)",' >> $@
-	@cat appinfo.static.json >> $@
-	@echo -e '}' >> $@
-
-$(PLUGIN)_plugin_$(APPINFO):
-	@echo -e '{' > $@
-	@echo -e '\t"type" : "game",' >> $@
-	@echo -e '\t"requiredMemory" : "$(MEM_USAGE)",' >> $@
-	@echo -e '}' >> $@
-	
 pre: clean
 	${MAKE} DEVICE="pre" build-package
 	

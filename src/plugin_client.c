@@ -193,10 +193,10 @@ PDL_bool client_send_raw(PDL_JSParameters *params) {
 	return irc_send_raw(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
 }
 
-PDL_bool client_get_version(PDL_JSParameters *params) {
-
-	return PDL_JSReply(params, VERSION);
-
+PDL_bool client_get_uid(PDL_JSParameters *params) {
+	char uid[64];
+	PDL_GetUniqueID(uid,64);
+	return PDL_JSReply(params, uid);
 }
 
 int plugin_client_init() {
@@ -305,8 +305,8 @@ int plugin_client_init() {
 	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
 	ret +=tmp;
 
-	name = "get_version";
-	tmp = PDL_RegisterJSHandler(name, client_get_version);
+	name = "get_uid";
+	tmp = PDL_RegisterJSHandler(name, client_get_uid);
 	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
 	ret +=tmp;
 

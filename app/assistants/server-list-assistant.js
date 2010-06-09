@@ -53,19 +53,13 @@ ServerListAssistant.prototype.tryPlugin = function()
 {
 	try
 	{
-		plugin.get_version();
+		plugin.get_uid();
 		pluginReady = true;
 		this.checkPlugin();
 	}
 	catch (e)
 	{
 		this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
-	}
-	finally
-	{
-		//Mojo.Log.info("#######################################################");
-		//Mojo.Log.info("PluginReady: ", pluginReady);
-		//Mojo.Log.info("#######################################################");
 	}
 }
 

@@ -10,12 +10,7 @@ CC			:=	"/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc"
 
 else 
 
-CFLAGS		:=	$(MARCH_TUNE) \
-				-DID=\"${ID}\" \
-				-DVERSION=\"${VERSION}\" \
-				-DVENDOR=\"${VENDOR}\" \
-				-DVENDOR_EMAIL=\"${VENDOR_EMAIL}\" \
-				-DVENDOR_URL=\"${VENDOR_URL}\"
+CFLAGS		:=	$(MARCH_TUNE)
 
 INCLUDES	:=	-I${ROOT}/include \
 				-I${ROOT}${prefix}/include \
