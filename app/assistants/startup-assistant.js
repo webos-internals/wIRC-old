@@ -9,12 +9,100 @@ function StartupAssistant()
     this.newMessages =
 	[
 		{
-			version: '0.0.0',
+			version: '0.3.0',
 			log:
 			[
-				'Log Item 1',
-				'Log Item 2',
-				'Log Item 3'
+				'No more service, Now a hybrid app (plugin/mojo), and all the changes that went along with that',
+				'Tossing the main stage will now kill the entire app, including all child stages, and any connections to servers',
+				'Changed how notice events and /msg commands are displayed',
+				'/ns aliased to /msg NickServ',
+				'/authserv aliased to /msg AuthServ',
+				'Fixed /topic command bug',
+				'Now handles numeric 404 event',
+				'Added option to stop the screen from dimming',
+				'Better random colors, they now are changed based on theme',
+				'Added option to turn off join/part/quit/mode event messages',
+				'Changing the theme resets message color options to be visible on the current theme',
+				'Changes to app-menus on most scenes',
+				'Favorite channels support',
+				'Added this scene right here',
+				'Relaunch bugfix',
+				'More palm-dark theme updates',
+				'Fixed bug in timestamps',
+				'Added format options for timestamps',
+				'Added standard help scene',
+				'Removed old about scene',
+				'Auto-prepend # to channel names if they\'re forgotten on /join',
+				'Fixed bug stoping you from joining channels that didn\'t start with #'
+			]
+		},
+		{
+			version: '0.2.4',
+			log:
+			[
+				'Merged Service and GUI to one package'
+			]
+		},
+		{
+			version: '0.1.0',
+			log:
+			[
+				'Timestamp with Display Options',
+				'Lag Meter with Options',
+				'Clear Backlog Option',
+				'Numerous new event handlers (particularly kick/join)',
+				'Added /notice Support',
+				'Alert word improvements',
+				'Split Preferences Scene',
+				'Better disconnect/reconnect handling',
+				'Numerous UI improvements (Updated css, new and updated icons, etc)',
+				'Better network indicators',
+				'Saves the realServer (for instances where irc.xyzserver.com connects you to other.xyzserver.com)',
+				'QuakeNet and DALnet added to pre-defined servers.',
+				'Minor rewrite',
+				'Fixed away/back in channel chat',
+				'Theme changes affect all open wIRC cards',
+				'Fixed Missing topic change notice when in a channel',
+				'Fixed "Connected!" issue',
+				'Max retries now functions properly',
+				'Fixed occassional app close bug',
+				'Better error handling',
+				'Fixed broken notices',
+				'Fixed disconnecting',
+				'Removed manual /ping support'
+			]
+		},
+		{
+			version: '0.0.4',
+			log:
+			[
+				'/whois Support',
+				'/list Support',
+				'/raw and /queue Support',
+				'Fixed multiple-spaces in a row problem',
+				'Random colors toggle',
+				'Split highlight Foreground/Background',
+				'Dynamic resizing fixed-width message style (drag your finger across the screen)',
+				'Lots of changes to server-info scene',
+				'Fixed sending keys with /join commands',
+				'Added connect button to not-connected server-status scene',
+				'Nicklist dropdown in server info from identity scene',
+				'Added Preconfigured Servers scene, and some initial networks',
+				'Made identity scene the first scene on initial run',
+				'Options about how to handle channel invites',
+				'Channel invite dashboard notification to accept or decline',
+				'New, Awesome nick list',
+				'Added away/back menu option',
+				'Changed when channel stages are popped',
+				'Removed Mojo.Format.runTextIndexer',
+				'Fixed channel header tap topic bug'
+			]
+		},
+		{
+			version: '0.0.3',
+			log:
+			[
+				'Initial Public Beta Release'
 			]
 		}
 	];
