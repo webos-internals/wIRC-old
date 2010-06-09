@@ -326,6 +326,7 @@ ServerListAssistant.prototype.cleanup = function(event)
 
 ServerListAssistant.prototype.event_connect_handler = function(id, event, origin, params_s, ip)
 {
+	Mojo.Controller.getAppController().playSoundNotification("notifications", "sounds/sound106.wav", 4000);
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
 	
