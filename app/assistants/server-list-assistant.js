@@ -742,7 +742,7 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 							prefixNick = nicks[i].substr(0, 1);
 							onlyNick = nicks[i].substr(1);
 						}
-								
+						
 						tmpNick = servers.servers[id].getNick(onlyNick);
 						if (tmpNick)
 							tmpNick.addChannel(tmpChan, ircNick.getPrefixMode(prefixNick));
