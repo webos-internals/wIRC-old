@@ -21,6 +21,7 @@ function StartupAssistant()
 				'Now handles numeric 404 event',
 				'Added option to stop the screen from dimming',
 				'Better random colors, they now are changed based on theme',
+				'Added option to turn off join/part/quit/mode event messages',
 				'Changing the theme resets message color options to be visible on the current theme',
 				'Changes to app-menus on most scenes',
 				'Favorite channels support',
