@@ -136,6 +136,12 @@ ircServer.prototype.newCommand = function(message)
 {
 	if (this.state>this.STATE_DISCONNECTED)
 	{
+		
+		cmdHistoryIndex = 0;
+		cmdHistory.push(message);
+		if (cmdHistory.length>cmdHistoryMax)
+			cmdHistory.pop();
+		
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{

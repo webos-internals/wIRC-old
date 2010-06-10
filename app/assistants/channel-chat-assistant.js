@@ -316,22 +316,19 @@ ChannelChatAssistant.prototype.keyHandler = function(event){
             this.action = false;
         }
     
-	if (this.action && event.type == 'keyup' && isCmdDown) {
-		if (this.channel.cmdHistory) {
-			this.channel.cmdHistoryIndex++;
-			if (this.channel.cmdHistoryIndex>this.channel.cmdHistory.length-1)
-				this.channel.cmdHistoryIndex = 0;
-			this.inputWidgetElement.mojo.setValue(this.channel.cmdHistory[this.channel.cmdHistoryIndex]);	
-		}
+	if (this.action && event.type == 'keyup' && isCmdDown && cmdHistory.length>0) {
+		cmdHistoryIndex++;
+		if (cmdHistoryIndex>cmdHistory.length-1)
+			cmdHistoryIndex = 0;
+		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);	
 	}	
-	else if (this.action && event.type == 'keyup' && isCmdUp) {
-		if (this.channel.cmdHistory) {
-			this.channel.cmdHistoryIndex--;
-			if (this.channel.cmdHistoryIndex < 0) 
-				this.channel.cmdHistoryIndex = this.channel.cmdHistory.length-1;
-			this.inputWidgetElement.mojo.setValue(this.channel.cmdHistory[this.channel.cmdHistoryIndex]);
-		}
+	else if (this.action && event.type == 'keyup' && isCmdUp && cmdHistory.length>0) {
+		cmdHistoryIndex--;
+		if (cmdHistoryIndex < 0) 
+			cmdHistoryIndex = cmdHistory.length-1;
+		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
 	}
+	
     else if (this.action && event.type === 'keyup' && isTabKey) {
         if (!this.tabText) {
             var tmpText = event.target.value.match(/^(.*)[\s]{1}(.*)$/);

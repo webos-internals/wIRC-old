@@ -15,6 +15,8 @@ function QueryChatAssistant(query)
 	this.isVisible = 				false;
 	this.lastFocusMarker =			false;
 	this.lastFocusMessage =			false;
+
+	this.action =					false;
     
     this.timestamp = 0;
     this.timestamp_s = "";
@@ -58,6 +60,10 @@ QueryChatAssistant.prototype.setup = function()
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
+		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
+		
+		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
+        Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
 		
 		this.scrollHandler =			this.onScrollStarted.bindAsEventListener(this);
 		this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
@@ -146,6 +152,35 @@ QueryChatAssistant.prototype.activate = function(event)
 	this.revealBottom();
 	this.inputWidgetElement.mojo.focus();
 }
+
+QueryChatAssistant.prototype.keyHandler = function(event){
+	
+    var isActionKey = (event.keyCode === Mojo.Char.metaKey);
+	var isCmdUp = (event.keyCode === Mojo.Char.q);
+	var isCmdDown = (event.keyCode === Mojo.Char.a);
+    
+    if (event.type === 'keydown' && isActionKey) {
+        this.action = true;
+    }
+    else if (event.type === 'keyup' && isActionKey) {
+		this.action = false;
+	}
+    
+	if (this.action && event.type == 'keyup' && isCmdDown && cmdHistory.length>0) {
+		cmdHistoryIndex++;
+		if (cmdHistoryIndex>cmdHistory.length-1)
+			cmdHistoryIndex = 0;
+		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);	
+	}	
+	else if (this.action && event.type == 'keyup' && isCmdUp && cmdHistory.length>0) {
+		cmdHistoryIndex--;
+		if (cmdHistoryIndex < 0) 
+			cmdHistoryIndex = cmdHistory.length-1;
+		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+	}
+	
+}
+
 QueryChatAssistant.prototype.updateList = function(initial)
 {
 	try

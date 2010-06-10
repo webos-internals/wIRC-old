@@ -11,6 +11,11 @@ var vers =  new versionCookie();
 // holds the servers
 var servers = new ircServers();
 
+// Command History
+var cmdHistory = [];
+var cmdHistoryIndex = 0;
+var cmdHistoryMax = 30;
+
 // the plugin
 var plugin = null;
 

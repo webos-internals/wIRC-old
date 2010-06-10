@@ -12,6 +12,8 @@ function ServerStatusAssistant(server, popped)
 	this.inputElement =				false;
 	this.sendButtonElement =		false;
 	
+	this.action = 					false;
+	
 	this.autoScroll =				true;
     
     this.timestamp = 0;
@@ -63,7 +65,11 @@ ServerStatusAssistant.prototype.setup = function()
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
 		this.inputElementLoseFocus =	this.inputFocus.bind(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
+		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
 		
+		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
+        Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
+
 		Mojo.Event.listen(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
 		
 		this.titleElement.update((this.server.alias?this.server.alias:this.server.address));
@@ -151,6 +157,35 @@ ServerStatusAssistant.prototype.activate = function(event)
 	this.alreadyActivated = true;
 	this.revealBottom();
 }
+
+ServerStatusAssistant.prototype.keyHandler = function(event){
+	
+    var isActionKey = (event.keyCode === Mojo.Char.metaKey);
+	var isCmdUp = (event.keyCode === Mojo.Char.q);
+	var isCmdDown = (event.keyCode === Mojo.Char.a);
+    
+    if (event.type === 'keydown' && isActionKey) {
+        this.action = true;
+    }
+    else if (event.type === 'keyup' && isActionKey) {
+		this.action = false;
+	}
+    
+	if (this.action && event.type == 'keyup' && isCmdDown && cmdHistory.length>0) {
+		cmdHistoryIndex++;
+		if (cmdHistoryIndex>cmdHistory.length-1)
+			cmdHistoryIndex = 0;
+		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);	
+	}	
+	else if (this.action && event.type == 'keyup' && isCmdUp && cmdHistory.length>0) {
+		cmdHistoryIndex--;
+		if (cmdHistoryIndex < 0) 
+			cmdHistoryIndex = cmdHistory.length-1;
+		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+	}
+	
+}
+
 ServerStatusAssistant.prototype.updateList = function(initial)
 {
 	try
