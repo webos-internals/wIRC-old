@@ -57,7 +57,6 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
-		this.integerFieldChangeHandler = this.integerFieldChanged.bindAsEventListener(this);
 		
 		this.lagMeterChangedHandler = this.lagMeterChanged.bindAsEventListener(this);
 		this.autoPingIntervalChangedHandler = this.autoPingIntervalChanged.bindAsEventListener(this);
@@ -80,18 +79,30 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			this.prefs
 		);
 		
+
+
 		this.controller.setupWidget
 		(
 			'cmdHistoryMax',
 			{
-	  			multiline: false,
-            	enterSubmits: true,
-				autoFocus: false,
-				charsAllow: allowIntegers,
-				modelProperty: 'cmdHistoryMax',
+				label: 'Max Command History',
+				choices:
+				[
+					{label:'10',    value:10},
+					{label:'15',    value:15},
+					{label:'20',   	value:20},
+					{label:'25',   	value:25},
+					{label:'30',   	value:30},
+					{label:'35',   	value:35},
+					{label:'40',   	value:40},
+					{label:'45',   	value:45},
+					{label:'50',   	value:50},
+				],
+				modelProperty: 'cmdHistoryMax'
 			},
-			{cmdHistoryMax: this.prefs.cmdHistoryMax}
+			this.prefs
 		);
+		this.controller.listen('cmdHistoryMax', Mojo.Event.propertyChange, this.listChangedHandler);
 		
 		this.controller.setupWidget
 		(
@@ -124,7 +135,6 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 		this.controller.listen('blockScreenTimeout', Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('dimScreen',	Mojo.Event.propertyChange, this.toggleChangeHandler);
-		this.controller.listen('cmdHistoryMax', Mojo.Event.propertyChange, this.integerFieldChangeHandler);
 		
 		// Server Status Group
 		this.controller.setupWidget
@@ -149,15 +159,24 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		(
 			'connectionTimeout',
 			{
-	  			multiline: false,
-            	enterSubmits: true,
-				autoFocus: false,
-				charsAllow: allowIntegers,
-				modelProperty: 'connectionTimeout',
+				label: 'Connection Timeout',
+				choices:
+				[
+					{label:'10s',   value:10},
+					{label:'15s',   value:15},
+					{label:'20s',  	value:20},
+					{label:'25s',  	value:25},
+					{label:'30s',  	value:30},
+					{label:'35s',  	value:35},
+					{label:'40s',  	value:40},
+					{label:'45s',	value:45},
+					{label:'50s',  	value:50},
+				],
+				modelProperty: 'connectionTimeout'
 			},
-			{connectionTimeout: this.prefs.connectionTimeout}
+			this.prefs
 		);
-		this.controller.listen('connectionTimeout',	Mojo.Event.propertyChange, this.integerFieldChangeHandler);
+		this.controller.listen('connectionTimeout',	Mojo.Event.propertyChange, this.listChangedHandler);
 		
 		this.controller.setupWidget
 		(
@@ -177,12 +196,20 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		(
 			'autoPingInterval',
 			{
-	  			multiline: false,
-            	enterSubmits: true,
-				autoFocus: false,
-				charsAllow: allowIntegers,
+				label: 'Auto-Ping Interval',
+				choices:
+				[
+					{label:'1s',    value:1},
+					{label:'5s',    value:5},
+					{label:'10s',   value:15},
+					{label:'15s',   value:15},
+					{label:'20s',   value:20},
+					{label:'25s',   value:25},
+					{label:'30s',   value:30}
+				],
+				modelProperty: 'autoPingInterval'
 			},
-			{autoPingInterval: this.prefs.autoPingInterval}
+			this.prefs
 		);
 		this.controller.listen('autoPingInterval',	Mojo.Event.propertyChange, this.autoPingIntervalChangedHandler);
 		
@@ -252,12 +279,6 @@ PreferencesGeneralAssistant.prototype.listChanged = function(event)
 	this.cookie.put(this.prefs);
 }
 
-PreferencesGeneralAssistant.prototype.integerFieldChanged = function(event)
-{
-	this.prefs[event.property] = event.value;
-	this.cookie.put(this.prefs);
-}
-
 PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 {
 	// set the theme right away with the body class
@@ -271,8 +292,7 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 
 PreferencesGeneralAssistant.prototype.autoPingIntervalChanged = function(event)
 {
-	
-	this.integerFieldChanged(event);
+	this.cookie.put(this.prefs);
 	
 	if (event) 
 	{

@@ -100,7 +100,3 @@ formatSeconds = function(seconds, longFormat){
     
     return toReturn;
 }
-
-allowIntegers = function(charCode) {
-	return( ( charCode >= 48 && charCode <= 57) );
-}
