@@ -104,6 +104,7 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 	servers[id].estabilshed = 0;
 	servers[id].worker_thread = 0;
 	servers[id].ping_server = 1;
+	servers[id].realServer = 0;
 
 	if (pthread_create(&servers[id].worker_thread, NULL, client_run, (void*)&id)) {
 		PDL_JSReply(params, "{\"returnValue\":-1,\"errorText\":\"Failed to create thread\"}");
@@ -176,6 +177,11 @@ PDL_bool client_cmd_user_mode(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_ping(PDL_JSParameters *params) {
+	int id = PDL_GetJSParamInt(params, 0);
+	if (pthread_mutex_trylock(&servers[id].ping_mutex)==0) {
+		ftime(&servers[id].ping);
+		irc_send_raw(servers[id].session, "PING %s", PDL_GetJSParamString(params, 1));
+	}
 	//return irc_cmd_ping(session, PDL_GetJSParamString(params, 0));
 	return PDL_TRUE;
 }

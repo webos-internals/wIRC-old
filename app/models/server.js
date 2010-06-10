@@ -25,6 +25,8 @@ function ircServer(params)
 	this.favoriteChannels =		params.favoriteChannels;
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
+	
+	this.autoPing =				false;
 
 	this.lagHistory = 			[];
 	this.lag =					'lag-0';
@@ -214,9 +216,9 @@ ircServer.prototype.newCommand = function(message)
 					this.away(val?val:null);
 					break;
 					
-				/*case 'ping':
+				case 'ping':
 					if (val) this.ping(val);
-					break;*/
+					break;
 					
 				case 'notice':
 					var tmpMatch = twoValRegExp.exec(val);
@@ -381,6 +383,18 @@ ircServer.prototype.debugPayload = function(payload, visible)
 		}
 	}
 }
+
+ircServer.prototype.doAutoPing = function(id, interval)
+{
+	try {
+		plugin.cmd_ping(id, this.realServer);	
+	} catch (e) {
+		alert(e);
+	}
+	this.autoPing = setTimeout(this.doAutoPing.bind(this), interval);
+}
+
+
 ircServer.prototype.runOnConnect = function()
 {
 	if (this.onConnect && this.onConnect.length > 0)
@@ -390,6 +404,8 @@ ircServer.prototype.runOnConnect = function()
 			// also defer these commands to run one after another when its not busy
 			this.newCommand.bind(this).defer(this.onConnect[c]);
 		}
+		if (!this.autoPing && prefs.get().lagMeter)
+			this.doAutoPing(servers.getServerArrayKey(this.id), 10000);
 	}
 }
 

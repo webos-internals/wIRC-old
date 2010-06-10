@@ -49,15 +49,3 @@ void plugin_start() {
 		SDL_WaitEvent(&Event);
 	} while (Event.type != SDL_QUIT);
 }
-
-void plugin_stop() {
-
-	pthread_mutex_lock(&plugin_mutex);
-	isPlugin = 0;
-	pthread_cond_signal(&cond);
-	pthread_mutex_unlock(&plugin_mutex);
-
-}
-
-void luna_service_cleanup() {
-}

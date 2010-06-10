@@ -56,7 +56,7 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
 		
-		this.lagMeterChangedHandler = this.latMeterChanged.bindAsEventListener(this);
+		this.lagMeterChangedHandler = this.lagMeterChanged.bindAsEventListener(this);
 		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);
 		
 		
@@ -242,7 +242,8 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	// set theme on all other open stages
 	Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 }
-PreferencesGeneralAssistant.prototype.latMeterChanged = function(event)
+
+PreferencesGeneralAssistant.prototype.lagMeterChanged = function(event)
 {
 	if (event) 
 	{
@@ -257,7 +258,7 @@ PreferencesGeneralAssistant.prototype.latMeterChanged = function(event)
 			{
 				if (servers.servers[s].isConnected())
 				{
-					servers.servers[s].startAutoPingSubscription(true);
+					servers.servers[s].doAutoPing(servers.getServerArrayKey(servers.servers[s].id), 10000);
 				}
 			}
 		}
@@ -270,7 +271,8 @@ PreferencesGeneralAssistant.prototype.latMeterChanged = function(event)
 			{
 				if (servers.servers[s].isConnected())
 				{
-					servers.servers[s].clearAutoPingSubscription();
+					clearTimeout(servers.servers[s].autoPing);
+					servers.servers[s].autoPing = false;
 				}
 			}
 		}

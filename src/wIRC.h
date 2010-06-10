@@ -92,7 +92,6 @@ typedef struct {
 	const char		*realServer;
 	int				estabilshed;
 	int			 	port;
-	int				auto_ping;
 	pthread_mutex_t ping_mutex;
 	struct timeb 	ping;
 } wIRCd_client_t;

@@ -131,7 +131,7 @@ ServerListAssistant.prototype.checkPlugin = function()
 		plugin.event_ctcp_action = this.event_ctcp_action_handler.bind(this);
 		plugin.event_unknown = this.event_unknown_handler.bind(this);
 		plugin.event_numeric = this.event_numeric_handler.bind(this);
-		plugin.auto_ping = this.auto_ping_handler.bind(this);
+		plugin.event_rtt = this.event_rtt_handler.bind(this);
 	}
 	else
 	{
@@ -799,13 +799,13 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 
 ServerListAssistant.prototype.event_unknown_handler = function(id, event, origin, params_s)
 {
-	/*if (event != 'PONG')
+	if (event != 'PONG')
 	{
 		servers.servers[id].debugPayload(payload, false);
-	}*/
+	}
 }
 
-ServerListAssistant.prototype.auto_ping_handler = function(id, server, rtt)
+ServerListAssistant.prototype.event_rtt_handler = function(id, rtt)
 {
 	var id = parseInt(id);
 	
