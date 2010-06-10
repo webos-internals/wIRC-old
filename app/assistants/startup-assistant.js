@@ -33,7 +33,12 @@ function StartupAssistant()
 				'Added standard help scene',
 				'Removed old about scene',
 				'Auto-prepend # to channel names if they\'re forgotten on /join',
-				'Fixed bug stoping you from joining channels that didn\'t start with #'
+				'Fixed bug stoping you from joining channels that didn\'t start with #',
+				'Added theme based color prefs',
+				'Gesture+Q and Gesture+A cycle though command history',
+				'/ping works when autoping is off',
+				'Turning off autoping actually turns off autoping',
+				'Added option to set autoping interval'
 			]
 		},
 		{

@@ -6,9 +6,6 @@ function ircChannel(params)
 	this.nicks = [];
 	
 	this.messages =			[];
-
-	this.cmdHistory = 		[];
-	this.cmdHistoryIndex =	0;
 	
 	this.mode = 			'';
 	this.topic =			'';
@@ -27,10 +24,10 @@ ircChannel.prototype.newCommand = function(message)
 {
 	if (this.server.isConnected())
 	{
-		this.cmdHistoryIndex = 0;
-		this.cmdHistory.push(message);
-		if (this.cmdHistory.length>15)
-			this.cmdHistory.pop();
+		cmdHistoryIndex = 0;
+		cmdHistory.push(message);
+		if (cmdHistory.length>cmdHistoryMax)
+			cmdHistory.pop();
 		
 		var match = cmdRegExp.exec(message);
 		if (match)
