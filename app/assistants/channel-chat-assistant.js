@@ -316,17 +316,13 @@ ChannelChatAssistant.prototype.keyHandler = function(event){
             this.action = false;
         }
     
-	if (this.action && event.type == 'keyup' && isCmdDown && cmdHistory.length>0) {
-		cmdHistoryIndex++;
-		if (cmdHistoryIndex>cmdHistory.length-1)
-			cmdHistoryIndex = 0;
-		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);	
-	}	
-	else if (this.action && event.type == 'keyup' && isCmdUp && cmdHistory.length>0) {
-		cmdHistoryIndex--;
-		if (cmdHistoryIndex < 0) 
-			cmdHistoryIndex = cmdHistory.length-1;
-		this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+	if (this.action && event.type == 'keyup' && cmdHistory.length>0) {
+		if (isCmdUp && cmdHistoryIndex<(cmdHistory.length-1)) cmdHistoryIndex++;
+		else if (isCmdDown && cmdHistoryIndex >= 0) cmdHistoryIndex--;
+		if (cmdHistoryIndex<0)
+			this.inputWidgetElement.mojo.setValue('');
+		else
+			this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
 	}
 	
     else if (this.action && event.type === 'keyup' && isTabKey) {
