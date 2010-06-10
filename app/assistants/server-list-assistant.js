@@ -798,9 +798,16 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 
 ServerListAssistant.prototype.event_unknown_handler = function(id, event, origin, params_s)
 {
-	if (event != 'PONG')
-	{
-		servers.servers[id].debugPayload(payload, false);
+	var params = JSON.parse(params_s);
+	
+	switch (event) {
+		case 'PONG':
+			if (!prefs.get().lagMeter)
+				servers.servers[id].newMessage('type77', false, event + ' ' + params[0] + ' ' + params[1]);
+			break;
+		default:
+			servers.servers[id].debugPayload(payload, false);
+			break;	
 	}
 }
 

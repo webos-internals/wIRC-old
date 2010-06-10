@@ -129,6 +129,15 @@ function ircMessage(params)
 			this.message		= this.nick.name + ' ' + params.message;
 			break;
 
+		case 'type77':
+			this.rowClass		= 'no-seperator';
+			this.nick			= params.nick;
+			this.nickDisplay	= '*';
+			this.nickStyle 		= 'color: ' + prefs.get().colorAction[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorAction[this.theme];
+			this.message		= params.message;
+			break;
+
 		case 'type8':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '~';
