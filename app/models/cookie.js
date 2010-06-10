@@ -18,6 +18,7 @@ preferenceCookie.prototype.get = function(reload)
 				piface:				'',
 				aiface:				false,
 				lagMeter:			false,
+				autoPingInterval:	10,
 				connectionTimeout:	30,
 				blockScreenTimeout:	true,
 				dimScreen:			true,

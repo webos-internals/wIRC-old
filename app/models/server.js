@@ -424,7 +424,7 @@ ircServer.prototype.runOnConnect = function()
 			this.newCommand.bind(this).defer(this.onConnect[c]);
 		}
 		if (!this.autoPing && prefs.get().lagMeter)
-			this.doAutoPing(servers.getServerArrayKey(this.id), 10000);
+			this.doAutoPing(servers.getServerArrayKey(this.id), prefs.get().autoPingInterval*1000);
 	}
 }
 

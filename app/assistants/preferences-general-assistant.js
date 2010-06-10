@@ -57,8 +57,8 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
 		
 		this.lagMeterChangedHandler = this.lagMeterChanged.bindAsEventListener(this);
-		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);
-		
+		this.autoPingIntervalChangedHandler = this.autoPingIntervalChanged.bindAsEventListener(this);
+		this.pifaceChangedHandler = this.pifaceChanged.bindAsEventListener(this);		
 		
 		
 		// Global Group
@@ -167,6 +167,26 @@ PreferencesGeneralAssistant.prototype.setup = function()
 	 			disabled: false
 			}
 		);
+		this.controller.setupWidget
+		(
+			'autoPingInterval',
+			{
+				label: 'Auto-Ping Interval',
+				choices:
+				[
+					{label:'1s',	value:1},
+					{label:'5s',	value:5},
+					{label:'10s',	value:15},
+					{label:'15s',	value:15},
+					{label:'20s',	value:20},
+					{label:'25s',	value:25},
+					{label:'30s',	value:30}
+				],
+				modelProperty: 'autoPingInterval'
+			},
+			this.prefs
+		);
+		this.controller.listen('autoPingInterval',	Mojo.Event.propertyChange, this.autoPingIntervalChangedHandler);
 		
 		this.controller.listen('lagMeter',	Mojo.Event.propertyChange, this.lagMeterChangedHandler);
 		
@@ -207,8 +227,10 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		
 		
 		
-		// hide secret group
+		// hide groups
 		this.controller.get('secretPreferences').style.display = 'none';
+		if (!prefs.get().lagMeter)
+			this.controller.get('autoPing').style.display = 'none';
 		
 	}
 	catch (e)
@@ -243,8 +265,10 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 }
 
-PreferencesGeneralAssistant.prototype.lagMeterChanged = function(event)
+PreferencesGeneralAssistant.prototype.autoPingIntervalChanged = function(event)
 {
+	this.cookie.put(this.prefs);
+	
 	if (event) 
 	{
 		this.toggleChanged(event);
@@ -258,13 +282,40 @@ PreferencesGeneralAssistant.prototype.lagMeterChanged = function(event)
 			{
 				if (servers.servers[s].isConnected())
 				{
-					servers.servers[s].doAutoPing(servers.getServerArrayKey(servers.servers[s].id), 10000);
+					clearTimeout(servers.servers[s].autoPing);
+					servers.servers[s].autoPing = false;
+					servers.servers[s].doAutoPing(servers.getServerArrayKey(servers.servers[s].id), this.prefs['autoPingInterval']*1000);
+				}
+			}
+		}
+	}
+	
+}
+
+PreferencesGeneralAssistant.prototype.lagMeterChanged = function(event)
+{
+	if (event) 
+	{
+		this.toggleChanged(event);
+		var tmp = prefs.get(true);
+	}
+	if (this.prefs['lagMeter'])
+	{
+		this.controller.get('autoPing').style.display = '';
+		if (servers.servers.length > 0)
+		{
+			for (var s = 0; s < servers.servers.length; s++)
+			{
+				if (servers.servers[s].isConnected())
+				{
+					servers.servers[s].doAutoPing(servers.getServerArrayKey(servers.servers[s].id), this.prefs['autoPingInterval']*1000);
 				}
 			}
 		}
 	}
 	else
 	{
+		this.controller.get('autoPing').style.display = 'none';
 		if (servers.servers.length > 0)
 		{
 			for (var s = 0; s < servers.servers.length; s++)
