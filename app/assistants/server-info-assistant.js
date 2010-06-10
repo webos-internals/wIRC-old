@@ -43,11 +43,11 @@ ServerInfoAssistant.prototype.setup = function()
 		this.aliasElement =				this.controller.get('alias');
 		this.addressElement =			this.controller.get('address');
 		this.saveButtonElement =		this.controller.get('saveButton');
-		this.advancedButtonElement =		this.controller.get('advancedButton');
+		this.advancedButtonElement =	this.controller.get('advancedButton');
 		this.defaultNick = 				this.controller.get('defaultNick');
 		
-		this.textChanged =			this.textChanged.bindAsEventListener(this);
-		this.saveButtonPressed =	this.saveButtonPressed.bindAsEventListener(this);
+		this.textChanged =				this.textChanged.bindAsEventListener(this);
+		this.saveButtonPressed =		this.saveButtonPressed.bindAsEventListener(this);
 		this.advancedButtonPressed =	this.advancedButtonPressed.bindAsEventListener(this);
 		
 		this.controller.setupWidget

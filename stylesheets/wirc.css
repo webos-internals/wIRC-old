@@ -112,7 +112,6 @@ body.palm-dark .prefs .page-selector
 
 
 
-
 /*
  * Server List Scene Styles
  */
@@ -282,6 +281,10 @@ body.palm-dark .server-list .palm-list .palm-row-wrapper .button
 .server-list .palm-list .palm-row-wrapper.changing .button.spinner
 {
 	display: inline;
+}
+.server-list .palm-list .palm-row-wrapper.temp .button.prefs
+{
+	display: none;
 }
 
 
@@ -864,6 +867,19 @@ table.date-row.palm-divider.labeled tr td.right
 	width:32px; 
 	height:32px;
 	background: url(../images/help/application-email.png) no-repeat bottom;
+	vertical-align:bottom;
+	padding: 0px 0px 0px 5px;
+	float:left;
+}
+.help .img_wirc
+{
+	position:relative;
+	left:8px;
+	top:10px;
+	width:32px;
+	height:32px;
+	background: url(../icon.png) no-repeat bottom;
+	-webkit-background-size: 32px 32px;
 	vertical-align:bottom;
 	padding: 0px 0px 0px 5px;
 	float:left;
