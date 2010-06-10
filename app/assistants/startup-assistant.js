@@ -39,7 +39,8 @@ function StartupAssistant()
 				'/ping works when autoping is off',
 				'Turning off autoping actually turns off autoping',
 				'Added option to set autoping interval',
-				'Split messages longer than 255 char'
+				'Split messages longer than 255 char',
+				'Added new events and keybindings preferences'
 			]
 		},
 		{
