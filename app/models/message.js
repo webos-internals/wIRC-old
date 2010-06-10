@@ -171,7 +171,7 @@ function ircMessage(params)
 			this.nickDisplay =	this.nick.name;
 			if (this.me==this.nick.name)
 				this.nickStyle =	'color: ' + prefs.get().colorOwnNick[this.theme] + ';';
-			else if (prefs.get().senderColoring[this.theme])
+			else if (prefs.get().senderColoring)
 				this.nickStyle =	'color: ' + this.nick.colorHex + ';';
 			else
 				this.nickStyle =	'color: ' + prefs.get().colorOtherNicks[this.theme] + ';';
