@@ -421,7 +421,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorNotice'
 			},
-			{value: this.prefs.get('colorNotice')[themeIndex]}
+			{colorNotice: this.prefs.get('colorNotice')[themeIndex]}
 		);		
 		this.controller.setupWidget
 		(
@@ -431,7 +431,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorAction'
 			},
-			{value: this.prefs.get('colorAction')[themeIndex]}
+			{colorAction: this.prefs.get('colorAction')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -441,7 +441,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorStatus'
 			},
-			{value: this.prefs.get('colorStatus')[themeIndex]}
+			{colorStatus: this.prefs.get('colorStatus')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -451,7 +451,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorText'
 			},
-			{value: this.prefs.get('colorText')[themeIndex]}
+			{colorText: this.prefs.get('colorText')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -461,7 +461,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorHighlightFG'
 			},
-			{value: this.prefs.get('colorHighlightFG')[themeIndex]}
+			{colorHighlightFG: this.prefs.get('colorHighlightFG')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -471,7 +471,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorHighlightBG'
 			},
-			{value: this.prefs.get('colorHighlightBG')[themeIndex]}
+			{colorHighlightBG: this.prefs.get('colorHighlightBG')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -481,7 +481,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorMarker'
 			},
-			{value: this.prefs.get('colorMarker')[themeIndex]}
+			{colorMarker: this.prefs.get('colorMarker')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -491,7 +491,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorOwnNick'
 			},
-			{value: this.prefs.get('colorOwnNick')[themeIndex]}
+			{colorOwnNick: this.prefs.get('colorOwnNick')[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -501,7 +501,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorOtherNicks'
 			},
-			{value: this.prefs.get('colorOtherNicks')[themeIndex]}
+			{colorOtherNicks: this.prefs.get('colorOtherNicks')[themeIndex]}
 		);
 										
 		this.highlightStyleChanged();
