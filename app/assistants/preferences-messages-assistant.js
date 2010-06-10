@@ -411,7 +411,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		
 		// Color stuff
 		var themeIndex = 0;
-		if (this.prefs.get('theme') == 'palm-dark') themeIndex = 1;
+		if (this.prefs.theme == 'palm-dark') themeIndex = 1;
 		
 		this.controller.setupWidget
 		(
@@ -421,7 +421,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorNotice'
 			},
-			{colorNotice: this.prefs.get('colorNotice')[themeIndex]}
+			{colorNotice: this.prefs.colorNotice[themeIndex]}
 		);		
 		this.controller.setupWidget
 		(
@@ -431,7 +431,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorAction'
 			},
-			{colorAction: this.prefs.get('colorAction')[themeIndex]}
+			{colorAction: this.prefs.colorAction[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -441,7 +441,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorStatus'
 			},
-			{colorStatus: this.prefs.get('colorStatus')[themeIndex]}
+			{colorStatus: this.prefs.colorStatus[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -451,7 +451,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorText'
 			},
-			{colorText: this.prefs.get('colorText')[themeIndex]}
+			{colorText: this.prefs.colorText[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -461,7 +461,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorHighlightFG'
 			},
-			{colorHighlightFG: this.prefs.get('colorHighlightFG')[themeIndex]}
+			{colorHighlightFG: this.prefs.colorHighlightFG[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -471,7 +471,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorHighlightBG'
 			},
-			{colorHighlightBG: this.prefs.get('colorHighlightBG')[themeIndex]}
+			{colorHighlightBG: this.prefs.colorHighlightBG[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -481,7 +481,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorMarker'
 			},
-			{colorMarker: this.prefs.get('colorMarker')[themeIndex]}
+			{colorMarker: this.prefs.colorMarker[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -491,7 +491,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorOwnNick'
 			},
-			{colorOwnNick: this.prefs.get('colorOwnNick')[themeIndex]}
+			{colorOwnNick: this.prefs.colorOwnNick[themeIndex]}
 		);
 		this.controller.setupWidget
 		(
@@ -501,7 +501,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				choices: this.colorChoices,
 				modelProperty: 'colorOtherNicks'
 			},
-			{colorOtherNicks: this.prefs.get('colorOtherNicks')[themeIndex]}
+			{colorOtherNicks: this.prefs.colorOtherNicks[themeIndex]}
 		);
 										
 		this.highlightStyleChanged();
