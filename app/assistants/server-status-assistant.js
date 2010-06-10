@@ -370,10 +370,12 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			});
 		
 		// Server menu options
-		serverItems.push({
-			label: "Preferences",
-			command: 'do-server-prefs'
-		});
+		if (!this.server.isTemporary) {
+			serverItems.push({
+				label: "Preferences",
+				command: 'do-server-prefs'
+			});
+		}
 		if (this.server.isAway) {
 			serverItems.push({
 				label: "Back",

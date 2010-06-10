@@ -379,10 +379,12 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
     });
     
     // Server menu options
-	serverItems.push({
-        label: "Preferences",
-        command: 'do-server-prefs'
-    });
+	if (!this.channel.server.isTemporary) {
+		serverItems.push({
+			label: "Preferences",
+			command: 'do-server-prefs'
+		});
+	}
     if (this.channel.server.isAway) {
         serverItems.push({
             label: "Back",

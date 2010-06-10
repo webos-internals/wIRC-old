@@ -91,6 +91,7 @@ ServerListAssistant.prototype.setup = function()
 			itemTemplate: "server-list/server-row",
 			swipeToDelete: true,
 			reorderable: false,
+			preventDeleteProperty: 'temp',
 			spinnerSize: Mojo.Widget.spinnerSmall
 		}, this.serverListModel);
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);

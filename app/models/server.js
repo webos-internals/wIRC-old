@@ -26,6 +26,8 @@ function ircServer(params)
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
 	
+	this.isTemporary =			params.isTemporary;
+	
 	this.autoPing =				false;
 
 	this.lagHistory = 			[];
@@ -445,6 +447,10 @@ ircServer.prototype.disconnect = function(reason)
 	this.setState(this.STATE_DISCONNECTING);
 	plugin.cmd_quit(servers.getServerArrayKey(this.id), reason);
 	this.setState(this.STATE_DISCONNECTED);
+	
+	if (this.isTemporary) {
+		servers.deleteTemporaryServer(this.id);
+	}
 }
 
 ircServer.prototype.disrupt = function()
@@ -872,8 +878,12 @@ ircServer.prototype.getListObject = function()
 		connected: 	this.isConnected(),	
 		spinning:	true,
 		rowStyle:	'',
-		networkLag:	''
+		networkLag:	'',
+		temp:		this.isTemporary	
 	};
+	
+	if (this.isTemporary)
+		obj.rowStyle = obj.rowStyle + ' temp';
 	
 	switch (this.state)
 	{

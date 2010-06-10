@@ -37,6 +37,11 @@ HelpAssistant.prototype.setup = function()
 		Class:'img_email',
 		type:'email'
 	});
+	this.supportModel.items.push({
+		text:'#wirc on Freenode',
+		Class:'img_wirc',
+		type:'wirc'
+	});
 	
 	this.controller.setupWidget
 	(
@@ -84,6 +89,32 @@ HelpAssistant.prototype.listTapHandler = function(event)
 			
 		case 'scene':
 			this.controller.stageController.pushScene(event.item.detail);
+			break;
+			
+		case 'wirc':
+			if (servers.getServerArrayKey('help') === false)
+			{
+				var helpServerObject = 
+				{
+					id:					'help',
+					alias:				'wIRC Help',
+					address:			'irc.freenode.net',
+					serverUser:			'',
+					serverPassword:		'',
+					port:				'',
+					autoConnect:		false,
+					autoIdentify:		false,
+					identifyService:	'',
+					identifyPassword:	'',
+					onConnect:			['/j #wirc'],
+					favoriteChannels:	[],
+					defaultNick:		(prefs.get().nicknames[0]?prefs.get().nicknames[0]:'wIRCer_'+Math.floor(Math.random()*9999)),
+					isTemporary:		true
+				};
+				servers.loadTemporaryServer(helpServerObject);
+				servers.servers[servers.getServerArrayKey('help')].init();
+				this.controller.stageController.popScene();
+			}
 			break;
 	}
 };

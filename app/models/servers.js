@@ -201,7 +201,18 @@ ircServers.prototype.loadServer = function(id)
 		var newServer = new ircServer(serverParams);
 		this.servers.push(newServer);
 	}
-	
+	if (this.listAssistant)
+	{
+		this.listAssistant.updateList();
+	}
+}
+ircServers.prototype.loadTemporaryServer = function(serverParams)
+{
+	if (serverParams)
+	{
+		var newServer = new ircServer(serverParams);
+		this.servers.push(newServer);
+	}
 	if (this.listAssistant)
 	{
 		this.listAssistant.updateList();
@@ -234,4 +245,17 @@ ircServers.prototype.deleteServer = function(id)
 		this.servers[key].disconnect();
 	}
 	this.servers[key] = false;
+}
+ircServers.prototype.deleteTemporaryServer = function(id)
+{
+	var key = this.getServerArrayKey(id);
+	if (this.servers[key])
+	{
+		alert(key);
+		this.servers[key] = false;
+	}
+	if (this.listAssistant)
+	{
+		this.listAssistant.updateList();
+	}
 }
