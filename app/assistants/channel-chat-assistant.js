@@ -305,6 +305,8 @@ ChannelChatAssistant.prototype.updateLagMeter = function(){
 ChannelChatAssistant.prototype.keyHandler = function(event){
     var isActionKey = (event.keyCode === Mojo.Char.metaKey);
     var isTabKey = (event.altKey);
+	var isCmdUp = (event.keyCode === Mojo.Char.q);
+	var isCmdDown = (event.keyCode === Mojo.Char.a);
     
     if (event.type === 'keydown' && isActionKey) {
         this.action = true;
@@ -314,7 +316,21 @@ ChannelChatAssistant.prototype.keyHandler = function(event){
             this.action = false;
         }
     
-    if (this.action && event.type === 'keyup' && isTabKey) {
+	if (this.action && event.type == 'keyup' && isCmdUp) {
+		if (this.channel.cmdHistoryIndex<15)
+			this.channel.cmdHistoryIndex++;
+		else
+			this.channel.cmdHistoryIndex = 0;
+		this.inputWidgetElement.mojo.setValue(this.channel.cmdHistory[this.channel.cmdHistoryIndex]);
+	}	
+	else if (this.action && event.type == 'keyup' && isCmdDown) {
+		if (this.channel.cmdHistoryIndex>0)
+			this.channel.cmdHistoryIndex--;
+		else
+			this.channel.cmdHistoryIndex = 15;
+		this.inputWidgetElement.mojo.setValue(this.channel.cmdHistory[this.channel.cmdHistoryIndex]);
+	}
+    else if (this.action && event.type === 'keyup' && isTabKey) {
         if (!this.tabText) {
             var tmpText = event.target.value.match(/^(.*)[\s]{1}(.*)$/);
             this.tabText = event.target.value;
