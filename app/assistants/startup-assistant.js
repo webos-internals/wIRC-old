@@ -111,7 +111,7 @@ function StartupAssistant()
 	this.randomContinue = 
 	[
 		{weight: 30, text: $L("Ok, I've read this. Let's continue ...")},
-		{weight: 10, text: $L("Yeah, Yeah, Whatever ...")}
+		{weight:  5, text: $L("Yeah, Yeah, Whatever ...")}
 	];
 	
     // setup menu
