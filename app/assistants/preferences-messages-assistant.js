@@ -612,9 +612,10 @@ PreferencesMessagesAssistant.prototype.listChanged = function(event)
 PreferencesMessagesAssistant.prototype.colorChanged = function(event)
 {
 	var themeIndex = 0;
-	if (this.theme == 'palm-dark') themeIndex = 1;
+	if (this.prefs.theme == 'palm-dark') themeIndex = 1;
 	this.prefs[event.property][themeIndex] = event.value;
 	this.cookie.put(this.prefs);
+	alert(this.prefs[event.property]);
 }
 
 PreferencesMessagesAssistant.prototype.senderColoringChanged = function(event)
