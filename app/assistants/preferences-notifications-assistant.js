@@ -7,6 +7,8 @@ function PreferencesNotificationsAssistant()
 	this.pageList = [
 		{label: 'General',			command: 'general'},
 		{label: 'Messages',			command: 'messages'},
+		{label: 'Events'		,	command: 'events'},
+		{label: 'Keybindings'	,	command: 'keybindings'},
 		{label: 'Notifications',	command: 'notifications'}
 	];
 	this.currentPage = 'notifications';

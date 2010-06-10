@@ -54,6 +54,14 @@
         "scenes": "preferences-messages",
         "source": "app/assistants/preferences-messages-assistant.js"
     },
+	{
+        "scenes": "preferences-events",
+        "source": "app/assistants/preferences-events-assistant.js"
+    },
+	{
+        "scenes": "preferences-keybindings",
+        "source": "app/assistants/preferences-keybindings-assistant.js"
+    },
     {
         "scenes": "preferences-notifications",
         "source": "app/assistants/preferences-notifications-assistant.js"
