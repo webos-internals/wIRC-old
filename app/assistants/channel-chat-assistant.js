@@ -302,56 +302,58 @@ ChannelChatAssistant.prototype.updateLagMeter = function(){
     this.networkLagElement.className = netClass;
 }
 
-ChannelChatAssistant.prototype.keyHandler = function(event){
-    var isActionKey = (event.keyCode === Mojo.Char.metaKey);
+ChannelChatAssistant.prototype.keyHandler = function(event) {
+	
+	var isActionKey = (event.keyCode === Mojo.Char.metaKey);
     var isTabKey = (event.altKey);
 	var isCmdUp = (event.keyCode === Mojo.Char.q);
 	var isCmdDown = (event.keyCode === Mojo.Char.a);
-    
-    if (event.type === 'keydown' && isActionKey) {
-        this.action = true;
-    }
-    else 
-        if (event.type === 'keyup' && isActionKey) {
-            this.action = false;
-        }
-    
-	if (this.action && event.type == 'keyup' && cmdHistory.length>0) {
-		if (isCmdUp && cmdHistoryIndex<(cmdHistory.length-1)) cmdHistoryIndex++;
-		else if (isCmdDown && cmdHistoryIndex >= 0) cmdHistoryIndex--;
-		if (cmdHistoryIndex<0)
-			this.inputWidgetElement.mojo.setValue('');
-		else
-			this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+	
+	if (this.action) {
+		if (event.type === 'keyup') {
+			if (isCmdDown || isCmdUp) {
+				if (isCmdUp && cmdHistoryIndex < (cmdHistory.length - 1)) 
+					cmdHistoryIndex++;
+				else 
+					if (isCmdDown && cmdHistoryIndex >= 0) 
+						cmdHistoryIndex--;
+				if (cmdHistoryIndex < 0) 
+					this.inputWidgetElement.mojo.setValue('');
+				else 
+					this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+			} 
+			else if (isTabKey) {
+				if (!this.tabText) {
+					var tmpText = event.target.value.match(/^(.*)[\s]{1}(.*)$/);
+					this.tabText = event.target.value;
+					if (tmpText) {
+						this.text = tmpText[1];
+						this.tabText = tmpText[2];
+					}
+				}
+				this.nick = this.channel.tabNick(this.tabText, this.nick);
+				if (this.nick) {
+					if (this.text) 
+						event.target.mojo.setText(this.text + " " + this.nick.name + " ");
+					else 
+						event.target.mojo.setText(this.nick.name + prefs.get().tabSuffix + " ");
+				}
+			}
+		 	else if (isActionKey) {
+            	this.action = false;
+				this.tabText = false;
+            	this.text = false;
+            	this.nick = false;
+        	}	
+		}
+		
+	}
+	else {
+		if (event.type === 'keydown' && isActionKey) {
+     	   this.action = true;
+    	}
 	}
 	
-    else if (this.action && event.type === 'keyup' && isTabKey) {
-        if (!this.tabText) {
-            var tmpText = event.target.value.match(/^(.*)[\s]{1}(.*)$/);
-            this.tabText = event.target.value;
-            if (tmpText) {
-                this.text = tmpText[1];
-                this.tabText = tmpText[2];
-            }
-        }
-        
-        this.nick = this.channel.tabNick(this.tabText, this.nick);
-        
-        if (this.nick) {
-            if (this.text) {
-                event.target.mojo.setText(this.text + " " + this.nick.name + " ");
-            }
-            else {
-                event.target.mojo.setText(this.nick.name + prefs.get().tabSuffix + " ");
-            }
-        }
-    }
-    else 
-        if (!isActionKey && !isTabKey) {
-            this.tabText = false;
-            this.text = false;
-            this.nick = false;
-        }
 }
 
 ChannelChatAssistant.prototype.startAutoFocus = function(){
