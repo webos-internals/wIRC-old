@@ -89,7 +89,8 @@ preferenceCookie.prototype.get = function(reload)
 						i == 'colorHighlightBG' ||
 						i == 'colorOwnNick' ||
 						i == 'colorOtherNicks') &&
-						cookieData[i].length > 2)
+						(cookieData[i].length > 2 ||
+						cookieData[i] == ''))
 					{
 						this.prefs[i] = [cookieData[i], cookieData[i]];
 						continue;
