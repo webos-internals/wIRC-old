@@ -169,21 +169,32 @@ ircServer.prototype.newCommand = function(message)
 				case 'ns':
 					this.newCommand('/msg NickServ ' + val);
 					break;
-					
+
+				case 'query':					
 				case 'msg':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
 					{
-						plugin.cmd_msg(servers.getServerArrayKey(this.id), this.getNick(tmpMatch[1]).name, tmpMatch[2]);
-						this.getVisibleScene().newMessage('type6', this.getNick(tmpMatch[1]), tmpMatch[2]);
-					}
-					break;
-					
-				case 'query':
-					var tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch) 
-					{
-						this.startQuery(this.getNick(tmpMatch[1]), true, 'message', tmpMatch[2]);
+						var sid = servers.getServerArrayKey(this.id);
+						var n = Math.ceil(tmpMatch[2].length / 255);
+						var i = 0;
+						var msg = '';
+						alert('Message length: ' + tmpMatch[2].length + ', n: ' + n);
+						for (;i<n;i++) {
+							if (i < (n - 1))
+								msg = tmpMatch[2].substring(i * 255, (i + 1) * 255)
+							else
+								msg = tmpMatch[2].substring(i * 255);
+							plugin.cmd_msg(sid, this.getNick(tmpMatch[1]).name, msg);
+							switch (cmd.toLowerCase()) {
+								case 'query':
+									this.startQuery(this.getNick(tmpMatch[1]), true, 'message', msg);
+									break;					
+								case 'msg':
+									this.getVisibleScene().newMessage('type6', this.getNick(tmpMatch[1]), msg);
+									break; 
+							}
+						}
 					}
 					break;
 					

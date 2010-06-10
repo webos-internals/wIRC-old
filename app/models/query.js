@@ -74,8 +74,21 @@ ircQuery.prototype.me = function(message)
 
 ircQuery.prototype.msg = function(message)
 {
-	plugin.cmd_msg(servers.getServerArrayKey(this.server.id), this.nick.name, message);
-	this.newMessage('privmsg', this.server.nick, message);
+	var sid = servers.getServerArrayKey(this.server.id);
+	var n = Math.ceil(message.length / 255);
+	var i = 0;
+	var msg = '';
+	alert('Message length: ' + message.length + ', n: ' + n);
+	for (;i<n;i++) {
+		if (i < (n - 1)) {
+			msg = message.substring(i * 255, (i + 1) * 255)
+		}
+		else {
+			msg = message.substring(i * 255);
+		}
+		plugin.cmd_msg(servers.getServerArrayKey(this.server.id), this.nick.name, msg);
+		this.newMessage('privmsg', this.server.nick, msg);
+	}
 }
 
 ircQuery.prototype.newMessage = function(type, nick, message)
