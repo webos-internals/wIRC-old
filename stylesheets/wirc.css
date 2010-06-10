@@ -219,33 +219,46 @@ body.palm-dark .prefs .page-selector
 	background-position: top center;
 	background-repeat: no-repeat;
 }
-.server-list .palm-list .palm-row-wrapper .button.prefs
+body.palm-dark .server-list .palm-list .palm-row-wrapper .button
 {
-	background-image: url(../images/list-button-prefs.png);
+	background-image: url(../images/palm-dark/list-button-blank.png);
 }
-.server-list .palm-list .palm-row-wrapper.connected .button.status
+
+.server-list .palm-list .palm-row-wrapper .button .icon
 {
-	background-image: url(../images/list-button-connected.png);
+	width: 48px;
+	height: 49px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-palm-mouse-target: ignore;
 }
-.server-list .palm-list .palm-row-wrapper.disconnected .button.status
+.server-list .palm-list .palm-row-wrapper .button.prefs .icon
 {
-	background-image: url(../images/list-button-disconnected.png);
+	background-image: url(../images/icon-prefs.png);
 }
-.server-list .palm-list .palm-row-wrapper.warning .button.status
+.server-list .palm-list .palm-row-wrapper.connected .button.status  .icon
 {
-	background-image: url(../images/list-button-warning.png);
+	background-image: url(../images/icon-connected.png);
 }
-.server-list .palm-list .palm-row-wrapper.error .button.status
+.server-list .palm-list .palm-row-wrapper.disconnected .button.status .icon
 {
-	background-image: url(../images/list-button-error.png);
+	background-image: url(../images/icon-disconnected.png);
 }
-.server-list .palm-list .palm-row-wrapper.error2 .button.status
+.server-list .palm-list .palm-row-wrapper.warning .button.status .icon
 {
-	background-image: url(../images/list-button-error2.png);
+	background-image: url(../images/icon-warning.png);
 }
-.server-list .palm-list .palm-row-wrapper.unknown .button.status
+.server-list .palm-list .palm-row-wrapper.error .button.status .icon
 {
-	background-image: url(../images/list-button-unknown.png);
+	background-image: url(../images/icon-error.png);
+}
+.server-list .palm-list .palm-row-wrapper.error2 .button.status .icon
+{
+	background-image: url(../images/icon-error2.png);
+}
+.server-list .palm-list .palm-row-wrapper.unknown .button.status .icon
+{
+	background-image: url(../images/icon-unknown.png);
 }
 .server-list .palm-list .palm-row-wrapper .button.spinner
 {
@@ -270,41 +283,6 @@ body.palm-dark .prefs .page-selector
 {
 	display: inline;
 }
-
-/*
-body.palm-dark .server-list .palm-list .palm-row-wrapper .button
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper .button.prefs
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper.connected .button.status
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper.disconnected .button.status
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper.warning .button.status
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper.error .button.status
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper.error2 .button.status
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-body.palm-dark .server-list .palm-list .palm-row-wrapper.unknown .button.status
-{
-	background-image: url(../images/palm-dark/list-button-blank.png);
-}
-*/
 
 
 /*
