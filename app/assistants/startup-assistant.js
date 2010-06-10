@@ -38,7 +38,8 @@ function StartupAssistant()
 				'Gesture+Q and Gesture+A cycle though command history',
 				'/ping works when autoping is off',
 				'Turning off autoping actually turns off autoping',
-				'Added option to set autoping interval'
+				'Added option to set autoping interval',
+				'Split messages longer than 255 char'
 			]
 		},
 		{
