@@ -79,6 +79,24 @@ preferenceCookie.prototype.get = function(reload)
 			{
 				for (i in cookieData) 
 				{
+					/* begin old version cookie fixes */
+					if ((i == 'colorNotice' ||
+						i == 'colorAction' ||
+						i == 'colorStatus' ||
+						i == 'colorText' ||
+						i == 'colorMarker' ||
+						i == 'colorHighlightFG' ||
+						i == 'colorHighlightBG' ||
+						i == 'colorOwnNick' ||
+						i == 'colorOtherNicks') &&
+						cookieData[i].length > 2)
+					{
+						this.prefs[i] = [cookieData[i], cookieData[i]];
+						continue;
+					}
+					/* end cookie fixes */
+					
+					
 					this.prefs[i] = cookieData[i];
 				}
 			}
