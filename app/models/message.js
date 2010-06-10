@@ -47,6 +47,12 @@ function ircMessage(params)
 	this.rowStyle =		'';
 	this.nickStyle =	'';
 	
+	this.theme = 		0;
+	switch (prefs.get().theme) {
+		case 'palm-dark':
+			this.theme = 1;
+	}
+	
 	if (params.message.constructor == Array) 
 	{	// params.message isn't a "message" if its an array it becomes "messages",
 		// but whatever, we'll fix them all anyways.
@@ -67,40 +73,40 @@ function ircMessage(params)
 		case 'type1':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '[]';
-			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
-			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice[this.theme];
 			this.message		= params.message[1];
 			break;
 
 		case 'type2':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '~';
-			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
-			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice[this.theme];
 			this.message		= params.message;
 			break;
 
 		case 'type3':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '~~~';
-			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
-			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message		= params.message;
 			break;
 
 		case 'type4':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '-->';
-			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
-			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message		= params.message;
 			break;
 			
 		case 'type5':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '<--';
-			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
-			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message		= params.message;
 			break;
 			
@@ -109,8 +115,8 @@ function ircMessage(params)
 			this.rowClass		= 'no-seperator';
 			this.nick			= params.nick;
 			this.nickDisplay	= '[' + this.nick.name + ']';
-			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
-			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice[this.theme];
 			this.message		= params.message;
 			break;
 
@@ -118,32 +124,32 @@ function ircMessage(params)
 			this.rowClass		= 'no-seperator';
 			this.nick			= params.nick;
 			this.nickDisplay	= '*';
-			this.nickStyle 		= 'color: ' + prefs.get().colorAction;
-			this.messageStyle 	= 'color: ' + prefs.get().colorAction;
+			this.nickStyle 		= 'color: ' + prefs.get().colorAction[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorAction[this.theme];
 			this.message		= this.nick.name + ' ' + params.message;
 			break;
 
 		case 'type8':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '~';
-			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
-			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message		= params.message;
 			break;
 
 		case 'type9':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '<->';
-			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
-			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message		= params.message;
 			break;
 			
 		case 'type10':
 			this.rowClass		= 'no-seperator';
 			this.nickDisplay	= '<-*';
-			this.nickStyle 		= 'color: ' + prefs.get().colorStatus;
-			this.messageStyle 	= 'color: ' + prefs.get().colorStatus;
+			this.nickStyle 		= 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message		= params.message;
 			break;			
 				
@@ -155,12 +161,12 @@ function ircMessage(params)
 			this.nick =			params.nick;
 			this.nickDisplay =	this.nick.name;
 			if (this.me==this.nick.name)
-				this.nickStyle =	'color: ' + prefs.get().colorOwnNick + ';';
-			else if (prefs.get().senderColoring)
+				this.nickStyle =	'color: ' + prefs.get().colorOwnNick[this.theme] + ';';
+			else if (prefs.get().senderColoring[this.theme])
 				this.nickStyle =	'color: ' + this.nick.colorHex + ';';
 			else
-				this.nickStyle =	'color: ' + prefs.get().colorOtherNicks + ';';
-			this.messageStyle = 'color: ' + prefs.get().colorText;
+				this.nickStyle =	'color: ' + prefs.get().colorOtherNicks[this.theme] + ';';
+			this.messageStyle = 'color: ' + prefs.get().colorText[this.theme];
 			this.message =		params.message;
 			if (this.nick.name.toLowerCase() != this.me.toLowerCase()) // if its not me, move on to highlight test
 			{
@@ -177,8 +183,8 @@ function ircMessage(params)
 			//this.rowClass =		'action-message';
 			this.nick =			params.nick;
 			this.nickDisplay =	'*';
-			this.nickStyle = 'color: ' + prefs.get().colorAction;
-			this.messageStyle = 'color: ' + prefs.get().colorAction;
+			this.nickStyle = 'color: ' + prefs.get().colorAction[this.theme];
+			this.messageStyle = 'color: ' + prefs.get().colorAction[this.theme];
 			this.message =		this.nick.name + ' ' + params.message;
 			if (this.nick.name.toLowerCase() != this.me.toLowerCase()) // if its not from me, move on to highlight test
 			{
@@ -194,8 +200,8 @@ function ircMessage(params)
 		case 'nick':
 			//this.rowClass =		'event-message';
 			this.nickDisplay =	'<->';
-			this.nickStyle = 'color: ' + prefs.get().colorStatus;
-			this.messageStyle = 'color: ' + prefs.get().colorStatus;
+			this.nickStyle = 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle = 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message =		params.message;
 			break;								
 		
@@ -203,8 +209,8 @@ function ircMessage(params)
 		case 'channel-join':
 			//this.rowClass =		'event-message';
 			this.nickDisplay =	'-->';
-			this.nickStyle = 'color: ' + prefs.get().colorStatus;
-			this.messageStyle = 'color: ' + prefs.get().colorStatus;
+			this.nickStyle = 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle = 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message =		params.message;
 			break;
 			
@@ -212,8 +218,8 @@ function ircMessage(params)
 		case 'channel-part-quit':
 			//this.rowClass =		'event-message';
 			this.nickDisplay =	'<--';
-			this.nickStyle = 'color: ' + prefs.get().colorStatus;
-			this.messageStyle = 'color: ' + prefs.get().colorStatus;
+			this.nickStyle = 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle = 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message =		params.message;
 			break;
 			
@@ -221,8 +227,8 @@ function ircMessage(params)
 		case 'channel-kick':
 			//this.rowClass =		'event-message';
 			this.nickDisplay =	'<-*';
-			this.nickStyle = 'color: ' + prefs.get().colorStatus;
-			this.messageStyle = 'color: ' + prefs.get().colorStatus;
+			this.nickStyle = 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle = 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message =		params.message;
 			break;						
 
@@ -230,16 +236,16 @@ function ircMessage(params)
 		case 'notice':
 			this.rowClass =		'no-seperator';
 			this.nickDisplay	= '[' + params.message[0] + ']';
-			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
-			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice[this.theme];
 			this.message		= params.message[1];
 			break;
 
 		// type2			
 		case 'info':
 			this.nickDisplay	= '*';
-			this.nickStyle 		= 'color: ' + prefs.get().colorNotice;
-			this.messageStyle 	= 'color: ' + prefs.get().colorNotice;
+			this.nickStyle 		= 'color: ' + prefs.get().colorNotice[this.theme];
+			this.messageStyle 	= 'color: ' + prefs.get().colorNotice[this.theme];
 			this.message		= params.message[1];
 			break;
 
@@ -247,8 +253,8 @@ function ircMessage(params)
 		case 'status':
 			//this.rowClass =		'status-message';
 			this.nickDisplay =	'***';
-			this.nickStyle = 'color: ' + prefs.get().colorStatus;
-			this.messageStyle = 'color: ' + prefs.get().colorStatus;
+			this.nickStyle = 'color: ' + prefs.get().colorStatus[this.theme];
+			this.messageStyle = 'color: ' + prefs.get().colorStatus[this.theme];
 			this.message =		params.message;
 			break;
 			
@@ -314,7 +320,7 @@ ircMessage.prototype.highlightMessage = function()
 	var style = '';
 	
 	if (prefs.get().highlightStyle == 'color' || prefs.get().highlightStyle == 'boldcolor')
-		style += 'color:' + prefs.get().colorHighlightFG + ';background-color:' + prefs.get().colorHighlightBG + ';';
+		style += 'color:' + prefs.get().colorHighlightFG[this.theme] + ';background-color:' + prefs.get().colorHighlightBG[this.theme] + ';';
 		
 	if (prefs.get().highlightStyle == 'bold' || prefs.get().highlightStyle == 'boldcolor') 
 		style += 'font-weight:bold;';

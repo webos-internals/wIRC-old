@@ -55,15 +55,15 @@ preferenceCookie.prototype.get = function(reload)
 				dashboardInviteSound:	true,
 				
 				// Color scheme
-				colorNotice:		'orangered',
-				colorAction:		'firebrick',
-				colorStatus:		'mediumpurple',
-				colorText:			'black',
-				colorMarker:		'red',
-				colorHighlightFG:	'black',
-				colorHighlightBG:	'lightpink',
-				colorOwnNick:		'black',
-				colorOtherNicks:	'green',
+				colorNotice:		['orangered','orangered'],
+				colorAction:		['firebrick','firebrick'],
+				colorStatus:		['mediumpurple','mediumpurple'],
+				colorText:			['black','darkgray'],
+				colorMarker:		['red','red'],
+				colorHighlightFG:	['black','black'],
+				colorHighlightBG:	['lightpink','lightpink'],
+				colorOwnNick:		['black','darkgray'],
+				colorOtherNicks:	['green','green'],
 				
 				// Events
 				eventJoin:			true,

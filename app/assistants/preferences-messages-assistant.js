@@ -192,6 +192,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
+		this.colorChangedHandler  = this.colorChanged.bindAsEventListener(this);
 		this.senderColoringHandler = this.senderColoringChanged.bindAsEventListener(this);
 		
 		
@@ -415,8 +416,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Notice',
 				choices: this.colorChoices,
 				modelProperty: 'colorNotice'
-			},
-			this.prefs
+			}
 		);		
 		this.controller.setupWidget
 		(
@@ -425,8 +425,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Action',
 				choices: this.colorChoices,
 				modelProperty: 'colorAction'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -435,8 +434,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Status',
 				choices: this.colorChoices,
 				modelProperty: 'colorStatus'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -445,8 +443,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Text',
 				choices: this.colorChoices,
 				modelProperty: 'colorText'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -455,8 +452,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Highlight FG',
 				choices: this.colorChoices,
 				modelProperty: 'colorHighlightFG'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -465,8 +461,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Highlight BG',
 				choices: this.colorChoices,
 				modelProperty: 'colorHighlightBG'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -475,8 +470,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Marker line',
 				choices: this.colorChoices,
 				modelProperty: 'colorMarker'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -485,8 +479,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Own Nick',
 				choices: this.colorChoices,
 				modelProperty: 'colorOwnNick'
-			},
-			this.prefs
+			}
 		);
 		this.controller.setupWidget
 		(
@@ -495,23 +488,22 @@ PreferencesMessagesAssistant.prototype.setup = function()
 				label: 'Other Nicks',
 				choices: this.colorChoices,
 				modelProperty: 'colorOtherNicks'
-			},
-			this.prefs
+			}
 		);
 										
 		this.highlightStyleChanged();
 		this.controller.listen('highlightStyle',	Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 		this.controller.listen('highlightPart',		Mojo.Event.propertyChange, this.listChangedHandler);
 		
-		this.controller.listen('colorHighlightFG',	Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorHighlightBG',	Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorNotice',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorAction',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorStatus',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorText',			Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorMarker',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorOwnNick',		Mojo.Event.propertyChange, this.listChangedHandler);
-		this.controller.listen('colorOtherNicks',	Mojo.Event.propertyChange, this.listChangedHandler);		
+		this.controller.listen('colorHighlightFG',	Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorHighlightBG',	Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorNotice',		Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorAction',		Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorStatus',		Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorText',			Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorMarker',		Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorOwnNick',		Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorOtherNicks',	Mojo.Event.propertyChange, this.colorChangedHandler);
 		
 		
 		// Events Group
@@ -602,6 +594,13 @@ PreferencesMessagesAssistant.prototype.sliderChanged = function(event)
 }
 PreferencesMessagesAssistant.prototype.listChanged = function(event)
 {
+	this.cookie.put(this.prefs);
+}
+PreferencesMessagesAssistant.prototype.colorChanged = function(event)
+{
+	var color = this.prefs[event.property];
+	color[this.prefs[this.theme]] = event.value;
+	this.prefs[event.property] = color;
 	this.cookie.put(this.prefs);
 }
 
