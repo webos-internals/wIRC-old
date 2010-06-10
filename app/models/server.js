@@ -271,7 +271,7 @@ ircServer.prototype.newCommand = function(message)
 							this.topic(val, null);
 						}
 					}
-					break;					
+					break;		
 					
 				case 'quit':
 					this.disconnect(val);
@@ -948,7 +948,8 @@ ircServer.prototype.getEditObject = function()
 		autoIdentify:		this.autoIdentify,
 		identifyService:	this.identifyService,
 		identifyPassword:	this.identifyPassword,
-		onConnect:			this.onConnect
+		onConnect:			this.onConnect,
+		favoriteChannels:	this.favoriteChannels
 	};
 	return obj;
 }
@@ -969,6 +970,7 @@ ircServer.prototype.saveInfo = function(params)
 		this.identifyService =	params.identifyService;
 		this.identifyPassword =	params.identifyPassword;
 		this.onConnect =		params.onConnect;
+		this.favoriteChannels =	params.favoriteChannels;
 		
 		var serverCookie = new Mojo.Model.Cookie('server-' + this.id);
 		serverCookie.put(params);
@@ -992,7 +994,8 @@ ircServer.getBlankServerObject = function()
 		autoIdentify:		false,
 		identifyService:	'NickServ',
 		identifyPassword:	'',
-		onConnect:			[]
+		onConnect:			[],
+		favoriteChannels:	[],
 	};
 	return obj;
 }

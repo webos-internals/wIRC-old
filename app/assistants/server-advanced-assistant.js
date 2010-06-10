@@ -510,6 +510,7 @@ ServerAdvancedAssistant.prototype.favoriteChannelsSave = function()
 			}
 		}
 	}
+	
 }
 
 ServerAdvancedAssistant.prototype.deactivate = function(event)

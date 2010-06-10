@@ -138,6 +138,7 @@ ChannelChatAssistant.prototype.loadPrefs = function(initial){
 ChannelChatAssistant.prototype.activate = function(event){
 	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
     this.updateLagMeter();
+	this.updateAppMenu(false);
     this.loadPrefs();
     if (this.alreadyActivated) {
         this.updateList();
@@ -383,6 +384,19 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
 			command: 'do-server-prefs'
 		});
 	}
+	var favorites = [];
+    if (this.channel.server.favoriteChannels && this.channel.server.favoriteChannels.length > 0) {
+        for (var c = 0; c < this.channel.server.favoriteChannels.length; c++) {
+            favorites.push({
+                label: ' ' + this.channel.server.favoriteChannels[c],
+                command: 'join-' + this.channel.server.favoriteChannels[c]
+            });
+        }
+    }
+    serverItems.push({
+        label: "Favorite Channels",
+        items: favorites
+    });
     if (this.channel.server.isAway) {
         serverItems.push({
             label: "Back",
@@ -396,21 +410,7 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
         });
     }
     
-    // Channel menu options
-    var favorites = [];
-    if (this.channel.server.favoriteChannels && this.channel.server.favoriteChannels.length > 0) {
-        for (var c = 0; c < this.channel.server.favoriteChannels.length; c++) {
-            favorites.push({
-                label: ' ' + this.channel.server.favoriteChannels[c],
-                command: 'join-' + this.channel.server.favoriteChannels[c]
-            });
-        }
-    }
-    channelItems.push({
-        label: "Favorites",
-        items: favorites
-    });
-    
+    // Channel menu options   
     channelItems.push({
         label: "Clear Backlog",
         command: 'do-clear-backlog'

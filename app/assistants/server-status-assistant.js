@@ -143,6 +143,7 @@ ServerStatusAssistant.prototype.loadPrefs = function(initial)
 ServerStatusAssistant.prototype.activate = function(event)
 {
 	this.updateLagMeter();
+	this.updateAppMenu(false);
 	this.loadPrefs();
 	if (this.alreadyActivated)
 	{
@@ -372,6 +373,19 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 				command: 'do-server-prefs'
 			});
 		}
+		var favorites = [];
+    	if (this.server.favoriteChannels && this.server.favoriteChannels.length > 0) {
+        	for (var c = 0; c < this.server.favoriteChannels.length; c++) {
+	            favorites.push({
+    	            label: ' ' + this.server.favoriteChannels[c],
+        	        command: 'join-' + this.server.favoriteChannels[c]
+	            });
+        	}
+    	}
+    	serverItems.push({
+	        label: "Favorite Channels",
+        	items: favorites
+    	});
 		if (this.server.isAway) {
 			serverItems.push({
 				label: "Back",
@@ -401,30 +415,10 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			command: 'do-clear-backlog'
 		});
 		
-		// Channel menu options
-		var favorites = [];
-		if (this.server.favoriteChannels && this.server.favoriteChannels.length > 0) {
-			for (var c = 0; c < this.server.favoriteChannels.length; c++) {
-				favorites.push({
-					label: ' ' + this.server.favoriteChannels[c],
-					command: 'join-' + this.server.favoriteChannels[c]
-				});
-			}
-		}
-		channelItems.push({
-			label: "Favorites",
-			items: favorites
-		});
-		
 		this.menuModel.items.push({
 			label: "Server",
 			items: serverItems
 		});
-		this.menuModel.items.push({
-			label: "Channel",
-			items: channelItems
-		});
-		
 		
 		this.menuModel.items.push({
 			label: "Help",
