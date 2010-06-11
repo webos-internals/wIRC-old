@@ -39,7 +39,7 @@ ircChannel.prototype.newCommand = function(message)
 			{
 				case 'part':
 				case 'leave':
-					this.part();
+					this.part(val);
 					break;
 					
 				case 'me':
@@ -298,9 +298,9 @@ ircChannel.prototype.channelMode = function(mode)
 	}
 }
 
-ircChannel.prototype.part = function()
+ircChannel.prototype.part = function(message)
 {
-	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name);
+	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name, message);
 	this.closeStage();
 }
 

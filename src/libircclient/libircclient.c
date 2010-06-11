@@ -879,7 +879,7 @@ int irc_cmd_join (irc_session_t * session, const char * channel, const char * ke
 }
 
 
-int irc_cmd_part (irc_session_t * session, const char * channel)
+int irc_cmd_part (irc_session_t * session, const char * channel, const char * message)
 {
 	if ( !channel )
 	{
@@ -887,7 +887,10 @@ int irc_cmd_part (irc_session_t * session, const char * channel)
 		return 1;
 	}
 
-	return irc_send_raw (session, "PART %s", channel);
+	if ( message )
+		return irc_send_raw (session, "PART %s :%s", channel, message);
+	else
+		return irc_send_raw (session, "PART %s", channel);
 }
 
 
