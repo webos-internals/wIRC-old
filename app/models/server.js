@@ -463,6 +463,7 @@ ircServer.prototype.whois = function(nick)
 
 ircServer.prototype.disconnect = function(reason)
 {
+	if (!reason) reason = prefs.get().quitReason;
 	this.setState(this.STATE_DISCONNECTING);
 	plugin.cmd_quit(servers.getServerArrayKey(this.id), reason);
 	this.setState(this.STATE_DISCONNECTED);
