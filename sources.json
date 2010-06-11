@@ -6,6 +6,7 @@
     {"source": "app/models/cookie.js"},
     {"source": "app/models/connectionmanager.js"},
     {"source": "app/models/preconfigured.js"},
+	{"source": "app/models/wircPlugin.js"},
     {"source": "app/models/servers.js"},
     {"source": "app/models/server.js"},
     {"source": "app/models/channel.js"},

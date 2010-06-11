@@ -18,38 +18,10 @@ var cmdHistoryIndex = 0;
 // the plugin
 var plugin = null;
 
-// plugin readiness
-var pluginReady = false;
-
-var pdkObject;
-
-var df;
+var wircPlugin;
 
 function AppAssistant() {
-  pdkObject = window.document.createElement("object");
-  pdkObject.id = "wIRCplugin";
-  pdkObject.type = "application/x-palm-remote";
-  pdkObject.width=0;
-  pdkObject.height=0;
-  pdkObject['x-palm-pass-event']=false;
-  var param1 = window.document.createElement("param");
-  param1.name="appid";
-  param1.value="org.webosinternals.wirc";
-  var param2 = window.document.createElement("param");
-  param2.name = "exe";
-  param2.value="wirc";
-  var param3 = window.document.createElement("param");
-  param3.name = "Param1"; // MAX_SERVERS
-  param3.value="20";
-  var param4 = window.document.createElement("param");
-  param4.name = "Param2"; // AUTOPING_TIMEOUT
-  param4.value="10";
-  pdkObject.appendChild(param1);
-  pdkObject.appendChild(param2);
-  pdkObject.appendChild(param3);
-  pdkObject.appendChild(param4);
-  df = window.document.createDocumentFragment();
-  df.appendChild(pdkObject);
+	wircPlugin = new wircPlugin();
 }
 
 AppAssistant.prototype.handleLaunch = function(params)
@@ -74,7 +46,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 				var f = function(controller)
 				{
 					vers.init();
-					controller.window.document.body.appendChild(df);
+					controller.window.document.body.appendChild(wircPlugin.df);
 					plugin = controller.get('wIRCplugin');
 					
 					if (vers.showStartupScene())
