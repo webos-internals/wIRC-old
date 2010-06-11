@@ -558,7 +558,7 @@ wircPlugin.prototype.event_unknown_handler = function(id, event, origin, params_
 				servers.servers[id].newMessage('type77', false, event + ' ' + params[0] + ' ' + params[1]);
 			break;
 		default:
-			servers.servers[id].debugPayload(payload, false);
+			servers.servers[id].debugPayload(params, false);
 			break;	
 	}
 }

@@ -274,7 +274,7 @@ ircChannel.prototype.setMode = function(mode)
 
 ircChannel.prototype.kick = function(nick, reason)
 {
-	if (!reason) reason = 'No Reason';
+	if (!reason) reason = prefs.get().kickReason;
 	var tmpNickObj = this.server.getNick(nick);
 	if (tmpNickObj && this.containsNick(tmpNickObj))
 	{
