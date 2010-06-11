@@ -46,8 +46,8 @@ wircPlugin.prototype.registerHandlers = function() {
     plugin.event_notice = this.event_notice_handler.bind(this);
     plugin.event_channel_notice = this.event_channel_notice_handler.bind(this);
     plugin.event_invite = this.event_invite_handler.bind(this);
-    //plugin.event_ctcp_req = this.event_ctcp_req_handler.bind(this);
-    //plugin.event_ctcp_rep = this.event_ctcp_rep_handler.bind(this);
+    plugin.event_ctcp_req = this.event_ctcp_req_handler.bind(this);
+    plugin.event_ctcp_rep = this.event_ctcp_rep_handler.bind(this);
     plugin.event_ctcp_action = this.event_ctcp_action_handler.bind(this);
     plugin.event_unknown = this.event_unknown_handler.bind(this);
     plugin.event_numeric = this.event_numeric_handler.bind(this);
@@ -271,6 +271,28 @@ wircPlugin.prototype.event_channel_notice_handler = function(id, event, origin, 
 	var tmpChan = servers.servers[id].getChannel(params[0]);
 	if (tmpChan) tmpChan.newMessage('type6', tmpNick, params[1]);
 	else servers.servers[id].newMessage('type6', tmpNick, params[1]);
+}
+
+wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params_s) {
+	
+	var id = parseInt(id);
+	var params = JSON.parse(params_s);
+	servers.servers[id].newMessage('type2', false, 'Received ' + event + ' ' + params[0] + ' request by '+ ' ' + origin, true);
+	
+	switch (params[0]) {
+		case 'FINGER':		// Returns the user's full name, and idle time.
+		case 'VERSION': 	// The version and type of the client.
+		case 'SOURCE':		// Where to obtain a copy of a client.
+		case 'USERINFO':	// A string set by the user (never the client coder)
+		case 'CLIENTINFO':	// Dynamic master index of what a client knows.
+		case 'ERRMSG':		// Used when an error needs to be replied with.
+		case 'PING':		// Used to measure the delay of the IRC network between clients.
+		case 'TIME':		// Gets the local date and time from other clients.
+	}
+	
+}
+wircPlugin.prototype.event_ctcp_rep_handler = function(id, event, origin, params_s) {
+	servers.servers[id].debugPayload(event, origin, params_s, true);
 }
 
 /*
