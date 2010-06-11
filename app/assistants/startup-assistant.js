@@ -1,9 +1,9 @@
 function StartupAssistant()
 {
     // on first start, this message is displayed, along with the current version message from below
-    this.firstMessage = $L("On First Start Message...");
+    this.firstMessage = $L("Internet Relay Chat (IRC) is a form of real-time Internet text messaging (chat) or synchronous conferencing. It is mainly designed for group communication in discussion forums, called channels, but also allows one-to-one communication via private message.");
 	
-    this.secondMessage = $L("On Every Update Message...");
+    this.secondMessage = $L("wIRC - THE webOS IRC Client");
 	
     // on new version start
     this.newMessages =
