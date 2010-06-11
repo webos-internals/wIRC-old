@@ -418,7 +418,3 @@ QueryChatAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap,				this.sendButtonPressed);
 }
-QueryChatAssistant.prototype.deactivate = function(event)
-{
-	Mojo.Controller.stageController.setWindowProperties({blockScreenTimeout: false, setSubtleLightbar: true});	
-}

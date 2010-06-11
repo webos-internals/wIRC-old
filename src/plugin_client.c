@@ -207,113 +207,28 @@ PDL_bool client_get_uid(PDL_JSParameters *params) {
 int plugin_client_init() {
 
 	int ret = 0;
-	int tmp = 0;
-	char *name = "";
 
-	name = "connect";
-	tmp = PDL_RegisterJSHandler(name, client_connect);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_msg";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_msg);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_me";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_me);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_notice";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_notice);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_join";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_join);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_part";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_part);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_invite";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_invite);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_names";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_names);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_list";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_list);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_topic";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_topic);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_channel_mode";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_channel_mode);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_kick";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_kick);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_nick";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_nick);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_quit";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_quit);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_whois";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_whois);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_user_mode";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_user_mode);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_ping";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_ping);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "cmd_away";
-	tmp = PDL_RegisterJSHandler(name, client_cmd_away);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "disconnect";
-	tmp = PDL_RegisterJSHandler(name, client_disconnect);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "send_raw";
-	tmp = PDL_RegisterJSHandler(name, client_send_raw);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
-
-	name = "get_uid";
-	tmp = PDL_RegisterJSHandler(name, client_get_uid);
-	syslog(LOG_NOTICE, "Registering JS handler \"%s\": %d", name, tmp);
-	ret +=tmp;
+	ret += PDL_RegisterJSHandler("connect", client_connect);
+	ret += PDL_RegisterJSHandler("cmd_msg", client_cmd_msg);
+	ret += PDL_RegisterJSHandler("cmd_me", client_cmd_me);
+	ret += PDL_RegisterJSHandler("cmd_notice", client_cmd_notice);
+	ret += PDL_RegisterJSHandler("cmd_join", client_cmd_join);
+	ret += PDL_RegisterJSHandler("cmd_part", client_cmd_part);
+	ret += PDL_RegisterJSHandler("cmd_invite", client_cmd_invite);
+	ret += PDL_RegisterJSHandler("cmd_names", client_cmd_names);
+	ret += PDL_RegisterJSHandler("cmd_list", client_cmd_list);
+	ret += PDL_RegisterJSHandler("cmd_topic", client_cmd_topic);
+	ret += PDL_RegisterJSHandler("cmd_channel_mode", client_cmd_channel_mode);
+	ret += PDL_RegisterJSHandler("cmd_kick", client_cmd_kick);
+	ret += PDL_RegisterJSHandler("cmd_nick", client_cmd_nick);
+	ret += PDL_RegisterJSHandler("cmd_quit", client_cmd_quit);
+	ret += PDL_RegisterJSHandler("cmd_whois", client_cmd_whois);
+	ret += PDL_RegisterJSHandler("cmd_user_mode", client_cmd_user_mode);
+	ret += PDL_RegisterJSHandler("cmd_ping", client_cmd_ping);
+	ret += PDL_RegisterJSHandler("cmd_away", client_cmd_away);
+	ret += PDL_RegisterJSHandler("disconnect", client_disconnect);
+	ret += PDL_RegisterJSHandler("send_raw", client_send_raw);
+	ret += PDL_RegisterJSHandler("get_uid", client_get_uid);
 
 	return ret;
 

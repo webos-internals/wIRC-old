@@ -553,8 +553,3 @@ ChannelChatAssistant.prototype.cleanup = function(event){
         this.channel.part();
     }
 }
-
-ChannelChatAssistant.prototype.deactivate = function(event)
-{
-	Mojo.Controller.stageController.setWindowProperties({blockScreenTimeout: false, setSubtleLightbar: true});
-}

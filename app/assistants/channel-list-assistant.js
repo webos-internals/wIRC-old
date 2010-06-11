@@ -81,11 +81,6 @@ ChannelListAssistant.prototype.activate = function(event)
 	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
 }
 
-ChannelListAssistant.prototype.deactivate = function(event)
-{
-	Mojo.Controller.stageController.setWindowProperties({blockScreenTimeout: false, setSubtleLightbar: true});
-}
-
 ChannelListAssistant.prototype.loadChannels = function(channels)
 {
 	if (channels.length > 0)
