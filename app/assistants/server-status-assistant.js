@@ -173,12 +173,12 @@ ServerStatusAssistant.prototype.keyHandler = function(event){
 	}
     
 	if (this.action && event.type == 'keyup' && cmdHistory.length>0) {
-		if (isCmdUp && cmdHistoryIndex<(cmdHistory.length-1)) cmdHistoryIndex++;
-		else if (isCmdDown && cmdHistoryIndex >= 0) cmdHistoryIndex--;
-		if (cmdHistoryIndex<0)
+		if (isCmdUp && cmdHistoryIndex<cmdHistory.length) cmdHistoryIndex++;
+		else if (isCmdDown && cmdHistoryIndex > 0) cmdHistoryIndex--;
+		if (cmdHistoryIndex==0)
 			this.inputWidgetElement.mojo.setValue('');
 		else
-			this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+			this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistory.length-cmdHistoryIndex]);
 	}
 	
 }

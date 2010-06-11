@@ -313,15 +313,15 @@ ChannelChatAssistant.prototype.keyHandler = function(event) {
 	if (this.action) {
 		if (event.type === 'keyup') {
 			if (isCmdDown || isCmdUp) {
-				if (isCmdUp && cmdHistoryIndex < (cmdHistory.length - 1)) 
+				if (isCmdUp && cmdHistoryIndex<cmdHistory.length) 
 					cmdHistoryIndex++;
 				else 
-					if (isCmdDown && cmdHistoryIndex >= 0) 
+					if (isCmdDown && cmdHistoryIndex > 0) 
 						cmdHistoryIndex--;
-				if (cmdHistoryIndex < 0) 
+				if (cmdHistoryIndex == 0) 
 					this.inputWidgetElement.mojo.setValue('');
 				else 
-					this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistoryIndex]);
+					this.inputWidgetElement.mojo.setValue(cmdHistory[cmdHistory.length-cmdHistoryIndex]);
 			} 
 			else if (isTabKey) {
 				if (!this.tabText) {
