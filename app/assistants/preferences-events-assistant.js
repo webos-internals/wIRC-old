@@ -50,8 +50,58 @@ PreferencesEventsAssistant.prototype.setup = function()
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
+		this.textChangeHandler  = this.textChanged.bindAsEventListener(this);
 		
-		// Events Group
+		// Reasons Group
+		this.controller.setupWidget
+		(
+			'partReason',
+			{
+				multiline: false,
+				enterSubmits: false,
+				//changeOnKeyPress: true,
+				maxLength: 128,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode,
+				modelProperty: 'partReason'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'quitReason',
+			{
+				multiline: false,
+				enterSubmits: false,
+				//changeOnKeyPress: true,
+				maxLength: 128,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode,
+				modelProperty: 'quitReason'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'kickReason',
+			{
+				multiline: false,
+				enterSubmits: false,
+				//changeOnKeyPress: true,
+				maxLength: 128,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode,
+				modelProperty: 'kickReason'
+			},
+			this.prefs
+		);
+		this.controller.listen('partReason', Mojo.Event.propertyChange, this.textChangeHandler);
+		this.controller.listen('quitReason', Mojo.Event.propertyChange, this.textChangeHandler);
+		this.controller.listen('kickReason', Mojo.Event.propertyChange, this.textChangeHandler);
+		
+		
+		
+		// Visibility Group
 		this.controller.setupWidget
 		(
 			'eventJoin',
@@ -117,6 +167,11 @@ PreferencesEventsAssistant.prototype.setup = function()
 		this.controller.listen('eventPart',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('eventQuit',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('eventMode',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		
+		
+		
+		// make it so nothing is selected by default (textbox rage)
+		this.controller.setInitialFocusedElement(null);
 				
 	}
 	catch (e)
@@ -136,6 +191,10 @@ PreferencesEventsAssistant.prototype.sliderChanged = function(event)
 	this.cookie.put(this.prefs);
 }
 PreferencesEventsAssistant.prototype.listChanged = function(event)
+{
+	this.cookie.put(this.prefs);
+}
+PreferencesEventsAssistant.prototype.textChanged = function(event)
 {
 	this.cookie.put(this.prefs);
 }
@@ -191,6 +250,9 @@ PreferencesEventsAssistant.prototype.deactivate = function(event)
 PreferencesEventsAssistant.prototype.cleanup = function(event)
 {
 	this.controller.stopListening(this.pageSelectorElement, Mojo.Event.tap,			   this.pageTapHandler);
+	this.controller.stopListening(this.partReason, 			Mojo.Event.propertyChange, this.textChangeHandler);
+	this.controller.stopListening(this.quitReason, 			Mojo.Event.propertyChange, this.textChangeHandler);
+	this.controller.stopListening(this.kickReason, 			Mojo.Event.propertyChange, this.textChangeHandler);
 	this.controller.stopListening('eventJoin',				Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('eventPart',				Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('eventQuit',				Mojo.Event.propertyChange, this.toggleChangeHandler);

@@ -69,6 +69,9 @@ preferenceCookie.prototype.get = function(reload)
 				colorOtherNicks:	['green','green'],
 				
 				// Events
+				partReason:			'',
+				quitReason:			'',
+				kickReason:			'',
 				eventJoin:			true,
 				eventPart:			true,
 				eventQuit:			true,
