@@ -41,13 +41,11 @@ int main(int argc, char *argv[]) {
 	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
 
 	max_connections = *argv[1];
-	autoping_timeout = *argv[2];
 
 	servers = malloc(sizeof(wIRCd_client_t)*max_connections);
 
 	max_retries = DEFAULT_MAX_RETRIES;
 	pre_run_usleep = DEFAULT_PRE_RUN_USLEEP;
-	debug = DEFAULT_DEBUG_LEVEL;
 
 	int ret = plugin_initialize();
     if (ret == PDL_NOERROR) {

@@ -97,7 +97,7 @@ ServerListAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 		
-		this.updateCommandMenu(true);
+		this.updateCommandMenu(false);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);		
 		
 	} 
@@ -120,13 +120,14 @@ ServerListAssistant.prototype.checkPlugin = function()
 		this.controller.get('noPlugin').style.display = '';
 		this.controller.get('yesPlugin').style.display = 'none';
 	}
-	this.updateCommandMenu();
+	this.updateCommandMenu(false);
 }
 
 ServerListAssistant.prototype.activate = function(event)
 {
 	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
 	this.checkPlugin();
+	this.updateCommandMenu(false);
 	
 	if (this.alreadyActivated)
 	{
@@ -207,17 +208,25 @@ ServerListAssistant.prototype.updateCommandMenu = function(skipUpdate)
 {
 	try
 	{
-		this.cmdMenuModel.visible = wircPlugin.isReady;
-		
 		this.cmdMenuModel.items = [];
 		this.cmdMenuModel.items.push({});
-		this.cmdMenuModel.items.push({label: $L('New'), icon: 'new', command: 'new-server'});
+			
+		if ((servers.servers.length - 2) < MAX_SERVERS) {
+			this.cmdMenuModel.visible = wircPlugin.isReady;
+			this.cmdMenuModel.items.push({
+				label: $L('New'),
+				icon: 'new',
+				command: 'new-server'
+			});
+		} else {
+			this.cmdMenuModel.visible = false;
+			this.cmdMenuModel.items.push({});
+		}
 		
-		if (!skipUpdate)
-		{
+		if (!skipUpdate) {
 			this.controller.modelChanged(this.cmdMenuModel);
 			this.controller.setMenuVisible(Mojo.Menu.commandMenu, true);
-		}
+		}		
 	}
 	catch (e)
 	{

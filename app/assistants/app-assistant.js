@@ -15,6 +15,9 @@ var servers = new ircServers();
 var cmdHistory = [];
 var cmdHistoryIndex = 0;
 
+// max servers
+var MAX_SERVERS = 3;
+
 // the plugin
 var plugin = null;
 
@@ -47,7 +50,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 				{
 					vers.init();
 					controller.window.document.body.appendChild(wircPlugin.df);
-					plugin = controller.get('wIRCplugin');
+					plugin = controller.get('wircPlugin');
 					
 					if (vers.showStartupScene())
 						controller.pushScene('startup');

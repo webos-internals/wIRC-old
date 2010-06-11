@@ -43,13 +43,10 @@ typedef pthread_mutex_t port_mutex_t;
 
 #define DEFAULT_MAX_RETRIES 10
 #define DEFAULT_PRE_RUN_USLEEP 0
-#define DEFAULT_DEBUG_LEVEL 0
 
-int debug;
 int max_retries;
 int pre_run_usleep;
 int max_connections;
-int autoping_timeout;
 
 typedef enum {
 	event_connect_,				// 0
