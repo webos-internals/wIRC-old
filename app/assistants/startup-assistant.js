@@ -40,7 +40,8 @@ function StartupAssistant()
 				'Turning off autoping actually turns off autoping',
 				'Added option to set autoping interval',
 				'Split messages longer than 255 char',
-				'Added new events and keybindings preferences'
+				'Added new events and keybindings preferences',
+				'/part messages now work'
 			]
 		},
 		{
