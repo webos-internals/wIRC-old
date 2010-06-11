@@ -69,8 +69,8 @@ preferenceCookie.prototype.get = function(reload)
 				colorOtherNicks:	['green','green'],
 				
 				// Events
-				quitReason:			'',
-				kickReason:			'',
+				quitReason:			'wIRC',
+				kickReason:			'Kicked!',
 				eventJoin:			true,
 				eventPart:			true,
 				eventQuit:			true,
