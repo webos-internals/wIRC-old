@@ -447,7 +447,7 @@ ServerListAssistant.prototype.event_mode_handler = function(id, event, origin, p
 		if (modeNick)
 			modeNick.updateMode(params[1], tmpChan);
 		if (prefs.get().eventMode)
-			tmpChan.newMessage('type3', false, 'Mode ' + params[0] + ' ' + params[1] + ' ' + params[2] + ' by ' + tmpNick.name);
+			tmpChan.newMessage('type3', false, 'Mode ' + params[0] + ' ' + params[1] + ' by ' + tmpNick.name);
 	}
 }
 
@@ -673,9 +673,6 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 			break;
 	
 		case '322':		// LIST
-			//Mojo.Log.info("#######################################################");
-			//Mojo.Log.info("P1: %s, P2: %s, P3: %s", params[1], params[2], params[3]);
-			//Mojo.Log.info("#######################################################");
 			servers.servers[id].listAddChannel(params[1], params[2], params[3]);
 			break;
 	
@@ -721,11 +718,6 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 			} 
 			else 
 				servers.servers[id].newMessage('action', false, 'Channel ' + params[1] + ' created on ' + dateString);
-			break;					
-			
-		case '328':		// ???
-		case '331':		// NO TOPIC
-			//servers.servers[id].debugPayload(payload, false); // XXXXXXXXXXXXXXXXXX
 			break;
 		
 		case '353':		// NAMREPLY
@@ -798,9 +790,30 @@ ServerListAssistant.prototype.event_numeric_handler = function(id, event, origin
 			else
 				servers.servers[id].newMessage('type2', false, params[2]);
 			break;
+			
+		case '396':
+			tmpNick = servers.servers[id].getNick(params[0]);
+			if (tmpNick) {
+				tmpNick.hiddenHost = params[1];
+				servers.servers[id].newMessage('type2', false, params[1] + ' ' + params[2], true);
+			}
+			break;
+			
+		case '221':
+			tmpNick = servers.servers[id].getNick(params[0]);
+			if (tmpNick) {
+				tmpNick.hiddenHost = params[1];
+				servers.servers[id].newMessage('type2', false, params[1], true);
+			}
+			break;
 					
 		default:
-			//servers.servers[id].debugPayload(payload, true); // XXXXXXXXXXXXXXXXXXXXXXX
+			var out = event + ' ' + params[1];
+			if (params.length>2) {
+				for (var i=2; i<params.length; i++)
+					out = out +	' ' + params[i];
+			}
+			servers.servers[id].newMessage('type2', false, out, true);
 			break;
 	}
 }

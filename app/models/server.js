@@ -400,17 +400,15 @@ ircServer.prototype.ipMatches = function(payload)
 	return (payload && payload.ipAddress && payload.ipAddress === this.ipAddress);
 }*/
 
-ircServer.prototype.debugPayload = function(payload, visible)
+ircServer.prototype.debugPayload = function(event, origin, params_s, visible)
 {
 	alert('------');
-	for (p in payload) 
-	{
-		alert(p + ': ' + payload[p]);
-		if (visible) 
-		{
-			this.newMessage('debug', false, p + ': ' + payload[p]);
-		}
-	}
+	alert('event: ' + event);
+	alert('origin: ' + origin);
+	alert('params_s: ' + params_s);
+	alert('------');
+	if (visible)
+		this.newMessage('debug', false, event + ', origin: ' + origin + ', params_s: ' + params_s);
 }
 
 ircServer.prototype.doAutoPing = function(id, interval)
