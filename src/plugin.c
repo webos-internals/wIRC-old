@@ -55,7 +55,7 @@ void plugin_cleanup() {
 	for (;i<max_connections;i++) {
 		if (servers[i].session) {
 			syslog(LOG_INFO, "Disconnect Server ID: %d", servers[i].id);
-			irc_disconnect(servers[i].session);
+			irc_cmd_quit(servers[i].session, "wIRC closed");
 		}
 	}
 }

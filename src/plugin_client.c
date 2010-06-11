@@ -18,8 +18,6 @@
 
 #include "wIRC.h"
 
-#define IRC_MSG_BUF	512
-
 typedef enum {
 	msg_,
 	me_,
@@ -71,11 +69,12 @@ void *client_run(void *ptr) {
 
 		irc_run(server->session);
 
+		irc_destroy_session(server->session);
+		memset(server,-1,sizeof(server));
+
 		if (server->estabilshed) {
 			return;
 		} else {
-			irc_destroy_session(server->session);
-			server->session = 0;
 			retry++;
 			syslog(LOG_INFO, "Retry %d", retry);
 		}
@@ -90,6 +89,8 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 
 	int id = PDL_GetJSParamInt(params, 0);
 
+	syslog(LOG_INFO, "Connecting to server: %d", id);
+
 	if (servers[id].id != -1)
 		return PDL_FALSE;
 
@@ -103,7 +104,6 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 	servers[id].interface = PDL_GetJSParamString(params, 7);
 	servers[id].estabilshed = 0;
 	servers[id].worker_thread = 0;
-	servers[id].ping_server = 1;
 	servers[id].realServer = 0;
 
 	if (pthread_create(&servers[id].worker_thread, NULL, client_run, (void*)&id)) {

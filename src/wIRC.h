@@ -78,7 +78,6 @@ typedef struct {
 	pthread_mutex_t mutex;
 	pthread_t		worker_thread;
 	pthread_t		ping_thread;
-	int				ping_server;
 	irc_session_t	*session;
 	const char	 	*server;
 	const char		*server_password;
