@@ -202,11 +202,10 @@ ircServer.prototype.newCommand = function(message)
 					var tmpMatch = threeValRegExp.exec(val);
 					if (tmpMatch) 
 					{
-						alert('*******************************KICKING SERVER*******************************');
 						tmpChan = this.getChannel(tmpMatch[1]);
 						if (tmpChan)
 						{
-							tmpChan.kick(this.getNick(tmpMatch[2]), tmpMatch[3]);
+							tmpChan.kick(this.getNick(tmpMatch[2]).name, tmpMatch[3]);
 						}
 					}
 					break;

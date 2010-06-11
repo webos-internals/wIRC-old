@@ -54,10 +54,7 @@ ircChannel.prototype.newCommand = function(message)
 					
 				case 'kick':
 					var tmpMatch = twoValRegExp.exec(val);
-					alert('*******************************KICKING CHANNEL*******************************');
-					alert('Nick: %s, Chan: %s', tmpMatch[1],tmpMatch[2]);
-					alert('*******************************KICKING CHANNEL*******************************');
-					this.kick(tmpMatch[1],tmpMatch[2]);
+					this.kick(tmpMatch[1], tmpMatch[2]);
 					break;				
 				
 				case 'topic':
@@ -66,7 +63,7 @@ ircChannel.prototype.newCommand = function(message)
 						tmpMatch = twoValRegExp.exec(val);
 						if (tmpMatch) 
 						{
-							this.server.topic(tmpMatch[1],tmpMatch[2]);
+							this.server.topic(tmpMatch[1], tmpMatch[2]);
 						}
 						else
 						{
@@ -278,9 +275,10 @@ ircChannel.prototype.setMode = function(mode)
 ircChannel.prototype.kick = function(nick, reason)
 {
 	if (!reason) reason = 'No Reason';
-	if (nick && this.containsNick(nick))
+	var tmpNickObj = this.server.getNick(nick);
+	if (tmpNickObj && this.containsNick(tmpNickObj))
 	{
-		plugin.cmd_kick(servers.getServerArrayKey(this.server.id), this.name, nick, reason);
+		plugin.cmd_kick(servers.getServerArrayKey(this.server.id), this.name, tmpNickObj.name, reason);
 	}
 }
 

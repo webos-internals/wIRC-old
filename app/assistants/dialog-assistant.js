@@ -364,7 +364,7 @@ UserActionDialog.prototype.kickTap = function(event)
 	(
 		this.sceneAssistant,
 		{
-			command:		'kick ' + this.sceneAssistant.channel.name + ' ' + this.item.name,
+			command:		'kick ' + this.item.name,
 			onSubmit:		this.sceneAssistant.channel.newCommand.bind(this.sceneAssistant.channel),
 			dialogTitle:	'Kick ' + this.item.name,
 			textLabel:		'Reason',
