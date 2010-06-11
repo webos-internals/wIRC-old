@@ -10,10 +10,17 @@ function ircNick(params)
 	this.channelModes =	[];
 	this.me =			false;
 	
+	this.mode =			'';
+	
 	
 	this.whoisStageName =		'whois-' + this.num;
 	this.whoisStageController =	false;
 	this.whois =				false;
+}
+
+ircNick.prototype.setMode = function(mode)
+{
+	plugin.cmd_user_mode(servers.getServerArrayKey(this.server.id), mode);
 }
 
 ircNick.prototype.addChannel = function(channel, mode)

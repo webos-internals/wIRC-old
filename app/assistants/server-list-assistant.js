@@ -456,7 +456,11 @@ ServerListAssistant.prototype.event_umode_handler = function(id, event, origin, 
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
 	
-	servers.servers[id].newMessage('type3', false, 'Mode ' + servers.servers[id].nick.name + ' ' + params[0] + ' by ' + origin);
+	var tmpNick = servers.servers[id].getNick(origin);
+	if (tmpNick) {
+		tmpNick.mode = params[0];
+		servers.servers[id].newMessage('type3', false, 'Mode ' + origin + ' ' + params[0] + ' by ' + origin);
+	}
 }
 	
 ServerListAssistant.prototype.event_join_handler = function(id, event, origin, params_s)

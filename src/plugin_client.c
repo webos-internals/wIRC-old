@@ -182,7 +182,6 @@ PDL_bool client_cmd_ping(PDL_JSParameters *params) {
 		ftime(&servers[id].ping);
 		irc_send_raw(servers[id].session, "PING %s", PDL_GetJSParamString(params, 1));
 	}
-	//return irc_cmd_ping(session, PDL_GetJSParamString(params, 0));
 	return PDL_TRUE;
 }
 

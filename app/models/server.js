@@ -210,19 +210,30 @@ ircServer.prototype.newCommand = function(message)
 					}
 					break;
 					
+				case 'ignore':
+					this.ignore(val);
+					break;
+					
+				case 'umode':
+					alert('/umode ' + val);
+					this.newCommand('/mode '+ this.nick.name + ' ' + val);
+					break;
+					
 				case 'mode':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
 					{
-						tmpChan = this.getChannel(tmpMatch[1]);
-						if (tmpChan)
-						{
+						var tmpChan = this.getChannel(tmpMatch[1]);
+						if (tmpChan) {
+							alert('c /mode ' + tmpMatch[1] + ' ' + tmpMatch[2]);
 							tmpChan.setMode(tmpMatch[2]);
+						} else {
+							var tmpNick = this.getNick(tmpMatch[1]);
+							if (tmpNick) {
+								alert('n /mode ' + tmpMatch[1] + ' ' + tmpMatch[2]);
+								tmpNick.setMode(tmpMatch[2]);
+							}		
 						}
-					}
-					else
-					{
-						// if no 2 values, its to set user mode
 					}
 					break;
 					
