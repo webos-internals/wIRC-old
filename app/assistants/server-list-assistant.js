@@ -414,9 +414,13 @@ ServerListAssistant.prototype.event_privmsg_handler = function(id, event, origin
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpQuery = servers.servers[id].getQuery(tmpNick);
 	if (tmpQuery)
+	{
 		tmpQuery.newMessage('privmsg', tmpNick, params[1]);
+	}
 	else
+	{
 		servers.servers[id].startQuery(tmpNick, false, 'message', params[1]);
+	}
 }
 
 ServerListAssistant.prototype.event_nick_handler = function(id, event, origin, params_s)

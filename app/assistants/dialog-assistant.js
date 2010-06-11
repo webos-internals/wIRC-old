@@ -312,7 +312,15 @@ UserActionDialog.prototype.setup = function(widget)
 }
 UserActionDialog.prototype.queryTap = function(event)
 {
-	this.sceneAssistant.channel.server.newQuery(this.item.name);
+	var tmpQuery = this.sceneAssistant.channel.server.getQuery(this.nick);
+	if (tmpQuery)
+	{
+		tmpQuery.openStage();
+	}
+	else
+	{
+		this.sceneAssistant.channel.server.newQuery(this.item.name);
+	}
 	this.close(event);
 }
 UserActionDialog.prototype.whoisTap = function(event)
