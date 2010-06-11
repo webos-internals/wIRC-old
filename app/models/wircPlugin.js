@@ -4,11 +4,11 @@ function wircPlugin(){
     
     this.pluginObj = window.document.createElement("object");
     
-    this.pluginObj.id = "wIRCplugin";
+    this.pluginObj.id = "wircPlugin";
     this.pluginObj.type = "application/x-palm-remote";
     this.pluginObj.width = 0;
     this.pluginObj.height = 0;
-    this.pluginObj['x-palm-pass-event'] = false;
+    this.pluginObj['x-palm-pass-event'] = true;
     
     var param1 = window.document.createElement("param");
     param1.name = "appid";
@@ -20,16 +20,11 @@ function wircPlugin(){
     
     var param3 = window.document.createElement("param");
     param3.name = "Param1"; // MAX_SERVERS
-    param3.value = "20";
-    
-    var param4 = window.document.createElement("param");
-    param4.name = "Param2"; // AUTOPING_TIMEOUT
-    param4.value = "10";
+    param3.value = MAX_SERVERS;
     
     this.pluginObj.appendChild(param1);
     this.pluginObj.appendChild(param2);
     this.pluginObj.appendChild(param3);
-    this.pluginObj.appendChild(param4);
     
     this.df = window.document.createDocumentFragment();
     this.df.appendChild(this.pluginObj);
