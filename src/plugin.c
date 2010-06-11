@@ -49,3 +49,13 @@ void plugin_start() {
 		SDL_WaitEvent(&Event);
 	} while (Event.type != SDL_QUIT);
 }
+
+void plugin_cleanup() {
+	int i = 0;
+	for (;i<max_connections;i++) {
+		if (servers[i].session) {
+			syslog(LOG_INFO, "Disconnect Server ID: %d", servers[i].id);
+			irc_disconnect(servers[i].session);
+		}
+	}
+}

@@ -122,13 +122,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 AppAssistant.prototype.cleanup = function()
 {
 	alert('AppAssistant#cleanup');
-	if (servers.servers)
-	{
-		servers.servers.each(function(s){
-			s && s.disconnect();
-		});
-	}
-	this.controller.closeAllStages();
+	//this.controller.closeAllStages();
 }
 
 

@@ -20,7 +20,10 @@
 
 void cleanup(int sig) {
 	syslog(LOG_INFO, "Cleanup caused by: %d", sig);
-	if (servers) free(servers);
+	if (servers) {
+		plugin_cleanup();
+		free(servers);
+	}
 	closelog();
 	PDL_Quit();
 }

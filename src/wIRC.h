@@ -97,6 +97,7 @@ wIRCd_client_t *servers;
 
 int plugin_client_init();
 void plugin_start();
+void plugin_cleanup();
 PDL_Err plugin_initialize();
 void setup_event_callbacks();
 
