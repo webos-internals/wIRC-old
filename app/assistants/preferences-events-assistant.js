@@ -55,6 +55,20 @@ PreferencesEventsAssistant.prototype.setup = function()
 		// Reasons Group
 		this.controller.setupWidget
 		(
+			'partReason',
+			{
+				multiline: false,
+				enterSubmits: false,
+				//changeOnKeyPress: true,
+				maxLength: 128,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode,
+				modelProperty: 'partReason'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
 			'quitReason',
 			{
 				multiline: false,
@@ -81,6 +95,7 @@ PreferencesEventsAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
+		this.controller.listen('partReason', Mojo.Event.propertyChange, this.textChangeHandler);
 		this.controller.listen('quitReason', Mojo.Event.propertyChange, this.textChangeHandler);
 		this.controller.listen('kickReason', Mojo.Event.propertyChange, this.textChangeHandler);
 		
@@ -235,8 +250,9 @@ PreferencesEventsAssistant.prototype.deactivate = function(event)
 PreferencesEventsAssistant.prototype.cleanup = function(event)
 {
 	this.controller.stopListening(this.pageSelectorElement, Mojo.Event.tap,			   this.pageTapHandler);
-	this.controller.stopListening('quitReason', 			Mojo.Event.propertyChange, this.textChangeHandler);
-	this.controller.stopListening('kickReason', 			Mojo.Event.propertyChange, this.textChangeHandler);
+	this.controller.stopListening(this.partReason, 			Mojo.Event.propertyChange, this.textChangeHandler);
+	this.controller.stopListening(this.quitReason, 			Mojo.Event.propertyChange, this.textChangeHandler);
+	this.controller.stopListening(this.kickReason, 			Mojo.Event.propertyChange, this.textChangeHandler);
 	this.controller.stopListening('eventJoin',				Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('eventPart',				Mojo.Event.propertyChange, this.toggleChangeHandler);
 	this.controller.stopListening('eventQuit',				Mojo.Event.propertyChange, this.toggleChangeHandler);

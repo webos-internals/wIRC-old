@@ -71,6 +71,8 @@ preferenceCookie.prototype.get = function(reload)
 				// Events
 				quitReason:			'wIRC',
 				kickReason:			'Kicked!',
+				partReason:			'wIRC',
+
 				eventJoin:			true,
 				eventPart:			true,
 				eventQuit:			true,
