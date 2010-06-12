@@ -439,6 +439,26 @@ ircServer.prototype.runOnConnect = function()
 		if (!this.autoPing && prefs.get().lagMeter)
 			this.doAutoPing(servers.getServerArrayKey(this.id), prefs.get().autoPingInterval*1000);
 	}
+	
+	this.reJoinChannels.bind(this).defer();
+}
+
+ircServer.prototype.reJoinChannels = function()
+{
+	alert('-----');
+	alert('-- '+this.channels.length);
+	if (this.channels.length > 0)
+	{
+		for (var c = 0; c < this.channels.length; c++)
+		{
+			alert(this.channels[c].name+' - '+this.channels[c].joined);
+			if (!this.channels[c].joined)
+			{
+				plugin.cmd_join(servers.getServerArrayKey(this.id), this.channels[c].name, this.channels[c].key?this.channels[c].key:null);
+				this.channels[c].joined = true;
+			}
+		}
+	}
 }
 
 ircServer.prototype.away = function(reason)
@@ -475,6 +495,14 @@ ircServer.prototype.disconnect = function(reason)
 	
 	if (this.isTemporary) {
 		servers.deleteTemporaryServer(this.id);
+	}
+	
+	if (this.channels.length > 0)
+	{
+		for (var c = 0; c < this.channels.length; c++)
+		{
+			this.channels[c].joined = false;
+		}
 	}
 }
 

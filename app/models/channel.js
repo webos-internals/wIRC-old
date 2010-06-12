@@ -10,6 +10,8 @@ function ircChannel(params)
 	this.mode = 			'';
 	this.topic =			'';
 	
+	this.joined =			false;
+	
 	this.dashName =			'channeldash-' + this.server.id + '-' + this.name;
 	this.dashMessage =		false;
 	this.dashController =	false;
@@ -287,6 +289,7 @@ ircChannel.prototype.join = function()
 	plugin.cmd_join(servers.getServerArrayKey(this.server.id), this.name, this.key?this.key:null);
 	plugin.cmd_channel_mode(servers.getServerArrayKey(this.server.id), this.name, null);
 	this.openStage();
+	this.joined = true;
 }
 
 ircChannel.prototype.channelMode = function(mode)

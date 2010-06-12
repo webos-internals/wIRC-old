@@ -203,7 +203,10 @@ wircPlugin.prototype.event_join_handler = function(id, event, origin, params_s)
 	{
 		var tmpNick = servers.servers[id].getNick(origin);
 		if (tmpNick.me)
+		{
 			tmpChan.openStage();
+			tmpChan.joined = true;
+		}
 		tmpNick.addChannel(tmpChan, '');
 		if (prefs.get().eventJoin)
 			tmpChan.newMessage('type4', false, tmpNick.name + ' (' + origin.split("!")[1] + ') has joined ' + tmpChan.name);
