@@ -42,7 +42,8 @@ function StartupAssistant()
 				'Split messages longer than 255 char',
 				'Added new events and keybindings preferences',
 				'/part messages now work',
-				'Now rejoins channels with open cards on a reconnect'
+				'Now rejoins channels with open cards on a reconnect',
+				'Added contextual menu when you tap a message'
 			]
 		},
 		{
