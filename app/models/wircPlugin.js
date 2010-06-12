@@ -273,10 +273,10 @@ wircPlugin.prototype.event_channel_notice_handler = function(id, event, origin, 
 	else servers.servers[id].newMessage('type6', tmpNick, params[1]);
 }
 
-wircPlugin.prototype.ctcp_rep = function(id, nick, reply)
+wircPlugin.prototype.ctcp_rep_version = function(id, nick, version)
 {
-	alert('CTCP REP: ' + id + ' ' + nick + ' ' + reply);
-	plugin.ctcp_rep(id, nick, reply);
+	alert('CTCP VERSION REPLY: ' + version);
+	plugin.ctcp_rep_version(id, nick, version);
 }
 
 wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params_s) {
@@ -286,14 +286,13 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 	servers.servers[id].newMessage('type2', false, 'Received ' + event + ' ' + params[0] + ' request by '+ ' ' + origin, true);
 	
 	var nick = servers.servers[id].getNick(origin);
-	var reply = false;
+	var ctcp_rep_func = false;
 		
 	switch (params[0]) {
 		case 'FINGER':		// Returns the user's full name, and idle time.
 			break;
 		case 'VERSION': 	// The version and type of the client.
-			alert('CTCP VERSION');
-			reply = '0.3.0'; //'\001VERSION wIRC:' + Mojo.Controller.appInfo.version + ':webOS\001';
+			ctcp_rep_func = this.ctcp_rep_version.bind(this, id, nick.name, Mojo.Controller.appInfo.version);
 			break;
 		case 'SOURCE':		// Where to obtain a copy of a client.
 			break;
@@ -309,9 +308,8 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 			break;
 	}
 	
-	if (reply) {
-		var ctcp_rep_func = this.ctcp_rep.bind(this, id, nick.name, reply);
-		setTimeout(ctcp_rep_func, 100);
+	if (ctcp_rep_func) {
+		setTimeout(ctcp_rep_func, 1000);
 	}
 	
 }
