@@ -291,6 +291,12 @@ ircChannel.prototype.join = function()
 	this.openStage();
 	this.joined = true;
 }
+ircChannel.prototype.reJoin = function()
+{
+	plugin.cmd_join(servers.getServerArrayKey(this.server.id), this.name, this.key?this.key:null);
+	plugin.cmd_channel_mode(servers.getServerArrayKey(this.server.id), this.name, null);
+	this.joined = true;
+}
 
 ircChannel.prototype.channelMode = function(mode)
 {
@@ -306,6 +312,12 @@ ircChannel.prototype.part = function(reason)
 	if (!reason) reason = prefs.get().partReason;
 	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name, reason);
 	this.closeStage();
+}
+ircChannel.prototype.disconnectPart = function()
+{
+	this.joined = false;
+	this.nicks = [];
+	this.updateUserCount();
 }
 
 ircChannel.prototype.clearMessages = function()

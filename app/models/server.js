@@ -445,17 +445,13 @@ ircServer.prototype.runOnConnect = function()
 
 ircServer.prototype.reJoinChannels = function()
 {
-	alert('-----');
-	alert('-- '+this.channels.length);
 	if (this.channels.length > 0)
 	{
 		for (var c = 0; c < this.channels.length; c++)
 		{
-			alert(this.channels[c].name+' - '+this.channels[c].joined);
 			if (!this.channels[c].joined)
 			{
-				plugin.cmd_join(servers.getServerArrayKey(this.id), this.channels[c].name, this.channels[c].key?this.channels[c].key:null);
-				this.channels[c].joined = true;
+				this.channels[c].reJoin();
 			}
 		}
 	}
@@ -501,7 +497,7 @@ ircServer.prototype.disconnect = function(reason)
 	{
 		for (var c = 0; c < this.channels.length; c++)
 		{
-			this.channels[c].joined = false;
+			this.channels[c].disconnectPart();
 		}
 	}
 }
@@ -510,6 +506,14 @@ ircServer.prototype.disrupt = function()
 {
 	this.setState(this.STATE_DISRUPTED);
 	plugin.cmd_quit(servers.getServerArrayKey(this.id), false);
+	
+	if (this.channels.length > 0)
+	{
+		for (var c = 0; c < this.channels.length; c++)
+		{
+			this.channels[c].disconnectPart();
+		}
+	}
 }
 
 ircServer.prototype.clearMessages = function()
