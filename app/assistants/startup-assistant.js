@@ -41,7 +41,8 @@ function StartupAssistant()
 				'Added option to set autoping interval',
 				'Split messages longer than 255 char',
 				'Added new events and keybindings preferences',
-				'/part messages now work'
+				'/part messages now work',
+				'Now rejoins channels with open cards on a reconnect'
 			]
 		},
 		{
