@@ -1,3 +1,12 @@
+// replace tokens in a string with values
+replaceTokens = function(string) {
+	string = string.replace("%WIRCVER%", Mojo.Controller.appInfo.version);
+	string = string.replace("%WEBOSVER%", Mojo.Environment.DeviceInfo.platformVersion);
+	string = string.replace("%CARRIER%", Mojo.Environment.DeviceInfo.carrierName);
+	string = string.replace("%MODEL%", Mojo.Environment.DeviceInfo.modelNameAscii);
+	return string;	  
+}
+
 // formats a timestamp to a readable date
 formatDate = function(date){
     var dateObj = new Date(date * 1000);

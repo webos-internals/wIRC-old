@@ -25,6 +25,9 @@ preferenceCookie.prototype.get = function(reload)
 				connectionTimeout:	30,
 				cmdHistoryMax:		30,
 				
+				// CTCP Replies,
+				ctcp_reply_version:	'wIRC %WIRCVER% webOS %WEBOSVER% [%CARRIER% %MODEL%]',
+				
 				// Identity Scene
 				realname:			'',
 				nicknames:			[],

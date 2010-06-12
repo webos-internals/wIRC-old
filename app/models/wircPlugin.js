@@ -296,7 +296,7 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 			break;
 		case 'VERSION': 	// The version and type of the client.
 			alert('CTCP VERSION');
-			reply = 'VERSION wIRC:' + Mojo.Controller.appInfo.version + ':webOS';
+			reply = 'VERSION ' + replaceTokens(prefs.get().ctcp_reply_version);
 			break;
 		case 'SOURCE':		// Where to obtain a copy of a client.
 			break;
