@@ -286,7 +286,7 @@ ServerStatusAssistant.prototype.messageTap = function(event)
 			placeNear: event.target,
 			items: 
 			[
-				//{label: 'Message'},  
+				{label: 'Message'},
 				{label: 'Copy',	 command: 'copy'}
 			]
 		});
@@ -297,7 +297,7 @@ ServerStatusAssistant.prototype.messageTapListHandler = function(choice, item)
 	switch(choice)
 	{
 		case 'copy':
-			this.controller.stageController.setClipboard('<'+item.nick+'> '+item.message, true);
+			this.controller.stageController.setClipboard('<'+item.nick+'> '+item.message);
 			break;
 	}
 }

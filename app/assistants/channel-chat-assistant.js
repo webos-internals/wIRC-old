@@ -272,7 +272,7 @@ ChannelChatAssistant.prototype.messageTap = function(event)
 			placeNear: event.target,
 			items: 
 			[
-				//{label: 'Message'},  
+				{label: 'Message'},  
 				{label: 'Copy',	 command: 'copy'}
 			]
 		});
