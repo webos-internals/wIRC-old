@@ -4,6 +4,8 @@ replaceTokens = function(string) {
 	string = string.replace("%WEBOSVER%", Mojo.Environment.DeviceInfo.platformVersion);
 	string = string.replace("%CARRIER%", Mojo.Environment.DeviceInfo.carrierName);
 	string = string.replace("%MODEL%", Mojo.Environment.DeviceInfo.modelNameAscii);
+	string = string.replace("%DATETIME%", Mojo.Format.formatDate(new Date(), {time: 'full', date: 'full'}));
+	string = string.replace("%REALNAME%", prefs.get().realname); 
 	return string;	  
 }
 

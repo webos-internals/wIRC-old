@@ -529,7 +529,47 @@ PreferencesMessagesAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
+		this.controller.setupWidget
+		(
+			'ctcpReplyTime',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'ctcpReplyTime',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'ctcpReplyFinger',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'ctcpReplyFinger',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
+			'ctcpReplyUserinfo',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'ctcpReplyUserinfo',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.prefs
+		);
+		
 		this.controller.listen('ctcpReplyVersion',	Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('ctcpReplyTime',		Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('ctcpReplyFinger',	Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('ctcpReplyUserinfo',	Mojo.Event.propertyChange, this.listChangedHandler);
 										
 		this.highlightStyleChanged();
 		this.controller.listen('highlightStyle',	Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
@@ -703,15 +743,20 @@ PreferencesMessagesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('highlightStyle',			Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
 	this.controller.stopListening('highlightPart',			Mojo.Event.propertyChange, this.listChangedHandler);
 	
-	this.controller.stopListening('colorHighlightFG',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorHighlightBG',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorNotice',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorAction',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorStatus',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorText',				Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorMarker',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorOwnNick',			Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorOtherNicks',		Mojo.Event.propertyChange, this.listChangedHandler);
-	this.controller.stopListening('colorCTCP',				Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorHighlightFG',		Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorHighlightBG',		Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorNotice',			Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorAction',			Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorStatus',			Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorText',				Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorMarker',			Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorOwnNick',			Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorOtherNicks',		Mojo.Event.propertyChange, this.colorChangedHandler);
+	this.controller.stopListening('colorCTCP',				Mojo.Event.propertyChange, this.colorChangedHandler);
+	
+	this.controller.stopListening('ctcpReplyVersion',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('ctcpReplyTime',			Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('ctcpReplyFinger',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('ctcpReplyUserinfo',		Mojo.Event.propertyChange, this.listChangedHandler);
 
 }

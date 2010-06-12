@@ -278,7 +278,6 @@ wircPlugin.prototype.event_channel_notice_handler = function(id, event, origin, 
 
 wircPlugin.prototype.ctcp_rep = function(id, nick, reply)
 {
-	alert('CTCP REP: ' + id + ' ' + nick + ' ' + reply);
 	plugin.ctcp_rep(id, nick, reply);
 }
 
@@ -286,36 +285,48 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 	
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
-	servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + params[0] + ' request by '+ ' ' + origin, false);
+	var tmpMatch = twoValRegExp.exec(params[0]);
+	servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + tmpMatch[1] + ' request by '+ ' ' + origin, false);
 	
 	var nick = servers.servers[id].getNick(origin);
 	var reply = false;
+	var tmpReply = false;
 		
-	switch (params[0]) {
+	if (params[0].substring(0, 4) == 'PING') { // Used to measure the delay of the IRC network between clients.
+		reply = params[0];
+	} else {
+		switch (params[0]) {
 		case 'FINGER':		// Returns the user's full name, and idle time.
+			tmpReply = replaceTokens(prefs.get().ctcpReplyFinger);
+			if (tmpReply.length>0) reply = 'FINGER ' + tmpReply;
 			break;
 		case 'VERSION': 	// The version and type of the client.
-			alert('CTCP VERSION');
-			reply = 'VERSION ' + replaceTokens(prefs.get().ctcpReplyVersion);
+			tmpReply = replaceTokens(prefs.get().ctcpReplyVersion);
+			if (tmpReply.length>0) reply = 'VERSION ' + tmpReply;
 			break;
 		case 'SOURCE':		// Where to obtain a copy of a client.
+			reply = 'SOURCE http://git.webos-internals.org/trac/wIRC';
 			break;
 		case 'USERINFO':	// A string set by the user (never the client coder)
+			tmpReply = replaceTokens(prefs.get().ctcpReplyVersion);
+			if (tmpReply.length>0) reply = 'USERINFO ' + tmpReply;
 			break;
 		case 'CLIENTINFO':	// Dynamic master index of what a client knows.
 			break;
 		case 'ERRMSG':		// Used when an error needs to be replied with.
 			break;
-		case 'PING':		// Used to measure the delay of the IRC network between clients.
-			break;
 		case 'TIME':		// Gets the local date and time from other clients.
+			tmpReply = replaceTokens(prefs.get().ctcpReplyTime);
+			if (tmpReply.length>0) reply = 'TIME ' + tmpReply; 
 			break;
+		}
 	}
 	
 	if (reply) {
-		alert('CTCP REPLY: ' + id + ' ' + nick + ' ' + reply);
 		var ctcp_rep_func = this.ctcp_rep.bind(this, id, nick.name, reply);
 		setTimeout(ctcp_rep_func, 100);
+	} else {
+		servers.servers[id].debugPayload(event, origin, params_s, true);
 	}
 	
 }
