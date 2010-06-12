@@ -808,6 +808,17 @@ body.palm-dark .message-row .message
 	border-bottom: 1px solid;
 }
 
+.message-row.selected
+{
+	background: #000;
+	color: #fff !important;
+}
+body.palm-dark .message-row.selected
+{
+	background: #fff;
+	color: #000 !important;
+}
+
 .hide-divider table.date-row
 {
 	display: none;

@@ -65,6 +65,7 @@ ServerStatusAssistant.prototype.setup = function()
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
 		this.inputElementLoseFocus =	this.inputFocus.bind(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
+		this.messageTapHandler = 		this.messageTap.bindAsEventListener(this);
 		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
 		
 		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
@@ -108,6 +109,7 @@ ServerStatusAssistant.prototype.setup = function()
 			this.listModel
 		);
 		this.revealBottom();
+		Mojo.Event.listen(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
 		
 		this.controller.setupWidget
 		(
@@ -157,6 +159,8 @@ ServerStatusAssistant.prototype.activate = function(event)
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
+	
+	this.server.newMessage('status', false, 'TEST');
 }
 
 ServerStatusAssistant.prototype.keyHandler = function(event){
@@ -268,6 +272,33 @@ ServerStatusAssistant.prototype.revealBottom = function()
 		// palm does this twice in the messaging app to make sure it always reveals the very very bottom
 		this.sceneScroller.mojo.revealBottom();
 		this.sceneScroller.mojo.revealBottom();
+	}
+}
+
+ServerStatusAssistant.prototype.messageTap = function(event)
+{
+	if (event.item)
+	{
+		this.controller.popupSubmenu(
+		{
+			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
+			popupClass: 'group-popup',
+			placeNear: event.target,
+			items: 
+			[
+				//{label: 'Message'},  
+				{label: 'Copy',	 command: 'copy'}
+			]
+		});
+	}
+}
+ServerStatusAssistant.prototype.messageTapListHandler = function(choice, item)
+{
+	switch(choice)
+	{
+		case 'copy':
+			this.controller.stageController.setClipboard('<'+item.nick+'> '+item.message, true);
+			break;
 	}
 }
 
@@ -564,4 +595,5 @@ ServerStatusAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.inputWidgetElement,	Mojo.Event.propertyChange,	this.inputChanged);
 	Mojo.Event.stopListening(this.inputElement,			'blur',						this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.sendButtonElement,	Mojo.Event.tap, 			this.sendButtonPressed);
+	Mojo.Event.stopListening(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
 }

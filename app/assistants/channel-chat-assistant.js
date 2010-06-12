@@ -72,6 +72,7 @@ ChannelChatAssistant.prototype.setup = function(){
         this.invisibleWindowHandler = this.invisibleWindow.bindAsEventListener(this);
         this.dragStartHandler = this.dragStartHandler.bindAsEventListener(this);
         this.draggingHandler = this.draggingHandler.bindAsEventListener(this);
+		this.messageTapHandler = this.messageTap.bindAsEventListener(this);
         this.keyHandler = this.keyHandler.bindAsEventListener(this);
         this.headerTapped = this.headerTap.bindAsEventListener(this);
         this.topicToggled = this.topicToggle.bindAsEventListener(this);
@@ -107,6 +108,8 @@ ChannelChatAssistant.prototype.setup = function(){
             dividerFunction: this.getDivider.bind(this)
         }, this.listModel);
         this.revealBottom();
+		Mojo.Event.listen(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
+		
         
         this.controller.setupWidget('inputWidget', {
             modelProperty: 'value',
@@ -256,6 +259,33 @@ ChannelChatAssistant.prototype.headerTap = function(event){
 }
 ChannelChatAssistant.prototype.topicToggle = function(){
     this.topicVisible = !this.topicVisible;
+}
+
+ChannelChatAssistant.prototype.messageTap = function(event)
+{
+	if (event.item)
+	{
+		this.controller.popupSubmenu(
+		{
+			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
+			popupClass: 'group-popup',
+			placeNear: event.target,
+			items: 
+			[
+				//{label: 'Message'},  
+				{label: 'Copy',	 command: 'copy'}
+			]
+		});
+	}
+}
+ChannelChatAssistant.prototype.messageTapListHandler = function(choice, item)
+{
+	switch(choice)
+	{
+		case 'copy':
+			this.controller.stageController.setClipboard('<'+item.nick+'> '+item.message, true);
+			break;
+	}
 }
 
 ChannelChatAssistant.prototype.userButtonPressed = function(event){
@@ -548,6 +578,7 @@ ChannelChatAssistant.prototype.cleanup = function(event){
     Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
     Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
     Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+	Mojo.Event.stopListening(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
     Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
     if (this.channel.containsNick(this.channel.server.nick)) {
         this.channel.part();
