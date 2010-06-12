@@ -293,7 +293,7 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 			break;
 		case 'VERSION': 	// The version and type of the client.
 			alert('CTCP VERSION');
-			reply = '0.3.0'; //'\001VERSION wIRC:' + Mojo.Controller.appInfo.version + ':webOS\001';
+			reply = 'VERSION wIRC:' + Mojo.Controller.appInfo.version + ':webOS';
 			break;
 		case 'SOURCE':		// Where to obtain a copy of a client.
 			break;
@@ -310,6 +310,7 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 	}
 	
 	if (reply) {
+		alert('CTCP REPLY: ' + id + ' ' + nick + ' ' + reply);
 		var ctcp_rep_func = this.ctcp_rep.bind(this, id, nick.name, reply);
 		setTimeout(ctcp_rep_func, 100);
 	}

@@ -151,6 +151,12 @@ ircServer.prototype.newCommand = function(message)
 			
 			switch (cmd.toLowerCase())
 			{
+				case 'ctcp':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch)
+						plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpMatch[0], tmpMatch[1]);
+					break;
+				
 				case 'nick':
 					plugin.cmd_nick(servers.getServerArrayKey(this.id), val);
 					break;
