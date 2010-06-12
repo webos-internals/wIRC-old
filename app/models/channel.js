@@ -298,9 +298,10 @@ ircChannel.prototype.channelMode = function(mode)
 	}
 }
 
-ircChannel.prototype.part = function(message)
+ircChannel.prototype.part = function(reason)
 {
-	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name, message);
+	if (!reason) reason = prefs.get().partReason;
+	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name, reason);
 	this.closeStage();
 }
 
