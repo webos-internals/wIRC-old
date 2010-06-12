@@ -193,6 +193,51 @@ void handle_event_numeric(irc_session_t * session, unsigned int event, const cha
 	process_event(session, buf, origin, params, count, event_numeric_);
 }
 
+void handle_event_dcc_chat_req(irc_session_t * session, const char * nick, const char * address, irc_dcc_t dcc_id) {
+
+	syslog(LOG_INFO, "handle_event_dcc_chat_req: %s %s %u", nick, address, dcc_id);
+
+	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+
+	char *id = 0, *dcc_id_s = 0;
+
+	asprintf(&id, "%d", client->id);
+	asprintf(&dcc_id_s, "%u", dcc_id);
+
+	const char *payload[4];
+	payload[0] = id;
+	payload[1] = nick;
+	payload[2] = address;
+	payload[3] = dcc_id_s;
+
+	PDL_CallJS("event_dcc_chat_req", payload, 4);
+
+}
+
+void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const char * address, const char * filename, int size, irc_dcc_t dcc_id) {
+
+	syslog(LOG_INFO, "handle_event_dcc_send_req: %s %s %s %u %u", nick, address, filename, size, dcc_id);
+
+	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+
+	char *id = 0, *size_s = 0, *dcc_id_s = 0;
+
+	asprintf(&id, "%d", client->id);
+	asprintf(&size_s, "%u", size);
+	asprintf(&dcc_id_s, "%u", dcc_id);
+
+	const char *payload[6];
+	payload[0] = id;
+	payload[1] = nick;
+	payload[2] = address;
+	payload[3] = filename;
+	payload[4] = size_s;
+	payload[5] = dcc_id_s;
+
+	PDL_CallJS("event_dcc_send_req", payload, 6);
+
+}
+
 void setup_event_callbacks() {
 
 	memset(&callbacks, 0, sizeof(callbacks));
@@ -215,5 +260,7 @@ void setup_event_callbacks() {
 	callbacks.event_ctcp_action = handle_event_ctcp_action;
 	callbacks.event_unknown = handle_event_unknown;
 	callbacks.event_numeric = handle_event_numeric;
+	callbacks.event_dcc_chat_req = handle_event_dcc_chat_req;
+	callbacks.event_dcc_send_req = handle_event_dcc_send_req;
 
 }

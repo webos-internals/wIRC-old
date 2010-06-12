@@ -33,6 +33,7 @@
 #include <syslog.h>
 #include <signal.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;
@@ -69,6 +70,8 @@ typedef enum {
 	event_unknown_,				// 17
 	event_numeric_,				// 18
 	auto_ping_,					// 19
+	event_dcc_chat_req_,		// 20
+	event_dcc_send_req_,		// 21
 } irc_callbacks;
 
 irc_callbacks_t callbacks;

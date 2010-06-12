@@ -52,7 +52,17 @@ wircPlugin.prototype.registerHandlers = function() {
     plugin.event_unknown = this.event_unknown_handler.bind(this);
     plugin.event_numeric = this.event_numeric_handler.bind(this);
     plugin.event_rtt = this.event_rtt_handler.bind(this);
+	plugin.event_dcc_send_req = this.event_dcc_send_req_handler.bind(this);
+	plugin.event_dcc_chat_req = this.event_dcc_chat_req_handler.bind(this);
 
+}
+
+wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {
+	servers.servers[id].newMessage('debug', false, 'dcc_send_req, nick: ' + nick + ', address: ' + address + ', filename: ' + filename + ', size: ' + size + ', dcc_id: ' + dcc_id);
+}
+
+wircPlugin.prototype.event_dcc_chat_req_handler = function(id, nick, address, dcc_id) {
+	servers.servers[id].newMessage('debug', false, 'dcc_chat_req, nick: ' + nick + ', address: ' + address + ', dcc_id: ' + dcc_id);
 }
 
 wircPlugin.prototype.event_connect_handler = function(id, event, origin, params_s, ip)
