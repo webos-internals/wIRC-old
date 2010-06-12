@@ -200,6 +200,7 @@ ircServers.prototype.loadServer = function(id)
 	{
 		var newServer = new ircServer(serverParams);
 		this.servers.push(newServer);
+		if (newServer.autoConnect) newServer.init();
 	}
 	if (this.listAssistant)
 	{

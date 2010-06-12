@@ -69,8 +69,7 @@ function ircServer(params)
 	this.listsAssistant =		false;
 	this.listDisplay =			0;
 	this.channelList =			[];
-		
-	if (this.autoConnect) this.init();
+	
 }
 
 ircServer.prototype.setState = function(state)
