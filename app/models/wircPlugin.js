@@ -308,7 +308,7 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 			reply = 'SOURCE http://git.webos-internals.org/trac/wIRC';
 			break;
 		case 'USERINFO':	// A string set by the user (never the client coder)
-			tmpReply = replaceTokens(prefs.get().ctcpReplyVersion);
+			tmpReply = replaceTokens(prefs.get().ctcpReplyUserinfo);
 			if (tmpReply.length>0) reply = 'USERINFO ' + tmpReply;
 			break;
 		case 'CLIENTINFO':	// Dynamic master index of what a client knows.

@@ -29,7 +29,7 @@ preferenceCookie.prototype.get = function(reload)
 				ctcpReplyVersion:	'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%) -- http://git.webos-internals.org/trac/wIRC',
 				ctcpReplyTime:		'%DATETIME%',
 				ctcpReplyFinger:	'%REALNAME%',
-				ctcpReplyFinger:	'',
+				ctcpReplyUserinfo:	'',
 				
 				// Identity Scene
 				realname:			'',
