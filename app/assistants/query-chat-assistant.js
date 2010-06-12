@@ -272,16 +272,21 @@ QueryChatAssistant.prototype.messageTap = function(event)
 {
 	if (event.item)
 	{
+		var popupList = [];
+		if (event.item.nickCommands)
+		{
+			popupList.push({label: event.item.nick});
+			popupList.push({label: 'Whois',				 command: 'whois'});
+		}
+		popupList.push({label: 'Message'});
+		popupList.push({label: 'Copy',	 command: 'copy'});
+		
 		this.controller.popupSubmenu(
 		{
 			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
 			popupClass: 'group-popup',
 			placeNear: event.target,
-			items: 
-			[
-				{label: 'Message'},  
-				{label: 'Copy',	 command: 'copy'}
-			]
+			items: popupList
 		});
 	}
 }
@@ -289,6 +294,10 @@ QueryChatAssistant.prototype.messageTapListHandler = function(choice, item)
 {
 	switch(choice)
 	{
+		case 'whois':
+			this.query.server.whois(item.nick);
+			break;
+			
 		case 'copy':
 			this.controller.stageController.setClipboard(item.copyText);
 			break;

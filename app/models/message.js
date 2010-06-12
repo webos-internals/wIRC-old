@@ -39,6 +39,8 @@ function ircMessage(params)
 	this.message =		'';
 	this.plainMessage =	'';
 	
+	this.nickCommands = false;
+	
 	this.copyText =		'';
 	
 	this.channel =		false;
@@ -181,6 +183,7 @@ function ircMessage(params)
 			this.message =		params.message;
 			if (this.nick.name.toLowerCase() != this.me.toLowerCase()) // if its not me, move on to highlight test
 			{
+				this.nickCommands	= true;
 				if (params.channel) 
 				{
 					this.channel = params.channel;
@@ -200,13 +203,14 @@ function ircMessage(params)
 			this.message =		this.nick.name + ' ' + params.message;
 			if (this.nick.name.toLowerCase() != this.me.toLowerCase()) // if its not from me, move on to highlight test
 			{
+				this.nickCommands	= true;
 				if (params.channel) 
 				{
 					this.channel = params.channel;
 				}
 				this.highlightTest();
 			}
-			this.copyText		= '<'+this.nick+'> '+this.message;
+			this.copyText		= this.nick+' '+this.message;
 			break;
 			
 		// type9
@@ -379,7 +383,8 @@ ircMessage.prototype.getListObject = function()
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,
 		messageStyle:	this.messageStyle,
-		copyText:		(this.copyText?this.copyText:this.message)
+		copyText:		(this.copyText?this.copyText:this.message),
+		nickCommands:	this.nickCommands
 	};
 	
 	return obj;

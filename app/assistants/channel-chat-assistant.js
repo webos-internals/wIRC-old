@@ -265,16 +265,22 @@ ChannelChatAssistant.prototype.messageTap = function(event)
 {
 	if (event.item)
 	{
+		var popupList = [];
+		if (event.item.nickCommands)
+		{
+			popupList.push({label: event.item.nick});
+			popupList.push({label: 'Private Message',	 command: 'pm'});
+			popupList.push({label: 'Whois',				 command: 'whois'});
+		}
+		popupList.push({label: 'Message'});
+		popupList.push({label: 'Copy',	 command: 'copy'});
+		
 		this.controller.popupSubmenu(
 		{
 			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
 			popupClass: 'group-popup',
 			placeNear: event.target,
-			items: 
-			[
-				{label: 'Message'},  
-				{label: 'Copy',	 command: 'copy'}
-			]
+			items: popupList
 		});
 	}
 }
@@ -282,6 +288,21 @@ ChannelChatAssistant.prototype.messageTapListHandler = function(choice, item)
 {
 	switch(choice)
 	{
+		case 'pm':
+			var tmpQuery = this.channel.server.getQuery(this.channel.server.getNick(item.nick));
+			if (tmpQuery)
+			{
+				tmpQuery.openStage();
+			}
+			else
+			{
+				this.channel.server.newQuery(item.nick);
+			}
+			break;
+		case 'whois':
+			this.channel.server.whois(item.nick);
+			break;
+			
 		case 'copy':
 			this.controller.stageController.setClipboard(item.copyText);
 			break;

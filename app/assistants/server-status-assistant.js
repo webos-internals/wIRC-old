@@ -160,7 +160,7 @@ ServerStatusAssistant.prototype.activate = function(event)
 	this.alreadyActivated = true;
 	this.revealBottom();
 	
-	//this.server.newMessage('status', false, 'TEST');
+	this.server.newMessage('status', false, 'TEST');
 }
 
 ServerStatusAssistant.prototype.keyHandler = function(event){
@@ -279,16 +279,16 @@ ServerStatusAssistant.prototype.messageTap = function(event)
 {
 	if (event.item)
 	{
+		var popupList = [];
+		popupList.push({label: 'Message'});
+		popupList.push({label: 'Copy',	 command: 'copy'});
+		
 		this.controller.popupSubmenu(
 		{
 			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
 			popupClass: 'group-popup',
 			placeNear: event.target,
-			items: 
-			[
-				{label: 'Message'},
-				{label: 'Copy',	 command: 'copy'}
-			]
+			items: popupList
 		});
 	}
 }
