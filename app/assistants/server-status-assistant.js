@@ -297,7 +297,7 @@ ServerStatusAssistant.prototype.messageTapListHandler = function(choice, item)
 	switch(choice)
 	{
 		case 'copy':
-			this.controller.stageController.setClipboard('<'+item.nick+'> '+item.message);
+			this.controller.stageController.setClipboard(item.copyText);
 			break;
 	}
 }

@@ -39,6 +39,8 @@ function ircMessage(params)
 	this.message =		'';
 	this.plainMessage =	'';
 	
+	this.copyText =		'';
+	
 	this.channel =		false;
 	
 	this.date =			new Date();
@@ -185,6 +187,7 @@ function ircMessage(params)
 				}
 				this.highlightTest();
 			}
+			this.copyText		= '<'+this.nick+'> '+this.message;
 			break;
 
 		// type7					
@@ -203,6 +206,7 @@ function ircMessage(params)
 				}
 				this.highlightTest();
 			}
+			this.copyText		= '<'+this.nick+'> '+this.message;
 			break;
 			
 		// type9
@@ -374,7 +378,8 @@ ircMessage.prototype.getListObject = function()
 		rowClass:		this.rowClass,
 		rowStyle:		this.rowStyle,
 		nickStyle:		this.nickStyle,
-		messageStyle:	this.messageStyle
+		messageStyle:	this.messageStyle,
+		copyText:		(this.copyText?this.copyText:this.message)
 	};
 	
 	return obj;
