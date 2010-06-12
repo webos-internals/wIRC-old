@@ -35,6 +35,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 		
 		if (!params || params.type == 'connect')
 		{
+			// initial launch param, gets the stage
 	        if (serverController)
 			{
 				var scenes = serverController.getScenes();
@@ -64,6 +65,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 		}
 		else if (params.type == 'query')
 		{
+			// internal launch param
 			var tmpServer = servers.getServerForId(params.server);
 			if (tmpServer)
 			{
@@ -81,6 +83,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 		}
 		else if (params.type == 'channel')
 		{
+			// internal launch param
 			var tmpServer = servers.getServerForId(params.server);
 			if (tmpServer)
 			{
@@ -94,6 +97,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 		}
 		else if (params.type == 'invite')
 		{
+			// internal launch param
 			var tmpServer = servers.getServerForId(params.server);
 			if (tmpServer)
 			{
@@ -101,10 +105,37 @@ AppAssistant.prototype.handleLaunch = function(params)
 				tmpServer.joinChannel(params.channel);
 			}
 		}
+		else if (params.type == 'yell' && params.message && plugin !== null)
+		{
+			/* yell launch param:
+			 * this will send a message as the user to every joined channel on every connected server
+			 * 
+			 * required params:
+			 * 	type: 'yell'
+			 *  message: message to say
+			 */
+			
+			if (servers.servers.length > 0)
+			{
+				for (var s = 0; s < servers.servers.length; s++)
+				{
+					if (servers.servers[s] && servers.servers[s].isConnected() && servers.servers[s].channels.length > 0)
+					{
+						for (var c = 0; c < servers.servers[s].channels.length; c++)
+						{
+							if (servers.servers[s].channels[c] && servers.servers[s].channels[c].joined)
+							{
+								servers.servers[s].channels[c].msg(params.message);
+							}
+						}
+					}
+				}
+			}
+		}
 		
 		if (params.type == 'connect' && params.address && params.join)
 		{
-			/* 
+			/* connect launch param:
 			 * this will connect to and temporary server and join a channel
 			 * 
 			 * required params:
@@ -143,17 +174,15 @@ AppAssistant.prototype.handleLaunch = function(params)
 				}
 			}
 		}
-		else
+
+		// for debug
+		/*
+		alert('---');
+		for (var p in params)
 		{
-			// for debug
-			/*
-			alert('---');
-			for (var p in params)
-			{
-				alert(p + ': ' + params[p]);
-			}
-			*/
+			alert(p + ': ' + params[p]);
 		}
+		*/
 	}
 	catch (e)
 	{
