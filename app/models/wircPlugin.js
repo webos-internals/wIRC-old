@@ -276,7 +276,7 @@ wircPlugin.prototype.event_channel_notice_handler = function(id, event, origin, 
 wircPlugin.prototype.ctcp_rep = function(id, origin, reply)
 {
 	alert('CTCP REP: ', id, ' ', origin, ' ', reply);
-	//plugin.ctcp_rep(id, origin, reply);
+	plugin.ctcp_rep(id, origin, reply);
 }
 
 wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params_s) {
