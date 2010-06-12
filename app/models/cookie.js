@@ -26,7 +26,7 @@ preferenceCookie.prototype.get = function(reload)
 				cmdHistoryMax:		30,
 				
 				// CTCP Replies,
-				ctcp_reply_version:	'wIRC %WIRCVER% webOS %WEBOSVER% [%CARRIER% %MODEL%]',
+				ctcpReplyVersion:	'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%) -- http://git.webos-internals.org/trac/wIRC',
 				
 				// Identity Scene
 				realname:			'',
@@ -70,6 +70,7 @@ preferenceCookie.prototype.get = function(reload)
 				colorHighlightBG:	['lightpink','lightpink'],
 				colorOwnNick:		['black','darkgray'],
 				colorOtherNicks:	['green','green'],
+				colorCTCP:			['chocolate','chocolate'],
 				
 				// Events
 				quitReason:			'wIRC',

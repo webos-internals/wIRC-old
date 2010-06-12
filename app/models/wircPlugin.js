@@ -286,7 +286,7 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 	
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
-	servers.servers[id].newMessage('type2', false, 'Received ' + event + ' ' + params[0] + ' request by '+ ' ' + origin, true);
+	servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + params[0] + ' request by '+ ' ' + origin, false);
 	
 	var nick = servers.servers[id].getNick(origin);
 	var reply = false;
@@ -296,7 +296,7 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 			break;
 		case 'VERSION': 	// The version and type of the client.
 			alert('CTCP VERSION');
-			reply = 'VERSION ' + replaceTokens(prefs.get().ctcp_reply_version);
+			reply = 'VERSION ' + replaceTokens(prefs.get().ctcpReplyVersion);
 			break;
 		case 'SOURCE':		// Where to obtain a copy of a client.
 			break;
@@ -320,7 +320,12 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 	
 }
 wircPlugin.prototype.event_ctcp_rep_handler = function(id, event, origin, params_s) {
-	servers.servers[id].debugPayload(event, origin, params_s, true);
+	var id = parseInt(id);
+	var params = JSON.parse(params_s);
+	var tmpNick = servers.servers[id].getNick(origin);
+	var tmpMatch = twoValRegExp.exec(params[0]);
+	if (tmpMatch)
+		servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + tmpMatch[1] + ' reply from ' + tmpNick.name + ': ' + tmpMatch[2], false);
 }
 
 /*

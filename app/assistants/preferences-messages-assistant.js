@@ -417,6 +417,16 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		
 		this.controller.setupWidget
 		(
+			'colorCTCP',
+			{
+				label: 'CTCP',
+				choices: this.colorChoices,
+				modelProperty: 'colorCTCP'
+			},
+			{colorCTCP: this.prefs.colorCTCP[themeIndex]}
+		);
+		this.controller.setupWidget
+		(
 			'colorNotice',
 			{
 				label: 'Notice',
@@ -505,6 +515,21 @@ PreferencesMessagesAssistant.prototype.setup = function()
 			},
 			{colorOtherNicks: this.prefs.colorOtherNicks[themeIndex]}
 		);
+	
+		// CTCP Replies	
+		this.controller.setupWidget
+		(
+			'ctcpReplyVersion',
+			{
+				multiline: false,
+				enterSubmits: false,
+				modelProperty: 'ctcpReplyVersion',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.prefs
+		);
+		this.controller.listen('ctcpReplyVersion',	Mojo.Event.propertyChange, this.listChangedHandler);
 										
 		this.highlightStyleChanged();
 		this.controller.listen('highlightStyle',	Mojo.Event.propertyChange, this.highlightStyleChanged.bindAsEventListener(this));
@@ -519,6 +544,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.controller.listen('colorMarker',		Mojo.Event.propertyChange, this.colorChangedHandler);
 		this.controller.listen('colorOwnNick',		Mojo.Event.propertyChange, this.colorChangedHandler);
 		this.controller.listen('colorOtherNicks',	Mojo.Event.propertyChange, this.colorChangedHandler);
+		this.controller.listen('colorCTCP',			Mojo.Event.propertyChange, this.colorChangedHandler);
 				
 	}
 	catch (e)
@@ -686,5 +712,6 @@ PreferencesMessagesAssistant.prototype.cleanup = function(event)
 	this.controller.stopListening('colorMarker',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorOwnNick',			Mojo.Event.propertyChange, this.listChangedHandler);
 	this.controller.stopListening('colorOtherNicks',		Mojo.Event.propertyChange, this.listChangedHandler);
+	this.controller.stopListening('colorCTCP',				Mojo.Event.propertyChange, this.listChangedHandler);
 
 }

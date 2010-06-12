@@ -11,7 +11,7 @@ function PreferencesKeybindingsAssistant()
 		{label: 'Keybindings'	,	command: 'keybindings'},
 		{label: 'Notifications',	command: 'notifications'}
 	];
-	this.currentPage = 'events';
+	this.currentPage = 'keybindings';
 	
 	// setup menu
 	this.menuModel =
