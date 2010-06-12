@@ -585,6 +585,9 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.controller.listen('colorOwnNick',		Mojo.Event.propertyChange, this.colorChangedHandler);
 		this.controller.listen('colorOtherNicks',	Mojo.Event.propertyChange, this.colorChangedHandler);
 		this.controller.listen('colorCTCP',			Mojo.Event.propertyChange, this.colorChangedHandler);
+		
+		// make it so nothing is selected by default (textbox rage)
+		this.controller.setInitialFocusedElement(null);
 				
 	}
 	catch (e)
