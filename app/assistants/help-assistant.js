@@ -102,7 +102,7 @@ HelpAssistant.prototype.listTapHandler = function(event)
 					serverUser:			'',
 					serverPassword:		'',
 					port:				'',
-					autoConnect:		false,
+					autoConnect:		true,
 					autoIdentify:		false,
 					identifyService:	'',
 					identifyPassword:	'',
@@ -112,7 +112,6 @@ HelpAssistant.prototype.listTapHandler = function(event)
 					isTemporary:		true
 				};
 				servers.loadTemporaryServer(helpServerObject);
-				servers.servers[servers.getServerArrayKey('help')].init();
 				this.controller.stageController.popScene();
 			}
 			break;

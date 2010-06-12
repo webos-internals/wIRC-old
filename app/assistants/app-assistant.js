@@ -170,10 +170,6 @@ AppAssistant.prototype.handleLaunch = function(params)
 					isTemporary:		true
 				};
 				servers.loadTemporaryServer(tempServer);
-				if (servers.listAssistant)
-				{
-					servers.servers[servers.getServerArrayKey(tmpServerId)].init();
-				}
 			}
 		}
 

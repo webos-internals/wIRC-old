@@ -165,8 +165,6 @@ ircServers.prototype.getServerForId = function(id)
 
 ircServers.prototype.load = function()
 {
-	this.servers = [];
-	
 	this.cookieData = this.cookie.get();
 	if (this.cookieData)
 	{
@@ -213,6 +211,7 @@ ircServers.prototype.loadTemporaryServer = function(serverParams)
 	{
 		var newServer = new ircServer(serverParams);
 		this.servers.push(newServer);
+		newServer.init();
 	}
 	if (this.listAssistant)
 	{
