@@ -119,7 +119,8 @@ AppAssistant.prototype.handleLaunch = function(params)
 			{
 				for (var s = 0; s < servers.servers.length; s++)
 				{
-					if (servers.servers[s] && servers.servers[s].isConnected() && servers.servers[s].channels.length > 0)
+					if (servers.servers[s] && servers.servers[s].isConnected() &&
+						servers.servers[s].channels.length > 0)
 					{
 						for (var c = 0; c < servers.servers[s].channels.length; c++)
 						{
@@ -147,6 +148,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 			 *  alias: will be displayed in the server-list
 			 *  nick: a nick to default the user to if one isn't setup
 			 */
+			
 			var tmpServerId = 'temp'+Math.round(new Date().getTime()/1000.0);
 			if (servers.getServerArrayKey(tmpServerId) === false)
 			{

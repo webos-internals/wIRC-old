@@ -43,7 +43,8 @@ function StartupAssistant()
 				'Added new events and keybindings preferences',
 				'/part messages now work',
 				'Now rejoins channels with open cards on a reconnect',
-				'Added contextual menu when you tap a message'
+				'Added contextual menu when you tap a message',
+				'Added yell and connect launch commands for very webosy cross-app integration'
 			]
 		},
 		{
