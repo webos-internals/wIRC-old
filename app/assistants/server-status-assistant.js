@@ -160,7 +160,7 @@ ServerStatusAssistant.prototype.activate = function(event)
 	this.alreadyActivated = true;
 	this.revealBottom();
 	
-	this.server.newMessage('status', false, 'TEST');
+	//this.server.newMessage('status', false, 'TEST');
 }
 
 ServerStatusAssistant.prototype.keyHandler = function(event){
