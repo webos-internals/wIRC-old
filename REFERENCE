@@ -1,1 +1,37 @@
 http://www.alien.net.au/irc/
+
+
+DCC Workflow
+======================================================================
+
+Initiator:
+	DCC command issued.
+	Create a socket, bind it to INADDR_ANY, port 0, and
+		make it passive (a listening socket).
+	Send the recipient a DCC request via CTCP supplying
+		the address and port of the socket. (This
+		is ideally taken from the address of the local
+		side of the socket which is connected to a
+		server. This is presumably the interface on
+		the host which is closest to the rest of
+		the net, and results in one less routing hop
+		in the case of gateway nodes).
+	Continue normally until a connection is received.
+
+	On a connection:
+	Accept the connection.
+	Close the original passive socket.
+	Conduct transaction on the new socket.
+
+Acceptor:
+	CTCP DCC request received.
+	Record information on the DCC request and notify the user.
+
+	At this point, the USER should be able to abort (close) the
+	request, or accept it. The request should be accepted with
+	a command specifying the sender, type, and argument, or
+	a subset of these where no ambiguity exists.
+
+	If accepted, create a TCP socket.
+	Connect the new socket to the address and port supplied.
+	Conduct the transaction over the socket.
