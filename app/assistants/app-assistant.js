@@ -33,12 +33,12 @@ AppAssistant.prototype.handleLaunch = function(params)
 	{
 		var serverController = this.controller.getStageController(serverStage);
 		
-		if (!params)
+		if (!params || params.type == 'connect')
 		{
 	        if (serverController)
 			{
 				var scenes = serverController.getScenes();
-				if (scenes[0].sceneName == 'server-list')
+				if (scenes[0].sceneName == 'server-list' && scenes.length > 1)
 				{
 					serverController.popScenesTo('server-list');
 				}
@@ -99,6 +99,48 @@ AppAssistant.prototype.handleLaunch = function(params)
 			{
 				tmpServer.closeInvite(params.nick, params.channel);
 				tmpServer.joinChannel(params.channel);
+			}
+		}
+		
+		if (params.type == 'connect' && params.address && params.join)
+		{
+			/* 
+			 * this will connect to and temporary server and join a channel
+			 * 
+			 * required params:
+			 * 	type: 'connect'
+			 *  address: address of irc server to connect to
+			 *  join: channel to join on connect
+			 *  
+			 * optional params:
+			 *  alias: will be displayed in the server-list
+			 *  nick: a nick to default the user to if one isn't setup
+			 */
+			var tmpServerId = 'temp'+Math.round(new Date().getTime()/1000.0);
+			if (servers.getServerArrayKey(tmpServerId) === false)
+			{
+				var tempServer = 
+				{
+					id:					tmpServerId,
+					alias:				(params.alias?params.alias:'Temporary Server'),
+					address:			params.address,
+					serverUser:			'',
+					serverPassword:		'',
+					port:				'',
+					autoConnect:		true,
+					autoIdentify:		false,
+					identifyService:	'',
+					identifyPassword:	'',
+					onConnect:			['/j '+params.join],
+					favoriteChannels:	[],
+					defaultNick:		(prefs.get().nicknames[0]?prefs.get().nicknames[0]:(params.nick?params.nick:'wIRCer_'+Math.floor(Math.random()*9999))),
+					isTemporary:		true
+				};
+				servers.loadTemporaryServer(tempServer);
+				if (servers.listAssistant)
+				{
+					servers.servers[servers.getServerArrayKey(tmpServerId)].init();
+				}
 			}
 		}
 		else
