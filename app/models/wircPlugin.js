@@ -273,6 +273,12 @@ wircPlugin.prototype.event_channel_notice_handler = function(id, event, origin, 
 	else servers.servers[id].newMessage('type6', tmpNick, params[1]);
 }
 
+wircPlugin.prototype.ctcp_rep = function(id, origin, reply)
+{
+	alert('CTCP REP: ', id, ' ', origin, ' ', reply);
+	//plugin.ctcp_rep(id, origin, reply);
+}
+
 wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params_s) {
 	
 	var id = parseInt(id);
@@ -281,13 +287,24 @@ wircPlugin.prototype.event_ctcp_req_handler = function(id, event, origin, params
 	
 	switch (params[0]) {
 		case 'FINGER':		// Returns the user's full name, and idle time.
+			break;
 		case 'VERSION': 	// The version and type of the client.
+			alert('CTCP VERSION');
+			var version = '\001VERSION wIRC:' + Mojo.Controller.appInfo.version + ':webOS\001';
+			setTimeout(this.ctcp_rep.bind(this, id, origin, version), 100);
+			break;
 		case 'SOURCE':		// Where to obtain a copy of a client.
+			break;
 		case 'USERINFO':	// A string set by the user (never the client coder)
+			break;
 		case 'CLIENTINFO':	// Dynamic master index of what a client knows.
+			break;
 		case 'ERRMSG':		// Used when an error needs to be replied with.
+			break;
 		case 'PING':		// Used to measure the delay of the IRC network between clients.
+			break;
 		case 'TIME':		// Gets the local date and time from other clients.
+			break;
 	}
 	
 }

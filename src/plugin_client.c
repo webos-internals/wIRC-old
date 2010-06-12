@@ -204,6 +204,14 @@ PDL_bool client_get_uid(PDL_JSParameters *params) {
 	return PDL_JSReply(params, uid);
 }
 
+PDL_bool client_ctcp_rep(PDL_JSParameters *params) {
+	int id = PDL_GetJSParamInt(params, 0);
+	const char *nick = PDL_GetJSParamString(params, 1);
+	const char *reply = PDL_GetJSParamString(params, 2);
+	syslog(LOG_INFO, "CTCP REPLY: %d %s %s", reply);
+	irc_cmd_ctcp_reply(servers[id].session, nick, reply);
+}
+
 int plugin_client_init() {
 
 	int ret = 0;
@@ -229,6 +237,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("disconnect", client_disconnect);
 	ret += PDL_RegisterJSHandler("send_raw", client_send_raw);
 	ret += PDL_RegisterJSHandler("get_uid", client_get_uid);
+	ret += PDL_RegisterJSHandler("ctcp_rep", client_ctcp_rep);
 
 	return ret;
 
