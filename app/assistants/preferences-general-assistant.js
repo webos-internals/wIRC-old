@@ -205,7 +205,8 @@ PreferencesGeneralAssistant.prototype.setup = function()
 					{label:'15s',   value:15},
 					{label:'20s',   value:20},
 					{label:'25s',   value:25},
-					{label:'30s',   value:30}
+					{label:'30s',   value:30},
+					{label:'60s',   value:60}
 				],
 				modelProperty: 'autoPingInterval'
 			},
