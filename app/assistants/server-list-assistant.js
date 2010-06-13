@@ -100,7 +100,7 @@ ServerListAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 		
 		this.updateCommandMenu(false);
-		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);		
+		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
 		
 	} 
 	catch (e) 

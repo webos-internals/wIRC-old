@@ -198,7 +198,7 @@ function ircMessage(params)
 				}
 				this.highlightTest();
 			}
-			this.copyText		= '<'+this.nick+'> '+this.message;
+			this.copyText		= '<'+this.nick.name+'> '+this.message;
 			break;
 
 		// type7					
@@ -218,7 +218,7 @@ function ircMessage(params)
 				}
 				this.highlightTest();
 			}
-			this.copyText		= this.nick+' '+this.message;
+			this.copyText		= this.nick.name+' '+this.message;
 			break;
 			
 		// type9

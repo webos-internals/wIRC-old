@@ -299,7 +299,9 @@ QueryChatAssistant.prototype.messageTapListHandler = function(choice, item)
 			break;
 			
 		case 'copy':
+			this.stopAutoFocus();
 			this.controller.stageController.setClipboard(item.copyText);
+			this.startAutoFocus();
 			break;
 	}
 }
