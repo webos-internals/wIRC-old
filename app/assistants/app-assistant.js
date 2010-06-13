@@ -105,6 +105,15 @@ AppAssistant.prototype.handleLaunch = function(params)
 				tmpServer.joinChannel(params.channel);
 			}
 		}
+		else if (params.type == 'dcc')
+		{
+			// internal launch param
+			var tmpServer = servers.getServerForId(params.server);
+			if (tmpServer)
+			{
+				tmpServer.closeDCCRequest(params.dcc_id);
+			}
+		}
 		else if (params.type == 'yell' && params.message && plugin !== null)
 		{
 			/* yell launch param:

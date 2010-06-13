@@ -58,11 +58,30 @@ wircPlugin.prototype.registerHandlers = function() {
 }
 
 wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {
-	servers.servers[id].newMessage('debug', false, 'dcc_send_req, nick: ' + nick + ', address: ' + address + ', filename: ' + filename + ', size: ' + size + ', dcc_id: ' + dcc_id);
+	var params = {
+		id: id,
+		nick: servers.servers[id].getNick(nick).name,
+		address: address,
+		filename: filename,
+		size: size,
+		dcc_id: dcc_id,
+		type: 'dcc'
+	};
+	servers.servers[id].openDCCRequest(params);
+	//servers.servers[id].newMessage('debug', false, 'dcc_send_req, nick: ' + nick + ', address: ' + address + ', filename: ' + filename + ', size: ' + size + ', dcc_id: ' + dcc_id);
 }
 
 wircPlugin.prototype.event_dcc_chat_req_handler = function(id, nick, address, dcc_id) {
-	servers.servers[id].newMessage('debug', false, 'dcc_chat_req, nick: ' + nick + ', address: ' + address + ', dcc_id: ' + dcc_id);
+	servers.servers[id].openDCCRequest({
+		id: id,
+		nick: servers.servers[id].getNick(nick).name,
+		address: address,
+		filename: false,
+		size: false,
+		dcc_id: dcc_id,
+		type: 'dcc'
+	});
+	//servers.servers[id].newMessage('debug', false, 'dcc_chat_req, nick: ' + nick + ', address: ' + address + ', dcc_id: ' + dcc_id);
 }
 
 wircPlugin.prototype.event_connect_handler = function(id, event, origin, params_s, ip)

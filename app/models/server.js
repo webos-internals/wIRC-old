@@ -63,6 +63,7 @@ function ircServer(params)
 	this.stageController =		false;
 	this.statusAssistant =		false;
 	this.invites =				[];
+	this.dccRequests =			[];
 	
 	this.listStageName =		'channel-list-' + this.id;
 	this.listStageController =	false;
@@ -904,6 +905,71 @@ ircServer.prototype.closeInvite = function(nick, channel)
 	catch (e)
 	{
 		Mojo.Log.logException(e, "ircServer#closeInvite");
+	}
+}
+
+ircServer.prototype.openDCCRequest = function(params)
+{
+	try
+	{
+		var tmpBannerName = 'dcc-' + this.id + '-' + params.dcc_id;
+		var tmpDashName = 'dccdash-' + this.id + '-' + params.dcc_id;
+		
+		var msgText = "Incoming chat request...";
+		var icon = 'icon-dcc-chat.png';
+		if (params.filename && params.size) {
+			msgText = "Incoming file transfer request...";
+			icon = 'icon-dcc-send.png';	
+		}
+			
+		Mojo.Controller.appController.showBanner
+		(
+			{
+				icon: icon,
+				messageText: msgText,
+				soundClass: (prefs.get().dashboardInviteSound?"alerts":"")
+			},
+			params,
+			tmpBannerName
+		);
+					
+		var tmpController = Mojo.Controller.appController.getStageController(tmpDashName);
+	    if (tmpController) 
+		{
+			// do nothing on second invite if dash already exists?
+		}
+		else
+		{
+			this.dccRequests.push({params: params});
+			
+			Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openDCCRequestCallback.bind(params), "dashboard");
+		}
+		
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#openDCCRequest");
+	}
+}
+ircServer.prototype.openDCCRequestCallback = function(controller, params)
+{
+	controller.pushScene('dcc-dashboard', this, params);
+}
+ircServer.prototype.closeDCCRequest = function(params)
+{
+	try
+	{
+		var tmpBannerName = 'dcc-' + this.id + '-' + params.dcc_id;
+		var tmpDashName = 'dccdash-' + this.id + '-' + params.dcc_id;
+		
+		this.dccrequests = this.dccRequests.without({params: params});
+		
+		Mojo.Controller.appController.removeBanner(tmpBannerName);
+		Mojo.Controller.appController.closeStage(tmpDashName);
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircServer#closeDCCRequest");
 	}
 }
 

@@ -656,6 +656,14 @@ body.palm-dark .channel-users #searchText
 {
 	background: url(../icon-invite.png) center center no-repeat;
 }
+.dcc-chat-dashboard .palm-dashboard-icon
+{
+	background: url(../icon-dcc-chat.png) center center no-repeat;
+}
+.dcc-send-dashboard .palm-dashboard-icon
+{
+	background: url(../icon-dcc-send.png) center center no-repeat;
+}
 
 
 
