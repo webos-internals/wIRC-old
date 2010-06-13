@@ -590,6 +590,7 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				servers.servers[id].newMessage('type2', false, params[3]);
 			break;
 					
+		case '437':
 		case '433':		// NAMEINUSE
 			servers.servers[id].newMessage('debug', false, params[1] + " : " + params[2]);
 			if (servers.servers[id].nextNick < prefs.get().nicknames.length-1)
