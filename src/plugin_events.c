@@ -24,7 +24,7 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 
 	client->estabilshed = 1;
 
-	char buf[1024];
+	char buf[512];
 	int cnt;
 	int i;
 	int j = 0;
@@ -212,6 +212,9 @@ void handle_event_dcc_chat_req(irc_session_t * session, const char * nick, const
 
 	PDL_CallJS("event_dcc_chat_req", payload, 4);
 
+	if (id) free(id);
+	if (dcc_id_s) free(dcc_id_s);
+
 }
 
 void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const char * address, const char * filename, int size, irc_dcc_t dcc_id) {
@@ -235,6 +238,10 @@ void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const
 	payload[5] = dcc_id_s;
 
 	PDL_CallJS("event_dcc_send_req", payload, 6);
+
+	if (id) free(id);
+	if (size_s) free(size_s);
+	if (dcc_id_s) free(dcc_id_s);
 
 }
 
