@@ -1,5 +1,6 @@
 function DccDashboardAssistant(params)
 {
+	this.id			=	params.id;
 	this.server 	=	servers.servers[params.id];
 	this.nick 		=	params.nick;
 	this.address	=	params.address;
@@ -50,6 +51,8 @@ DccDashboardAssistant.prototype.setup = function()
 
 DccDashboardAssistant.prototype.dashTapped = function(event)
 {
+	alert('DCC DASHBOARD TAP: ' + this.id + ' ' + this.dcc_id);
+	plugin.dcc_accept(this.id, this.dcc_id);
 	this.server.closeDCCRequest(this.dcc_id);
 }
 

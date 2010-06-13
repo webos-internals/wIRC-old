@@ -238,6 +238,11 @@ void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const
 
 }
 
+void handle_dcc_callback(irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length) {
+	syslog(LOG_INFO, "DCC CALLBACK: %u %d %d %s", id, status, length, data);
+	irc_dcc_msg(session, id, "THIS IS A TEST");
+}
+
 void setup_event_callbacks() {
 
 	memset(&callbacks, 0, sizeof(callbacks));

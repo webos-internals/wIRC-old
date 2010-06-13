@@ -102,5 +102,6 @@ void plugin_start();
 void plugin_cleanup();
 PDL_Err plugin_initialize();
 void setup_event_callbacks();
+void handle_dcc_callback(irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length);
 
 #endif /* WIRC_H_ */

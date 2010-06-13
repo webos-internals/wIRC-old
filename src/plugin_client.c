@@ -222,6 +222,14 @@ PDL_bool client_ctcp_cmd(PDL_JSParameters *params) {
 	return PDL_TRUE;
 }
 
+PDL_bool client_dcc_accept(PDL_JSParameters *params) {
+	int id = PDL_GetJSParamInt(params, 0);
+	int dcc_id = PDL_GetJSParamInt(params, 1);
+	int ret = irc_dcc_accept(servers[id].session, dcc_id, NULL, handle_dcc_callback);
+	syslog(LOG_INFO, "DCC ACCEPTED: %d %d %d", id, dcc_id, ret);
+	return PDL_TRUE;
+}
+
 int plugin_client_init() {
 
 	int ret = 0;
@@ -249,6 +257,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("get_uid", client_get_uid);
 	ret += PDL_RegisterJSHandler("ctcp_rep", client_ctcp_rep);
 	ret += PDL_RegisterJSHandler("ctcp_cmd", client_ctcp_cmd);
+	ret += PDL_RegisterJSHandler("dcc_accept", client_dcc_accept);
 
 	return ret;
 
