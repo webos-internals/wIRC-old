@@ -1,0 +1,458 @@
+000 series:
+001 002 003 004 005 007 008
+
+200 series:
+211 212 213 214 215 216 217 218 219 221 222 223 224 241 242 243 244 247 248 249 250 251 252 253 254 255 256 257 258 259 263 265 266 271 272 280 281 290 291 292 293 294 298
+
+300 series:
+301 302 303 305 306 307 310 311 312 313 314 315 317 318 319 321 322 323 324 328 329 331 332 333 340 341 346 347 348 349 351 352 353 364 365 366 367 368 369 371 372 374 375 376 377 378 381 382 391
+
+400 series:
+401 402 403 404 405 406 407 408 409 411 412 413 414 416 421 422 423 431 432 433 436 437 438 439 441 442 443 445 446 451 455 461 462 467 468 471 472 473 474 475 477 478 481 482 483 484 485 491
+
+500 series:
+501 502 510 511 512 513
+
+600 series:
+600 601 602 603 604 605 606
+
+Jump to category:
+ADMIN	AWAY	CNOTICE	CPRIVMSG	GLINE	HELPOP
+INFO	INVITE	ISON	JOIN	KICK	KILL
+LINKS	LIST	LUSERS	MAP	MODE	MOTD
+NAMES	NICK	NOTICE	OPER	PART	PASS
+PING	PRIVMSG	REHASH	SILENCE	STATS	SUMMON
+TIME	TOPIC	USER	USERHOST	USERIP	USERS
+VERSION	WATCH	WHO	WHOIS	WHOWAS
+
+Quick Reference:
+
+000 series
+001	:Welcome to the Internet Relay Network nickname
+002	:Your host is server, running version ver
+003	:This server was created datetime
+004	server ver usermode chanmode
+005	:map
+007	:End of /MAP
+008	num :: Server notice mask (hex)
+
+200 series
+211	connection sendq sentmsg sentbyte recdmsg recdbyte :open
+212	command uses bytes
+213	C address * server port class
+214	N address * server port class
+215	I ipmask * hostmask port class
+216	k address * username details
+217	P port ?? ??
+218	Y class ping freq maxconnect sendq
+219	char :End of /STATS report
+221	mode
+222	mask :comment
+223	E hostmask * username ?? ??
+224	D ipmask * username ?? ??
+241	L address * server ?? ??
+242	:Server Up num days, time
+243	o mask password user ?? class
+244	H address * server ?? ??
+247	G address timestamp :reason
+248	U host * ?? ?? ??
+249	:info
+250	:Highest connection count: total (num clients)
+251	:There are user users and invis invisible on serv servers
+252	num :operator(s) online
+253	num :unknown connection(s)
+254	num :channels formed
+255	:I have user clients and serv servers
+256	:Administrative info about server
+257	:info
+258	:info
+259	:info
+263	:Server load is temporarily too heavy. Please wait a while and try again.
+265	:Current local users: curr Max: max
+266	:Current global users: curr Max: max
+271	nick mask
+272	nick :End of Silence List
+280	address timestamp reason
+281	:End of G-line List
+290	:num ***** topic *****
+291	:text
+292	: ***** Go to #dalnethelp if you have any further questions *****
+293	:text
+294	:Your help-request has been forwarded to Help Operators
+298	nick :Nickname conflict has been resolved
+
+300 series
+301	nick :away
+302	:userhosts
+303	:nicknames
+305	:You are no longer marked as being away
+306	:You have been marked as being away
+307	:userips
+310	nick :looks very helpful
+311	nick username address * :info
+312	nick server :info
+313	nick :is an IRC Operator
+314	nick username address * :info
+315	request :End of /WHO list.
+317	nick seconds signon :info
+318	request :End of /WHOIS list.
+319	nick :channels
+321	Channel :Users Name
+322	channel users :topic
+323	:End of /LIST
+324	channel mode
+328	channel :url
+329	channel time
+331	channel :No topic is set.
+332	channel :topic
+333	channel nickname time
+340	nick :nickname=+user@IP.address
+341	nick channel
+346	channel invite nick time
+347	channel :End of Channel Invite List
+348	channel exception nick time
+349	channel :End of Channel Exception List
+351	version.debug server :info
+352	channel username address server nick flags :hops info
+353	= channel :names
+364	server hub :hops info
+365	mask :End of /LINKS list.
+366	channel :End of /NAMES list.
+367	channel ban nick time
+368	channel :End of Channel Ban List
+369	request :End of WHOWAS
+371	:info
+372	:- info
+374	:End of /INFO list.
+375	:- server Message of the Day -
+376	:End of /MOTD command.
+377	:- info
+378	:- info
+381	:You are now an IRC Operator
+382	file :Rehashing
+391	server :time
+
+400 series
+401	nickname :No such nick
+402	server :No such server
+403	channel :No such channel
+404	channel :Cannot send to channel
+405	channel :You have joined too many channels
+406	nickname :There was no such nickname
+407	target :Duplicate recipients. No message delivered
+408	nickname #channel :You cannot use colors on this channel. Not sent: text
+409	:No origin specified
+411	:No recipient given (command)
+412	:No text to send
+413	mask :No toplevel domain specified
+414	mask :Wildcard in toplevel Domain
+416	command :Too many lines in the output, restrict your query
+421	command :Unknown command
+422	:MOTD File is missing
+423	server :No administrative info available
+431	:No nickname given
+432	nickname :Erroneus Nickname
+433	nickname :Nickname is already in use.
+436	nickname :Nickname collision KILL
+437	channel :Cannot change nickname while banned on channel
+438	nick :Nick change too fast. Please wait sec seconds.
+439	target :Target change too fast. Please wait sec seconds.
+441	nickname channel :They aren't on that channel
+442	channel :You're not on that channel
+443	nickname channel :is already on channel
+445	:SUMMON has been disabled
+446	:USERS has been disabled
+451	command :Register first.
+455	:Your username ident contained the invalid character(s) chars and has been changed to new. Please use only the characters 0-9 a-z A-Z _ - or . in your username. Your username is the part before the @ in your email address.
+461	command :Not enough parameters
+462	:You may not reregister
+467	channel :Channel key already set
+468	channel :Only servers can change that mode
+471	channel :Cannot join channel (+l)
+472	char :is unknown mode char to me
+473	channel :Cannot join channel (+i)
+474	channel :Cannot join channel (+b)
+475	channel :Cannot join channel (+k)
+477	channel :You need a registered nick to join that channel.
+478	channel ban :Channel ban/ignore list is full
+481	:Permission Denied- You're not an IRC operator
+482	channel :You're not channel operator
+483	:You cant kill a server!
+484	nick channel :Cannot kill, kick or deop channel service
+485	channel :Cannot join channel (reason)
+491	:No O-lines for your host
+
+500 series
+501	:Unknown MODE flag
+502	:Cant change mode for other users
+510	:You must resolve the nickname conflict before you can proceed
+511	mask :Your silence list is full
+512	address :No such gline
+513	If you can't connect, type /QUOTE PONG code or /PONG code
+
+600 series
+600	nick userid host time :logged offline
+601	nick userid host time :logged online
+602	nick userid host time :stopped watching
+603	:You have mine and are on other WATCH entries
+604	nick userid host time :is online
+605	nick userid host time :is offline
+606	:nicklist
+
+ADMIN
+256	:Administrative info about server
+257	:info
+258	:info
+259	:info
+423	server :No administrative info available
+
+AWAY
+305	:You are no longer marked as being away
+306	:You have been marked as being away
+
+CNOTICE
+441	nickname channel :They aren't on that channel
+
+CPRIVMSG
+441	nickname channel :They aren't on that channel
+
+GLINE
+280	address timestamp reason
+281	:End of G-line List
+512	address :No such gline
+
+HELPOP
+290	:num ***** topic *****
+291	:text
+292	: ***** Go to #dalnethelp if you have any further questions *****
+293	:text
+294	:Your help-request has been forwarded to Help Operators
+
+INFO
+371	:info
+374	:End of /INFO list.
+
+INVITE
+341	nick channel
+443	nickname channel :is already on channel
+482	channel :You're not channel operator
+
+ISON
+303	:nicknames
+
+JOIN
+328	channel :url
+332	channel :topic
+333	channel nickname time
+353	= channel :names
+366	channel :End of /NAMES list.
+405	channel :You have joined too many channels
+439	target :Target change too fast. Please wait sec seconds.
+471	channel :Cannot join channel (+l)
+473	channel :Cannot join channel (+i)
+474	channel :Cannot join channel (+b)
+475	channel :Cannot join channel (+k)
+477	channel :You need a registered nick to join that channel.
+485	channel :Cannot join channel (reason)
+
+KICK
+403	channel :No such channel
+441	nickname channel :They aren't on that channel
+482	channel :You're not channel operator
+484	nick channel :Cannot kill, kick or deop channel service
+
+KILL
+483	:You cant kill a server!
+484	nick channel :Cannot kill, kick or deop channel service
+
+LINKS
+364	server hub :hops info
+365	mask :End of /LINKS list.
+
+LIST
+321	Channel :Users Name
+322	channel users :topic
+323	:End of /LIST
+
+LUSERS
+250	:Highest connection count: total (num clients)
+251	:There are user users and invis invisible on serv servers
+252	num :operator(s) online
+253	num :unknown connection(s)
+254	num :channels formed
+255	:I have user clients and serv servers
+265	:Current local users: curr Max: max
+266	:Current global users: curr Max: max
+
+MAP
+005	:map
+007	:End of /MAP
+
+MODE
+008	num :: Server notice mask (hex)
+221	mode
+324	channel mode
+329	channel time
+346	channel invite nick time
+347	channel :End of Channel Invite List
+348	channel exception nick time
+349	channel :End of Channel Exception List
+367	channel ban nick time
+368	channel :End of Channel Ban List
+403	channel :No such channel
+441	nickname channel :They aren't on that channel
+442	channel :You're not on that channel
+467	channel :Channel key already set
+468	channel :Only servers can change that mode
+472	char :is unknown mode char to me
+478	channel ban :Channel ban/ignore list is full
+482	channel :You're not channel operator
+484	nick channel :Cannot kill, kick or deop channel service
+501	:Unknown MODE flag
+502	:Cant change mode for other users
+
+MOTD
+372	:- info
+375	:- server Message of the Day -
+376	:End of /MOTD command.
+377	:- info
+378	:- info
+422	:MOTD File is missing
+
+NAMES
+353	= channel :names
+366	channel :End of /NAMES list.
+
+NICK
+298	nick :Nickname conflict has been resolved
+431	:No nickname given
+432	nickname :Erroneus Nickname
+433	nickname :Nickname is already in use.
+437	channel :Cannot change nickname while banned on channel
+438	nick :Nick change too fast. Please wait sec seconds.
+
+NOTICE
+403	channel :No such channel
+404	channel :Cannot send to channel
+407	target :Duplicate recipients. No message delivered
+411	:No recipient given (command)
+412	:No text to send
+413	mask :No toplevel domain specified
+414	mask :Wildcard in toplevel Domain
+439	target :Target change too fast. Please wait sec seconds.
+
+OPER
+381	:You are now an IRC Operator
+491	:No O-lines for your host
+
+PART
+403	channel :No such channel
+442	channel :You're not on that channel
+
+PASS
+462	:You may not reregister
+
+PING
+409	:No origin specified
+
+PRIVMSG
+301	nick :away
+403	channel :No such channel
+404	channel :Cannot send to channel
+407	target :Duplicate recipients. No message delivered
+408	nickname #channel :You cannot use colors on this channel. Not sent: text
+411	:No recipient given (command)
+412	:No text to send
+413	mask :No toplevel domain specified
+414	mask :Wildcard in toplevel Domain
+439	target :Target change too fast. Please wait sec seconds.
+
+REHASH
+382	file :Rehashing
+
+SILENCE
+271	nick mask
+272	nick :End of Silence List
+511	mask :Your silence list is full
+
+STATS
+211	connection sendq sentmsg sentbyte recdmsg recdbyte :open
+212	command uses bytes
+213	C address * server port class
+214	N address * server port class
+215	I ipmask * hostmask port class
+216	k address * username details
+217	P port ?? ??
+218	Y class ping freq maxconnect sendq
+219	char :End of /STATS report
+222	mask :comment
+223	E hostmask * username ?? ??
+224	D ipmask * username ?? ??
+241	L address * server ?? ??
+242	:Server Up num days, time
+243	o mask password user ?? class
+244	H address * server ?? ??
+247	G address timestamp :reason
+248	U host * ?? ?? ??
+249	:info
+250	:Highest connection count: total (num clients)
+
+SUMMON
+445	:SUMMON has been disabled
+
+TIME
+391	server :time
+
+TOPIC
+331	channel :No topic is set.
+332	channel :topic
+333	channel nickname time
+403	channel :No such channel
+442	channel :You're not on that channel
+482	channel :You're not channel operator
+
+USER
+462	:You may not reregister
+
+USERHOST
+302	:userhosts
+
+USERIP
+307	:userips
+340	nick :nickname=+user@IP.address
+
+USERS
+446	:USERS has been disabled
+
+VERSION
+351	version.debug server :info
+
+WATCH
+602	nick userid host time :stopped watching
+603	:You have mine and are on other WATCH entries
+604	nick userid host time :is online
+605	nick userid host time :is offline
+606	:nicklist
+
+WHO
+315	request :End of /WHO list.
+352	channel username address server nick flags :hops info
+416	command :Too many lines in the output, restrict your query
+
+WHOIS
+301	nick :away
+310	nick :looks very helpful
+311	nick username address * :info
+312	nick server :info
+313	nick :is an IRC Operator
+317	nick seconds signon :info
+318	request :End of /WHOIS list.
+319	nick :channels
+431	:No nickname given
+
+WHOWAS
+301	nick :away
+314	nick username address * :info
+369	request :End of WHOWAS
+406	nickname :There was no such nickname
+431	:No nickname given

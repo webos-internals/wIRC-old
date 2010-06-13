@@ -423,44 +423,41 @@ wircPlugin.prototype.event_kick_handler = function(id, event, origin, params_s)
 wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
+	var evt = parseInt(event);
 	var params = JSON.parse(params_s);
 	
+	/**
+	 * 000-299
+	 */
+	if (evt<300) {
+		var i = 2;
+		var msg = params[1];
+		if (params.length>i)
+		do {
+			msg += ' ' + params[i];
+			i++; 
+		} while (i<params.length);
+		servers.servers[id].newMessage('type2', false, msg, true);
+		switch (evt) {
+			case 1: clearTimeout(servers.servers[id].connectionTimeout); break; 
+		}
+		return;
+	}
+	
 	switch(event)
-	{								
+	{					
+		
+		/**
+		 * 300 Series
+		 */				
 		case '324': // CHANNELMODEIS
 			var tmpChan = servers.servers[id].getChannel(params[1]);
 			if (tmpChan)
 				tmpChan.channelMode(params[2]);
 			break;
-
-		case '1':		// WELCOME
-			clearTimeout(servers.servers[id].connectionTimeout);
-		case '2':		// YOURHOST
-		case '3':		// CREATED
-		case '4':		// MYINFO
-		case '5':		// BOUNCE
-		case '251':		// LUSERCLIENT
-		case '255':		// LUSERME
-		case '265':		// ???
-		case '266':		// ???
-		case '250':		// ???
 		case '372':		// MOTD
-		case '901':		// ???
 			servers.servers[id].newMessage('type2', false, params[1], true);
-			break;
-					
-		case '42':		// YOURID					
-		case '253':		// LUSERUNKNOWN
-		case '252':		// LUSEROP
-		case '254':		// LUSERCHANNELS
-		case '256':		// ADMINME
-			servers.servers[id].newMessage('type2', false, params[1] + ' ' + params[2]);
-			break;
-					
-		case '439':		// TARGETTOOFAST
-			servers.servers[id].newMessage('type2', false, params[0] + ' ' + params[1]);
 			break;					
-					
 		case '305':		// NOTAWAY
 			servers.servers[id].isAway = false;
 			servers.servers[id].newMessage('type2', false, params[1]);
@@ -470,7 +467,6 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				servers.servers[id].channels[c].updateAppMenu();
 			}
 			break;
-		
 		case '306':		// AWAY
 			servers.servers[id].isAway = true;
 			servers.servers[id].newMessage('type2', false, params[1]);
@@ -480,7 +476,6 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				servers.servers[id].channels[c].updateAppMenu();
 			}
 			break;
-				
 		case '301':		// ??? WHOISAWAY?
 		case '311':		// WHOISUSER
 		case '312':		// WHOISSERVER
@@ -579,6 +574,24 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 		case '376':		// ENDOFMOTD
 			servers.servers[id].updateStatusList();
 			break;
+			
+
+		case '396':
+			tmpNick = servers.servers[id].getNick(params[0]);
+			if (tmpNick) {
+				tmpNick.hiddenHost = params[1];
+				servers.servers[id].newMessage('type2', false, params[1] + ' ' + params[2], true);
+			}
+			break;
+			
+		
+
+
+					
+		case '439':		// TARGETTOOFAST
+			servers.servers[id].newMessage('type2', false, params[0] + ' ' + params[1]);
+			break;					
+
 
 		case '404':
 			var tmpChan = servers.servers[id].getChannel(params[2]);
@@ -617,23 +630,13 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 			else
 				servers.servers[id].newMessage('type2', false, params[2]);
 			break;
-			
-		case '396':
-			tmpNick = servers.servers[id].getNick(params[0]);
-			if (tmpNick) {
-				tmpNick.hiddenHost = params[1];
-				servers.servers[id].newMessage('type2', false, params[1] + ' ' + params[2], true);
-			}
+
+
+		case '901':		// ???
+			servers.servers[id].newMessage('type2', false, params[1], true);
 			break;
-			
-		case '221':
-			tmpNick = servers.servers[id].getNick(params[0]);
-			if (tmpNick) {
-				tmpNick.hiddenHost = params[1];
-				servers.servers[id].newMessage('type2', false, params[1], true);
-			}
-			break;
-					
+
+							
 		default:
 			var out = event + ' ' + params[1];
 			if (params.length>2) {
