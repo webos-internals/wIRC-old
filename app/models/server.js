@@ -330,6 +330,13 @@ ircServer.prototype.newCommand = function(message)
 	}
 }
 
+ircServer.prototype.setAwayStatus = function(away)
+{
+	servers.servers[id].isAway = away;
+	for (var c = 0; c < this.channels.length; c++)
+		this.channels[c].updateAppMenu();
+}
+
 ircServer.prototype.newMessage = function(type, nick, message, dontUpdate)
 {
 	var obj =

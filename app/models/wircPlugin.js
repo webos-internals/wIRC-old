@@ -426,139 +426,93 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 	var evt = parseInt(event);
 	var params = JSON.parse(params_s);
 	
-	/**
-	 * 000-299
-	 */
-	if (evt<300) {
-		var i = 2;
-		var msg = params[1];
-		if (params.length>i)
-		do {
-			msg += ' ' + params[i];
-			i++; 
-		} while (i<params.length);
-		servers.servers[id].newMessage('type2', false, msg, true);
-		switch (evt) {
-			case 1: clearTimeout(servers.servers[id].connectionTimeout); break; 
-		}
-		return;
-	}
-	
-	switch(event)
-	{					
+	var msgTarget = servers.servers[id];
+	var msgType = 'type2';
+	var nick = false;
+	var dontUpdate = true;
+	 
+    var i = 2;
+    var msg = params[1];
+    if (params.length > i) 
+        do {
+            msg += ' ' + params[i];
+            i++;
+        }
+        while (i < params.length);
 		
-		/**
-		 * 300 Series
-		 */				
-		case '324': // CHANNELMODEIS
+	switch (evt) {
+		case 1:
+			clearTimeout(servers.servers[id].connectionTimeout);
+			break;
+		case 324:
 			var tmpChan = servers.servers[id].getChannel(params[1]);
 			if (tmpChan)
 				tmpChan.channelMode(params[2]);
 			break;
-		case '372':		// MOTD
-			servers.servers[id].newMessage('type2', false, params[1], true);
-			break;					
-		case '305':		// NOTAWAY
-			servers.servers[id].isAway = false;
-			servers.servers[id].newMessage('type2', false, params[1]);
-			// update app menu to show "away" option again
-			for (var c = 0; c < servers.servers[id].channels.length; c++)
-			{
-				servers.servers[id].channels[c].updateAppMenu();
-			}
+		case 305:
+			servers.servers[id].setAwayStatus(false);
+		case 306:
+			servers.servers[id].setAwayStatus(true);
 			break;
-		case '306':		// AWAY
-			servers.servers[id].isAway = true;
-			servers.servers[id].newMessage('type2', false, params[1]);
-			// update app menu to show "back" option
-			for (var c = 0; c < servers.servers[id].channels.length; c++)
-			{
-				servers.servers[id].channels[c].updateAppMenu();
-			}
-			break;
-		case '301':		// ??? WHOISAWAY?
-		case '311':		// WHOISUSER
-		case '312':		// WHOISSERVER
-		case '313':		// WHOISOPERATOR
-		case '317':		// WHOISIDLE
-		case '318':		// ENDOFWHOIS
-		case '319':		// WHOISCHANNELS
-		case '320':		// ??? WHOISIDENT?
+		case 301: case 311: case 312: case 313: case 317: case 318: case 319: case 320:
 			var tmpNick = servers.servers[id].getNick(params[1]);
 			if (tmpNick)
 				tmpNick.whoisEvent(event, params_s);
 			break;
-					
-		case '321':		// LISTSTART
+		case 321:
 			servers.servers[id].listStart();
 			break;
-	
-		case '322':		// LIST
+		case 322:
 			servers.servers[id].listAddChannel(params[1], params[2], params[3]);
 			break;
-	
-		case '323':		// LISTEND
-			servers.servers[id].listEnd();
+		case 323:
+			servers.servers[id].listEnd(); 
 			break;
-				
-		case '332':		// TOPIC
-			var tmpChan = servers.servers[id].getChannel(params[1]);
-			if (tmpChan) 
-			{
-				tmpChan.topicUpdate(params[2]);
-				if (tmpChan.containsNick(servers.servers[id].nick)) 
-					tmpChan.newMessage('type8', false, 'Topic for ' + params[1] + ' is "' + params[2] + '"');
-			} 
-			else 
-				servers.servers[id].newMessage('type8', false, 'Topic for ' + params[1] + ' is "' + params[2] + '"');
+		case 332:
+			msgType = 'type8';
+			msgTarget = servers.servers[id].getChannel(params[1]);
+			if (msgTarget) {
+				msgTarget.topicUpdate(params[2]);
+				if (msgTarget.containsNick(servers.servers[id].nick))
+					msg = 'Topic for ' + params[1] + ' is "' + params[2] + '"';
+			} else {
+				msgTarget = servers.servers[id];
+				msg = 'Topic for ' + params[1] + ' is "' + params[2] + '"';
+			}
 			break;
-
-		case '333':		// TOPIC SET TIME
+		case '329':
+			msgType = 'type8';
+			msgTarget = servers.servers[id].getChannel(params[1]);
 			var newDate = new Date();
 			newDate.setTime(params[3]*1000);
 			dateString = newDate.toUTCString();
-			var tmpChan = servers.servers[id].getChannel(params[1]);
-			if (tmpChan) 
-			{
-				if (tmpChan.containsNick(servers.servers[id].nick)) 
-					tmpChan.newMessage('type8', false, 'Topic set by ' + params[2] + ' on ' + dateString);
-			} 
-			else 
-				servers.servers[id].newMessage('action', false, 'Topic set by ' + params[2] + ' on ' + dateString);
+			msg = 'Channel ' + params[1] + ' created on ' + dateString;
 			break;
-
-		case '329':
+		case '333':
+			msgType = 'type8';
+			msgTarget = servers.servers[id].getChannel(params[1]);
 			var newDate = new Date();
-			newDate.setTime(params[2]*1000);
+			newDate.setTime(params[3]*1000);
 			dateString = newDate.toUTCString();
-			var tmpChan = servers.servers[id].getChannel(params[1]);
-			if (tmpChan) 
-			{
-				if (tmpChan.containsNick(servers.servers[id].nick)) 
-					tmpChan.newMessage('type8', false, 'Channel ' + params[1] + ' created on ' + dateString);
-			} 
-			else 
-				servers.servers[id].newMessage('action', false, 'Channel ' + params[1] + ' created on ' + dateString);
+			msg = 'Topic set by ' + params[2] + ' on ' + dateString;
 			break;
-		
-		case '353':		// NAMREPLY
+		case 375: case 376:
+			servers.servers[id].updateStatusList();
+			break;
+		case 353:
+			msg = false;
 			var nicks = params[3].split(" ");
 			var tmpChan = servers.servers[id].getChannel(params[2]);
 			var tmpNick;
-			if (tmpChan)
-			{
-				for (var i = 0; i < nicks.length; i++)
-				{
-					if (nicks[i])
-					{
+			if (tmpChan) {
+				for (var i = 0; i < nicks.length; i++) {
+					if (nicks[i]) {
 						var prefixNick = '';
 						var onlyNick = nicks[i];
-						if (ircNick.hasPrefix(onlyNick))
-						{
+						if (ircNick.hasPrefix(onlyNick)) {
 							prefixNick = nicks[i].substr(0, 1);
 							onlyNick = nicks[i].substr(1);
 						}
-						
 						tmpNick = servers.servers[id].getNick(onlyNick);
 						if (tmpNick)
 							tmpNick.addChannel(tmpChan, ircNick.getPrefixMode(prefixNick));
@@ -566,86 +520,33 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				}
 			}
 			break;
-	
-		case '366':		// ENDOFNAMES
-			break;
-					
-		case '375':		// MOTDSTART
-		case '376':		// ENDOFMOTD
-			servers.servers[id].updateStatusList();
-			break;
-			
-
-		case '396':
-			tmpNick = servers.servers[id].getNick(params[0]);
-			if (tmpNick) {
-				tmpNick.hiddenHost = params[1];
-				servers.servers[id].newMessage('type2', false, params[1] + ' ' + params[2], true);
-			}
-			break;
-			
-		
-
-
-					
-		case '439':		// TARGETTOOFAST
-			servers.servers[id].newMessage('type2', false, params[0] + ' ' + params[1]);
-			break;					
-
-
-		case '404':
-			var tmpChan = servers.servers[id].getChannel(params[2]);
-			if (tmpChan)
-			{
-				if (tmpChan.containsNick(servers.servers[id].nick))
-					tmpChan.newMessage('type2', false, params[3]);
-			}
-			else
-				servers.servers[id].newMessage('type2', false, params[3]);
-			break;
-					
-		case '437':
-		case '433':		// NAMEINUSE
-			servers.servers[id].newMessage('debug', false, params[1] + " : " + params[2]);
-			if (servers.servers[id].nextNick < prefs.get().nicknames.length-1)
-			{
-				servers.servers[id].newMessage('debug', false, 'Trying next nick [' + servers.servers[id].nextNick + '] - ' + prefs.get().nicknames[servers.servers[id].nextNick]);
-				servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
-				plugin.cmd_nick(null, servers.servers[id].sessionToken, prefs.get().nicknames[servers.servers[id].nextNick]);	
-			}
-			else {
-				servers.servers[id].newMessage('debug', false, 'No more nicks to try!');
-				servers.servers[id].disconnect();
-			}
+		case 404:
+			msgTarget = servers.servers[id].getChannel(params[2]);
+			if (msgTarget && msgTarget.containsNick(servers.servers[id].nick))
+				msg = params[3];
 			break;
 		
-		case '477':
-		case '482':
-			var tmpChan = servers.servers[id].getChannel(params[1]);
-			if (tmpChan) 
-			{
-				if (tmpChan.containsNick(servers.servers[id].nick))
-					tmpChan.newMessage('type2', false, params[2]);
-			}
-			else
-				servers.servers[id].newMessage('type2', false, params[2]);
-			break;
-
-
-		case '901':		// ???
-			servers.servers[id].newMessage('type2', false, params[1], true);
-			break;
-
-							
-		default:
-			var out = event + ' ' + params[1];
-			if (params.length>2) {
-				for (var i=2; i<params.length; i++)
-					out = out +	' ' + params[i];
-			}
-			servers.servers[id].newMessage('type2', false, out, true);
+		case 477: case 482:
+			msgTarget = servers.servers[id].getChannel(params[1]);
+			if (msgTarget && tmpChan.containsNick(servers.servers[id].nick))
+				msg = params[2];
 			break;
 	}
+	if (msg) msgTarget.newMessage(msgType, nick, msg, dontUpdate);
+	
+	if (evt == 433 || evt == 437) {
+		servers.servers[id].newMessage('debug', false, msg[0] = params[1] + " : " + params[2]);
+		if (servers.servers[id].nextNick < prefs.get().nicknames.length - 1) {
+			servers.servers[id].newMessage('debug', false, 'Trying next nick [' + servers.servers[id].nextNick + '] - ' + prefs.get().nicknames[servers.servers[id].nextNick]);
+			servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
+			plugin.cmd_nick(null, servers.servers[id].sessionToken, prefs.get().nicknames[servers.servers[id].nextNick]);
+		}
+		else {
+			servers.servers[id].newMessage('debug', false, 'No more nicks to try!');
+			servers.servers[id].disconnect();
+		}
+	}
+
 }
 
 wircPlugin.prototype.event_unknown_handler = function(id, event, origin, params_s)
