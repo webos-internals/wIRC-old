@@ -201,7 +201,7 @@ PreferencesGeneralAssistant.prototype.setup = function()
 				[
 					{label:'1s',    value:1},
 					{label:'5s',    value:5},
-					{label:'10s',   value:15},
+					{label:'10s',   value:10},
 					{label:'15s',   value:15},
 					{label:'20s',   value:20},
 					{label:'25s',   value:25},
