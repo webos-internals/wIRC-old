@@ -125,8 +125,9 @@ ircNick.prototype.getRandomColor = function()
 	return '#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6);
 }
 
-ircNick.prototype.whoisEvent = function(event, params)
+ircNick.prototype.whoisEvent = function(event, params_s)
 {
+	var params = JSON.parse(params_s);
 	//alert('--- ' + event + ' ---');
 	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
 	
