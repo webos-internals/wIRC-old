@@ -213,6 +213,7 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	var nick = this.channel.server.getNick(event.item.name);
 	
 	var popupList = [];
+	popupList.push({label: event.item.name});
 	popupList.push({label: 'Private Message',	 command: 'pm'});
 	popupList.push({label: 'Whois',				 command: 'whois'});
 	popupList.push({label: 'Invite',			 command: 'invite', disabled: true});
@@ -223,7 +224,16 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	operatorList.push({label: (nick.hasMode('v', this.channel)?'DeVoice':'Voice'),	 command: 'voice'});
 	operatorList.push({label: 'Kick',	 command: 'kick'});
 	operatorList.push({label: 'Ban',	 command: 'ban', disabled: true});
-	popupList.push({label: 'Operator Actions',				 items: operatorList});
+	popupList.push({label: 'Operator Actions', items: operatorList});
+	
+	var ctcpList = [];
+	ctcpList.push({label: 'PING',		command: 'ctcp-ping'});
+	ctcpList.push({label: 'FINGER',		command: 'ctcp-finger'});
+	ctcpList.push({label: 'VERSION',	command: 'ctcp-version'});
+	ctcpList.push({label: 'SOURCE',		command: 'ctcp-source'});
+	ctcpList.push({label: 'USERINFO',	command: 'ctcp-userinfo'});
+	ctcpList.push({label: 'TIME',		command: 'ctcp-time'});
+	popupList.push({label: 'CTCP Actions', items: ctcpList});
 	
 	
 	this.controller.popupSubmenu(
@@ -275,6 +285,25 @@ ChannelUsersAssistant.prototype.listTapListHandler = function(choice, item, nick
 					okText:			'Kick'
 				}
 			);
+			break;
+		
+		case 'ctcp-ping':
+			this.channel.server.newCommand('/ctcp ' + item.name + ' PING');
+			break;
+		case 'ctcp-finger':
+			this.channel.server.newCommand('/ctcp ' + item.name + ' FINGER');
+			break;
+		case 'ctcp-version':
+			this.channel.server.newCommand('/ctcp ' + item.name + ' VERSION');
+			break;
+		case 'ctcp-source':
+			this.channel.server.newCommand('/ctcp ' + item.name + ' SOURCE');
+			break;
+		case 'ctcp-userinfo':
+			this.channel.server.newCommand('/ctcp ' + item.name + ' USERINFO');
+			break;
+		case 'ctcp-time':
+			this.channel.server.newCommand('/ctcp ' + item.name + ' TIME');
 			break;
 	}
 }
