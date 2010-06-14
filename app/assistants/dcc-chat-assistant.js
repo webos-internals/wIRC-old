@@ -1,6 +1,6 @@
-function DccChatAssistant(dccChat)
+function DccChatAssistant(dcc)
 {
-	this.dccChat = dccChat;
+	this.dcc = dcc;
 	
 	this.documentElement =			false;
 	this.sceneScroller =			false;
@@ -30,7 +30,7 @@ function DccChatAssistant(dccChat)
 		value:''
 	};
 	
-	this.dccChat.setChatAssistant(this);
+	this.dcc.setChatAssistant(this);
 	
 	// setup menu
 	this.menuModel =
@@ -39,7 +39,7 @@ function DccChatAssistant(dccChat)
 		items: []
 	}
 	this.menuModel.items.push(Mojo.Menu.editItem);
-	this.menuModel.items.push({ label: this.dccChat.nick.name, items: [{ label: 'Clear Backlog',	command: 'clear-backlog'}]});
+	this.menuModel.items.push({ label: this.dcc.nick.name, items: [{ label: 'Clear Backlog',	command: 'clear-backlog'}]});
 	this.menuModel.items.push({ label: 'Preferences', command: 'do-prefs'});
 	this.menuModel.items.push({ label: 'Help', command: 'do-help'})
 }
@@ -83,7 +83,7 @@ DccChatAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.messageListElement, Mojo.Event.dragging, this.draggingHandler);
 		this.isVisible = true;
 		
-		this.titleElement.innerHTML = this.dccChat.nick.name;
+		this.titleElement.innerHTML = this.dcc.nick.name;
 		this.loadPrefs(true);
 		
 		this.updateList(true);
@@ -148,7 +148,7 @@ DccChatAssistant.prototype.activate = function(event)
 	}
 	else
 	{
-		this.inputElement = this.inputWidgetElement.dccChatSelector('[name=inputElement]');
+		this.inputElement = this.inputWidgetElement.dccSelector('[name=inputElement]');
 		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}
 	this.alreadyActivated = true;
@@ -186,7 +186,7 @@ DccChatAssistant.prototype.updateList = function(initial)
 	{
 		if (initial) 
 		{
-			var newMessages = this.dccChat.getMessages(0);
+			var newMessages = this.dcc.getMessages(0);
 			if (newMessages.length > 0)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
@@ -209,7 +209,7 @@ DccChatAssistant.prototype.updateList = function(initial)
 			}
 			
 			var start = this.messageListElement.mojo.getLength();
-			var newMessages = this.dccChat.getMessages(start);
+			var newMessages = this.dcc.getMessages(start);
 			if (newMessages.length > 0)
 			{
 				for (var m = 0; m < newMessages.length; m++) 
@@ -296,7 +296,7 @@ DccChatAssistant.prototype.messageTapListHandler = function(choice, item)
 	switch(choice)
 	{
 		case 'whois':
-			this.dccChat.server.whois(item.nick);
+			this.dcc.server.whois(item.nick);
 			break;
 			
 		case 'copy':
@@ -309,7 +309,7 @@ DccChatAssistant.prototype.messageTapListHandler = function(choice, item)
 
 DccChatAssistant.prototype.sendButtonPressed = function(event)
 {
-	this.dccChat.newCommand(this.inputModel.value);
+	this.dcc.newCommand(this.inputModel.value);
 	this.inputWidgetElement.mojo.setValue('');
 	
 	// this probably isn't needed
@@ -349,12 +349,12 @@ DccChatAssistant.prototype.updateLagMeter = function()
 	var netClass = '';
 	if (prefs.get().lagMeter)
 	{
-		if (this.dccChat.server.isConnected())
+		if (this.dcc.server.isConnected())
 		{
-			if (this.dccChat.server.sessionInterface == 'wan')
-				netClass = 'network ' + this.dccChat.server.sessionNetwork + ' ' + this.dccChat.server.lag;
+			if (this.dcc.server.sessionInterface == 'wan')
+				netClass = 'network ' + this.dcc.server.sessionNetwork + ' ' + this.dcc.server.lag;
 			else
-				netClass = 'network wifi ' + this.dccChat.server.lag;
+				netClass = 'network wifi ' + this.dcc.server.lag;
 		}
 	}
 	this.networkLagElement.className = netClass;
@@ -375,7 +375,7 @@ DccChatAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'clear-backlog':
-				this.dccChat.clearMessages();
+				this.dcc.clearMessages();
 				this.listModel.items = [];
 				this.lastFocusMarker = false;
 				this.lastFocusMessage = false;
@@ -434,7 +434,7 @@ DccChatAssistant.prototype.visibleWindow = function(event)
 	{
 		this.isVisible = true;
 	}
-	this.dccChat.closeDash();
+	this.dcc.closeDash();
 	this.updateLagMeter();
 }
 DccChatAssistant.prototype.invisibleWindow = function(event)

@@ -104,12 +104,16 @@
         "scenes": "query-dashboard",
         "source": "app/assistants/query-dashboard-assistant.js"
     },
-    {
-        "scenes": "dcc-chat",
-        "source": "app/assistants/dcc-chat-assistant.js"
-    },
 	{
         "scenes": "dcc-request-dashboard",
         "source": "app/assistants/dcc-request-dashboard-assistant.js"
     }
+    {
+        "scenes": "dcc-chat",
+        "source": "app/assistants/dcc-chat-assistant.js"
+    },
+    {
+        "scenes": "dcc-chat-dashboard",
+        "source": "app/assistants/dcc-chat-dashboard-assistant.js"
+    },
 ]

@@ -59,6 +59,7 @@ wircPlugin.prototype.registerHandlers = function() {
 }
 
 wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, length, data){
+	alert('---------------');
 	alert('id: ' + id + ', dcc_id: ' + dcc_id + ', status: ' + length + ', data: ' + data);
 }
 
