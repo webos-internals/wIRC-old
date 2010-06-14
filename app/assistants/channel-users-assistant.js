@@ -216,7 +216,8 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	popupList.push({label: event.item.name});
 	popupList.push({label: 'Private Message',	 command: 'pm'});
 	popupList.push({label: 'Whois',				 command: 'whois'});
-	popupList.push({label: 'Invite',			 command: 'invite', disabled: true});
+	popupList.push({label: 'Send File',			 command: 'dcc-send', disabled: true});
+	popupList.push({label: 'Invite',			 command: 'invite',   disabled: true});
 	
 	var operatorList = [];
 	operatorList.push({label: (nick.hasMode('o', this.channel)?'DeOp':'Op'),		 command: 'op'});
