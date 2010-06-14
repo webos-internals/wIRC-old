@@ -59,7 +59,12 @@ wircPlugin.prototype.registerHandlers = function() {
 }
 
 wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, data, length) {
-	
+	alert('---------------');
+	alert('id: '+id);
+	alert('dcc_id: '+dcc_id);
+	alert('status: '+status);
+	alert('data: '+data);
+	alert('length: '+length);
 }
 
 wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {
@@ -77,7 +82,7 @@ wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, fi
 }
 
 wircPlugin.prototype.event_dcc_chat_req_handler = function(id, nick, address, dcc_id) {
-	servers.servers[id].openDCCRequest({
+	var params = {
 		id: id,
 		nick: servers.servers[id].getNick(nick).name,
 		address: address,
@@ -85,7 +90,8 @@ wircPlugin.prototype.event_dcc_chat_req_handler = function(id, nick, address, dc
 		size: false,
 		dcc_id: dcc_id,
 		type: 'dcc'
-	});
+	};
+	servers.servers[id].openDCCRequest(params);
 	//servers.servers[id].newMessage('debug', false, 'dcc_chat_req, nick: ' + nick + ', address: ' + address + ', dcc_id: ' + dcc_id);
 }
 

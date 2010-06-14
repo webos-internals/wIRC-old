@@ -1,5 +1,6 @@
-function DccDashboardAssistant(params)
+function DccDashboardAssistant(server, params)
 {
+	this.server = server;
 	this.params	= params;
 	
 	this.dashboardElement =			false;
@@ -29,7 +30,7 @@ DccDashboardAssistant.prototype.setup = function()
 	this.newNumberBubbleElement.style.display = 'none';
 	
 	// puts message
-	if (this.filename && this.params.size) {
+	if (this.params.filename && this.params.size) {
 		this.dashboardTitleElement.innerHTML = 'DCC SEND: ' + this.params.nick;
 		this.dashboardElement.className = 'dcc-send-dashboard dashboard-notification-module';
 	}

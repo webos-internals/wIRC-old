@@ -930,7 +930,7 @@ ircServer.prototype.openDCCRequest = function(params)
 			msgText = "Incoming file transfer request...";
 			icon = 'icon-dcc-send.png';	
 		}
-			
+		
 		Mojo.Controller.appController.showBanner
 		(
 			{
@@ -951,7 +951,7 @@ ircServer.prototype.openDCCRequest = function(params)
 		{
 			this.dccRequests.push({params: params});
 			
-			Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openDCCRequestCallback.bind(params), "dashboard");
+			Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openDCCRequestCallback.bind(this), "dashboard");
 		}
 		
 	}
@@ -962,7 +962,7 @@ ircServer.prototype.openDCCRequest = function(params)
 }
 ircServer.prototype.openDCCRequestCallback = function(controller, params)
 {
-	controller.pushScene('dcc-dashboard', this, params);
+	controller.pushScene('dcc-dashboard', this, this.dccRequests[this.dccRequests.length-1].params);
 }
 ircServer.prototype.closeDCCRequest = function(params)
 {
