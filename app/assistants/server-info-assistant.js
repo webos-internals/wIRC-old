@@ -130,6 +130,10 @@ ServerInfoAssistant.prototype.setup = function()
 			this.saveButtonElement.hide();
 		}
 		
+		
+		// make it so nothing is selected by default (textbox rage)
+		this.controller.setInitialFocusedElement(null);
+		
 	} 
 	catch (e) 
 	{

@@ -239,6 +239,11 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.propertyChanged,	this.favoriteChannelsChange.bindAsEventListener(this));
 		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listReorder,		this.favoriteChannelsReorder.bindAsEventListener(this));
 		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listDelete,			this.favoriteChannelsDelete.bindAsEventListener(this));
+		
+		
+		
+		// make it so nothing is selected by default (textbox rage)
+		this.controller.setInitialFocusedElement(null);
 	} 
 	catch (e) 
 	{
