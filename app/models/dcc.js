@@ -29,7 +29,7 @@ ircDcc.prototype.openRequest = function()
 	try
 	{
 		
-		if (isFile()) {
+		if (this.isFile()) {
 			var msgText = this.nick.name + ' wants to send: ' + this.filename;
 			var icon = 'icon-dcc-send.png';
 		}
