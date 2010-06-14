@@ -41,6 +41,24 @@ function ServerAdvancedAssistant(serverobj)
 			this.favoriteChannelsData.push({id: this.favoriteChannelsCount, index: this.favoriteChannelsCount-1, value: this.server.favoriteChannels[c]});
 		}
 	}
+	
+	// setup menu
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			Mojo.Menu.editItem,
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			},
+			{
+				label: "Help",
+				command: 'do-help'
+			}
+		]
+	};
 		
 }
 
@@ -49,7 +67,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 	
 	try 
 	{
-		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, { visible: false });
+		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.aliasElement =				this.controller.get('alias');
 		this.addressElement =			this.controller.get('address');
@@ -239,6 +257,11 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.propertyChanged,	this.favoriteChannelsChange.bindAsEventListener(this));
 		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listReorder,		this.favoriteChannelsReorder.bindAsEventListener(this));
 		Mojo.Event.listen(this.favoriteChannelsList, Mojo.Event.listDelete,			this.favoriteChannelsDelete.bindAsEventListener(this));
+		
+		
+		
+		// make it so nothing is selected by default (textbox rage)
+		this.controller.setInitialFocusedElement(null);
 	} 
 	catch (e) 
 	{
@@ -527,6 +550,23 @@ ServerAdvancedAssistant.prototype.deactivate = function(event)
 ServerAdvancedAssistant.prototype.validationError = function(error)
 {
 	alert('Error: ' +  error);
+}
+
+ServerAdvancedAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type == Mojo.Event.command)
+	{
+		switch (event.command)
+		{
+			case 'do-help':
+				this.controller.stageController.pushScene('help');
+				break;
+				
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences-general');
+				break;
+		}
+	}
 }
 
 ServerAdvancedAssistant.prototype.activate = function(event)

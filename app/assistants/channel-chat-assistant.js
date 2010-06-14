@@ -419,24 +419,13 @@ ChannelChatAssistant.prototype.stopAutoFocus = function(){
 }
 
 ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
-    this.menuModel.items = [];
+    this.menuModel.items = [Mojo.Menu.editItem];
     
     var serverItems = [];
     var channelItems = [];
 	
-	// Global menu options
-	this.menuModel.items.push({
-        label: "Global Preferences",
-        command: 'do-prefs'
-    });
-    
+	
     // Server menu options
-	if (!this.channel.server.isTemporary) {
-		serverItems.push({
-			label: "Preferences",
-			command: 'do-server-prefs'
-		});
-	}
 	var favorites = [];
     if (this.channel.server.favoriteChannels && this.channel.server.favoriteChannels.length > 0) {
         for (var c = 0; c < this.channel.server.favoriteChannels.length; c++) {
@@ -462,6 +451,12 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
             command: 'do-away'
         });
     }
+	if (!this.channel.server.isTemporary) {
+		serverItems.push({
+			label: "Settings",
+			command: 'do-server-prefs'
+		});
+	}
     
     // Channel menu options   
     channelItems.push({
@@ -469,14 +464,23 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
         command: 'do-clear-backlog'
     });
     
+	
     this.menuModel.items.push({
-        label: "Channel",
+        label: this.channel.name,
         items: channelItems
     });
     this.menuModel.items.push({
-        label: "Server",
+        label: (this.channel.server.alias?this.channel.server.alias:this.channel.server.address),
         items: serverItems
     });
+	
+	
+	// Global menu options
+	this.menuModel.items.push({
+        label: "Preferences",
+        command: 'do-prefs'
+    });
+	
 	this.menuModel.items.push({
 		label: "Help",
 		command: 'do-help'

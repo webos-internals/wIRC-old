@@ -6,10 +6,30 @@ function PreconfiguredNetworksAssistant()
 	};
 	
 	this.networks = {};
+	
+	// setup menu
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			Mojo.Menu.editItem,
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			},
+			{
+				label: "Help",
+				command: 'do-help'
+			}
+		]
+	};
 }
 
 PreconfiguredNetworksAssistant.prototype.setup = function()
 {
+	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
+	
 	this.customElement =	this.controller.get('custom');
 	this.listElement =		this.controller.get('networkList');
 	this.customTapHandler =	this.customTapHandler.bindAsEventListener(this);
@@ -70,6 +90,23 @@ PreconfiguredNetworksAssistant.prototype.customTapHandler = function(event)
 PreconfiguredNetworksAssistant.prototype.listTapHandler = function(event)
 {
 	this.controller.stageController.pushScene(this.networks[event.item.name].scene, this.networks[event.item.name].param);
+}
+
+PreconfiguredNetworksAssistant.prototype.handleCommand = function(event)
+{
+	if (event.type == Mojo.Event.command)
+	{
+		switch (event.command)
+		{
+			case 'do-help':
+				this.controller.stageController.pushScene('help');
+				break;
+				
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences-general');
+				break;
+		}
+	}
 }
 
 PreconfiguredNetworksAssistant.prototype.cleanup = function(event)
