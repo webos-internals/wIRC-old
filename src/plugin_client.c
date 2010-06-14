@@ -289,8 +289,7 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 	DIR *dp;
 	struct dirent *ep;
 
-	const char *payload[2];
-	payload[0] = PDL_GetJSParamString(params, 0);
+	const char *payload[1];
 	char *tmp = 0, *list = 0;
 
 	dp = opendir(PDL_GetJSParamString(params, 1));
@@ -304,8 +303,8 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 		}
 		(void) closedir(dp);
 		asprintf(&tmp, "[%s]", list);
-		payload[1] = tmp;
-		PDL_CallJS("handle_list_directory", payload, 2);
+		payload[0] = tmp;
+		PDL_CallJS("handle_list_directory", payload, 1);
 		if (tmp) free(tmp);
 		if (list) free(list);
 	} else
