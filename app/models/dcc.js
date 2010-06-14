@@ -127,7 +127,7 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 }
 
 
-ircQuery.prototype.newCommand = function(message)
+ircDcc.prototype.newCommand = function(message)
 {
 	if (this.server.isConnected())
 	{
@@ -176,7 +176,7 @@ ircQuery.prototype.newCommand = function(message)
 	}
 }
 
-ircQuery.prototype.msg = function(message)
+ircDcc.prototype.msg = function(message)
 {
 	var sid = servers.getServerArrayKey(this.server.id);
 	var n = Math.ceil(message.length / 255);
