@@ -461,6 +461,9 @@ DccChatAssistant.prototype.invisibleWindow = function(event)
 
 DccChatAssistant.prototype.cleanup = function(event)
 {
+	alert("CLEANUP!!!!!!");
+	plugin.dcc_decline(servers.getServerArrayKey(this.dcc.server.id), this.dcc.id);
+	plugin.dcc_destroy(servers.getServerArrayKey(this.dcc.server.id), this.dcc.id);
 	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageActivate,   this.visibleWindowHandler);
 	Mojo.Event.stopListening(this.documentElement,		Mojo.Event.stageDeactivate,	this.invisibleWindowHandler);
