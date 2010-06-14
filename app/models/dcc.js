@@ -74,5 +74,5 @@ ircDcc.prototype.closeRequest = function()
 
 ircDcc.prototype.accept = function()
 {
-	plugin.dcc_accept(this.server.id, this.id);
+	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id);
 }
