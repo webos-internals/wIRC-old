@@ -108,6 +108,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 		else if (params.type == 'dcc')
 		{
 			// ignoring this for now...
+			// do we really want to automatically accept a file download with a tap of a banner?
 		}
 		else if (params.type == 'yell' && params.message && plugin !== null)
 		{
