@@ -75,6 +75,21 @@ function ircServer(params)
 	
 }
 
+ircServer.prototype.getDCCChatArrayKey = function(id)
+{
+	if (this.dccChats.length > 0)
+	{
+		for (var s = 0; s < this.dccChats.length; s++)
+		{
+			if (this.dccChats[s].id == id)
+			{
+				return s;
+			}
+		}
+	}
+	return false;
+}
+
 ircServer.prototype.setState = function(state)
 {
 	if (this.state==-1 && state<this.STATE_CONNECTING)
@@ -971,7 +986,7 @@ ircServer.prototype.closeDCCRequest = function(params)
 		var tmpBannerName = 'dcc-' + this.id + '-' + params.dcc_id;
 		var tmpDashName = 'dccdash-' + this.id + '-' + params.dcc_id;
 		
-		this.dccrequests = this.dccRequests.without({params: params});
+		this.dccrequests = this.dccRequests.splice(1,this.getDCCChatArrayKey(params.dcc_id));
 		
 		Mojo.Controller.appController.removeBanner(tmpBannerName);
 		Mojo.Controller.appController.closeStage(tmpDashName);

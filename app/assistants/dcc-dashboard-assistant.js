@@ -45,12 +45,12 @@ DccDashboardAssistant.prototype.setup = function()
 
 DccDashboardAssistant.prototype.dashTapped = function(event)
 {
-	//this.server.closeDCCRequest(this.params.dcc_id);
-	plugin.dcc_accept(this.params.id, this.params.dcc_id)
+	servers.servers[this.params.id].closeDCCRequest(this.params.dcc_id);
+	plugin.dcc_accept(this.params.id, this.params.dcc_id);
 }
 
 DccDashboardAssistant.prototype.cleanup = function(event)
 {
-	this.server.closeDCCRequest(this.params.dcc_id);
+	servers.servers[this.params.id].closeDCCRequest(this.params.dcc_id);
 	Mojo.Event.stopListening(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
 }

@@ -247,18 +247,19 @@ void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const
 
 void handle_dcc_callback(irc_session_t * session, irc_dcc_t dcc_id, int status, void * ctx, const char * data, unsigned int length) {
 
-	syslog(LOG_INFO, "DCC CALLBACK: %u %d %d %s", dcc_id, status, length, data);
-
 	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
 
-	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0;
+	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
+
+	syslog(LOG_INFO, "DCC CALLBACK: %d %u %d %u %s", client->id, dcc_id, status, length, data);
 
 	syslog(LOG_INFO, "GOT HERE 1");
 
 	asprintf(&id, "%d", client->id);
-	asprintf(&status_s, "%u", status);
 	asprintf(&dcc_id_s, "%u", dcc_id);
+	asprintf(&status_s, "%d", status);
 	asprintf(&length_s, "%u", length);
+	asprintf(&data_s, "%s", data);
 
 	syslog(LOG_INFO, "GOT HERE 2");
 
@@ -266,8 +267,8 @@ void handle_dcc_callback(irc_session_t * session, irc_dcc_t dcc_id, int status, 
 	payload[0] = id;
 	payload[1] = dcc_id_s;
 	payload[2] = status_s;
-	payload[3] = length?data:"";
-	payload[4] = length_s;
+	payload[3] = length_s;
+	payload[4] = data_s;
 
 	syslog(LOG_INFO, "GOT HERE 3");
 
@@ -278,6 +279,7 @@ void handle_dcc_callback(irc_session_t * session, irc_dcc_t dcc_id, int status, 
 	if (status_s) free(status_s);
 	if (dcc_id_s) free(dcc_id_s);
 	if (length_s) free(length_s);
+	if (data_s) free(data_s);
 }
 
 void setup_event_callbacks() {

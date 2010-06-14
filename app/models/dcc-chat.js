@@ -3,6 +3,7 @@ function ircDccChat(params)
 	this.nick =				params.nick;
 	this.server =			params.server;
 	this.params =			params;
+	this.id =				params.dcc_id;
 	
 	this.messages =			[];
 	
