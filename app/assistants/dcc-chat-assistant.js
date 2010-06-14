@@ -148,7 +148,7 @@ DccChatAssistant.prototype.activate = function(event)
 	}
 	else
 	{
-		this.inputElement = this.inputWidgetElement.dccSelector('[name=inputElement]');
+		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
 		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}
 	this.alreadyActivated = true;

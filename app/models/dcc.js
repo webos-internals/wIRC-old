@@ -24,6 +24,16 @@ function ircDcc(params)
 	this.chatAssistant =		false;
 }
 
+
+ircDcc.prototype.isChat = function()
+{
+	return (this.filename && this.size ? false : true);
+}
+ircDcc.prototype.isFile = function()
+{
+	return (this.filename && this.size ? true : false);
+}
+
 ircDcc.prototype.openRequest = function()
 {
 	try
@@ -97,15 +107,6 @@ ircDcc.prototype.accept = function()
 	{
 		this.openChatStage();
 	}
-}
-
-ircDcc.prototype.isChat = function()
-{
-	return (this.filename && this.size ? false : true);
-}
-ircDcc.ptototype.isFile = function()
-{
-	return (this.filename && this.size ? true : false);
 }
 
 ircDcc.prototype.handleEvent = function(status, length, data)
@@ -310,7 +311,7 @@ ircDcc.prototype.openChatStage = function()
 }
 ircDcc.prototype.openChatStageCallback = function(controller)
 {
-	controller.pushScene('query-chat', this);
+	controller.pushScene('dcc-chat', this);
 }
 ircDcc.prototype.closeChatStage = function()
 {
