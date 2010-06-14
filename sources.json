@@ -110,7 +110,7 @@
         "source": "app/assistants/dcc-chat-assistant.js"
     },
 	{
-        "scenes": "dcc-dashboard",
-        "source": "app/assistants/dcc-dashboard-assistant.js"
+        "scenes": "dcc-request-dashboard",
+        "source": "app/assistants/dcc-request-dashboard-assistant.js"
     }
 ]
