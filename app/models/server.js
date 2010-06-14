@@ -64,7 +64,7 @@ function ircServer(params)
 	this.statusAssistant =		false;
 	this.invites =				[];
 	
-	this.dcc =					[];
+	this.dccs =					[];
 	
 	this.listStageName =		'channel-list-' + this.id;
 	this.listStageController =	false;
@@ -921,17 +921,31 @@ ircServer.prototype.startDcc = function(params)
 {
 	var newDcc = new ircDcc(params);
 	newDcc.openRequest();
-	this.queries.push(newDcc);
+	this.dccs.push(newDcc);
+}
+ircServer.prototype.getDcc = function(id)
+{
+	if (this.dccs.length > 0)
+	{
+		for (var d = 0; d < this.dccs.length; d++)
+		{
+			if (this.dccs[d].id == id)
+			{
+				return this.dccs[d];
+			}
+		}
+	}
+	return false;
 }
 ircServer.prototype.getDccArrayKey = function(id)
 {
-	if (this.dcc.length > 0)
+	if (this.dccs.length > 0)
 	{
-		for (var s = 0; s < this.dcc.length; s++)
+		for (var d = 0; d < this.dccs.length; d++)
 		{
-			if (this.dcc[s].id == id)
+			if (this.dccs[d].id == id)
 			{
-				return s;
+				return d;
 			}
 		}
 	}
