@@ -58,17 +58,8 @@ wircPlugin.prototype.registerHandlers = function() {
 
 }
 
-wircPlugin.prototype.doThis = function(id, dcc_id, data) {
-	plugin.dcc_msg(id, dcc_id, data);
-}
-
 wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, length, data){
-	alert('##############################################################');
-	alert('DCC_CALLBACK: ' + id + ' ' + dcc_id + ' ' + status + ' ' + length + ' ' + data);
-	alert('##############################################################');
-	
-	var f = this.doThis.bind(this, id, dcc_id, data);
-	setTimeout(f, 100);
+	alert('id: ' + id + ', dcc_id: ' + dcc_id + ', status: ' + length + ', data: ' + data);
 }
 
 wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {

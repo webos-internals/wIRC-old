@@ -44,19 +44,19 @@ typedef enum {
 int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
 	int retVal = -1;
 	if (reason)
-		retVal = irc_send_raw(session,"AWAY :%s",reason);
+		retVal = irc_send_raw(session, "AWAY :%s", reason);
 	else
-		retVal = irc_send_raw(session,"AWAY");
+		retVal = irc_send_raw(session, "AWAY");
 	return retVal;
 }
 
 void *client_run(void *ptr) {
 
-	wIRCd_client_t *server = &servers[*(int*)ptr];
+	wIRCd_client_t *server = &servers[*(int*) ptr];
 
 	int retry = 0;
 
-	while (retry<=max_retries) {
+	while (retry <= max_retries) {
 
 		server->session = irc_create_session(&callbacks, server->interface);
 		if (!server->session)
@@ -64,13 +64,15 @@ void *client_run(void *ptr) {
 
 		irc_set_ctx(server->session, server);
 
-		int c = irc_connect(server->session, server->server, server->port, server->server_password, server->nick, server->username, server->realname);
+		int c = irc_connect(server->session, server->server, server->port,
+				server->server_password, server->nick, server->username,
+				server->realname);
 		usleep(pre_run_usleep);
 
 		irc_run(server->session);
 
 		irc_destroy_session(server->session);
-		memset(server,-1,sizeof(server));
+		memset(server, -1, sizeof(server));
 
 		if (server->estabilshed) {
 			return;
@@ -106,8 +108,10 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 	servers[id].worker_thread = 0;
 	servers[id].realServer = 0;
 
-	if (pthread_create(&servers[id].worker_thread, NULL, client_run, (void*)&id)) {
-		PDL_JSReply(params, "{\"returnValue\":-1,\"errorText\":\"Failed to create thread\"}");
+	if (pthread_create(&servers[id].worker_thread, NULL, client_run,
+			(void*) &id)) {
+		PDL_JSReply(params,
+				"{\"returnValue\":-1,\"errorText\":\"Failed to create thread\"}");
 		retVal = PDL_FALSE;
 	}
 	PDL_JSReply(params, "{\"returnValue\":0}");
@@ -117,76 +121,94 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 }
 
 PDL_bool client_cmd_msg(PDL_JSParameters *params) {
-	return irc_cmd_msg(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_msg(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_me(PDL_JSParameters *params) {
-	return irc_cmd_me(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_me(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_notice(PDL_JSParameters *params) {
-	return irc_cmd_notice(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_notice(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_join(PDL_JSParameters *params) {
-	return irc_cmd_join(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_join(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_part(PDL_JSParameters *params) {
-	return irc_cmd_part(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_part(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_invite(PDL_JSParameters *params) {
-	return irc_cmd_invite(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_invite(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_names(PDL_JSParameters *params) {
-	return irc_cmd_names(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_cmd_names(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_list(PDL_JSParameters *params) {
-	return irc_cmd_list(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_cmd_list(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_topic(PDL_JSParameters *params) {
-	return irc_cmd_topic(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_topic(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_channel_mode(PDL_JSParameters *params) {
-	return irc_cmd_channel_mode(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
+	return irc_cmd_channel_mode(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_cmd_kick(PDL_JSParameters *params) {
-	return irc_cmd_kick(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 2), PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 3));
+	return irc_cmd_kick(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 2), PDL_GetJSParamString(params, 1),
+			PDL_GetJSParamString(params, 3));
 }
 
 PDL_bool client_cmd_nick(PDL_JSParameters *params) {
-	return irc_cmd_nick(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_cmd_nick(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_quit(PDL_JSParameters *params) {
-	return irc_cmd_quit(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_cmd_quit(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_whois(PDL_JSParameters *params) {
-	return irc_cmd_whois(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_cmd_whois(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_user_mode(PDL_JSParameters *params) {
-	return irc_cmd_user_mode(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_cmd_user_mode(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_cmd_ping(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
-	if (pthread_mutex_trylock(&servers[id].ping_mutex)==0) {
+	if (pthread_mutex_trylock(&servers[id].ping_mutex) == 0) {
 		ftime(&servers[id].ping);
-		irc_send_raw(servers[id].session, "PING %s", PDL_GetJSParamString(params, 1));
+		irc_send_raw(servers[id].session, "PING %s", PDL_GetJSParamString(
+				params, 1));
 	}
 	return PDL_TRUE;
 }
 
 PDL_bool client_cmd_away(PDL_JSParameters *params) {
-	return irc_custom_cmd_away(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_custom_cmd_away(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_disconnect(PDL_JSParameters *params) {
@@ -195,12 +217,13 @@ PDL_bool client_disconnect(PDL_JSParameters *params) {
 }
 
 PDL_bool client_send_raw(PDL_JSParameters *params) {
-	return irc_send_raw(servers[PDL_GetJSParamInt(params, 0)].session, PDL_GetJSParamString(params, 1));
+	return irc_send_raw(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1));
 }
 
 PDL_bool client_get_uid(PDL_JSParameters *params) {
 	char uid[64];
-	PDL_GetUniqueID(uid,64);
+	PDL_GetUniqueID(uid, 64);
 	return PDL_JSReply(params, uid);
 }
 
@@ -214,29 +237,47 @@ PDL_bool client_ctcp_rep(PDL_JSParameters *params) {
 }
 
 PDL_bool client_ctcp_cmd(PDL_JSParameters *params) {
-	int id = PDL_GetJSParamInt(params, 0);
-	const char *nick = PDL_GetJSParamString(params, 1);
-	const char *request = PDL_GetJSParamString(params, 2);
-	syslog(LOG_INFO, "CTCP REQUEST: %d %s %s", id, nick, request);
-	irc_cmd_ctcp_request(servers[id].session, nick, request);
-	return PDL_TRUE;
+	return irc_cmd_ctcp_request(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 PDL_bool client_dcc_accept(PDL_JSParameters *params) {
+	return irc_dcc_accept(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamInt(params, 1), NULL, handle_dcc_callback);
+}
+
+PDL_bool client_dcc_decline(PDL_JSParameters *params) {
+	return irc_dcc_decline(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamInt(params, 1));
+}
+
+PDL_bool client_dcc_destroy(PDL_JSParameters *params) {
+	return irc_dcc_destroy(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamInt(params, 1));
+}
+
+PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
-	int dcc_id = PDL_GetJSParamInt(params, 1);
-	int ret = irc_dcc_accept(servers[id].session, dcc_id, NULL, handle_dcc_callback);
-	syslog(LOG_INFO, "[DCC ACCEPTED] id:%d, dcc_id:%d, ret:	%d", id, dcc_id, ret);
-	return PDL_TRUE;
+	irc_dcc_t *dcc_id = 0;
+	int ret = irc_dcc_chat(servers[id].session, NULL,
+			PDL_GetJSParamString(params, 1), handle_dcc_callback, dcc_id);
+	/*if (ret==0)
+		handle_pending_dcc_chat(id, &dcc_id);*/
+	return ret;
+}
+
+PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
+	int id = PDL_GetJSParamInt(params, 0);
+	irc_dcc_t *dcc_id = 0;
+	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2), handle_dcc_callback, dcc_id);
+	/*if (ret==0)
+		handle_pending_dcc_senfile(id, &dcc_id);*/
+	return ret;
 }
 
 PDL_bool client_dcc_msg(PDL_JSParameters *params) {
-	int id = PDL_GetJSParamInt(params, 0);
-	int dcc_id = PDL_GetJSParamInt(params, 1);
-	const char *txt = PDL_GetJSParamString(params, 2);
-	syslog(LOG_INFO, "DCC_MSG: %d %d %s", id, dcc_id, txt);
-	int ret = irc_dcc_msg(servers[id].session, dcc_id, txt);
-	return PDL_TRUE;
+	return irc_dcc_msg(servers[PDL_GetJSParamInt(params, 0)].session,
+			PDL_GetJSParamInt(params, 1), PDL_GetJSParamString(params, 2));
 }
 
 int plugin_client_init() {
@@ -268,6 +309,10 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("ctcp_cmd", client_ctcp_cmd);
 	ret += PDL_RegisterJSHandler("dcc_accept", client_dcc_accept);
 	ret += PDL_RegisterJSHandler("dcc_msg", client_dcc_msg);
+	ret += PDL_RegisterJSHandler("dcc_sendfile", client_dcc_sendfile);
+	ret += PDL_RegisterJSHandler("dcc_chat", client_dcc_chat);
+	ret += PDL_RegisterJSHandler("dcc_destroy", client_dcc_destroy);
+	ret += PDL_RegisterJSHandler("dcc_decline", client_dcc_decline);
 
 	return ret;
 
