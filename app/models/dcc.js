@@ -102,7 +102,7 @@ ircDcc.prototype.accept = function()
 	
 	if (this.isFile())
 	{
-		// do file send dash popup
+		// create and then run code to open the download dashboard...
 	}
 	else
 	{
@@ -119,13 +119,12 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	
 	if (this.isChat())
 	{
-		// here, do something like this.newMessage(args to make new message in chat window)
+		// construct something for newMessage(type, nick, message) to be sent to the message scene
 		alert('handleChatEvent');
 	}
 	else
 	{
-		// here, do something to update a dashboard that shows the status if it exists
-		// said dashboard doesn't exist
+		// run some function to update the display in the download dash for %, speed, etc
 		alert('handleFileEvent');
 	}
 }

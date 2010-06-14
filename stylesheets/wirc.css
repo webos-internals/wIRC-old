@@ -35,6 +35,11 @@ br.clear
 	height: 0px;
 }
 
+#palm-app-menu.palm-popup-container
+{
+	text-transform: none !important;
+}
+
 
 /*
  * Preferences Scene Styles
