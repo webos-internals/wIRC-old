@@ -9,7 +9,7 @@ function ircDcc(params)
 	this.size =			params.size;
 	
 	this.messages =		[];
-	
+	this.percent =		0;
 	
 	this.requestBannerName =	'dcc-' + this.server.id + '-' + this.id;
 	this.requestDashName =		'dccdash-' + this.server.id + '-' + this.id;
@@ -22,6 +22,11 @@ function ircDcc(params)
 	this.chatStageName =		'dccchat-' + this.server.id + '-' + this.id;
 	this.chatStageController =	false;
 	this.chatAssistant =		false;
+	
+	this.sendBannerName =		'dccsendbanner-' + this.server.id + '-' + this.id;
+	this.sendDashName =			'dccsenddash-' + this.server.id + '-' + this.id;
+	this.sendDashController =	false;
+	this.sendDashAssistant =	false;
 }
 
 
@@ -102,7 +107,7 @@ ircDcc.prototype.accept = function()
 	
 	if (this.isFile())
 	{
-		// create and then run code to open the download dashboard...
+		this.openSendDash();
 	}
 	else
 	{
@@ -124,7 +129,7 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	}
 	else
 	{
-		// run some function to update the display in the download dash for %, speed, etc
+		// set this.percent and run updateSendData();
 		alert('handleFileEvent');
 	}
 }
@@ -259,9 +264,9 @@ ircDcc.prototype.openChatDash = function()
 			);
 			
 			this.chatDashController = Mojo.Controller.appController.getStageController(this.chatDashName);
-		    if (this.dashController) 
+		    if (this.chatDashController) 
 			{
-				this.dashController.delegateToSceneAssistant("updateMessage", lastMessage.nick, lastMessage.message);
+				this.chatDashController.delegateToSceneAssistant("updateMessage", lastMessage.nick, lastMessage.message);
 			}
 			else
 			{
@@ -340,12 +345,68 @@ ircDcc.prototype.updateChatList = function()
 		this.chatAssistant.updateList();
 		if (!this.chatAssistant.isVisible)
 		{
-			this.openDash();
+			this.openChatDash();
 		}
 	}
 	else // if there is no window to update, push/update banner/dash
 	{
-		this.openDash();
+		this.openChatDash();
 	}
 }
 
+ircDcc.prototype.openSendDash = function()
+{
+	try
+	{
+		Mojo.Controller.appController.showBanner
+		(
+			{
+				icon: 'icon-dcc-send.png',
+				messageText: 'Downloading ' + this.filename + '...',
+				soundClass: ''
+			},
+			{
+				type: 'dccsend',
+				server: this.server.id,
+				dcc: this.dcc
+			},
+			this.sendBannerName
+		);
+		
+		this.sendDashController = Mojo.Controller.appController.getStageController(this.sendDashName);
+	    if (this.sendDashController)
+		{
+			this.sendDashController.delegateToSceneAssistant("updateData", this.percent, this.filename, this.size);
+		}
+		else
+		{
+			Mojo.Controller.appController.createStageWithCallback({name: this.sendDashName, lightweight: true}, this.openSendDashCallback.bind(this), "dashboard");
+		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "ircDcc#openDash");
+	}
+}
+ircDcc.prototype.openSendDashCallback = function(controller)
+{
+	controller.pushScene('dcc-send-dashboard', this);
+}
+ircDcc.prototype.closeSendDash = function()
+{
+	Mojo.Controller.appController.removeBanner(this.sendBannerName);
+	Mojo.Controller.appController.closeStage(this.sendDashName);
+}
+
+ircDcc.prototype.setSendDashAssistant = function(assistant)
+{
+	this.sendDashAssistant = assistant;
+}
+
+ircDcc.prototype.updateSendData = function()
+{
+	if (this.sendDashAssistant && this.sendDashAssistant.controller)
+	{
+		this.sendDashAssistant.updateData(this.percent, this.filename, this.size);
+	}
+}

@@ -1,4 +1,4 @@
-function DccChatDashboardAssistant(dcc)
+function DccSendDashboardAssistant(dcc)
 {
 	this.dcc = dcc;
 	
@@ -12,10 +12,10 @@ function DccChatDashboardAssistant(dcc)
 	
 	this.messageCount =				0;
 	
-	this.dcc.setChatDashAssistant(this);
+	this.dcc.setSendDashAssistant(this);
 }
 
-DccChatDashboardAssistant.prototype.setup = function()
+DccSendDashboardAssistant.prototype.setup = function()
 {
 	this.dashboardElement =			this.controller.get('dashboard');
 	this.newNumberBubbleElement =	this.controller.get('newNumberBubble');
@@ -30,33 +30,30 @@ DccChatDashboardAssistant.prototype.setup = function()
 	// hide new bubble
 	this.newNumberBubbleElement.style.display = 'none';
 	
-	// put last mesage into fields
-	var lastMessage = this.dcc.getLastMessage().getNotificationObject();
-	this.updateMessage(lastMessage.nick, lastMessage.message);
+	this.updateData(this.dcc.percent, this.dcc.filename, this.dcc.size);
 	
 	// to whole thing for tap
 	Mojo.Event.listen(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
 }
 
-DccChatDashboardAssistant.prototype.updateMessage = function(nick, message)
+DccSendDashboardAssistant.prototype.updateData = function(percent, message1, message2)
 {
-	this.messageCount++;
-	if (this.messageCount > 1)
+	if (percent > 1)
 	{
 		this.newNumberBubbleElement.style.display = '';
-		this.newNumberElement.innerHTML = this.messageCount;
+		this.newNumberElement.innerHTML = percent;
 	}
-	this.dashboardTitleElement.innerHTML = nick;
-	this.dashboardTextElement.innerHTML = message;
+	this.dashboardTitleElement.innerHTML = message1;
+	this.dashboardTextElement.innerHTML = message2;
 }
 
-DccChatDashboardAssistant.prototype.dashTapped = function(event)
+DccSendDashboardAssistant.prototype.dashTapped = function(event)
 {
 	this.dcc.openStage();
 	this.dcc.closeDash();
 }
 
-DccChatDashboardAssistant.prototype.cleanup = function(event)
+DccSendDashboardAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
 }
