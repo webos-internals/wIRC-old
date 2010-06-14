@@ -64,6 +64,8 @@ function ircServer(params)
 	this.statusAssistant =		false;
 	this.invites =				[];
 	this.dccRequests =			[];
+	this.dccChats =				[];
+	this.dccSends =				[];
 	
 	this.listStageName =		'channel-list-' + this.id;
 	this.listStageController =	false;

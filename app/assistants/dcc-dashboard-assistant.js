@@ -1,12 +1,6 @@
 function DccDashboardAssistant(params)
 {
-	this.id			=	params.id;
-	this.server 	=	servers.servers[params.id];
-	this.nick 		=	params.nick;
-	this.address	=	params.address;
-	this.filename	=	params.filename;
-	this.size		=	params.size;
-	this.dcc_id 	=	params.dcc_id;
+	this.params	= params;
 	
 	this.dashboardElement =			false;
 	this.newNumberBubbleElement =	false;
@@ -35,12 +29,12 @@ DccDashboardAssistant.prototype.setup = function()
 	this.newNumberBubbleElement.style.display = 'none';
 	
 	// puts message
-	if (this.filename && this.size) {
-		this.dashboardTitleElement.innerHTML = 'DCC SEND: ' + this.nick;
+	if (this.filename && this.params.size) {
+		this.dashboardTitleElement.innerHTML = 'DCC SEND: ' + this.params.nick;
 		this.dashboardElement.className = 'dcc-send-dashboard dashboard-notification-module';
 	}
 	else {
-		this.dashboardTitleElement.innerHTML = 'DCC CHAT: ' + this.nick;
+		this.dashboardTitleElement.innerHTML = 'DCC CHAT: ' + this.params.nick;
 		this.dashboardElement.className = 'dcc-chat-dashboard dashboard-notification-module';
 	}
 	this.dashboardTextElement.innerHTML = 'Tap to Accept, Swipe to Reject.';
@@ -51,13 +45,12 @@ DccDashboardAssistant.prototype.setup = function()
 
 DccDashboardAssistant.prototype.dashTapped = function(event)
 {
-	alert('DCC DASHBOARD TAP: ' + this.id + ' ' + this.dcc_id);
-	plugin.dcc_accept(this.id, this.dcc_id);
-	this.server.closeDCCRequest(this.dcc_id);
+	this.server.closeDCCRequest(this.params.dcc_id);
+	plugin.dcc_accept(this.params.id, this.params.dcc_id)
 }
 
 DccDashboardAssistant.prototype.cleanup = function(event)
 {
-	this.server.closeDCCRequest(this.dcc_id);
+	this.server.closeDCCRequest(this.params.dcc_id);
 	Mojo.Event.stopListening(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
 }
