@@ -18,9 +18,11 @@
 
 #include "wIRC.h"
 
-void process_event(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count, irc_callbacks type) {
+void process_event(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count,
+		irc_callbacks type) {
 
-	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	client->estabilshed = 1;
 
@@ -31,9 +33,9 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 
 	for (cnt = 0; cnt < count; cnt++) {
 		if (cnt)
-			buf[j++]=',';
+			buf[j++] = ',';
 
-		buf[j++]='"';
+		buf[j++] = '"';
 
 		for (i = 0; i < strlen(params[cnt]); i++) {
 			if (params[cnt][i] == '"' || params[cnt][i] == '\\')
@@ -42,10 +44,10 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 			buf[j++] = params[cnt][i];
 		}
 
-		buf[j++]='"';
+		buf[j++] = '"';
 	}
 
-	buf[j]='\0';
+	buf[j] = '\0';
 
 	int len = 0;
 	char *parms = 0;
@@ -68,49 +70,90 @@ void process_event(irc_session_t * session, const char * event, const char * ori
 	//syslog(LOG_INFO, "irc-event: %s %s %s %s", payload[0], payload[1], payload[2], payload[3]);
 
 	switch (type) {
-	case event_connect_: PDL_CallJS("event_connect", payload, 5); break;
-	case event_nick_: PDL_CallJS("event_nick", payload, 4); break;
-	case event_quit_: PDL_CallJS("event_quit", payload, 4); break;
-	case event_join_: PDL_CallJS("event_join", payload, 4); break;
-	case event_part_: PDL_CallJS("event_part", payload, 4); break;
-	case event_mode_: PDL_CallJS("event_mode", payload, 4); break;
-	case event_umode_: PDL_CallJS("event_umode", payload, 4); break;
-	case event_topic_: PDL_CallJS("event_topic", payload, 4); break;
-	case event_kick_: PDL_CallJS("event_kick", payload, 4); break;
-	case event_channel_: PDL_CallJS("event_channel", payload, 4); break;
-	case event_privmsg_: PDL_CallJS("event_privmsg", payload, 4); break;
-	case event_notice_: PDL_CallJS("event_notice", payload, 4); break;
-	case event_channel_notice_: PDL_CallJS("event_channel_notice", payload, 4); break;
-	case event_invite_: PDL_CallJS("event_invite", payload, 4); break;
-	case event_ctcp_req_: PDL_CallJS("event_ctcp_req", payload, 4); break;
-	case event_ctcp_rep_: PDL_CallJS("event_ctcp_rep", payload, 4); break;
-	case event_ctcp_action_: PDL_CallJS("event_ctcp_action", payload, 4); break;
+	case event_connect_:
+		PDL_CallJS("event_connect", payload, 5);
+		break;
+	case event_nick_:
+		PDL_CallJS("event_nick", payload, 4);
+		break;
+	case event_quit_:
+		PDL_CallJS("event_quit", payload, 4);
+		break;
+	case event_join_:
+		PDL_CallJS("event_join", payload, 4);
+		break;
+	case event_part_:
+		PDL_CallJS("event_part", payload, 4);
+		break;
+	case event_mode_:
+		PDL_CallJS("event_mode", payload, 4);
+		break;
+	case event_umode_:
+		PDL_CallJS("event_umode", payload, 4);
+		break;
+	case event_topic_:
+		PDL_CallJS("event_topic", payload, 4);
+		break;
+	case event_kick_:
+		PDL_CallJS("event_kick", payload, 4);
+		break;
+	case event_channel_:
+		PDL_CallJS("event_channel", payload, 4);
+		break;
+	case event_privmsg_:
+		PDL_CallJS("event_privmsg", payload, 4);
+		break;
+	case event_notice_:
+		PDL_CallJS("event_notice", payload, 4);
+		break;
+	case event_channel_notice_:
+		PDL_CallJS("event_channel_notice", payload, 4);
+		break;
+	case event_invite_:
+		PDL_CallJS("event_invite", payload, 4);
+		break;
+	case event_ctcp_req_:
+		PDL_CallJS("event_ctcp_req", payload, 4);
+		break;
+	case event_ctcp_rep_:
+		PDL_CallJS("event_ctcp_rep", payload, 4);
+		break;
+	case event_ctcp_action_:
+		PDL_CallJS("event_ctcp_action", payload, 4);
+		break;
 	case event_unknown_:
 		PDL_CallJS("event_unknown", payload, 4);
-		if (strcmp(event,"PONG")==0) {
+		if (strcmp(event, "PONG") == 0) {
 			struct timeb pong;
 			ftime(&pong);
-			long rtt = (pong.time*1000+pong.millitm)-(client->ping.time*1000+client->ping.millitm);
+			long rtt = (pong.time * 1000 + pong.millitm) - (client->ping.time
+					* 1000 + client->ping.millitm);
 			int len = 0;
 			char *rtt_string = 0;
 			len = asprintf(&rtt_string, "%ld", rtt);
 			payload[1] = rtt_string;
 			PDL_CallJS("event_rtt", payload, 2);
-			if (rtt_string) free(rtt_string);
+			if (rtt_string)
+				free(rtt_string);
 			pthread_mutex_unlock(&client->ping_mutex);
 		}
 		break;
-	case event_numeric_: PDL_CallJS("event_numeric", payload, 4); break;
+	case event_numeric_:
+		PDL_CallJS("event_numeric", payload, 4);
+		break;
 	}
 
-	if (parms) free(parms);
-	if (id) free(id);
+	if (parms)
+		free(parms);
+	if (id)
+		free(id);
 
 }
 
-void handle_event_connect(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_connect(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 
-	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	client->realServer = strdup(origin);
 
@@ -119,85 +162,105 @@ void handle_event_connect(irc_session_t * session, const char * event, const cha
 
 }
 
-void handle_event_nick(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_nick(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_nick_);
 }
 
-void handle_event_quit(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_quit(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_quit_);
 }
 
-void handle_event_join(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_join(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_join_);
 }
 
-void handle_event_part(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_part(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_part_);
 }
 
-void handle_event_mode(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_mode(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_mode_);
 }
 
-void handle_event_umode(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_umode(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_umode_);
 }
 
-void handle_event_topic(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_topic(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_topic_);
 }
 
-void handle_event_kick(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_kick(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_kick_);
 }
 
-void handle_event_channel(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_channel(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_channel_);
 }
 
-void handle_event_privmsg(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_privmsg(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_privmsg_);
 }
 
-void handle_event_notice(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_notice(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_notice_);
 }
 
-void handle_event_channel_notice(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_channel_notice(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_channel_notice_);
 }
 
-void handle_event_invite(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_invite(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_invite_);
 }
 
-void handle_event_ctcp_req(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_ctcp_req(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_ctcp_req_);
 }
 
-void handle_event_ctcp_rep(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_ctcp_rep(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_ctcp_rep_);
 }
 
-void handle_event_ctcp_action(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_ctcp_action(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_ctcp_action_);
 }
 
-void handle_event_unknown(irc_session_t * session, const char * event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_unknown(irc_session_t * session, const char * event,
+		const char * origin, const char ** params, unsigned int count) {
 	process_event(session, event, origin, params, count, event_unknown_);
 }
 
-void handle_event_numeric(irc_session_t * session, unsigned int event, const char * origin, const char ** params, unsigned int count) {
+void handle_event_numeric(irc_session_t * session, unsigned int event,
+		const char * origin, const char ** params, unsigned int count) {
 	char buf[24];
 	sprintf(buf, "%d", event);
 	process_event(session, buf, origin, params, count, event_numeric_);
 }
 
-void handle_event_dcc_chat_req(irc_session_t * session, const char * nick, const char * address, irc_dcc_t dcc_id) {
+void handle_event_dcc_chat_req(irc_session_t * session, const char * nick,
+		const char * address, irc_dcc_t dcc_id) {
 
-	syslog(LOG_INFO, "handle_event_dcc_chat_req: %s %s %u", nick, address, dcc_id);
+	syslog(LOG_INFO, "handle_event_dcc_chat_req: %s %s %u", nick, address,
+			dcc_id);
 
-	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	char *id = 0, *dcc_id_s = 0;
 
@@ -212,16 +275,20 @@ void handle_event_dcc_chat_req(irc_session_t * session, const char * nick, const
 
 	PDL_CallJS("event_dcc_chat_req", payload, 4);
 
-	if (id) free(id);
-	if (dcc_id_s) free(dcc_id_s);
+	if (id)
+		free(id);
+	if (dcc_id_s)
+		free(dcc_id_s);
 
 }
 
-void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const char * address, const char * filename, int size, irc_dcc_t dcc_id) {
+void handle_event_dcc_send_req(irc_session_t * session, const char * nick,
+		const char * address, const char * filename, int size, irc_dcc_t dcc_id) {
 
-	syslog(LOG_INFO, "handle_event_dcc_send_req: %s %s %s %u %u", nick, address, filename, size, dcc_id);
+	syslog(LOG_INFO, "handle_event_dcc_send_req: %s %s %s %u %u", nick,
+			address, filename, size, dcc_id);
 
-	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	char *id = 0, *size_s = 0, *dcc_id_s = 0;
 
@@ -239,19 +306,21 @@ void handle_event_dcc_send_req(irc_session_t * session, const char * nick, const
 
 	PDL_CallJS("event_dcc_send_req", payload, 6);
 
-	if (id) free(id);
-	if (size_s) free(size_s);
-	if (dcc_id_s) free(dcc_id_s);
+	if (id)
+		free(id);
+	if (size_s)
+		free(size_s);
+	if (dcc_id_s)
+		free(dcc_id_s);
 
 }
 
-void handle_dcc_callback(irc_session_t * session, irc_dcc_t dcc_id, int status, void * ctx, const char * data, unsigned int length) {
+void handle_dcc_chat_callback(irc_session_t * session, irc_dcc_t dcc_id,
+		int status, void * ctx, const char * data, unsigned int length) {
 
-	wIRCd_client_t *client = (wIRCd_client_t*)irc_get_ctx(session);
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
-
-	syslog(LOG_INFO, "id: %d, dcc_id: %u, status: %d, length: %u, data: %s", client->id, dcc_id, status, length, data);
 
 	asprintf(&id, "%d", client->id);
 	asprintf(&dcc_id_s, "%u", dcc_id);
@@ -268,11 +337,57 @@ void handle_dcc_callback(irc_session_t * session, irc_dcc_t dcc_id, int status, 
 
 	PDL_CallJS("handle_dcc_callback", payload, 5);
 
-	if (id) free(id);
-	if (status_s) free(status_s);
-	if (dcc_id_s) free(dcc_id_s);
-	if (length_s) free(length_s);
-	if (data_s) free(data_s);
+	if (id)
+		free(id);
+	if (status_s)
+		free(status_s);
+	if (dcc_id_s)
+		free(dcc_id_s);
+	if (length_s)
+		free(length_s);
+	if (data_s)
+		free(data_s);
+}
+
+void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
+		int status, void * ctx, const char * data, unsigned int length) {
+
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
+
+	syslog(LOG_INFO, "%d %d %s", status, length, data);
+
+	if (length > 0)
+		fprintf((FILE*)ctx, "%s", data);
+	else
+		fclose((FILE*)ctx);
+
+	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
+
+	asprintf(&id, "%d", client->id);
+	asprintf(&dcc_id_s, "%u", dcc_id);
+	asprintf(&status_s, "%d", status);
+	asprintf(&length_s, "%u", length);
+	asprintf(&data_s, "%d", (data == 0) ? 0 : 1);
+
+	const char *payload[5];
+	payload[0] = id;
+	payload[1] = dcc_id_s;
+	payload[2] = status_s;
+	payload[3] = length_s;
+	payload[4] = data_s;
+
+	PDL_CallJS("handle_dcc_callback", payload, 5);
+
+	if (id)
+		free(id);
+	if (status_s)
+		free(status_s);
+	if (dcc_id_s)
+		free(dcc_id_s);
+	if (length_s)
+		free(length_s);
+	if (data_s)
+		free(data_s);
 }
 
 void setup_event_callbacks() {

@@ -242,8 +242,23 @@ PDL_bool client_ctcp_cmd(PDL_JSParameters *params) {
 }
 
 PDL_bool client_dcc_accept(PDL_JSParameters *params) {
-	return irc_dcc_accept(servers[PDL_GetJSParamInt(params, 0)].session,
-			PDL_GetJSParamInt(params, 1), NULL, handle_dcc_callback);
+	char *file = strdup(PDL_GetJSParamString(params, 2));
+	PDL_bool ret = 0;
+	if (strlen(file) > 0) {
+		char *path = 0;
+		asprintf(&path, "/media/internal/wirc/downloads/%s", file);
+		FILE *f = malloc(sizeof(FILE));
+		f = fopen(path, "w");
+		ret = irc_dcc_accept(servers[PDL_GetJSParamInt(params, 0)].session,
+				PDL_GetJSParamInt(params, 1), f, handle_dcc_send_callback);
+		if (path)
+			free(path);
+	} else
+		ret = irc_dcc_accept(servers[PDL_GetJSParamInt(params, 0)].session,
+				PDL_GetJSParamInt(params, 1), 0, handle_dcc_chat_callback);
+	if (file)
+		free(file);
+	return ret;
 }
 
 PDL_bool client_dcc_decline(PDL_JSParameters *params) {
@@ -260,7 +275,7 @@ PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	irc_dcc_t *dcc_id = 0;
 	int ret = irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), handle_dcc_callback, dcc_id);
+			params, 1), handle_dcc_chat_callback, dcc_id);
 	/*if (ret==0)
 	 handle_pending_dcc_chat(id, &dcc_id);*/
 	return ret;
@@ -270,8 +285,8 @@ PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	irc_dcc_t *dcc_id = 0;
 	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), PDL_GetJSParamString(params, 2), handle_dcc_callback,
-			dcc_id);
+			params, 1), PDL_GetJSParamString(params, 2),
+			handle_dcc_send_callback, dcc_id);
 	/*if (ret==0)
 	 handle_pending_dcc_senfile(id, &dcc_id);*/
 	return ret;
@@ -305,8 +320,10 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 		asprintf(&tmp, "[%s]", list);
 		payload[0] = tmp;
 		PDL_CallJS("handle_list_directory", payload, 1);
-		if (tmp) free(tmp);
-		if (list) free(list);
+		if (tmp)
+			free(tmp);
+		if (list)
+			free(list);
 	} else
 		ret = PDL_FALSE;
 

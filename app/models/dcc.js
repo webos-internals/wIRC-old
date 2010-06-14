@@ -106,7 +106,7 @@ ircDcc.prototype.closeRequest = function()
 
 ircDcc.prototype.accept = function()
 {
-	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id);
+	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
 	
 	if (this.isFile())
 	{
@@ -121,19 +121,13 @@ ircDcc.prototype.accept = function()
 ircDcc.prototype.handleEvent = function(status, length, data)
 {
 	this.bitsIn += parseInt(length);
-	this.updateChatStats();
-	
-	if (length>0)
-		this.newMessage('privmsg', this.nick, data);
-	
-	alert('=======================');
-	alert('status: ' + status);
-	alert('length: ' + length);
-	alert('data: ' + data);
 	
 	if (this.isChat())
 	{
 		// construct something for newMessage(type, nick, message) to be sent to the message scene
+		this.updateChatStats();
+		if (length>0)
+			this.newMessage('privmsg', this.nick, data);
 		alert('handleChatEvent');
 	}
 	else
@@ -142,7 +136,6 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 		alert('handleFileEvent');
 	}
 }
-
 
 ircDcc.prototype.newCommand = function(message)
 {

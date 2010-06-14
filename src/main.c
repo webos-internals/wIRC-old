@@ -52,20 +52,20 @@ int main(int argc, char *argv[]) {
 
 	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
 
-	mkdir("/media/internal/wIRC", S_IRWXU);
-	if (isDir("/media/internal/wIRC")) {
-		mkdir("/media/internal/wIRC/backlogs", S_IRWXU);
-		if (!isDir("/media/internal/wIRC/backlogs")) {
-			syslog(LOG_NOTICE, "!/media/internal/wIRC/backlogs");
+	mkdir("/media/internal/wirc", S_IRWXU);
+	if (isDir("/media/internal/wirc")) {
+		mkdir("/media/internal/wirc/backlogs", S_IRWXU);
+		if (!isDir("/media/internal/wirc/backlogs")) {
+			syslog(LOG_NOTICE, "!/media/internal/wirc/backlogs");
 			cleanup(-2);
 		}
-		mkdir("/media/internal/wIRC/downloads", S_IRWXU);
-		if (!isDir("/media/internal/wIRC/downloads")) {
-			syslog(LOG_NOTICE, "!/media/internal/wIRC/downloads");
+		mkdir("/media/internal/wirc/downloads", S_IRWXU);
+		if (!isDir("/media/internal/wirc/downloads")) {
+			syslog(LOG_NOTICE, "!/media/internal/wirc/downloads");
 			cleanup(-2);
 		}
 	} else {
-		syslog(LOG_NOTICE, "!/media/internal/wIRC");
+		syslog(LOG_NOTICE, "!/media/internal/wirc");
 		cleanup(-2);
 	}
 

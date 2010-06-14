@@ -17,7 +17,7 @@
 #define LIBIRC_DCC_RECVFILE		3
 
 
-static irc_dcc_session_t * libirc_find_dcc_session (irc_session_t * session, irc_dcc_t dccid, int lock_list)
+irc_dcc_session_t * libirc_find_dcc_session (irc_session_t * session, irc_dcc_t dccid, int lock_list)
 {
 	irc_dcc_session_t * s, *found = 0;
 

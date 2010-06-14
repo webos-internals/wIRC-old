@@ -36,6 +36,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <fcntl.h>
+#include <errno.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;
@@ -104,6 +106,7 @@ void plugin_start();
 void plugin_cleanup();
 PDL_Err plugin_initialize();
 void setup_event_callbacks();
-void handle_dcc_callback(irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length);
+void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length);
+void handle_dcc_chat_callback(irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length);
 
 #endif /* WIRC_H_ */

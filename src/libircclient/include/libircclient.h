@@ -1468,6 +1468,8 @@ char * irc_color_convert_from_mirc (const char * message);
  */
 char * irc_color_convert_to_mirc (const char * message);
 
+irc_dcc_session_t * libirc_find_dcc_session (irc_session_t * session, irc_dcc_t dccid, int lock_list);
+
 #ifdef	__cplusplus
 }
 #endif
