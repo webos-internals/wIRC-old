@@ -259,25 +259,59 @@ PDL_bool client_dcc_destroy(PDL_JSParameters *params) {
 PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	irc_dcc_t *dcc_id = 0;
-	int ret = irc_dcc_chat(servers[id].session, NULL,
-			PDL_GetJSParamString(params, 1), handle_dcc_callback, dcc_id);
+	int ret = irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
+			params, 1), handle_dcc_callback, dcc_id);
 	/*if (ret==0)
-		handle_pending_dcc_chat(id, &dcc_id);*/
+	 handle_pending_dcc_chat(id, &dcc_id);*/
 	return ret;
 }
 
 PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	irc_dcc_t *dcc_id = 0;
-	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(params, 1), PDL_GetJSParamString(params, 2), handle_dcc_callback, dcc_id);
+	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(
+			params, 1), PDL_GetJSParamString(params, 2), handle_dcc_callback,
+			dcc_id);
 	/*if (ret==0)
-		handle_pending_dcc_senfile(id, &dcc_id);*/
+	 handle_pending_dcc_senfile(id, &dcc_id);*/
 	return ret;
 }
 
 PDL_bool client_dcc_msg(PDL_JSParameters *params) {
 	return irc_dcc_msg(servers[PDL_GetJSParamInt(params, 0)].session,
 			PDL_GetJSParamInt(params, 1), PDL_GetJSParamString(params, 2));
+}
+
+PDL_bool client_list_directory(PDL_JSParameters *params) {
+
+	PDL_bool ret = PDL_TRUE;
+
+	DIR *dp;
+	struct dirent *ep;
+
+	const char *payload[2];
+	payload[0] = PDL_GetJSParamString(params, 0);
+	char *tmp = 0, *list = 0;
+
+	dp = opendir(PDL_GetJSParamString(params, 1));
+	if (dp != NULL) {
+		while (ep = readdir(dp)) {
+			if (list)
+				asprintf(&tmp, "%s,%s", list, ep->d_name);
+			else
+				asprintf(&tmp, "%s", ep->d_name);
+			list = tmp;
+		}
+		(void) closedir(dp);
+		asprintf(&tmp, "[%s]", list);
+		payload[1] = tmp;
+		PDL_CallJS("handle_list_directory", payload, 2);
+		if (tmp) free(tmp);
+		if (list) free(list);
+	} else
+		ret = PDL_FALSE;
+
+	return ret;
 }
 
 int plugin_client_init() {

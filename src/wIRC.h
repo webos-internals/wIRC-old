@@ -19,6 +19,7 @@
 #ifndef WIRC_H_
 #define WIRC_H_
 
+#define _GNU_SOURCE
 #include <pthread.h>
 #include <time.h>
 #include <sys/socket.h>
@@ -34,6 +35,7 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <dirent.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;
