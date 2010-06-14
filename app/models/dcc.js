@@ -8,6 +8,9 @@ function ircDcc(params)
 	this.filename =		params.filename;
 	this.size =			params.size;
 	
+	this.bitsIn =		0;
+	this.bitsOut =		0;
+	
 	this.messages =		[];
 	this.percent =		0;
 	
@@ -117,6 +120,11 @@ ircDcc.prototype.accept = function()
 
 ircDcc.prototype.handleEvent = function(status, length, data)
 {
+	this.bitsIn += length;
+	
+	if (length>0)
+		this.newMessage('privmsg', this.nick, data);
+	
 	alert('=======================');
 	alert('status: ' + status);
 	alert('length: ' + length);
@@ -198,6 +206,7 @@ ircDcc.prototype.msg = function(message)
 		else {
 			msg = message.substring(i * 255);
 		}
+		this.bitsOut += msg.length;
 		plugin.dcc_msg(sid, this.id, msg);
 		this.newMessage('privmsg', this.server.nick, msg);
 	}
