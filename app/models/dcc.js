@@ -99,6 +99,7 @@ ircDcc.prototype.closeRequest = function()
 ircDcc.prototype.accept = function()
 {
 	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id);
+	
 	if (this.isFile())
 	{
 		// do file send dash popup
@@ -118,10 +119,13 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	
 	if (this.isChat())
 	{
+		// here, do something like this.newMessage(args to make new message in chat window)
 		alert('handleChatEvent');
 	}
 	else
 	{
+		// here, do something to update a dashboard that shows the status if it exists
+		// said dashboard doesn't exist
 		alert('handleFileEvent');
 	}
 }

@@ -45,8 +45,8 @@ DccRequestDashboardAssistant.prototype.setup = function()
 
 DccRequestDashboardAssistant.prototype.dashTapped = function(event)
 {
-	this.dcc.closeRequest();
 	this.dcc.accept();
+	this.dcc.closeRequest();
 }
 
 DccRequestDashboardAssistant.prototype.cleanup = function(event)
