@@ -29,8 +29,8 @@ DccRequestDashboardAssistant.prototype.setup = function()
 	this.newNumberBubbleElement.style.display = 'none';
 	
 	// puts message
-	if (this.dcc.filename && this.dcc.size) {
-		this.dashboardTitleElement.innerHTML = this.dcc.nick.name + ' wants to send: ' + this.filename;
+	if (this.dcc.isFile()) {
+		this.dashboardTitleElement.innerHTML = this.dcc.nick.name + ' wants to send: ' + this.dcc.filename;
 		this.dashboardElement.className = 'dcc-send-dashboard dashboard-notification-module';
 	}
 	else {
