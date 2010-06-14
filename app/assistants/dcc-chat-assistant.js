@@ -5,6 +5,8 @@ function DccChatAssistant(dcc)
 	this.documentElement =			false;
 	this.sceneScroller =			false;
 	this.titleElement =				false;
+	this.bitsInElement =			false;
+	this.bitsOutElement = 			false;
 	this.messageListElement =		false;
 	this.inputContainerElement =	false;
 	this.inputWidgetElement =		false;
@@ -61,6 +63,8 @@ DccChatAssistant.prototype.setup = function()
 		this.inputContainerElement =	this.controller.get('inputFooter');
 		this.inputWidgetElement =		this.controller.get('inputWidget');
 		this.sendButtonElement =		this.controller.get('sendButton');
+		this.bitsInElement =			this.controller.get('bitsIn');
+		this.bitsOutElement =			this.controller.get('bitsOut');
 		
 		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
         Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
@@ -123,6 +127,8 @@ DccChatAssistant.prototype.setup = function()
 		
 		this.sendButtonElement.style.display = 'none';
 		Mojo.Event.listen(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+		
+		this.updateStats(0,0);
 	}
 	catch (e) 
 	{
@@ -342,6 +348,11 @@ DccChatAssistant.prototype.inputFocus = function(event)
 	{
 		this.inputElement.focus();
 	}
+}
+
+DccChatAssistant.prototype.updateStats = function(bitsIn, bitsOut) {
+    this.bitsInElement.update('In: '+bitsIn+'b');
+	this.bitsOutElement.update('Out: '+bitsOut+'b');
 }
 
 DccChatAssistant.prototype.updateLagMeter = function()

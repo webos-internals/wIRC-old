@@ -120,7 +120,8 @@ ircDcc.prototype.accept = function()
 
 ircDcc.prototype.handleEvent = function(status, length, data)
 {
-	this.bitsIn += length;
+	this.bitsIn += parseInt(length);
+	this.updateChatStats();
 	
 	if (length>0)
 		this.newMessage('privmsg', this.nick, data);
@@ -209,6 +210,7 @@ ircDcc.prototype.msg = function(message)
 		this.bitsOut += msg.length;
 		plugin.dcc_msg(sid, this.id, msg);
 		this.newMessage('privmsg', this.server.nick, msg);
+		this.updateChatStats();
 	}
 }
 
@@ -417,5 +419,13 @@ ircDcc.prototype.updateSendData = function()
 	if (this.sendDashAssistant && this.sendDashAssistant.controller)
 	{
 		this.sendDashAssistant.updateData(this.percent, this.filename, this.size);
+	}
+}
+
+ircDcc.prototype.updateChatStats = function()
+{
+	if (this.chatAssistant && this.chatAssistant.controller)
+	{
+		this.chatAssistant.updateStats(this.bitsIn, this.bitsOut);
 	}
 }

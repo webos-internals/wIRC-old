@@ -670,6 +670,29 @@ body.palm-dark .channel-users #searchText
 	background: url(../icon-dcc-send.png) center center no-repeat;
 }
 
+.dcc-chat #chatStats
+{
+	position: absolute;
+	right: 5px;
+	font-size: 8pt;
+}
+.dcc-chat #chatStats .bitsIn
+{
+	position: relative;
+	float: left;
+	margin-top: -6px;
+	margin-left: -4px;
+	margin-right: -8px;
+}
+.dcc-chat #chatStats .bitsOut
+{
+	position: relative;
+	float: left;
+	margin-top: 6px;
+	margin-left: -4px;
+	margin-right: -8px;
+}
+
 
 
 /*
