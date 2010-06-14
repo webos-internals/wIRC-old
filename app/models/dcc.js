@@ -29,11 +29,13 @@ ircDcc.prototype.openRequest = function()
 	try
 	{
 		
-		var msgText = this.nick.name + ' wants to chat';
-		var icon = 'icon-dcc-chat.png';
-		if (this.filename && this.size) {
-			msgText = this.nick.name + ' wants to send: ' + this.filename;
-			icon = 'icon-dcc-send.png';
+		if (isFile()) {
+			var msgText = this.nick.name + ' wants to send: ' + this.filename;
+			var icon = 'icon-dcc-send.png';
+		}
+		else {
+			var msgText = this.nick.name + ' wants to chat';
+			var icon = 'icon-dcc-chat.png';
 		}
 		
 		Mojo.Controller.appController.showBanner
@@ -87,7 +89,7 @@ ircDcc.prototype.closeRequest = function()
 ircDcc.prototype.accept = function()
 {
 	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id);
-	if (this.filename && this.size)
+	if (this.isFile())
 	{
 		// do file send dash popup
 	}
@@ -97,6 +99,14 @@ ircDcc.prototype.accept = function()
 	}
 }
 
+ircDcc.prototype.isChat = function()
+{
+	return (this.filename && this.size ? false : true);
+}
+ircDcc.ptototype.isFile = function()
+{
+	return (this.filename && this.size ? true : false);
+}
 
 ircDcc.prototype.handleEvent = function(status, length, data)
 {
@@ -104,6 +114,15 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	alert('status: ' + status);
 	alert('length: ' + length);
 	alert('data: ' + data);
+	
+	if (this.isChat())
+	{
+		alert('handleChatEvent');
+	}
+	else
+	{
+		alert('handleFileEvent');
+	}
 }
 
 
