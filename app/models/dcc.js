@@ -87,6 +87,23 @@ ircDcc.prototype.closeRequest = function()
 ircDcc.prototype.accept = function()
 {
 	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id);
+	if (this.filename && this.size)
+	{
+		// do file send dash popup
+	}
+	else
+	{
+		this.openChatStage();
+	}
+}
+
+
+ircDcc.prototype.handleEvent = function(status, length, data)
+{
+	alert('=======================');
+	alert('status: ' + status);
+	alert('length: ' + length);
+	alert('data: ' + data);
 }
 
 
@@ -244,7 +261,7 @@ ircDcc.prototype.closeChatDash = function()
 	Mojo.Controller.appController.closeStage(this.chatDashName);
 }
 
-ircDcc.prototype.openStage = function()
+ircDcc.prototype.openChatStage = function()
 {
 	try
 	{

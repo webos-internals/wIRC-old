@@ -434,7 +434,7 @@ DccChatAssistant.prototype.visibleWindow = function(event)
 	{
 		this.isVisible = true;
 	}
-	this.dcc.closeDash();
+	this.dcc.closeChatDash();
 	this.updateLagMeter();
 }
 DccChatAssistant.prototype.invisibleWindow = function(event)

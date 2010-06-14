@@ -59,8 +59,16 @@ wircPlugin.prototype.registerHandlers = function() {
 }
 
 wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, length, data){
-	alert('---------------');
-	alert('id: ' + id + ', dcc_id: ' + dcc_id + ', status: ' + length + ', data: ' + data);
+	
+	var tmpDcc = servers.servers[id].getDcc(dcc_id)
+	if (tmpDcc)
+	{
+		tmpDcc.handleEvent(status, length, data);
+	}
+	else
+	{
+		alert('****** NO SUCH DCC');
+	}
 }
 
 wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {
