@@ -33,6 +33,15 @@ void sighandler(int sig) {
 	exit(0);
 }
 
+int isDir(const char *dname) {
+	struct stat sbuf;
+	if (lstat(dname, &sbuf) == -1)
+		return 0;
+	if (S_ISDIR(sbuf.st_mode))
+		return 1;
+	return 0;
+}
+
 int main(int argc, char *argv[]) {
 
 	signal(SIGINT, sighandler);
@@ -42,6 +51,23 @@ int main(int argc, char *argv[]) {
 	signal(SIGKILL, sighandler);
 
 	openlog("org.webosinternals.plugin.wirc", LOG_PID, LOG_USER);
+
+	mkdir("/media/internal/wIRC", S_IRWXU);
+	if (isDir("/media/internal/wIRC")) {
+		mkdir("/media/internal/wIRC/backlogs", S_IRWXU);
+		if (!isDir("/media/internal/wIRC/backlogs")) {
+			syslog(LOG_NOTICE, "!/media/internal/wIRC/backlogs");
+			cleanup(-2);
+		}
+		mkdir("/media/internal/wIRC/downloads", S_IRWXU);
+		if (!isDir("/media/internal/wIRC/downloads")) {
+			syslog(LOG_NOTICE, "!/media/internal/wIRC/downloads");
+			cleanup(-2);
+		}
+	} else {
+		syslog(LOG_NOTICE, "!/media/internal/wIRC");
+		cleanup(-2);
+	}
 
 	max_connections = *argv[1];
 
