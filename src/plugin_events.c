@@ -356,10 +356,10 @@ void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
 
 	syslog(LOG_INFO, "%d %d %s", status, length, data);
 
-	if (length > 0)
-		fprintf((FILE*)ctx, "%s", data);
+	if (length)
+		write(fileno(ctx), data, length);
 	else
-		fclose((FILE*)ctx);
+		close(fileno(ctx));
 
 	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
 
