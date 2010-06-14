@@ -1,6 +1,22 @@
 function HelpAssistant()
 {
-	
+    // setup menu
+    this.menuModel =
+	{
+	    visible: true,
+	    items:
+	    [
+			Mojo.Menu.editItem,
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			},
+			{
+				label: "Help",
+				command: 'do-help'
+			}
+	     ]
+	};
 };
 
 HelpAssistant.prototype.setup = function()
@@ -8,7 +24,7 @@ HelpAssistant.prototype.setup = function()
 	this.controller.get('help-title').innerHTML = $L("Help");
 	this.controller.get('help-support').innerHTML = $L("Support");
 	
-	this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: false});
+    this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.controller.get('appname').innerHTML = Mojo.appInfo.title;
 	this.controller.get('appdetails').innerHTML = Mojo.appInfo.version + $L(" by WebOS Internals");
@@ -115,6 +131,24 @@ HelpAssistant.prototype.listTapHandler = function(event)
 				this.controller.stageController.popScene();
 			}
 			break;
+	}
+};
+
+
+HelpAssistant.prototype.handleCommand = function(event)
+{
+    if (event.type == Mojo.Event.command)
+	{
+	    switch (event.command)
+		{
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences-general');
+				break;
+								
+			case 'do-help':
+				this.controller.stageController.swapScene('help');
+				break;		
+		}
 	}
 };
 

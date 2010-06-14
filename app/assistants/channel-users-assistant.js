@@ -22,6 +22,7 @@ function ChannelUsersAssistant(channel)
 		visible: true,
 		items:
 		[
+			Mojo.Menu.editItem,
 			{
 				label: "Preferences",
 				command: 'do-prefs'
@@ -31,7 +32,7 @@ function ChannelUsersAssistant(channel)
 				command: 'do-help'
 			}
 		]
-	}
+	};
 }
 
 ChannelUsersAssistant.prototype.setup = function()

@@ -131,6 +131,11 @@ function StartupAssistant()
 	    visible: true,
 	    items:
 	    [
+			Mojo.Menu.editItem,
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			},
 			{
 				label: "Help",
 				command: 'do-help'
@@ -164,7 +169,7 @@ StartupAssistant.prototype.setup = function()
     this.dataContainer =  this.controller.get('data');
 	
     // set title
-    if (vers.isFirst) 
+    if (vers.isFirst || !vers.isFirst) 
 	{
 	    this.titleContainer.innerHTML = $L("Welcome To wIRC");
 	}
@@ -179,6 +184,11 @@ StartupAssistant.prototype.setup = function()
     if (vers.isFirst)
 	{
 	    html += '<div class="text">' + this.firstMessage + '</div>';
+	}
+	
+	if (!vers.isNew)
+	{
+	    html = '<div class="text">You shouldn\'t be seeing this. The button to get past this will appear shortly.</div>';
 	}
     if (vers.isNew)
 	{
@@ -262,6 +272,10 @@ StartupAssistant.prototype.handleCommand = function(event)
 			
 				break;
 				
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences-general');
+				break;
+								
 			case 'do-help':
 				this.controller.stageController.pushScene('help');
 				break;		

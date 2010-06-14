@@ -13,6 +13,11 @@ function IdentityAssistant(showButton, disableButton)
 		visible: true,
 		items:
 		[
+			Mojo.Menu.editItem,
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			},
 			{
 				label: "Help",
 				command: 'do-help'
@@ -310,6 +315,10 @@ IdentityAssistant.prototype.handleCommand = function(event)
 	{
 		switch (event.command)
 		{
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences-general');
+				break;
+				
 			case 'do-help':
 				this.controller.stageController.pushScene('help');
 				break;

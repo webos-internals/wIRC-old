@@ -19,6 +19,7 @@ function STUB()
 		visible: true,
 		items:
 		[
+			Mojo.Menu.editItem,
 			{
 				label: "Help",
 				command: 'do-help'

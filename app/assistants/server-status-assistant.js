@@ -383,29 +383,22 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 	
 	try {
 	
-		this.menuModel.items = [];
+		this.menuModel.items = [Mojo.Menu.editItem];
 		
 		var serverItems = [];
 		var channelItems = [];
 		
-		// Global menu options
-		this.menuModel.items.push({
-			label: "Global Preferences",
-			command: 'do-prefs'
-		});
-		if (this.popped) 
-			this.menuModel.items.push({
-				label: 'Server List',
-				command: 'do-server-list'
-			});
-		
 		// Server menu options
-		if (!this.server.isTemporary) {
-			serverItems.push({
-				label: "Preferences",
-				command: 'do-server-prefs'
-			});
-		}
+		serverItems.push({
+			label: 'Join Channel',
+			command: 'do-join-channel'
+		});
+		
+		serverItems.push({
+			label: 'Channel List',
+			command: 'do-channel-list'
+		});
+		
 		var favorites = [];
     	if (this.server.favoriteChannels && this.server.favoriteChannels.length > 0) {
         	for (var c = 0; c < this.server.favoriteChannels.length; c++) {
@@ -419,6 +412,7 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 	        label: "Favorite Channels",
         	items: favorites
     	});
+		
 		if (this.server.isAway) {
 			serverItems.push({
 				label: "Back",
@@ -431,28 +425,37 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 				command: 'do-away'
 			});
 		}
+		
 		serverItems.push({
 			label: 'Change Nick',
 			command: 'do-change-nick'
 		});
-		serverItems.push({
-			label: 'Channel List',
-			command: 'do-channel-list'
-		});
-		serverItems.push({
-			label: 'Join Channel',
-			command: 'do-join-channel'
-		});
+		
+		if (!this.server.isTemporary) {
+			serverItems.push({
+				label: "Settings",
+				command: 'do-server-prefs'
+			});
+		}
+		
 		serverItems.push({
 			label: 'Clear Backlog',
 			command: 'do-clear-backlog'
 		});
 		
 		this.menuModel.items.push({
-			label: "Server",
+			label: (this.server.alias?this.server.alias:this.server.address),
 			items: serverItems
 		});
 		
+		
+		
+		// Global menu options
+		this.menuModel.items.push({
+			label: "Preferences",
+			command: 'do-prefs'
+		});
+
 		this.menuModel.items.push({
 			label: "Help",
 			command: 'do-help'
@@ -560,10 +563,6 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 					{
 						this.alertDialog('You must be connected to join a channel.');
 					}
-					break;
-					
-				case 'do-server-list':
-					this.alertDialog('This doesn\'t work yet.');
 					break;
 					
 				case 'do-clear-backlog':

@@ -15,6 +15,23 @@ function ChannelListAssistant(server)
 	this.searchTimer =	false;
 	this.searching =	false;
 	this.searchText =	'';
+	
+    this.menuModel =
+	{
+	    visible: true,
+	    items:
+	    [
+			Mojo.Menu.editItem,
+			{
+				label: "Preferences",
+				command: 'do-prefs'
+			},
+			{
+				label: "Help",
+				command: 'do-help'
+			}
+	     ]
+	};
 }
 
 ChannelListAssistant.prototype.setup = function()
@@ -52,6 +69,7 @@ ChannelListAssistant.prototype.setup = function()
 	
 	Mojo.Event.listen(this.listElement, Mojo.Event.listTap, this.listTapHandler);
 	
+    this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
 	
@@ -246,6 +264,14 @@ ChannelListAssistant.prototype.handleCommand = function(event)
 					this.updateCommandMenu();
 					this.updateList();
 				}
+				break;
+				
+			case 'do-prefs':
+				this.controller.stageController.pushScene('preferences-general');
+				break;
+								
+			case 'do-help':
+				this.controller.stageController.pushScene('help');
 				break;
 		}
 	}

@@ -38,8 +38,9 @@ function DccChatAssistant(dccChat)
 		visible: true,
 		items: []
 	}
-	this.menuModel.items.push({ label: 'Global Preferences', command: 'do-prefs'});
-	this.menuModel.items.push({ label: 'Clear Backlog',	command: 'clear-backlog'});
+	this.menuModel.items.push(Mojo.Menu.editItem);
+	this.menuModel.items.push({ label: this.dccChat.nick.name, items: [{ label: 'Clear Backlog',	command: 'clear-backlog'}]});
+	this.menuModel.items.push({ label: 'Preferences', command: 'do-prefs'});
 	this.menuModel.items.push({ label: 'Help', command: 'do-help'})
 }
 

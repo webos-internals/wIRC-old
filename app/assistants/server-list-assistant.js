@@ -35,6 +35,7 @@ function ServerListAssistant()
 		visible: true,
 		items:
 		[
+			Mojo.Menu.editItem,
 			{
 				label: "Identity",
 				command: 'do-ident'
