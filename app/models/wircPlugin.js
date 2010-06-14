@@ -54,12 +54,12 @@ wircPlugin.prototype.registerHandlers = function() {
     plugin.event_rtt = this.event_rtt_handler.bind(this);
 	plugin.event_dcc_send_req = this.event_dcc_send_req_handler.bind(this);
 	plugin.event_dcc_chat_req = this.event_dcc_chat_req_handler.bind(this);
-	plugin.handle_dcc_callback = this.dcc_callback_handler.bind(this);
+	//plugin.handle_dcc_callback = this.dcc_callback_handler.bind(this);
 
 }
 
-wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, data, length) {
-	
+wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status){//}, data, length) {
+	alert('DCC_CALLBACK');
 }
 
 wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {

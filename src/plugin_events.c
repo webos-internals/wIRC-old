@@ -253,19 +253,31 @@ void handle_dcc_callback(irc_session_t * session, irc_dcc_t dcc_id, int status, 
 
 	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0;
 
+	syslog(LOG_INFO, "GOT HERE 1");
+
 	asprintf(&id, "%d", client->id);
 	asprintf(&status_s, "%u", status);
 	asprintf(&dcc_id_s, "%u", dcc_id);
 	asprintf(&length_s, "%u", length);
 
+	syslog(LOG_INFO, "GOT HERE 2");
+
 	const char *payload[5];
 	payload[0] = id;
 	payload[1] = dcc_id_s;
 	payload[2] = status_s;
-	payload[3] = data;
+	payload[3] = length?data:"";
 	payload[4] = length_s;
 
+	syslog(LOG_INFO, "GOT HERE 3");
+
 	PDL_CallJS("handle_dcc_callback", payload, 5);
+
+	syslog(LOG_INFO, "GOT HERE 4");
+	if (id) free(id);
+	if (status_s) free(status_s);
+	if (dcc_id_s) free(dcc_id_s);
+	if (length_s) free(length_s);
 }
 
 void setup_event_callbacks() {

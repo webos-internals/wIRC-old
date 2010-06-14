@@ -45,7 +45,7 @@ DccDashboardAssistant.prototype.setup = function()
 
 DccDashboardAssistant.prototype.dashTapped = function(event)
 {
-	this.server.closeDCCRequest(this.params.dcc_id);
+	//this.server.closeDCCRequest(this.params.dcc_id);
 	plugin.dcc_accept(this.params.id, this.params.dcc_id)
 }
 
