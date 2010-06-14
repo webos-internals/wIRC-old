@@ -65,8 +65,6 @@ function ircServer(params)
 	this.invites =				[];
 	
 	this.dcc =					[];
-	this.dccChats =				[];
-	this.dccSends =				[];
 	
 	this.listStageName =		'channel-list-' + this.id;
 	this.listStageController =	false;
@@ -932,21 +930,6 @@ ircServer.prototype.getDccArrayKey = function(id)
 		for (var s = 0; s < this.dcc.length; s++)
 		{
 			if (this.dcc[s].id == id)
-			{
-				return s;
-			}
-		}
-	}
-	return false;
-}
-
-ircServer.prototype.getDCCChatArrayKey = function(id)
-{
-	if (this.dccChats.length > 0)
-	{
-		for (var s = 0; s < this.dccChats.length; s++)
-		{
-			if (this.dccChats[s].id == id)
 			{
 				return s;
 			}
