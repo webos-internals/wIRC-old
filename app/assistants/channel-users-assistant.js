@@ -203,11 +203,80 @@ ChannelUsersAssistant.prototype.filter = function(skipUpdate)
 ChannelUsersAssistant.prototype.listTap = function(event)
 {
 	event.stop();
+	/*
 	this.controller.showDialog(
 	{
 		template: 'dialog/user-dialog',
 		assistant: new UserActionDialog(this, event.item)
 	});
+	*/
+	var nick = this.channel.server.getNick(event.item.name);
+	
+	var popupList = [];
+	popupList.push({label: 'Private Message',	 command: 'pm'});
+	popupList.push({label: 'Whois',				 command: 'whois'});
+	popupList.push({label: 'Invite',			 command: 'invite', disabled: true});
+	
+	var operatorList = [];
+	operatorList.push({label: (nick.hasMode('o', this.channel)?'DeOp':'Op'),		 command: 'op'});
+	operatorList.push({label: (nick.hasMode('h', this.channel)?'DeHalfOp':'HalfOp'), command: 'half'});
+	operatorList.push({label: (nick.hasMode('v', this.channel)?'DeVoice':'Voice'),	 command: 'voice'});
+	operatorList.push({label: 'Kick',	 command: 'kick'});
+	operatorList.push({label: 'Ban',	 command: 'ban', disabled: true});
+	popupList.push({label: 'Operator Actions',				 items: operatorList});
+	
+	
+	this.controller.popupSubmenu(
+	{
+		onChoose: this.listTapListHandler.bindAsEventListener(this, event.item, nick),
+		popupClass: 'group-popup',
+		placeNear: event.originalEvent.target,
+		items: popupList
+	});
+}
+ChannelUsersAssistant.prototype.listTapListHandler = function(choice, item, nick)
+{
+	switch(choice)
+	{
+		case 'pm':
+			var tmpQuery = this.channel.server.getQuery(this.channel.server.getNick(item.name));
+			if (tmpQuery)
+			{
+				tmpQuery.openStage();
+			}
+			else
+			{
+				this.channel.server.newQuery(item.name);
+			}
+			break;
+		case 'whois':
+			this.channel.server.whois(item.name);
+			break;
+			
+		case 'op':
+			this.channel.newCommand('/mode ' + this.channel.name + ' ' + (nick.hasMode('o', this.channel)?'-':'+') + 'o ' + item.name);
+			break;
+		case 'half':
+			this.channel.newCommand('/mode ' + this.channel.name + ' ' + (nick.hasMode('h', this.channel)?'-':'+') + 'h ' + item.name);
+			break;
+		case 'voice':
+			this.channel.newCommand('/mode ' + this.channel.name + ' ' + (nick.hasMode('v', this.channel)?'-':'+') + 'v ' + item.name);
+			break;
+		case 'kick':
+			SingleLineCommandDialog.pop
+			(
+				this.sceneAssistant,
+				{
+					command:		'kick ' + item.name,
+					onSubmit:		this.channel.newCommand.bind(this.channel),
+					dialogTitle:	'Kick ' + item.name,
+					textLabel:		'Reason',
+					textDefault:	prefs.get().kickReason,
+					okText:			'Kick'
+				}
+			);
+			break;
+	}
 }
 
 ChannelUsersAssistant.prototype.handleCommand = function(event)
