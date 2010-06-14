@@ -63,9 +63,8 @@ function ircServer(params)
 	this.stageController =		false;
 	this.statusAssistant =		false;
 	this.invites =				[];
-	this.dccRequests =			[];
-	this.dccChats =				[];
-	this.dccSends =				[];
+	
+	this.dcc =					[];
 	
 	this.listStageName =		'channel-list-' + this.id;
 	this.listStageController =	false;
@@ -73,21 +72,6 @@ function ircServer(params)
 	this.listDisplay =			0;
 	this.channelList =			[];
 	
-}
-
-ircServer.prototype.getDCCChatArrayKey = function(id)
-{
-	if (this.dccChats.length > 0)
-	{
-		for (var s = 0; s < this.dccChats.length; s++)
-		{
-			if (this.dccChats[s].id == id)
-			{
-				return s;
-			}
-		}
-	}
-	return false;
 }
 
 ircServer.prototype.setState = function(state)
@@ -932,69 +916,26 @@ ircServer.prototype.closeInvite = function(nick, channel)
 	}
 }
 
-ircServer.prototype.openDCCRequest = function(params)
+
+ircServer.prototype.startDcc = function(params)
 {
-	try
+	var newDcc = new ircDcc(params);
+	newDcc.openRequest();
+	this.queries.push(newDcc);
+}
+ircServer.prototype.getDccArrayKey = function(id)
+{
+	if (this.dcc.length > 0)
 	{
-		var tmpBannerName = 'dcc-' + this.id + '-' + params.dcc_id;
-		var tmpDashName = 'dccdash-' + this.id + '-' + params.dcc_id;
-		
-		var msgText = "Incoming chat request...";
-		var icon = 'icon-dcc-chat.png';
-		if (params.filename && params.size) {
-			msgText = "Incoming file transfer request...";
-			icon = 'icon-dcc-send.png';	
-		}
-		
-		Mojo.Controller.appController.showBanner
-		(
+		for (var s = 0; s < this.dcc.length; s++)
+		{
+			if (this.dcc[s].id == id)
 			{
-				icon: icon,
-				messageText: msgText,
-				soundClass: (prefs.get().dashboardInviteSound?"alerts":"")
-			},
-			params,
-			tmpBannerName
-		);
-					
-		var tmpController = Mojo.Controller.appController.getStageController(tmpDashName);
-	    if (tmpController) 
-		{
-			// do nothing on second invite if dash already exists?
+				return s;
+			}
 		}
-		else
-		{
-			this.dccRequests.push({params: params});
-			
-			Mojo.Controller.appController.createStageWithCallback({name: tmpDashName, lightweight: true}, this.openDCCRequestCallback.bind(this), "dashboard");
-		}
-		
 	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, "ircServer#openDCCRequest");
-	}
-}
-ircServer.prototype.openDCCRequestCallback = function(controller, params)
-{
-	controller.pushScene('dcc-dashboard', this, this.dccRequests[this.dccRequests.length-1].params);
-}
-ircServer.prototype.closeDCCRequest = function(params)
-{
-	try
-	{
-		var tmpBannerName = 'dcc-' + this.id + '-' + params.dcc_id;
-		var tmpDashName = 'dccdash-' + this.id + '-' + params.dcc_id;
-		
-		this.dccrequests = this.dccRequests.splice(1,this.getDCCChatArrayKey(params.dcc_id));
-		
-		Mojo.Controller.appController.removeBanner(tmpBannerName);
-		Mojo.Controller.appController.closeStage(tmpDashName);
-	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, "ircServer#closeDCCRequest");
-	}
+	return false;
 }
 
 ircServer.prototype.getVisibleScene = function()

@@ -1,8 +1,7 @@
-function DccDashboardAssistant(server, params)
+function DccRequestDashboardAssistant(dcc)
 {
-	this.server = server;
-	this.params	= params;
-	
+	this.dcc = dcc;
+		
 	this.dashboardElement =			false;
 	this.newNumberBubbleElement =	false;
 	this.newNumberElement =			false;
@@ -14,7 +13,7 @@ function DccDashboardAssistant(server, params)
 	this.messageCount =				0;
 }
 
-DccDashboardAssistant.prototype.setup = function()
+DccRequestDashboardAssistant.prototype.setup = function()
 {
 	this.dashboardElement =			this.controller.get('dashboard');
 	this.newNumberBubbleElement =	this.controller.get('newNumberBubble');
@@ -30,12 +29,12 @@ DccDashboardAssistant.prototype.setup = function()
 	this.newNumberBubbleElement.style.display = 'none';
 	
 	// puts message
-	if (this.params.filename && this.params.size) {
-		this.dashboardTitleElement.innerHTML = 'DCC SEND: ' + this.params.nick;
+	if (this.dcc.filename && this.dcc.size) {
+		this.dashboardTitleElement.innerHTML = this.dcc.nick.name + ' wants to send: ' + this.filename;
 		this.dashboardElement.className = 'dcc-send-dashboard dashboard-notification-module';
 	}
 	else {
-		this.dashboardTitleElement.innerHTML = 'DCC CHAT: ' + this.params.nick;
+		this.dashboardTitleElement.innerHTML = this.dcc.nick.name + ' wants to chat';
 		this.dashboardElement.className = 'dcc-chat-dashboard dashboard-notification-module';
 	}
 	this.dashboardTextElement.innerHTML = 'Tap to Accept, Swipe to Reject.';
@@ -44,14 +43,14 @@ DccDashboardAssistant.prototype.setup = function()
 	Mojo.Event.listen(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
 }
 
-DccDashboardAssistant.prototype.dashTapped = function(event)
+DccRequestDashboardAssistant.prototype.dashTapped = function(event)
 {
-	servers.servers[this.params.id].closeDCCRequest(this.params.dcc_id);
-	plugin.dcc_accept(this.params.id, this.params.dcc_id);
+	this.dcc.closeRequest();
+	this.dcc.accept();
 }
 
-DccDashboardAssistant.prototype.cleanup = function(event)
+DccRequestDashboardAssistant.prototype.cleanup = function(event)
 {
-	servers.servers[this.params.id].closeDCCRequest(this.params.dcc_id);
+	this.dcc.closeRequest();
 	Mojo.Event.stopListening(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);
 }
