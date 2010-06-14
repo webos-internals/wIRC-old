@@ -45,20 +45,20 @@ int main(int argc, char *argv[]) {
 
 	max_connections = *argv[1];
 
-	servers = malloc(sizeof(wIRCd_client_t)*max_connections);
+	servers = malloc(sizeof(wIRCd_client_t) * max_connections);
 
 	max_retries = DEFAULT_MAX_RETRIES;
 	pre_run_usleep = DEFAULT_PRE_RUN_USLEEP;
 
 	int ret = plugin_initialize();
-    if (ret == PDL_NOERROR) {
-    	syslog(LOG_NOTICE, "JS handler registration complete");
-    	plugin_start();
-    } else {
-    	syslog(LOG_ERR, "JS handler registration failed: %d", ret);
-    }
+	if (ret == PDL_NOERROR) {
+		syslog(LOG_NOTICE, "JS handler registration complete");
+		plugin_start();
+	} else {
+		syslog(LOG_ERR, "JS handler registration failed: %d", ret);
+	}
 
-    cleanup(-1);
+	cleanup(-1);
 
 	return 0;
 
