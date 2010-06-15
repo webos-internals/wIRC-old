@@ -30,14 +30,15 @@ DccRequestDashboardAssistant.prototype.setup = function()
 	
 	// puts message
 	if (this.dcc.isFile()) {
-		this.dashboardTitleElement.innerHTML = this.dcc.nick.name + ' wants to send: ' + this.dcc.filename;
+		this.dashboardTitleElement.innerHTML = 'Incoming file from: ' + this.dcc.nick.name
 		this.dashboardElement.className = 'dcc-send-dashboard dashboard-notification-module';
+		this.dashboardTextElement.innerHTML = 'Tap to Review, Swipe to Decline.';
 	}
 	else {
-		this.dashboardTitleElement.innerHTML = this.dcc.nick.name + ' wants to chat';
+		this.dashboardTitleElement.innerHTML = 'Incoming chat from: ' + this.dcc.nick.name;
 		this.dashboardElement.className = 'dcc-chat-dashboard dashboard-notification-module';
+		this.dashboardTextElement.innerHTML = 'Tap to Accept, Swipe to Decline.';
 	}
-	this.dashboardTextElement.innerHTML = 'Tap to Accept, Swipe to Reject.';
 	
 	// to whole thing for tap
 	Mojo.Event.listen(this.dashboardElement, Mojo.Event.tap, this.dashTapHandler);

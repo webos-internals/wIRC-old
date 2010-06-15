@@ -124,16 +124,14 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	
 	if (this.isChat())
 	{
-		// construct something for newMessage(type, nick, message) to be sent to the message scene
 		this.updateChatStats();
 		if (length>0)
 			this.newMessage('privmsg', this.nick, data);
-		alert('handleChatEvent');
 	}
 	else
 	{
-		// set this.percent and run updateSendData();
-		alert('handleFileEvent');
+		this.percent = this.bitsIn/this.size;
+		this.updateSendData();
 	}
 }
 
@@ -362,7 +360,7 @@ ircDcc.prototype.openSendDash = function()
 {
 	try
 	{
-		Mojo.Controller.appController.showBanner
+		/*Mojo.Controller.appController.showBanner
 		(
 			{
 				icon: 'icon-dcc-send.png',
@@ -375,7 +373,7 @@ ircDcc.prototype.openSendDash = function()
 				dcc: this.dcc
 			},
 			this.sendBannerName
-		);
+		);*/
 		
 		this.sendDashController = Mojo.Controller.appController.getStageController(this.sendDashName);
 	    if (this.sendDashController)
@@ -411,6 +409,7 @@ ircDcc.prototype.updateSendData = function()
 {
 	if (this.sendDashAssistant && this.sendDashAssistant.controller)
 	{
+		alert('I dont see this!');
 		this.sendDashAssistant.updateData(this.percent, this.filename, this.size);
 	}
 }
