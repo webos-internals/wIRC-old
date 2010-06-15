@@ -106,14 +106,14 @@ ircDcc.prototype.closeRequest = function()
 
 ircDcc.prototype.accept = function()
 {
-	plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
-	
 	if (this.isFile())
 	{
+		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
 		this.openSendDash();
 	}
 	else
 	{
+		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, "");
 		this.openChatStage();
 	}
 }

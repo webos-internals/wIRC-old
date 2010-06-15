@@ -318,6 +318,8 @@ void handle_event_dcc_send_req(irc_session_t * session, const char * nick,
 void handle_dcc_chat_callback(irc_session_t * session, irc_dcc_t dcc_id,
 		int status, void * ctx, const char * data, unsigned int length) {
 
+	syslog(LOG_INFO, "chat: %s", data);
+
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
