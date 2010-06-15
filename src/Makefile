@@ -18,7 +18,7 @@ INCLUDES	:=	-I${ROOT}/include \
 				-I$(ROOT)${prefix}/include/pdl \
 				-I$(IRCLIB)/include
 				
-LIBDIRS		:=	-L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib
+LIBDIRS		:=	-L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined
 	
 LIBS		:=  -lpdl -lSDL
 
