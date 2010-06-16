@@ -854,6 +854,14 @@ body.palm-dark .message-row.selected
 	background: #fff;
 	color: #000 !important;
 }
+.message-row.selected *
+{
+	color: #fff !important;
+}
+body.palm-dark .message-row.selected *
+{
+	color: #000 !important;
+}
 
 .hide-divider table.date-row
 {
