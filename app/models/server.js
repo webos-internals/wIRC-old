@@ -153,6 +153,23 @@ ircServer.prototype.newCommand = function(message)
 			
 			switch (cmd.toLowerCase())
 			{
+				case 'dcc':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) {
+						switch (tmpMatch[1]) {
+							case 'chat':
+								var tmpNick = this.getNick(tmpMatch[2]);
+								if (tmpNick)
+									var dcc_id = plugin.dcc_chat(servers.getServerArrayKey(this.id), tmpNick.name);
+								break;
+							case 'send':
+								var dcc_id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), tmpMatch[2]);
+								break;
+							case 'list':
+								break;
+						}
+					}
+					
 				case 'ctcp':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch)

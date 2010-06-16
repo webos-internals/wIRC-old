@@ -392,6 +392,57 @@ void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
 		free(data_s);
 }
 
+void handle_dcc_startchat_callback(irc_session_t * session, irc_dcc_t dcc_id,
+		int status, void * ctx, const char * data, unsigned int length) {
+
+	syslog(LOG_INFO, "GOT HERE 1");
+
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
+
+	syslog(LOG_INFO, "GOT HERE 2");
+
+	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
+
+	syslog(LOG_INFO, "GOT HERE 3");
+
+}
+
+void handle_dcc_sendfile_callback(irc_session_t * session, irc_dcc_t dcc_id,
+		int status, void * ctx, const char * data, unsigned int length) {
+
+	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
+
+	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
+
+	/*char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
+
+	asprintf(&id, "%d", client->id);
+	asprintf(&dcc_id_s, "%u", dcc_id);
+	asprintf(&status_s, "%d", status);
+	asprintf(&length_s, "%u", length);
+	asprintf(&data_s, "%d", (data == 0) ? 0 : 1);
+
+	const char *payload[5];
+	payload[0] = id;
+	payload[1] = dcc_id_s;
+	payload[2] = status_s;
+	payload[3] = length_s;
+	payload[4] = data_s;
+
+	PDL_CallJS("handle_dcc_callback", payload, 5);
+
+	if (id)
+		free(id);
+	if (status_s)
+		free(status_s);
+	if (dcc_id_s)
+		free(dcc_id_s);
+	if (length_s)
+		free(length_s);
+	if (data_s)
+		free(data_s);*/
+}
+
 void setup_event_callbacks() {
 
 	memset(&callbacks, 0, sizeof(callbacks));

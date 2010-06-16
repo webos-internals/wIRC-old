@@ -272,13 +272,16 @@ PDL_bool client_dcc_destroy(PDL_JSParameters *params) {
 }
 
 PDL_bool client_dcc_chat(PDL_JSParameters *params) {
+	syslog(LOG_INFO, "GOT HERE A");
 	int id = PDL_GetJSParamInt(params, 0);
-	irc_dcc_t *dcc_id = 0;
+	syslog(LOG_INFO, "GOT HERE B");
+	irc_dcc_t dcc_id = 0;
+	syslog(LOG_INFO, "GOT HERE C");
 	int ret = irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), handle_dcc_chat_callback, dcc_id);
-	/*if (ret==0)
-	 handle_pending_dcc_chat(id, &dcc_id);*/
-	return ret;
+			params, 1), handle_dcc_startchat_callback, &dcc_id);
+	irc_dcc_accept(servers[id].session, dcc_id, 0, handle_dcc_startchat_callback);
+	syslog(LOG_INFO, "GOT HERE D");
+	return (PDL_bool)dcc_id;
 }
 
 PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
@@ -286,10 +289,8 @@ PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
 	irc_dcc_t *dcc_id = 0;
 	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(
 			params, 1), PDL_GetJSParamString(params, 2),
-			handle_dcc_send_callback, dcc_id);
-	/*if (ret==0)
-	 handle_pending_dcc_senfile(id, &dcc_id);*/
-	return ret;
+			handle_dcc_sendfile_callback, dcc_id);
+	return (PDL_bool)*dcc_id;
 }
 
 PDL_bool client_dcc_msg(PDL_JSParameters *params) {
