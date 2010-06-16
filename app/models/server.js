@@ -168,6 +168,7 @@ ircServer.prototype.newCommand = function(message)
 								var dcc_id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), tmpMatch[2]);
 								break;
 							case 'list':
+								this.openDccList();
 								break;
 						}
 					}
