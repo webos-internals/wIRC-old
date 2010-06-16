@@ -635,6 +635,30 @@ body.palm-dark .channel-users #searchText
 
 
 /*
+ * DCC List Scene Styles
+ */
+.dcc-list #dccList .palm-row-wrapper .icon
+{
+	float: left;
+	width: 48px;
+	height: 48px;
+	-webkit-background-size: 44px 44px;
+	margin-top: 2px;
+	margin-right: 8px;
+	margin-left: 4px;
+}
+.dcc-list #dccList .palm-row-wrapper.send .icon
+{
+	background: url(../icon-dcc-send.png) center center no-repeat;
+}
+.dcc-list #dccList .palm-row-wrapper.chat .icon
+{
+	background: url(../icon-dcc-chat.png) center center no-repeat;
+}
+
+
+
+/*
  * Whois Scene Styles
  */
 .whois #whoisData .palm-row-wrapper .title .mode

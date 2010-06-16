@@ -431,6 +431,11 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			command: 'do-change-nick'
 		});
 		
+		serverItems.push({
+			label: "DCC List",
+			command: 'do-dcc-list'
+		});
+		
 		if (!this.server.isTemporary) {
 			serverItems.push({
 				label: "Settings",
@@ -483,6 +488,10 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 			{
 				case 'do-prefs':
 					this.controller.stageController.pushScene('preferences-general');
+					break;
+					
+				case 'do-dcc-list':
+					this.server.openDccList();
 					break;
 					
 				case 'do-server-prefs':
