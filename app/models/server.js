@@ -72,6 +72,8 @@ function ircServer(params)
 	this.listDisplay =			0;
 	this.channelList =			[];
 	
+	this.dccListStageName =		'dcc-list-' + this.id;
+	
 }
 
 ircServer.prototype.setState = function(state)
@@ -967,6 +969,43 @@ ircServer.prototype.getDccArrayKey = function(id)
 		}
 	}
 	return false;
+}
+ircServer.prototype.openDccList = function()
+{
+	var stageController = Mojo.Controller.appController.getStageController(this.dccListStageName);
+	
+    if (stageController)
+	{
+		var scenes = stageController.getScenes();
+		if (scenes[0].sceneName == 'dcc-list' && scenes.length > 1)
+		{
+			stageController.popScenesTo('dcc-list');
+		}
+		stageController.activate();
+	}
+	else
+	{
+		var f = function(controller)
+		{
+			controller.pushScene('dcc-list', this);
+		};
+		Mojo.Controller.appController.createStageWithCallback({name: this.dccListStageName, lightweight: true}, f.bind(this));
+	}
+}
+ircServer.prototype.getDccListObjects = function()
+{
+	var returnArray = [];
+	if (this.dccs.length > 0)
+	{
+		for (var d = 0; d < this.dccs.length; d++)
+		{
+			if (this.dccs[d]) 
+			{
+				returnArray.push(this.dccs[d].getListObject());
+			}
+		}
+	}
+	return returnArray;
 }
 
 ircServer.prototype.getVisibleScene = function()

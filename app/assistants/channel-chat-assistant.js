@@ -451,6 +451,10 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
             command: 'do-away'
         });
     }
+	serverItems.push({
+		label: "DCC List",
+		command: 'do-dcc-list'
+	});
 	if (!this.channel.server.isTemporary) {
 		serverItems.push({
 			label: "Settings",
@@ -522,6 +526,11 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
                     this.controller.stageController.pushScene('preferences-general');
                     break;
                     
+					
+				case 'do-dcc-list':
+					this.channel.server.openDccList();
+					break;
+					
 				case 'do-server-prefs':
 					this.controller.stageController.pushScene('server-info', this.channel.server.id);
 					break;

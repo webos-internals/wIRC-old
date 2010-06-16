@@ -276,6 +276,10 @@ ServerListAssistant.prototype.handleCommand = function(event)
 				this.controller.stageController.pushScene('help');
 				break;
 				
+			case 'do-dcc-list':
+				servers.openDccList();
+				break;
+				
 			case 'do-ident':
 				this.controller.stageController.pushScene('identity', false, true);
 				break;

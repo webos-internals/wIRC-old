@@ -32,7 +32,6 @@ function ircDcc(params)
 	this.sendDashAssistant =	false;
 }
 
-
 ircDcc.prototype.isChat = function()
 {
 	return (this.filename && this.size ? false : true);
@@ -420,4 +419,33 @@ ircDcc.prototype.updateChatStats = function()
 	{
 		this.chatAssistant.updateStats(this.bitsIn, this.bitsOut);
 	}
+}
+
+
+ircDcc.prototype.getListObject = function()
+{
+	var obj =
+	{
+		key:		this.server.getDccArrayKey(this.id),
+		id:			this.id,
+		server:		(this.server.alias?this.server.alias:this.server.address),
+		text:		this.nick.name,
+		type:		'',
+		bitsIn:		this.bitsIn,
+		bitsOut:	this.bitsOut,
+		filename:	this.filename,
+		percent:	(this.percent ? this.percent : 0),
+		rowClass:	''
+	};
+	
+	if (this.isChat())
+	{
+		obj.type = 'chat';
+	}
+	else
+	{
+		obj.type = 'send';
+	}
+	
+	return obj;
 }

@@ -105,6 +105,10 @@
         "source": "app/assistants/query-dashboard-assistant.js"
     },
 	{
+        "scenes": "dcc-list",
+        "source": "app/assistants/dcc-list-assistant.js"
+	},
+	{
         "scenes": "dcc-request-dashboard",
         "source": "app/assistants/dcc-request-dashboard-assistant.js"
     },

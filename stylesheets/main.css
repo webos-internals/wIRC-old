@@ -554,7 +554,7 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 }
 .channel-chat #userButton .icon
 {
-	position: relative
+	position: relative;
 	display: inline-block;
 	float: left;
 	margin-top: 5px;
@@ -630,6 +630,65 @@ body.palm-dark .channel-users #searchText
 {
 	font-weight: bold;
 	text-decoration: underline;
+}
+
+
+
+/*
+ * DCC List Scene Styles
+ */
+.dcc-list #dccList .palm-row-wrapper
+{
+	position: relative;
+}
+.dcc-list #dccList .palm-row-wrapper .icon
+{
+	float: left;
+	width: 48px;
+	height: 48px;
+	-webkit-background-size: 44px 44px;
+	margin-top: 2px;
+	margin-right: 8px;
+	margin-left: 4px;
+}
+.dcc-list #dccList .palm-row-wrapper.send .icon
+{
+	background: url(../icon-dcc-send.png) center center no-repeat;
+}
+.dcc-list #dccList .palm-row-wrapper.send .progress
+{
+	z-index: -1;
+	position: absolute;
+	width: 100%;
+	height: 52px;
+}
+.dcc-list #dccList .palm-row-wrapper.send .progress .bar
+{
+	background: url(../images/send-progress.png) top left repeat-x;
+	height: 100%;
+}
+.dcc-list #dccList .palm-row-wrapper.send .title
+{
+	padding-top: 5px;
+	margin-top: 0px;
+}
+.dcc-list #dccList .palm-row-wrapper.send .sub
+{
+	color: #999;
+	font-size: 14px;
+	padding-top: 0px;
+	margin-top: -17px;
+	padding-left: 16px;
+	padding-bottom: 7px;
+}
+.dcc-list #dccList .palm-row-wrapper.chat .icon
+{
+	background: url(../icon-dcc-chat.png) center center no-repeat;
+}
+.dcc-list #dccList .palm-row-wrapper.chat .progress,
+.dcc-list #dccList .palm-row-wrapper.chat .file
+{
+	display: none;
 }
 
 
@@ -854,6 +913,14 @@ body.palm-dark .message-row.selected
 	background: #fff;
 	color: #000 !important;
 }
+.message-row.selected *
+{
+	color: #fff !important;
+}
+body.palm-dark .message-row.selected *
+{
+	color: #000 !important;
+}
 
 .hide-divider table.date-row
 {
@@ -1021,146 +1088,4 @@ table.date-row.palm-divider.labeled tr td.right
 .network.wifi.lag-3						{ background-position: -168px  -54px; }
 .network.wifi.lag-4						{ background-position: -168px  -72px; }
 .network.wifi.lag-5						{ background-position: -168px  -90px; }
-
-
-/* Display all list selector popup items in their color if labeled a color */
-[x-mojo-menu-cmd=aliceblue]{color:aliceblue;}
-[x-mojo-menu-cmd=antiquewhite]{color:antiquewhite;}
-[x-mojo-menu-cmd=aqua]{color:aqua;}
-[x-mojo-menu-cmd=aquamarine]{color:aquamarine;}
-[x-mojo-menu-cmd=azure]{color:azure;}
-[x-mojo-menu-cmd=beige]{color:beige;}
-[x-mojo-menu-cmd=bisque]{color:bisque;}
-[x-mojo-menu-cmd=black]{color:black;}
-[x-mojo-menu-cmd=blanchedalmond]{color:blanchedalmond;}
-[x-mojo-menu-cmd=blue]{color:blue;}
-[x-mojo-menu-cmd=blueviolet]{color:blueviolet;}
-[x-mojo-menu-cmd=brown]{color:brown;}
-[x-mojo-menu-cmd=burlywood]{color:burlywood;}
-[x-mojo-menu-cmd=cadetblue]{color:cadetblue;}
-[x-mojo-menu-cmd=chartreuse]{color:chartreuse;}
-[x-mojo-menu-cmd=chocolate]{color:chocolate;}
-[x-mojo-menu-cmd=coral]{color:coral;}
-[x-mojo-menu-cmd=cornflowerblue]{color:cornflowerblue;}
-[x-mojo-menu-cmd=cornsilk]{color:cornsilk;}
-[x-mojo-menu-cmd=crimson]{color:crimson;}
-[x-mojo-menu-cmd=cyan]{color:cyan;}
-[x-mojo-menu-cmd=darkblue]{color:darkblue;}
-[x-mojo-menu-cmd=darkcyan]{color:darkcyan;}
-[x-mojo-menu-cmd=darkgoldenrod]{color:darkgoldenrod;}
-[x-mojo-menu-cmd=darkgray]{color:darkgray;}
-[x-mojo-menu-cmd=darkgreen]{color:darkgreen;}
-[x-mojo-menu-cmd=darkkhaki]{color:darkkhaki;}
-[x-mojo-menu-cmd=darkmagenta]{color:darkmagenta;}
-[x-mojo-menu-cmd=darkolivegreen]{color:darkolivegreen;}
-[x-mojo-menu-cmd=darkorange]{color:darkorange;}
-[x-mojo-menu-cmd=darkorchid]{color:darkorchid;}
-[x-mojo-menu-cmd=darkred]{color:darkred;}
-[x-mojo-menu-cmd=darksalmon]{color:darksalmon;}
-[x-mojo-menu-cmd=darkseagreen]{color:darkseagreen;}
-[x-mojo-menu-cmd=darkslateblue]{color:darkslateblue;}
-[x-mojo-menu-cmd=darkslategray]{color:darkslategray;}
-[x-mojo-menu-cmd=darkturquoise]{color:darkturquoise;}
-[x-mojo-menu-cmd=darkviolet]{color:darkviolet;}
-[x-mojo-menu-cmd=deeppink]{color:deeppink;}
-[x-mojo-menu-cmd=deepskyblue]{color:deepskyblue;}
-[x-mojo-menu-cmd=dimgray]{color:dimgray;}
-[x-mojo-menu-cmd=dodgerblue]{color:dodgerblue;}
-[x-mojo-menu-cmd=firebrick]{color:firebrick;}
-[x-mojo-menu-cmd=floralwhite]{color:floralwhite;}
-[x-mojo-menu-cmd=forestgreen]{color:forestgreen;}
-[x-mojo-menu-cmd=fuchsia]{color:fuchsia;}
-[x-mojo-menu-cmd=gainsboro]{color:gainsboro;}
-[x-mojo-menu-cmd=ghostwhite]{color:ghostwhite;}
-[x-mojo-menu-cmd=gold]{color:gold;}
-[x-mojo-menu-cmd=goldenrod]{color:goldenrod;}
-[x-mojo-menu-cmd=gray]{color:gray;}
-[x-mojo-menu-cmd=green]{color:green;}
-[x-mojo-menu-cmd=greenyellow]{color:greenyellow;}
-[x-mojo-menu-cmd=honeydew]{color:honeydew;}
-[x-mojo-menu-cmd=hotpink]{color:hotpink;}
-[x-mojo-menu-cmd=indianred]{color:indianred;}
-[x-mojo-menu-cmd=indigo]{color:indigo;}
-[x-mojo-menu-cmd=ivory]{color:ivory;}
-[x-mojo-menu-cmd=khaki]{color:khaki;}
-[x-mojo-menu-cmd=lavender]{color:lavender;}
-[x-mojo-menu-cmd=lavenderblush]{color:lavenderblush;}
-[x-mojo-menu-cmd=lawngreen]{color:lawngreen;}
-[x-mojo-menu-cmd=lemonchiffon]{color:lemonchiffon;}
-[x-mojo-menu-cmd=lightblue]{color:lightblue;}
-[x-mojo-menu-cmd=lightcoral]{color:lightcoral;}
-[x-mojo-menu-cmd=lightcyan]{color:lightcyan;}
-[x-mojo-menu-cmd=lightgoldenrodyellow]{color:lightgoldenrodyellow;}
-[x-mojo-menu-cmd=lightgreen]{color:lightgreen;}
-[x-mojo-menu-cmd=lightpink]{color:lightpink;}
-[x-mojo-menu-cmd=lightsalmon]{color:lightsalmon;}
-[x-mojo-menu-cmd=lightseagreen]{color:lightseagreen;}
-[x-mojo-menu-cmd=lightskyblue]{color:lightskyblue;}
-[x-mojo-menu-cmd=lightslategray]{color:lightslategray;}
-[x-mojo-menu-cmd=lightsteelblue]{color:lightsteelblue;}
-[x-mojo-menu-cmd=lightyellow]{color:lightyellow;}
-[x-mojo-menu-cmd=lime]{color:lime;}
-[x-mojo-menu-cmd=limegreen]{color:limegreen;}
-[x-mojo-menu-cmd=linen]{color:linen;}
-[x-mojo-menu-cmd=magenta]{color:magenta;}
-[x-mojo-menu-cmd=maroon]{color:maroon;}
-[x-mojo-menu-cmd=mediumaquamarine]{color:mediumaquamarine;}
-[x-mojo-menu-cmd=mediumblue]{color:mediumblue;}
-[x-mojo-menu-cmd=mediumorchid]{color:mediumorchid;}
-[x-mojo-menu-cmd=mediumpurple]{color:mediumpurple;}
-[x-mojo-menu-cmd=mediumseagreen]{color:mediumseagreen;}
-[x-mojo-menu-cmd=mediumslateblue]{color:mediumslateblue;}
-[x-mojo-menu-cmd=mediumspringgreen]{color:mediumspringgreen;}
-[x-mojo-menu-cmd=mediumturquoise]{color:mediumturquoise;}
-[x-mojo-menu-cmd=mediumvioletred]{color:mediumvioletred;}
-[x-mojo-menu-cmd=midnightblue]{color:midnightblue;}
-[x-mojo-menu-cmd=mintcream]{color:mintcream;}
-[x-mojo-menu-cmd=mistyrose]{color:mistyrose;}
-[x-mojo-menu-cmd=moccasin]{color:moccasin;}
-[x-mojo-menu-cmd=navajowhite]{color:navajowhite;}
-[x-mojo-menu-cmd=navy]{color:navy;}
-[x-mojo-menu-cmd=oldlace]{color:oldlace;}
-[x-mojo-menu-cmd=olive]{color:olive;}
-[x-mojo-menu-cmd=olivedrab]{color:olivedrab;}
-[x-mojo-menu-cmd=orange]{color:orange;}
-[x-mojo-menu-cmd=orangered]{color:orangered;}
-[x-mojo-menu-cmd=orchid]{color:orchid;}
-[x-mojo-menu-cmd=palegoldenrod]{color:palegoldenrod;}
-[x-mojo-menu-cmd=palegreen]{color:palegreen;}
-[x-mojo-menu-cmd=paleturquoise]{color:paleturquoise;}
-[x-mojo-menu-cmd=palevioletred]{color:palevioletred;}
-[x-mojo-menu-cmd=papayawhip]{color:papayawhip;}
-[x-mojo-menu-cmd=peachpuff]{color:peachpuff;}
-[x-mojo-menu-cmd=peru]{color:peru;}
-[x-mojo-menu-cmd=pink]{color:pink;}
-[x-mojo-menu-cmd=plum]{color:plum;}
-[x-mojo-menu-cmd=powderblue]{color:powderblue;}
-[x-mojo-menu-cmd=purple]{color:purple;}
-[x-mojo-menu-cmd=red]{color:red;}
-[x-mojo-menu-cmd=rosybrown]{color:rosybrown;}
-[x-mojo-menu-cmd=royalblue]{color:royalblue;}
-[x-mojo-menu-cmd=saddlebrown]{color:saddlebrown;}
-[x-mojo-menu-cmd=salmon]{color:salmon;}
-[x-mojo-menu-cmd=sandybrown]{color:sandybrown;}
-[x-mojo-menu-cmd=seagreen]{color:seagreen;}
-[x-mojo-menu-cmd=seashell]{color:seashell;}
-[x-mojo-menu-cmd=sienna]{color:sienna;}
-[x-mojo-menu-cmd=silver]{color:silver;}
-[x-mojo-menu-cmd=skyblue]{color:skyblue;}
-[x-mojo-menu-cmd=slateblue]{color:slateblue;}
-[x-mojo-menu-cmd=slategray]{color:slategray;}
-[x-mojo-menu-cmd=snow]{color:snow;}
-[x-mojo-menu-cmd=springgreen]{color:springgreen;}
-[x-mojo-menu-cmd=steelblue]{color:steelblue;}
-[x-mojo-menu-cmd=tan]{color:tan;}
-[x-mojo-menu-cmd=teal]{color:teal;}
-[x-mojo-menu-cmd=thistle]{color:thistle;}
-[x-mojo-menu-cmd=tomato]{color:tomato;}
-[x-mojo-menu-cmd=turquoise]{color:turquoise;}
-[x-mojo-menu-cmd=violet]{color:violet;}
-[x-mojo-menu-cmd=wheat]{color:wheat;}
-[x-mojo-menu-cmd=white]{color:white;}
-[x-mojo-menu-cmd=whitesmoke]{color:whitesmoke;}
-[x-mojo-menu-cmd=yellow]{color:yellow;}
-[x-mojo-menu-cmd=yellowgreen]{color:yellowgreen;}
 

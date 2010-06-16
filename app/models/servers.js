@@ -8,6 +8,8 @@ function ircServers()
 	
 	this.servers =			[];
 	this.listAssistant =	false;
+	
+	this.dccListStageName =	'dccListStage';
 }
 
 ircServers.prototype.cmHandler = function(payload)
@@ -161,6 +163,53 @@ ircServers.prototype.getServerForId = function(id)
 		}
 	}
 	return false;
+}
+
+ircServers.prototype.openDccList = function()
+{
+	var stageController = Mojo.Controller.appController.getStageController(this.dccListStageName);
+	
+    if (stageController)
+	{
+		var scenes = stageController.getScenes();
+		if (scenes[0].sceneName == 'dcc-list' && scenes.length > 1)
+		{
+			stageController.popScenesTo('dcc-list');
+		}
+		stageController.activate();
+	}
+	else
+	{
+		var f = function(controller)
+		{
+			controller.pushScene('dcc-list');
+		};
+		Mojo.Controller.appController.createStageWithCallback({name: this.dccListStageName, lightweight: true}, f.bind(this));
+	}
+}
+ircServers.prototype.getDccListObjects = function()
+{
+	var returnArray = [];
+	if (this.servers.length > 0)
+	{
+		for (var s = 0; s < this.servers.length; s++)
+		{
+			if (this.servers[s]) 
+			{
+				if (this.servers[s].dccs.length > 0)
+				{
+					for (var d = 0; d < this.servers[s].dccs.length; d++)
+					{
+						if (this.servers[s].dccs[d]) 
+						{
+							returnArray.push(this.servers[s].dccs[d].getListObject());
+						}
+					}
+				}
+			}
+		}
+	}
+	return returnArray;
 }
 
 ircServers.prototype.load = function()
