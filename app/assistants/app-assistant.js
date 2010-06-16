@@ -207,6 +207,9 @@ AppAssistant.prototype.getStages = function()
 	// test server list stage
 	if (this.controller.getStageController(serverStage)) stages.push(serverStage);
 	
+	// test all servers dcc list stage
+	if (this.controller.getStageController(servers.dccListStageName)) stages.push(servers.dccListStageName);
+	
 	if (servers.servers.length > 0)
 	{
 		for (var s = 0; s < servers.servers.length; s++)
@@ -216,6 +219,9 @@ AppAssistant.prototype.getStages = function()
 			
 			// test server channel list stage
 			if (this.controller.getStageController(servers.servers[s].listStageName)) stages.push(servers.servers[s].listStageName);
+			
+			// test server dcc list stage
+			if (this.controller.getStageController(servers.servers[s].dccListStageName)) stages.push(servers.servers[s].dccListStageName);
 
 			// test channel chat stages
 			if (servers.servers[s].channels.length > 0)
@@ -232,6 +238,15 @@ AppAssistant.prototype.getStages = function()
 				for (var q = 0; q < servers.servers[s].queries.length; q++) 
 				{
 					if (this.controller.getStageController(servers.servers[s].queries[q].stageName)) stages.push(servers.servers[s].queries[q].stageName);
+				}
+			}
+
+			// test dcc stages
+			if (servers.servers[s].dccs.length > 0)
+			{
+				for (var d = 0; d < servers.servers[s].dccs.length; d++) 
+				{
+					if (this.controller.getStageController(servers.servers[s].dccs[d].chatStageName)) stages.push(servers.servers[s].dccs[d].chatStageName);
 				}
 			}
 

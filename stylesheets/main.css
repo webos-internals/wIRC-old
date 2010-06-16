@@ -637,6 +637,10 @@ body.palm-dark .channel-users #searchText
 /*
  * DCC List Scene Styles
  */
+.dcc-list #dccList .palm-row-wrapper
+{
+	position: relative;
+}
 .dcc-list #dccList .palm-row-wrapper .icon
 {
 	float: left;
@@ -651,9 +655,40 @@ body.palm-dark .channel-users #searchText
 {
 	background: url(../icon-dcc-send.png) center center no-repeat;
 }
+.dcc-list #dccList .palm-row-wrapper.send .progress
+{
+	z-index: -1;
+	position: absolute;
+	width: 100%;
+	height: 52px;
+}
+.dcc-list #dccList .palm-row-wrapper.send .progress .bar
+{
+	background: url(../images/send-progress.png) top left repeat-x;
+	height: 100%;
+}
+.dcc-list #dccList .palm-row-wrapper.send .title
+{
+	padding-top: 5px;
+	margin-top: 0px;
+}
+.dcc-list #dccList .palm-row-wrapper.send .sub
+{
+	color: #999;
+	font-size: 14px;
+	padding-top: 0px;
+	margin-top: -17px;
+	padding-left: 16px;
+	padding-bottom: 7px;
+}
 .dcc-list #dccList .palm-row-wrapper.chat .icon
 {
 	background: url(../icon-dcc-chat.png) center center no-repeat;
+}
+.dcc-list #dccList .palm-row-wrapper.chat .progress,
+.dcc-list #dccList .palm-row-wrapper.chat .file
+{
+	display: none;
 }
 
 

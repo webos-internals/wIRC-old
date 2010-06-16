@@ -28,6 +28,9 @@ function DccListAssistant(server)
 
 DccListAssistant.prototype.setup = function() 
 {
+	// set theme
+	this.controller.document.body.className = prefs.get().theme;
+	
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
     this.documentElement =			this.controller.stageController.document;

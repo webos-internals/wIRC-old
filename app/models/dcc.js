@@ -435,19 +435,17 @@ ircDcc.prototype.getListObject = function()
 		bitsIn:		this.bitsIn,
 		bitsOut:	this.bitsOut,
 		filename:	this.filename,
-		percent:	this.percent,
+		percent:	(this.percent ? this.percent : 0),
 		rowClass:	''
 	};
 	
 	if (this.isChat())
 	{
 		obj.type = 'chat';
-		obj.rowClass = obj.rowClass + ' chat';
 	}
 	else
 	{
 		obj.type = 'send';
-		obj.rowClass = obj.rowClass + ' send';
 	}
 	
 	return obj;
