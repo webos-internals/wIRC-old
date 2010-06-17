@@ -20,6 +20,7 @@
 #define WIRC_H_
 
 #define _GNU_SOURCE
+#include <string.h>
 #include <pthread.h>
 #include <time.h>
 #include <sys/socket.h>
@@ -40,6 +41,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <netdb.h>
+#include <regex.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;

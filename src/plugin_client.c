@@ -279,9 +279,10 @@ PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 	syslog(LOG_INFO, "GOT HERE C");
 	int ret = irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
 			params, 1), handle_dcc_startchat_callback, &dcc_id);
-	irc_dcc_accept(servers[id].session, dcc_id, 0, handle_dcc_startchat_callback);
+	irc_dcc_accept(servers[id].session, dcc_id, 0,
+			handle_dcc_startchat_callback);
 	syslog(LOG_INFO, "GOT HERE D");
-	return (PDL_bool)dcc_id;
+	return (PDL_bool) dcc_id;
 }
 
 PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
@@ -290,7 +291,7 @@ PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
 	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(
 			params, 1), PDL_GetJSParamString(params, 2),
 			handle_dcc_sendfile_callback, dcc_id);
-	return (PDL_bool)*dcc_id;
+	return (PDL_bool) *dcc_id;
 }
 
 PDL_bool client_dcc_msg(PDL_JSParameters *params) {
@@ -304,16 +305,26 @@ PDL_bool client_stat_file(PDL_JSParameters *params) {
 	int s = stat(PDL_GetJSParamString(params, 0), &st);
 
 	char *reply = 0;
-	asprintf(&reply, "{\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_size\":\"%u\",\"st_atim\":\"%u\",\"st_mtim\":\"%u\",\"st_ctim\":\"%u\",\"st_blksize\":\"%u\"}", st.st_mode, st.st_uid, st.st_gid, st.st_size, st.st_atim, st.st_mtim, st.st_ctim, st.st_blksize);
+	asprintf(
+			&reply,
+			"{\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_size\":\"%u\",\"st_atim\":\"%u\",\"st_mtim\":\"%u\",\"st_ctim\":\"%u\",\"st_blksize\":\"%u\"}",
+			st.st_mode, st.st_uid, st.st_gid, st.st_size, st.st_atim,
+			st.st_mtim, st.st_ctim, st.st_blksize);
 	PDL_JSReply(params, reply);
-	if (reply) free(reply);
+	if (reply)
+		free(reply);
 	return PDL_TRUE;
 }
 
-PDL_bool client_get_external_ip(PDL_JSParameters *params) {
+char* substring(const char* str, size_t begin, size_t len) {
+	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || strlen(str)
+			< (begin + len))
+		return 0;
 
-	//const char *interface = PDL_GetJSParamString(params, 0);
+	return strndup(str + begin, len);
+}
 
+char* get_external_ip() {
 	int i = 0;
 	char buf[1024];
 
@@ -321,20 +332,46 @@ PDL_bool client_get_external_ip(PDL_JSParameters *params) {
 	struct hostent *server;
 
 	server = gethostbyname("checkip.dyndns.org");
-	int fd=socket(AF_INET, SOCK_STREAM, 0);
+	int fd = socket(AF_INET, SOCK_STREAM, 0);
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
-	bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
+	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,
+			server->h_length);
 	serv_addr.sin_port = htons(80);
 	connect(fd, &serv_addr, sizeof(serv_addr));
 	send(fd, "GET / HTTP/1.0\r\n\r\n", 22, 18);
 	shutdown(fd, 1);
 
-	while ((i=recv(fd, buf, sizeof(buf), 0))>0)
+	while ((i = recv(fd, buf, sizeof(buf), 0)) > 0)
 		write(1, buf, i);
 	close(fd);
 
-	PDL_JSReply(params, buf);
+	i = 0;
+	char *p1 = strrchr(buf, ':')+1;
+	char *p2 = strchr(p1, '<');
+	int l0 = strlen(buf);
+	int l1 = strlen(p1);
+	int l2 = strlen(p2);
+
+	char *ip = substring(buf, (l0-l1)+1, l2-4);
+
+	return ip;
+}
+
+PDL_bool client_get_external_ip(PDL_JSParameters *params) {
+
+	//const char *interface = PDL_GetJSParamString(params, 0);
+
+	int ret = PDL_TRUE;
+
+	char *ip = get_external_ip();
+	if (ip) {
+		PDL_JSReply(params, ip);
+		free(ip);
+	} else
+		ret = PDL_FALSE;
+
+	return ret;
 
 }
 
