@@ -272,24 +272,36 @@ PDL_bool client_dcc_destroy(PDL_JSParameters *params) {
 }
 
 PDL_bool client_dcc_chat(PDL_JSParameters *params) {
-	syslog(LOG_INFO, "GOT HERE A");
+
 	int id = PDL_GetJSParamInt(params, 0);
-	syslog(LOG_INFO, "GOT HERE B");
 	irc_dcc_t dcc_id = 0;
-	syslog(LOG_INFO, "GOT HERE C");
+
+	const char *ip_s = PDL_GetJSParamString(params, 2);
+	unsigned long ip = 0;
+	if (strlen(ip_s)>0)
+		ip = inet_addr(ip_s);
+	unsigned short port = (unsigned short)PDL_GetJSParamInt(params, 3);
+
 	int ret = irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), handle_dcc_startchat_callback, &dcc_id);
-	irc_dcc_accept(servers[id].session, dcc_id, 0,
-			handle_dcc_startchat_callback);
-	syslog(LOG_INFO, "GOT HERE D");
+			params, 1), ip, port, handle_dcc_startchat_callback, &dcc_id);
+
+	syslog(LOG_INFO, "%s %u %u %d", ip_s, ip, port, ret);
+
 	return (PDL_bool) dcc_id;
 }
 
 PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	irc_dcc_t *dcc_id = 0;
+
+	const char *ip_s = PDL_GetJSParamString(params, 3);
+	unsigned long ip = 0;
+	if (strlen(ip_s)>0)
+		ip = inet_addr(ip_s);
+	unsigned short port = (unsigned short)PDL_GetJSParamInt(params, 4);
+
 	int ret = irc_dcc_sendfile(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), PDL_GetJSParamString(params, 2),
+			params, 1), PDL_GetJSParamString(params, 2), ip, port,
 			handle_dcc_sendfile_callback, dcc_id);
 	return (PDL_bool) *dcc_id;
 }

@@ -162,14 +162,15 @@ ircServer.prototype.newCommand = function(message)
 				case 'dcc':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) {
+						var ip = prefs.get().useExternalIP ? plugin.get_external_ip() : null;
 						switch (tmpMatch[1]) {
 							case 'chat':
 								var tmpNick = this.getNick(tmpMatch[2]);
 								if (tmpNick)
-									var dcc_id = plugin.dcc_chat(servers.getServerArrayKey(this.id), tmpNick.name);
+									var dcc_id = plugin.dcc_chat(servers.getServerArrayKey(this.id), tmpNick.name, ip, 0);
 								break;
 							case 'send':
-								var dcc_id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), tmpMatch[2]);
+								var dcc_id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), tmpMatch[2], ip, 0);
 								break;
 							case 'list':
 								this.openDccList();
