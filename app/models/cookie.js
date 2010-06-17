@@ -24,7 +24,6 @@ preferenceCookie.prototype.get = function(reload)
 				autoPingInterval:	10,
 				connectionTimeout:	30,
 				cmdHistoryMax:		30,
-				useExternalIP:		true,
 				
 				// CTCP Replies,
 				ctcpReplyVersion:	'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%) -- http://git.webos-internals.org/trac/wIRC',
