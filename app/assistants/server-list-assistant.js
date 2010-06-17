@@ -59,10 +59,6 @@ ServerListAssistant.prototype.tryPlugin = function()
 		plugin.get_uid();
 		wircPlugin.isReady = true;
 		this.checkPlugin();
-		alert('#####################################################################');
-		alert(plugin.list_directory("/etc"));
-		alert(plugin.stat_file("/etc/fstab"));
-		alert('#####################################################################');
 	}
 	catch (e)
 	{
