@@ -41,6 +41,48 @@ typedef enum {
 	ip_,
 } irc_cmd;
 
+char* substring(const char* str, size_t begin, size_t len) {
+	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || strlen(str)
+			< (begin + len))
+		return 0;
+
+	return strndup(str + begin, len);
+}
+
+char* get_external_ip() {
+	int i = 0;
+	char buf[1024];
+
+	struct sockaddr_in serv_addr;
+	struct hostent *server;
+
+	server = gethostbyname("checkip.dyndns.org");
+	int fd = socket(AF_INET, SOCK_STREAM, 0);
+	bzero((char *) &serv_addr, sizeof(serv_addr));
+	serv_addr.sin_family = AF_INET;
+	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,
+			server->h_length);
+	serv_addr.sin_port = htons(80);
+	connect(fd, &serv_addr, sizeof(serv_addr));
+	send(fd, "GET / HTTP/1.0\r\n\r\n", 22, 18);
+	shutdown(fd, 1);
+
+	while ((i = recv(fd, buf, sizeof(buf), 0)) > 0)
+		write(1, buf, i);
+	close(fd);
+
+	i = 0;
+	char *p1 = strrchr(buf, ':')+1;
+	char *p2 = strchr(p1, '<');
+	int l0 = strlen(buf);
+	int l1 = strlen(p1);
+	int l2 = strlen(p2);
+
+	char *ip = substring(buf, (l0-l1)+1, l2-4);
+
+	return ip;
+}
+
 int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
 	int retVal = -1;
 	if (reason)
@@ -276,13 +318,16 @@ PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	irc_dcc_t dcc_id = 0;
 
-	const char *ip = PDL_GetJSParamString(params, 2);
+	int useExternalIP = PDL_GetJSParamInt(params, 2);
 	unsigned short port = (unsigned short)PDL_GetJSParamInt(params, 3);
 
-	int ret = irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), ip, 22222, handle_dcc_startchat_callback, &dcc_id);
-
-	syslog(LOG_INFO, "%s %u %d", ip, port, ret);
+	PDL_SetFirewallPortStatus(8030,PDL_TRUE);
+	if (useExternalIP)
+		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
+			params, 1), get_external_ip(), 8030, handle_dcc_startchat_callback, &dcc_id);
+	else
+		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
+					params, 1), 0, 8030, handle_dcc_startchat_callback, &dcc_id);
 
 	return (PDL_bool) dcc_id;
 }
@@ -317,48 +362,6 @@ PDL_bool client_stat_file(PDL_JSParameters *params) {
 	if (reply)
 		free(reply);
 	return PDL_TRUE;
-}
-
-char* substring(const char* str, size_t begin, size_t len) {
-	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || strlen(str)
-			< (begin + len))
-		return 0;
-
-	return strndup(str + begin, len);
-}
-
-char* get_external_ip() {
-	int i = 0;
-	char buf[1024];
-
-	struct sockaddr_in serv_addr;
-	struct hostent *server;
-
-	server = gethostbyname("checkip.dyndns.org");
-	int fd = socket(AF_INET, SOCK_STREAM, 0);
-	bzero((char *) &serv_addr, sizeof(serv_addr));
-	serv_addr.sin_family = AF_INET;
-	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,
-			server->h_length);
-	serv_addr.sin_port = htons(80);
-	connect(fd, &serv_addr, sizeof(serv_addr));
-	send(fd, "GET / HTTP/1.0\r\n\r\n", 22, 18);
-	shutdown(fd, 1);
-
-	while ((i = recv(fd, buf, sizeof(buf), 0)) > 0)
-		write(1, buf, i);
-	close(fd);
-
-	i = 0;
-	char *p1 = strrchr(buf, ':')+1;
-	char *p2 = strchr(p1, '<');
-	int l0 = strlen(buf);
-	int l1 = strlen(p1);
-	int l2 = strlen(p2);
-
-	char *ip = substring(buf, (l0-l1)+1, l2-4);
-
-	return ip;
 }
 
 PDL_bool client_get_external_ip(PDL_JSParameters *params) {

@@ -628,7 +628,7 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, const 
 		return 1;
 	}
 
-	if (ip) {
+	if (strlen(ip)>0) {
 		sprintf (notbuf, "DCC Chat (%s)", ip);
 		sprintf (cmdbuf, "DCC CHAT chat %lu %u", inet_addr(ip), ntohs (saddr.sin_port));
 	} else {
