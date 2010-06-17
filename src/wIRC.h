@@ -39,6 +39,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <netdb.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;

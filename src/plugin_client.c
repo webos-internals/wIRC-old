@@ -310,6 +310,34 @@ PDL_bool client_stat_file(PDL_JSParameters *params) {
 	return PDL_TRUE;
 }
 
+PDL_bool client_get_external_ip(PDL_JSParameters *params) {
+
+	//const char *interface = PDL_GetJSParamString(params, 0);
+
+	int i = 0;
+	char buf[1024];
+
+	struct sockaddr_in serv_addr;
+	struct hostent *server;
+
+	server = gethostbyname("checkip.dyndns.org");
+	int fd=socket(AF_INET, SOCK_STREAM, 0);
+	bzero((char *) &serv_addr, sizeof(serv_addr));
+	serv_addr.sin_family = AF_INET;
+	bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
+	serv_addr.sin_port = htons(80);
+	connect(fd, &serv_addr, sizeof(serv_addr));
+	send(fd, "GET / HTTP/1.0\r\n\r\n", 22, 18);
+	shutdown(fd, 1);
+
+	while ((i=recv(fd, buf, sizeof(buf), 0))>0)
+		write(1, buf, i);
+	close(fd);
+
+	PDL_JSReply(params, buf);
+
+}
+
 PDL_bool client_list_directory(PDL_JSParameters *params) {
 
 	PDL_bool ret = PDL_TRUE;
@@ -377,6 +405,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("dcc_decline", client_dcc_decline);
 	ret += PDL_RegisterJSHandler("list_directory", client_list_directory);
 	ret += PDL_RegisterJSHandler("stat_file", client_stat_file);
+	ret += PDL_RegisterJSHandler("get_external_ip", client_get_external_ip);
 
 	return ret;
 
