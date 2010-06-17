@@ -320,7 +320,7 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 		(void) closedir(dp);
 		asprintf(&tmp, "[%s]", list);
 		payload[0] = tmp;
-		PDL_CallJS("handle_list_directory", payload, 1);
+		PDL_MojoReply(params, payload);
 		if (tmp)
 			free(tmp);
 		if (list)
