@@ -323,9 +323,9 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 	if (dp != NULL) {
 		while (ep = readdir(dp)) {
 			if (list)
-				asprintf(&tmp, "%s,%s", list, ep->d_name);
+				asprintf(&tmp, "%s,\"%s\"", list, ep->d_name);
 			else
-				asprintf(&tmp, "%s", ep->d_name);
+				asprintf(&tmp, "\"%s\"", ep->d_name);
 			list = tmp;
 		}
 		(void) closedir(dp);
