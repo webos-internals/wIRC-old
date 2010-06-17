@@ -329,7 +329,7 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 			list = tmp;
 		}
 		(void) closedir(dp);
-		asprintf(&tmp, "[%s]", list);
+		asprintf(&tmp, "{\"dir\":\"[%s]\"", list);
 		syslog(LOG_INFO, "%s", tmp);
 		PDL_JSReply(params, tmp);
 		if (tmp)
