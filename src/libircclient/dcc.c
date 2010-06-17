@@ -599,7 +599,7 @@ int irc_dcc_destroy (irc_session_t * session, irc_dcc_t dccid)
 }
 
 
-int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, unsigned long ip, unsigned short port, irc_dcc_callback_t callback, irc_dcc_t * dccid)
+int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, const char * ip, unsigned short port, irc_dcc_callback_t callback, irc_dcc_t * dccid)
 {
 	struct sockaddr_in saddr;
 	socklen_t len = sizeof(saddr);
@@ -613,7 +613,7 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, unsign
 		return 1;
 	}
 
-	err = libirc_new_dcc_session (session, ip, port, LIBIRC_DCC_CHAT, ctx, &dcc);
+	err = libirc_new_dcc_session (session, 0, port, LIBIRC_DCC_CHAT, ctx, &dcc);
 
 	if ( err )
 	{
@@ -628,8 +628,13 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, unsign
 		return 1;
 	}
 
-	sprintf (notbuf, "DCC Chat (%s)", inet_ntoa (saddr.sin_addr));
-	sprintf (cmdbuf, "DCC CHAT chat %lu %u", (unsigned long) ntohl (saddr.sin_addr.s_addr), ntohs (saddr.sin_port));
+	if (ip) {
+		sprintf (notbuf, "DCC Chat (%s)", ip);
+		sprintf (cmdbuf, "DCC CHAT chat %lu %u", inet_addr(ip), ntohs (saddr.sin_port));
+	} else {
+		sprintf (notbuf, "DCC Chat (%s)", inet_ntoa (saddr.sin_addr));
+		sprintf (cmdbuf, "DCC CHAT chat %lu %u", (unsigned long) ntohl (saddr.sin_addr.s_addr), ntohs (saddr.sin_port));
+	}
 
 	if ( irc_cmd_notice (session, nick, notbuf)
 	|| irc_cmd_ctcp_request (session, nick, cmdbuf) )
@@ -792,7 +797,7 @@ int	irc_dcc_decline (irc_session_t * session, irc_dcc_t dccid)
 }
 
 
-int	irc_dcc_sendfile (irc_session_t * session, void * ctx, const char * nick, const char * filename, unsigned long ip, unsigned short port, irc_dcc_callback_t callback, irc_dcc_t * dccid)
+int	irc_dcc_sendfile (irc_session_t * session, void * ctx, const char * nick, const char * filename, irc_dcc_callback_t callback, irc_dcc_t * dccid)
 {
 	struct sockaddr_in saddr;
 	socklen_t len = sizeof(saddr);
@@ -814,7 +819,7 @@ int	irc_dcc_sendfile (irc_session_t * session, void * ctx, const char * nick, co
 		return 1;
 	}
 
-	if ( (err = libirc_new_dcc_session (session, ip, port, LIBIRC_DCC_SENDFILE, ctx, &dcc)) != 0 )
+	if ( (err = libirc_new_dcc_session (session, 0, 0, LIBIRC_DCC_SENDFILE, ctx, &dcc)) != 0 )
 	{
 		session->lasterror = err;
 		return 1;
