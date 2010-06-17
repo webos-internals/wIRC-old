@@ -298,6 +298,18 @@ PDL_bool client_dcc_msg(PDL_JSParameters *params) {
 			PDL_GetJSParamInt(params, 1), PDL_GetJSParamString(params, 2));
 }
 
+PDL_bool client_stat_file(PDL_JSParameters *params) {
+
+	struct stat st;
+	int s = stat(PDL_GetJSParamString(params, 1), &st);
+
+	char *reply = 0;
+	asprintf(&reply, "{\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\"}", st.st_mode, st.st_uid, st.st_gid, st.st_size, st.st_atim, st.st_mtim, st.st_ctim, st.st_blksize);
+	PDL_JSReply(params, reply);
+	if (reply) free(reply);
+	return PDL_TRUE;
+}
+
 PDL_bool client_list_directory(PDL_JSParameters *params) {
 
 	PDL_bool ret = PDL_TRUE;
@@ -362,6 +374,8 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("dcc_chat", client_dcc_chat);
 	ret += PDL_RegisterJSHandler("dcc_destroy", client_dcc_destroy);
 	ret += PDL_RegisterJSHandler("dcc_decline", client_dcc_decline);
+	ret += PDL_RegisterJSHandler("list_directory", client_list_directory);
+	ret += PDL_RegisterJSHandler("stat_file", client_stat_file);
 
 	return ret;
 
