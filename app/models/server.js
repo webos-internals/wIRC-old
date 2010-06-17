@@ -155,9 +155,8 @@ ircServer.prototype.newCommand = function(message)
 			
 			switch (cmd.toLowerCase())
 			{
-				case 'test':
-					var ipHTML = document.write(plugin.get_external_ip());
-					alert(ipHTML.innerHTML);
+				case 'getip':
+					alert(plugin.get_external_ip());
 					break;
 				case 'dcc':
 					var tmpMatch = twoValRegExp.exec(val);
