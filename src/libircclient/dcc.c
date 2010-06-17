@@ -599,7 +599,7 @@ int irc_dcc_destroy (irc_session_t * session, irc_dcc_t dccid)
 }
 
 
-int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, irc_dcc_callback_t callback, irc_dcc_t * dccid)
+int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, irc_dcc_callback_t callback, irc_dcc_t * dccid, const char *faddress, unsigned int fport)
 {
 	struct sockaddr_in saddr;
 	socklen_t len = sizeof(saddr);
@@ -628,8 +628,19 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, irc_dc
 		return 1;
 	}
 
-	sprintf (notbuf, "DCC Chat (%s)", inet_ntoa (saddr.sin_addr));
-	sprintf (cmdbuf, "DCC CHAT chat %lu %u", (unsigned long) ntohl (saddr.sin_addr.s_addr), ntohs (saddr.sin_port));
+	char *ip_s = inet_ntoa (saddr.sin_addr);
+	unsigned long ip_n = (unsigned long) ntohl (saddr.sin_addr.s_addr);
+	unsigned int port = ntohs (saddr.sin_port);
+	if (faddress) {
+		ip_s = faddress;
+		ip_n = inet_addr(faddress);
+	}
+	if (fport) {
+		port = fport;
+	}
+
+	sprintf (notbuf, "DCC Chat (%s)", ip_s);
+	sprintf (cmdbuf, "DCC CHAT chat %lu %u", ip_n, port);
 
 	if ( irc_cmd_notice (session, nick, notbuf)
 	|| irc_cmd_ctcp_request (session, nick, cmdbuf) )

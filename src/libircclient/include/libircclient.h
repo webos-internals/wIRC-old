@@ -1117,7 +1117,7 @@ void irc_target_get_host (const char * target, char *nick, size_t size);
  * \sa irc_dcc_callback_t irc_dcc_msg
  * \ingroup dccstuff
  */
-int irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, irc_dcc_callback_t callback, irc_dcc_t * dccid);
+int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, irc_dcc_callback_t callback, irc_dcc_t * dccid, const char *faddress, unsigned int fport);
 
 
 /*!
