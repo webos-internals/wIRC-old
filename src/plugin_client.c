@@ -301,10 +301,10 @@ PDL_bool client_dcc_msg(PDL_JSParameters *params) {
 PDL_bool client_stat_file(PDL_JSParameters *params) {
 
 	struct stat st;
-	int s = stat(PDL_GetJSParamString(params, 1), &st);
+	int s = stat(PDL_GetJSParamString(params, 0), &st);
 
 	char *reply = 0;
-	asprintf(&reply, "{\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\"}", st.st_mode, st.st_uid, st.st_gid, st.st_size, st.st_atim, st.st_mtim, st.st_ctim, st.st_blksize);
+	asprintf(&reply, "{\"st_mode\":\"%u\",\"st_uid\":\"%u\",\"st_uid\":\"%u\",\"st_size\":\"%u\",\"st_atim\":\"%u\",\"st_mtim\":\"%u\",\"st_ctim\":\"%u\",\"st_blksize\":\"%u\"}", st.st_mode, st.st_uid, st.st_gid, st.st_size, st.st_atim, st.st_mtim, st.st_ctim, st.st_blksize);
 	PDL_JSReply(params, reply);
 	if (reply) free(reply);
 	return PDL_TRUE;
@@ -318,8 +318,8 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 	struct dirent *ep;
 
 	char *tmp = 0, *list = 0;
-
-	dp = opendir(PDL_GetJSParamString(params, 1));
+	const char *path = PDL_GetJSParamString(params, 0);
+	dp = opendir(path);
 	if (dp != NULL) {
 		while (ep = readdir(dp)) {
 			if (list)
@@ -330,6 +330,7 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 		}
 		(void) closedir(dp);
 		asprintf(&tmp, "[%s]", list);
+		syslog(LOG_INFO, "%s", tmp);
 		PDL_JSReply(params, tmp);
 		if (tmp)
 			free(tmp);
