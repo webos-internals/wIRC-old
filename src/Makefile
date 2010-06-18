@@ -33,6 +33,7 @@ OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 $(PLUGIN): $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) -o $(PLUGIN)
 
+.PHONY: $(IRCLIB)/$(IRCLIB).o
 $(IRCLIB)/$(IRCLIB).o:
 	cd $(IRCLIB); $(MAKE)
 		

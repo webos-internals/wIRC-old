@@ -395,16 +395,9 @@ void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
 void handle_dcc_startchat_callback(irc_session_t * session, irc_dcc_t dcc_id,
 		int status, void * ctx, const char * data, unsigned int length) {
 
-	syslog(LOG_INFO, "GOT HERE 1");
-
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
-	syslog(LOG_INFO, "GOT HERE 2");
-
 	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
-
-	syslog(LOG_INFO, "GOT HERE 3");
-
 }
 
 void handle_dcc_sendfile_callback(irc_session_t * session, irc_dcc_t dcc_id,

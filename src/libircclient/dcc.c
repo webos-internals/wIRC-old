@@ -119,6 +119,7 @@ static void libirc_dcc_add_descriptors (irc_session_t * ircsession, fd_set *in_s
 			{
 				libirc_mutex_unlock (&ircsession->mutex_dcc);
 
+				syslog(LOG_INFO, "DCC TIMEOUT");
 				if ( dcc->cb )
 					(*dcc->cb)(ircsession, dcc->id, LIBIRC_ERR_TIMEOUT, dcc->ctx, 0, 0);
 
@@ -228,6 +229,7 @@ static void libirc_dcc_process_descriptors (irc_session_t * ircsession, fd_set *
 			int nsock, err = 0;
 
 			// New connection is available; accept it.
+			syslog(LOG_INFO, "ACCEPT DCC socket!");
 			if ( socket_accept (&dcc->sock, &nsock, (struct sockaddr *) &dcc->remote_addr, &len) )
 				err = LIBIRC_ERR_ACCEPT;
 
@@ -295,6 +297,7 @@ static void libirc_dcc_process_descriptors (irc_session_t * ircsession, fd_set *
 				unsigned int amount = sizeof (dcc->incoming_buf) - dcc->incoming_offset;
 
 				length = socket_recv (&dcc->sock, dcc->incoming_buf + dcc->incoming_offset, amount);
+				syslog(LOG_INFO, "Socket Receive length %d, buf: %s\n", length, dcc->incoming_buf);
 
 				if ( length < 0 )
 				{
@@ -640,6 +643,9 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, const 
 		sprintf (notbuf, "DCC Chat (%s)", ipAddr);
 		sprintf (cmdbuf, "DCC CHAT chat %lu %u", ntohl(inet_addr(ipAddr)), 
 				ntohs (saddr.sin_port));
+
+		syslog(LOG_INFO, "%s", notbuf);
+		syslog(LOG_INFO, "%s", cmdbuf);
 
 	if ( irc_cmd_notice (session, nick, notbuf)
 	|| irc_cmd_ctcp_request (session, nick, cmdbuf) )

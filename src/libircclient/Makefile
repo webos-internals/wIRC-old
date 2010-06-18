@@ -10,5 +10,5 @@ $(IRCLIB): utils.c dcc.c errors.c portable.c sockets.c colors.c
 clean:
 	rm -f $(IRCLIB)
 
-.c.o:
+.c.o: $(IRCLIB)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
