@@ -27,7 +27,7 @@ function FolderPickerAssistant(picker)
 	};
 	
 	this.selectedFolder = this.picker.folder;
-	this.oked = false;
+	this.selected = false;
 	this.loadedFolders = [];
 }
 
@@ -210,12 +210,13 @@ FolderPickerAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'ok':
-				this.oked = true;
+				this.selected = true;
 				this.picker.ok(this.selectedFolder);
 				this.picker.close();
 				break;
 				
 			case 'cancel':
+				this.selected = true;
 				this.picker.cancel();
 				this.picker.close();
 				break;
@@ -224,6 +225,6 @@ FolderPickerAssistant.prototype.handleCommand = function(event)
 }
 FolderPickerAssistant.prototype.cleanup = function(event)
 {
-	if (!this.oked)
+	if (!this.selected)
 		this.picker.cancel();
 }
