@@ -318,9 +318,9 @@ void handle_event_dcc_send_req(irc_session_t * session, const char * nick,
 void handle_dcc_chat_callback(irc_session_t * session, irc_dcc_t dcc_id,
 		int status, void * ctx, const char * data, unsigned int length) {
 
-	syslog(LOG_INFO, "chat: %s", data);
-
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
+
+	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
 
 	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
 
@@ -390,14 +390,6 @@ void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
 		free(length_s);
 	if (data_s)
 		free(data_s);
-}
-
-void handle_dcc_startchat_callback(irc_session_t * session, irc_dcc_t dcc_id,
-		int status, void * ctx, const char * data, unsigned int length) {
-
-	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
-
-	//syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
 }
 
 void handle_dcc_sendfile_callback(irc_session_t * session, irc_dcc_t dcc_id,

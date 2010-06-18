@@ -121,11 +121,17 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 {
 	this.bitsIn += parseInt(length);
 	
+	alert('status: '+status+', length: '+length+', data: '+data);
+	
 	if (this.isChat())
 	{
-		this.updateChatStats();
-		if (length>0)
-			this.newMessage('privmsg', this.nick, data);
+		if (length==0 && data=='(null)')
+			this.openChatStage()
+		else {
+			this.updateChatStats();
+			if (length>0)
+				this.newMessage('privmsg', this.nick, data);	
+		}
 	}
 	else
 	{

@@ -327,19 +327,23 @@ PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 	irc_dcc_t dcc_id = 0;
 
 	id = PDL_GetJSParamInt(params, 0);
-  port = (unsigned short)PDL_GetJSParamInt(params, 3);
+	port = (unsigned short)PDL_GetJSParamInt(params, 3);
 
 	PDL_SetFirewallPortStatus(port,PDL_TRUE);
 	if (!(strcmp(PDL_GetJSParamString(params, 2), "true"))) {
 		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(params, 1), 
-				get_external_ip(), port, handle_dcc_startchat_callback, &dcc_id);
+				get_external_ip(), port, handle_dcc_chat_callback, &dcc_id);
 	}
 	else {
 		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(params, 1), 
-				0, 0, handle_dcc_startchat_callback, &dcc_id);
+				0, 0, handle_dcc_chat_callback, &dcc_id);
 	}
+	char *dcc_id_s = 0;
+	asprintf(&dcc_id_s, "%u", dcc_id);
+	PDL_JSReply(params, dcc_id_s);
+	if (dcc_id_s) free(dcc_id_s);
 
-	return (PDL_bool) dcc_id;
+	return PDL_TRUE;
 }
 
 PDL_bool client_dcc_sendfile(PDL_JSParameters *params) {

@@ -166,7 +166,7 @@ ircServer.prototype.newCommand = function(message)
 							case 'chat':
 								var tmpNick = this.getNick(tmpMatch[2]);
 								if (tmpNick)
-									var dcc_id = plugin.dcc_chat(servers.getServerArrayKey(this.id), tmpNick.name, prefs.get().useExternalIP, 0);
+									this.requestDccChat(tmpNick);
 								break;
 							case 'send':
 								var dcc_id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), tmpMatch[2]);
@@ -940,6 +940,16 @@ ircServer.prototype.closeInvite = function(nick, channel)
 	}
 }
 
+ircServer.prototype.requestDccChat = function(nick)
+{
+	alert('%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!!!!!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+	alert(nick.name);
+	alert('%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!!!!!!!!!!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+	var newDcc = new ircDcc({'nick': nick, 'server': this});
+	var idx = this.dccs.push(newDcc)-1;
+	this.dccs[idx].id = plugin.dcc_chat(servers.getServerArrayKey(this.id), nick.name, prefs.get().useExternalIP, 0);
+	alert('New DCC ID: '+this.dccs[idx].id+' to '+this.dccs[idx].nick.name);
+}
 
 ircServer.prototype.startDcc = function(params)
 {
