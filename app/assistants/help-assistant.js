@@ -17,7 +17,6 @@ function HelpAssistant()
 			}
 	     ]
 	};
-	this.versionElement = false;
 };
 
 HelpAssistant.prototype.setup = function()
