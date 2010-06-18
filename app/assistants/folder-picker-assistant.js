@@ -79,10 +79,12 @@ FolderPickerAssistant.prototype.activate = function(event)
 					}
 				}
 			}
-			this.controller.sceneScroller.mojo.revealElement('folder' + this.fixPathForId(this.selectedFolder));
+			// i don't know why this doesn't work
+			this.controller.sceneScroller.mojo.revealElement(this.controller.get('folder' + this.fixPathForId(this.selectedFolder)));
 		}
 		else
 		{
+			// because this one certainly does...
 			this.controller.sceneScroller.mojo.revealTop();
 		}
 
@@ -118,11 +120,12 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 		{
 			for (var d = 0; d < data.length; d++)
 			{
-				this.addRow({name: data[d].name, location: data[d].location+'/', rowClass: (d == data.length-1 ?'last':'')}, drawer, false);
+				this.addRow({name: data[d].name, location: data[d].location+'/', rowClass: (d == data.length-1?'last':'')}, drawer, false);
 			}
 			this.loadedFolders.push(folder);
-			this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: true}, {open: true});
+			this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: true}, {open: (initial?true:false)});
 			this.controller.instantiateChildWidgets(this.list);
+			if (!initial) drawer.mojo.setOpenState(true);
 		}
 	}
 	else
