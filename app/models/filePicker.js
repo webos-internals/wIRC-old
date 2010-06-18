@@ -99,11 +99,11 @@ filePicker.prototype.getDirectories = function(dir)
 
 filePicker.prototype.ok = function(value)
 {
-	
+	this.onSelect(value);
 }
-filePicker.prototype.ok = function(cancel)
+filePicker.prototype.cancel = function()
 {
-	
+	this.onSelect(false);
 }
 
 
@@ -149,5 +149,22 @@ filePicker.prototype.popFilePicker = function()
 		Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, f.bind(this));
 	}
 }
+filePicker.prototype.setAssistant = function(assistant)
+{
+	this.assistant = assistant;
+}
+filePicker.prototype.close = function()
+{
+	if (this.popped)
+	{
+		Mojo.Controller.appController.closeStage(this.stageName);
+	}
+	else
+	{
+		this.controller.stageController.popScene();
+	}
+}
+
 
 filePicker.num = 0;
+

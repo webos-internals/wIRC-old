@@ -27,6 +27,7 @@ function FolderPickerAssistant(picker)
 	};
 	
 	this.selectedFolder = this.picker.folder;
+	this.oked = false;
 	this.loadedFolders = [];
 }
 
@@ -34,6 +35,8 @@ FolderPickerAssistant.prototype.setup = function()
 {
 	// set theme
 	this.controller.document.body.className = prefs.get().theme;
+
+	this.picker.setAssistant(this);
 
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
@@ -207,12 +210,20 @@ FolderPickerAssistant.prototype.handleCommand = function(event)
 				break;
 				
 			case 'ok':
-				alert('=============== OK');
+				this.oked = true;
+				this.picker.ok(this.selectedFolder);
+				this.picker.close();
 				break;
 				
 			case 'cancel':
-				alert('=============== CANCEL');
+				this.picker.cancel();
+				this.picker.close();
 				break;
 		}
 	}
+}
+FolderPickerAssistant.prototype.cleanup = function(event)
+{
+	if (!this.oked)
+		this.picker.cancel();
 }
