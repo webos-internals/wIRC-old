@@ -26,7 +26,7 @@ function FolderPickerAssistant(picker)
 		items: []
 	};
 	
-	this.selectedFolder = false;
+	this.selectedFolder = this.picker.folder;
 	this.loadedFolders = [];
 }
 
@@ -54,6 +54,35 @@ FolderPickerAssistant.prototype.activate = function(event)
 	if (!this.alreadyActivated)
 	{
 		this.tap(false, this.picker.topLevel, true);
+		if (this.selectedFolder)
+		{
+			var tmp = this.selectedFolder.replace(this.picker.topLevel, '').split('/');
+			var build = this.picker.topLevel;
+			if (tmp.length > 0)
+			{
+				for (var t = 0; t < tmp.length; t++)
+				{
+					if (tmp[t])
+					{
+						build += tmp[t] + '/';
+						if (!tmp[t+1])
+						{
+							this.tap(false, build);
+						}
+						else
+						{
+							this.tap(false, build, true);
+						}
+					}
+				}
+			}
+			this.controller.sceneScroller.mojo.revealElement('folder' + this.fixPathForId(this.selectedFolder));
+		}
+		else
+		{
+			this.controller.sceneScroller.mojo.revealTop();
+		}
+
 	}
 	this.alreadyActivated = true;
 }
@@ -89,9 +118,9 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 				this.addRow({name: data[d].name, location: data[d].location+'/', rowClass: (d == data.length-1 ?'last':'')}, drawer, false);
 			}
 			this.loadedFolders.push(folder);
-			this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: true}, {open: false});
+			this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: true}, {open: true});
 			this.controller.instantiateChildWidgets(this.list);
-			this.controller.get('list' + folderId).mojo.setOpenState(true);
+			//this.controller.get('list' + folderId).mojo.setOpenState(true);
 			//alert('LOADED!!!');
 		}
 		else
@@ -114,10 +143,14 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 FolderPickerAssistant.prototype.selectFolder = function(folder)
 {
 	if (this.selectedFolder)
+	{
 		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('&nbsp;');
+	}
 	this.selectedFolder = folder;
 	if (this.selectedFolder)
+	{
 		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('selected');
+	}
 	this.updateCommandMenu();
 }
 

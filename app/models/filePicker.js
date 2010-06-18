@@ -24,6 +24,8 @@ function filePicker(params)
 	this.onSelect =				params.onSelect;
 	this.pop =					(params.pop ? params.pop : false);
 	
+	this.folder =				(params.folder ? params.folder : false);
+	
 	this.stageName =			'filePicker-' + this.num;
 	this.sceneName =			this.type + '-picker';
 	this.stageController =		false;
@@ -78,7 +80,6 @@ filePicker.prototype.getDirectory = function(dir)
 	}
 	return returnArray;
 }
-
 filePicker.prototype.getDirectories = function(dir)
 {
 	var returnArray = [];
@@ -95,6 +96,16 @@ filePicker.prototype.getDirectories = function(dir)
 	}
 	return returnArray;
 }
+
+filePicker.prototype.ok = function(value)
+{
+	
+}
+filePicker.prototype.ok = function(cancel)
+{
+	
+}
+
 
 filePicker.prototype.openFilePicker = function()
 {
