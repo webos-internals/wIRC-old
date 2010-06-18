@@ -34,6 +34,7 @@ function filePicker(params)
 	
 	this.type =					(params.type ? params.type : 'file');
 	this.onSelect =				params.onSelect;
+
 	this.pop =					(params.pop ? params.pop : false);
 	
 	this.folder =				(params.folder ? params.folder : false);
@@ -103,11 +104,13 @@ filePicker.prototype.getDirectories = function(dir)
 
 filePicker.prototype.ok = function(value)
 {
-	this.onSelect(value);
+	this.params.value = value;
+	this.onSelect(this.params);
 }
 filePicker.prototype.cancel = function()
 {
-	this.onSelect(false);
+	this.params.value = false;
+	this.onSelect(this.params);
 }
 
 

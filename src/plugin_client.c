@@ -285,14 +285,10 @@ PDL_bool client_dcc_accept(PDL_JSParameters *params) {
 	char *file = strdup(PDL_GetJSParamString(params, 2));
 	PDL_bool ret = 0;
 	if (strlen(file) > 0) {
-		char *path = 0;
-		asprintf(&path, "/media/internal/wirc/downloads/%s", file);
 		FILE *f = malloc(sizeof(FILE));
-		f = fopen(path, "w");
+		f = fopen(file, "w");
 		ret = irc_dcc_accept(servers[PDL_GetJSParamInt(params, 0)].session,
 				PDL_GetJSParamInt(params, 1), f, handle_dcc_send_callback);
-		if (path)
-			free(path);
 	} else
 		ret = irc_dcc_accept(servers[PDL_GetJSParamInt(params, 0)].session,
 				PDL_GetJSParamInt(params, 1), 0, handle_dcc_chat_callback);

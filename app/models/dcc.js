@@ -124,6 +124,12 @@ ircDcc.prototype.accept = function()
 	}
 }
 
+ircDcc.prototype.decline = function()
+{
+	plugin.dcc_decline(servers.getServerArrayKey(this.server.id), this.id);
+	plugin.dcc_destroy(servers.getServerArrayKey(this.server.id), this.id);
+}
+
 ircDcc.prototype.handleEvent = function(status, length, data)
 {
 	this.bitsIn += parseInt(length);

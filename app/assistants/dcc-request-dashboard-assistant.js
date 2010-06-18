@@ -46,8 +46,21 @@ DccRequestDashboardAssistant.prototype.setup = function()
 
 DccRequestDashboardAssistant.prototype.dashTapped = function(event)
 {
-	this.dcc.accept();
 	this.dcc.closeRequest();
+	var fp = new filePicker({
+		type: 'folder',
+		pop: true,
+		dcc: this.dcc,
+		folder: '/media/internal/wirc/downloads/',
+		onSelect: function(params) {
+			if (params.value) {
+				params.dcc.filename = params.value + params.dcc.filename;
+				params.dcc.accept();		
+			} else {
+				params.dcc.decline();
+			}
+		},
+	});
 }
 
 DccRequestDashboardAssistant.prototype.cleanup = function(event)
