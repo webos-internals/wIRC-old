@@ -79,6 +79,23 @@ filePicker.prototype.getDirectory = function(dir)
 	return returnArray;
 }
 
+filePicker.prototype.getDirectories = function(dir)
+{
+	var returnArray = [];
+	var d = this.getDirectory(dir);
+	if (d.length > 0)
+	{
+		for (var f = 0; f < d.length; f++)
+		{
+			if (!d[f].name.match(folderRegExp) && d[f].st_size == 32768)
+			{
+				returnArray.push(d[f]);
+			}
+		}
+	}
+	return returnArray;
+}
+
 filePicker.prototype.openFilePicker = function()
 {
 	if (this.pop)

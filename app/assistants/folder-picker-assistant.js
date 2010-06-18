@@ -19,6 +19,8 @@ function FolderPickerAssistant(picker)
 			}
 		]
 	};
+	
+	this.loadedFolders = [];
 }
 
 FolderPickerAssistant.prototype.setup = function()
@@ -37,65 +39,71 @@ FolderPickerAssistant.prototype.initialData = function()
 {
 	try
 	{
-		this.addRow({name: 'USB Partition', location: this.picker.topLevel, rowClass: ''}, this.list, false);
-		var data = this.picker.getDirectory(this.picker.topLevel);
-		if (data.length > 0)
-		{
-			var top = this.controller.get('list' + this.fixPathForId(this.picker.topLevel));
-			for (var d = 0; d < data.length; d++)
-			{
-				if (data[d].st_size == 32768)
-				{
-					this.addRow({name: data[d].name, location: data[d].location+'/', rowClass: ''}, top, false);
-				}
-			}
-		}
+		this.addRow({name: 'USB Partition', location: this.picker.topLevel, rowClass: 'single'}, this.list);
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, "FolderPicker#initialData");
 	}
 }
+FolderPickerAssistant.prototype.activate = function(event)
+{
+	if (!this.alreadyActivated)
+	{
+		this.tap(false, this.picker.topLevel);
+	}
+	this.alreadyActivated = true;
+}
 
-FolderPickerAssistant.prototype.addRow = function(data, parent, alreadyOpen)
+FolderPickerAssistant.prototype.addRow = function(data, parent)
 {
 	var tpl = 'folder-picker/folder-row';
 	var folderId = this.fixPathForId(data.location);
+	
 	var html = Mojo.View.render({object: {name: data.name, folder: folderId, rowClass: data.rowClass}, template: tpl});
-	parent.insert({after: html});
-	this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: false}, {open: alreadyOpen});
+	parent.insert({bottom: html});
+	
 	this.controller.listen('folder' + folderId, Mojo.Event.tap, this.tap.bindAsEventListener(this, data.location));
-	this.controller.instantiateChildWidgets(parent);
 }
 FolderPickerAssistant.prototype.fixPathForId = function(folder)
 {
-	return folder.replace('/', '-');
+	return folder.replace(/\//g, '-');
 }
 
 FolderPickerAssistant.prototype.tap = function(event, folder)
 {
+	if (event) event.stop();
 	var folderId = this.fixPathForId(folder);
 	var drawer = this.controller.get('list' + folderId);
 	
 	alert('================');
+	alert(this.loadedFolders.include(folder));
 	alert(folder);
-	alert(drawer.innerHTML);
 	
-	var data = this.picker.getDirectory(folder);
-	if (data.length > 0)
+	if (!this.loadedFolders.include(folder))
 	{
-		for (var d = 0; d < data.length; d++)
+		var data = this.picker.getDirectories(folder);
+		if (data.length > 0)
 		{
-			if (data[d].st_size == 32768)
+			for (var d = 0; d < data.length; d++)
 			{
-				this.addRow({name: data[d].name, location: data[d].location+'/', rowClass: ''}, drawer, false);
+				this.addRow({name: data[d].name, location: data[d].location+'/', rowClass: (d == data.length-1 ?'last':'')}, drawer, false);
 			}
+			this.loadedFolders.push(folder);
+			this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: true}, {open: false});
+			this.controller.instantiateChildWidgets(this.list);
+			this.controller.get('list' + folderId).mojo.setOpenState(true);
+			//alert('LOADED!!!');
 		}
-		this.controller.get('list' + folderId).mojo.setOpenState(true);
+		else
+		{
+			//alert('EMPTY!!!');
+		}
 	}
 	else
 	{
-		alert('EMPTY!!!');
+		this.controller.get('list' + folderId).mojo.toggleState();
+		//alert('TOGGLED!!!');
 	}
 }
 

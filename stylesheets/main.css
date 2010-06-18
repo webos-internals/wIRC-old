@@ -948,6 +948,23 @@ table.date-row.palm-divider.labeled tr td.right
 }
 
 
+
+/*
+ * File/Folder Picker Styles
+ */
+.file-picker .drawer
+{
+	border-left: 20px solid #bfbfbd;
+	background: url(../images/palm-default/list-separator-light.png) top left repeat-x
+}
+body.palm-dark .file-picker .drawer
+{
+	border-left: 20px solid #1b1e20;
+	background: url(../images/palm-dark/list-separator-dark.png) top left repeat-x
+}
+
+
+
 /*
  * Help Scene Styles
  */

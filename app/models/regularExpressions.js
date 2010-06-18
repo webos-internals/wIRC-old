@@ -9,4 +9,7 @@ var threeValRegExp	= new RegExp(/^([^\s]*)[\s]{1}([^\s]*)[\s]{0,1}(.*)$/);
 var nickParser		= new RegExp(/^([^\s]*)!(.*)$/);
 
 // Check channel name
-var channelRegExp = new RegExp(/^([a-zA-Z0-9]{1})(.*)$/);
+var channelRegExp   = new RegExp(/^([a-zA-Z0-9]{1})(.*)$/);
+
+// Folder Exclusion
+var folderRegExp    = new RegExp(/^\./);
