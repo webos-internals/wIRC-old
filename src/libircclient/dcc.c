@@ -16,6 +16,7 @@
 #define LIBIRC_DCC_SENDFILE		2
 #define LIBIRC_DCC_RECVFILE		3
 
+#include <syslog.h>
 
 irc_dcc_session_t * libirc_find_dcc_session (irc_session_t * session, irc_dcc_t dccid, int lock_list)
 {
@@ -530,7 +531,7 @@ static int libirc_new_dcc_session (irc_session_t * session, unsigned long ip, un
 		memset (&saddr, 0, sizeof(saddr));
 		saddr.sin_family = AF_INET;
 		memcpy (&saddr.sin_addr, &session->local_addr, sizeof(session->local_addr));
-        saddr.sin_port = htons (0);
+		saddr.sin_port = htons (port);
 
 		if ( bind (dcc->sock, (struct sockaddr *) &saddr, sizeof(saddr)) < 0 )
 			goto cleanup_exit_error;
@@ -607,6 +608,7 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, const 
 	irc_dcc_session_t * dcc;
 	int err;
 
+	syslog(LOG_INFO, "ip %s, port %d", ip, port);
 	if ( session->state != LIBIRC_STATE_CONNECTED )
 	{
 		session->lasterror = LIBIRC_ERR_STATE;
@@ -628,13 +630,16 @@ int	irc_dcc_chat (irc_session_t * session, void * ctx, const char * nick, const 
 		return 1;
 	}
 
-	if (strlen(ip)>0) {
-		sprintf (notbuf, "DCC Chat (%s)", ip);
-		sprintf (cmdbuf, "DCC CHAT chat %lu %u", inet_addr(ip), ntohs (saddr.sin_port));
-	} else {
-		sprintf (notbuf, "DCC Chat (%s)", inet_ntoa (saddr.sin_addr));
-		sprintf (cmdbuf, "DCC CHAT chat %lu %u", (unsigned long) ntohl (saddr.sin_addr.s_addr), ntohs (saddr.sin_port));
-	}
+	char *ipAddr;
+
+	if (ip && strlen(ip))
+		ipAddr = ip;
+	else
+		ipAddr = inet_ntoa(saddr.sin_addr);
+
+		sprintf (notbuf, "DCC Chat (%s)", ipAddr);
+		sprintf (cmdbuf, "DCC CHAT chat %lu %u", ntohl(inet_addr(ipAddr)), 
+				ntohs (saddr.sin_port));
 
 	if ( irc_cmd_notice (session, nick, notbuf)
 	|| irc_cmd_ctcp_request (session, nick, cmdbuf) )

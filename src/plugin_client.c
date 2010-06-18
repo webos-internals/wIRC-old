@@ -71,16 +71,14 @@ char* get_external_ip() {
 		write(1, buf, i);
 	close(fd);
 
-	i = 0;
-	char *p1 = strrchr(buf, ':')+1;
+	char *p1 = strrchr(buf, ':');
 	char *p2 = strchr(p1, '<');
-	int l0 = strlen(buf);
-	int l1 = strlen(p1);
-	int l2 = strlen(p2);
+	
+	if (!p1 || !p2 || strlen(p1) < 3)
+		return NULL;
 
-	char *ip = substring(buf, (l0-l1)+1, l2-4);
-
-	return ip;
+	p1 += 2;
+	return strndup(p1, p2-p1);
 }
 
 int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
@@ -313,21 +311,33 @@ PDL_bool client_dcc_destroy(PDL_JSParameters *params) {
 			PDL_GetJSParamInt(params, 1));
 }
 
+/*******************************************************
+ * client_dcc_chat - Initiate DCC Chat
+ *
+ * params
+ * 0: session id
+ * 1: nick
+ * 2: useExternalIp - true/false
+ * 3: port number
+ */
 PDL_bool client_dcc_chat(PDL_JSParameters *params) {
 
-	int id = PDL_GetJSParamInt(params, 0);
+	unsigned short port;
+	int id;
 	irc_dcc_t dcc_id = 0;
 
-	int useExternalIP = PDL_GetJSParamInt(params, 2);
-	unsigned short port = (unsigned short)PDL_GetJSParamInt(params, 3);
+	id = PDL_GetJSParamInt(params, 0);
+  port = (unsigned short)PDL_GetJSParamInt(params, 3);
 
-	PDL_SetFirewallPortStatus(8030,PDL_TRUE);
-	if (useExternalIP)
-		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
-			params, 1), get_external_ip(), 8030, handle_dcc_startchat_callback, &dcc_id);
-	else
-		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(
-					params, 1), 0, 8030, handle_dcc_startchat_callback, &dcc_id);
+	PDL_SetFirewallPortStatus(port,PDL_TRUE);
+	if (!(strcmp(PDL_GetJSParamString(params, 2), "true"))) {
+		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(params, 1), 
+				get_external_ip(), port, handle_dcc_startchat_callback, &dcc_id);
+	}
+	else {
+		irc_dcc_chat(servers[id].session, NULL, PDL_GetJSParamString(params, 1), 
+				0, 0, handle_dcc_startchat_callback, &dcc_id);
+	}
 
 	return (PDL_bool) dcc_id;
 }
