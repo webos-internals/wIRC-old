@@ -1,5 +1,11 @@
 function ircDcc(params)
 {
+	this.STATUS_WAITING	=	1;
+	this.STATUS_CONNECT	=	2;
+	this.STATUS_ACTIVE	=	3;
+	this.STATUS_ABORTED	=	4;
+	this.STATUS_FAILED	=	5;
+	
 	this.id =			params.dcc_id;
 	this.nick =			params.nick;
 	this.params =		params;
@@ -7,6 +13,8 @@ function ircDcc(params)
 	this.address =		params.address;
 	this.filename =		params.filename;
 	this.size =			params.size;
+	
+	this.status = 		false;
 	
 	this.bitsIn =		0;
 	this.bitsOut =		0;
@@ -113,7 +121,6 @@ ircDcc.prototype.accept = function()
 	else
 	{
 		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, "");
-		this.openChatStage();
 	}
 }
 
@@ -121,16 +128,24 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 {
 	this.bitsIn += parseInt(length);
 	
-	alert('status: '+status+', length: '+length+', data: '+data);
+	//alert('status: '+status+', length: '+length+', data: '+data);
 	
 	if (this.isChat())
 	{
-		if (length==0 && data=='(null)')
-			this.openChatStage()
+		if (length == 0 && data == '(null)') {
+			if (this.status > 0) {
+				this.newMessage('type2', false, 'DCC CHAT to ' + this.nick.name + ' lost (' + status + ')');
+				this.status = 0;
+			} else {
+				this.status = this.STATUS_ACTIVE;
+				this.openChatStage();
+				this.newMessage('type2', false, 'DCC CHAT connection established to ' + this.nick.name + ' [' + this.ip + ':' + this.port + ']', true);
+			}
+		}
 		else {
 			this.updateChatStats();
-			if (length>0)
-				this.newMessage('privmsg', this.nick, data);	
+			if (length > 0) 
+				this.newMessage('privmsg', this.nick, data);
 		}
 	}
 	else
@@ -210,7 +225,7 @@ ircDcc.prototype.msg = function(message)
 	}
 }
 
-ircDcc.prototype.newMessage = function(type, nick, message)
+ircDcc.prototype.newMessage = function(type, nick, message, skipUpdate)
 {
 	var obj =
 	{
@@ -221,7 +236,8 @@ ircDcc.prototype.newMessage = function(type, nick, message)
 	};
 	var newMsg = new ircMessage(obj);
 	this.messages.push(newMsg);
-	this.updateChatList();
+	if (!skipUpdate)
+		this.updateChatList();
 }
 ircDcc.prototype.getMessages = function(start)
 {

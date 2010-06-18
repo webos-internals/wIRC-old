@@ -942,20 +942,16 @@ ircServer.prototype.closeInvite = function(nick, channel)
 
 ircServer.prototype.requestDccChat = function(nick)
 {
-	alert('%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!!!!!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-	alert(nick.name);
-	alert('%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!!!!!!!!!!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 	var newDcc = new ircDcc({'nick': nick, 'server': this});
 	var idx = this.dccs.push(newDcc)-1;
 	this.dccs[idx].id = plugin.dcc_chat(servers.getServerArrayKey(this.id), nick.name, prefs.get().useExternalIP, 0);
-	alert('New DCC ID: '+this.dccs[idx].id+' to '+this.dccs[idx].nick.name);
 }
 
 ircServer.prototype.startDcc = function(params)
 {
 	var newDcc = new ircDcc(params);
-	newDcc.openRequest();
-	this.dccs.push(newDcc);
+	var idx = this.dccs.push(newDcc)-1;
+	this.dccs[idx].openRequest();
 }
 ircServer.prototype.getDcc = function(id)
 {
