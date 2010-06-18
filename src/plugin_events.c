@@ -397,7 +397,7 @@ void handle_dcc_startchat_callback(irc_session_t * session, irc_dcc_t dcc_id,
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
-	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
+	//syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
 }
 
 void handle_dcc_sendfile_callback(irc_session_t * session, irc_dcc_t dcc_id,
