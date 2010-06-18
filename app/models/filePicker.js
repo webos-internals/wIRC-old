@@ -19,6 +19,7 @@ function filePicker(params)
 	this.num =					filePicker.num;
 	
 	this.topLevel =				'/media/internal/';
+	this.topLevelString =		'USB';
 	
 	this.params =				params;
 	
@@ -162,3 +163,7 @@ filePicker.prototype.close = function()
 
 filePicker.num = 0;
 
+filePicker.parseFolderString = function(folder)
+{
+	return folder.replace(this.topLevel, this.topLevelString+'/');
+}
