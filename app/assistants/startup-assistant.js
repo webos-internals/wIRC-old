@@ -44,7 +44,10 @@ function StartupAssistant()
 				'/part messages now work',
 				'Now rejoins channels with open cards on a reconnect',
 				'Added contextual menu when you tap a message',
-				'Added yell and connect launch commands for very webosy cross-app integration'
+				'Added yell and connect launch commands for very webosy cross-app integration',
+				'/ctcp requests',
+				'Custom ctcp replies',
+				'DCC Chat and Send support',
 			]
 		},
 		{
