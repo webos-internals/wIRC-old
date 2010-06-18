@@ -124,5 +124,13 @@
     {
         "scenes": "dcc-send-dashboard",
         "source": "app/assistants/dcc-send-dashboard-assistant.js"
+    },
+    {
+        "scenes": "file-picker",
+        "source": "app/assistants/file-picker-assistant.js"
+    },
+    {
+        "scenes": "folder-picker",
+        "source": "app/assistants/folder-picker-assistant.js"
     }
 ]

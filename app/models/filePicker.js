@@ -1,21 +1,38 @@
+/*
+ * filePicker
+ * 
+ * usage:
+ * var f = new filePicker({
+ * 		type: 'file', // or folder
+ * 		onSelect: function, // function that will be called upon completion
+ * 		pop: false // make truthy if you want the filePicker to pop its own stage for selecting
+ * });
+ * 
+ * 
+ */
+
 function filePicker(params)
 {
 	filePicker.num++;
 	this.num =					filePicker.num;
 	
+	this.topLevel =				'/media/internal/';
+	
 	this.params =				params;
 	
-	this.topLevel =				'/media/internal/';
-	this.file =					params.file;
-	
+	this.type =					(params.type ? params.type : 'file');
 	this.onSelect =				params.onSelect;
+	this.pop =					(params.pop ? params.pop : false);
 	
-	this.stageName =			'filePicker-' + this.id;
+	this.stageName =			'filePicker-' + this.num;
+	this.sceneName =			this.type + '-picker';
 	this.stageController =		false;
 	this.assistant =			false;
+	this.popped =				false;
 	
-	var test = this.getDirectory(this.topLevel);
+	//this.openFilePicker();
 	/*
+	var test = this.getDirectory(this.topLevel);
 	alert('==========  FOLDER  ==========');
 	for (var t = 0; t < test.length; t++)
 	{
@@ -40,6 +57,7 @@ filePicker.prototype.statFile = function(file)
 }
 filePicker.prototype.getDirectory = function(dir)
 {
+	// this function takes how the plugin works and makes it sane
 	var returnArray = [];
 	var d = this.listDirectory(dir);
 	if (d.length > 0)
@@ -63,7 +81,45 @@ filePicker.prototype.getDirectory = function(dir)
 
 filePicker.prototype.openFilePicker = function()
 {
+	if (this.pop)
+	{
+		this.popFilePicker();
+	}
+	else
+	{
+		this.stageController = Mojo.Controller.appController.getActiveStageController('card');
+	    if (this.stageController)
+		{
+			this.stageController.pushScene(this.sceneName, this);
+		}
+		else
+		{
+			this.popFilePicker();
+		}
+	}
+}
+filePicker.prototype.popFilePicker = function()
+{
+	this.stageController = Mojo.Controller.appController.getStageController(this.stageName);
 	
+    if (this.stageController)
+	{
+		var scenes = this.stageController.getScenes();
+		if (scenes[0].sceneName == this.sceneName && scenes.length > 1)
+		{
+			this.stageController.popScenesTo(this.sceneName);
+		}
+		this.stageController.activate();
+	}
+	else
+	{
+		var f = function(controller)
+		{
+			controller.pushScene(this.sceneName, this);
+			this.popped = true;
+		};
+		Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, f.bind(this));
+	}
 }
 
 filePicker.num = 0;
