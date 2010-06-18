@@ -193,6 +193,20 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			}
 		);
 		
+				this.controller.setupWidget
+		(
+			'useExternalIP',
+			{
+	  			trueLabel:  'Yes',
+	 			falseLabel: 'No',
+	  			fieldName:  'useExternalIP'
+			},
+			{
+				value : this.prefs.useExternalIP,
+	 			disabled: false
+			}
+		);
+		
 		this.controller.setupWidget
 		(
 			'autoPingInterval',
@@ -251,6 +265,8 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			}
 		);
 		this.controller.listen('aiface',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+		
+		this.controller.listen('useExternalIP',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		
 		
