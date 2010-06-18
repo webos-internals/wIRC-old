@@ -30,7 +30,7 @@ function filePicker(params)
 	this.assistant =			false;
 	this.popped =				false;
 	
-	//this.openFilePicker();
+	this.openFilePicker();
 	/*
 	var test = this.getDirectory(this.topLevel);
 	alert('==========  FOLDER  ==========');

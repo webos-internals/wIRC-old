@@ -28,6 +28,7 @@ FilePickerAssistant.prototype.setup = function()
 
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
+	
 }
 
 FilePickerAssistant.prototype.activate = function(event)
