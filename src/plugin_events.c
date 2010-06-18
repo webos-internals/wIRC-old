@@ -37,12 +37,16 @@ void process_event(irc_session_t * session, const char * event,
 
 		buf[j++] = '"';
 
-		for (i = 0; i < strlen(params[cnt]); i++) {
-			if (params[cnt][i] == '"' || params[cnt][i] == '\\')
+		char *color_buf = libirc_colorparser_irc2html(params[cnt], 0);
+
+		for (i = 0; i < strlen(color_buf); i++) {
+			if (color_buf[i] == '"' || color_buf[i] == '\\')
 				buf[j++] = '\\';
 
-			buf[j++] = params[cnt][i];
+			buf[j++] = color_buf[i];
 		}
+
+		if (color_buf) free(color_buf);
 
 		buf[j++] = '"';
 	}
@@ -52,6 +56,7 @@ void process_event(irc_session_t * session, const char * event,
 	int len = 0;
 	char *parms = 0;
 	len = asprintf(&parms, "[%s]", buf);
+
 
 	char *id = 0;
 	asprintf(&id, "%d", client->id);

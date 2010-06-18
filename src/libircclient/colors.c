@@ -43,6 +43,27 @@ static const char * color_replacement_table[] =
 	0
 };
 
+static const char * color_replacement_table_html[] =
+{
+	"white",
+	"black",
+	"navy",
+	"green",
+	"red",
+	"maroon",
+	"purple",
+	"olive",
+	"yellow",
+	"lime",
+	"teal",
+	"aqua",
+	"blue",
+	"fuchsia",
+	"gray",
+	"silver",
+	0
+};
+
 
 static inline void libirc_colorparser_addorcat (char ** destline, unsigned int * destlen, const char * str)
 {
@@ -94,6 +115,25 @@ static void libirc_colorparser_applycolor (unsigned int * mask,
 	libirc_colorparser_addorcat (destline, destlen, startbuf);
 }
 
+static void libirc_colorparser_applycolor_html (unsigned int * mask,
+		char ** destline, unsigned int * destlen,
+		unsigned int colorid, unsigned int bgcolorid)
+{
+	const char * end = "</span>";
+	char startbuf[128];
+
+	if ( bgcolorid != 0 )
+		sprintf (startbuf, "<span style=\"color:%s;background-color:%s;\">", color_replacement_table_html[colorid], color_replacement_table_html[bgcolorid]);
+	else
+		sprintf (startbuf, "<span style=\"color:%s;\">", color_replacement_table_html[colorid]);
+
+	if ( (*mask & LIBIRC_COLORPARSER_COLOR) != 0 )
+		libirc_colorparser_addorcat (destline, destlen, end);
+
+	*mask |= LIBIRC_COLORPARSER_COLOR;
+	libirc_colorparser_addorcat (destline, destlen, startbuf);
+}
+
 
 static void libirc_colorparser_closetags (unsigned int * mask, 
 		char ** destline, unsigned int * destlen)
@@ -111,6 +151,21 @@ static void libirc_colorparser_closetags (unsigned int * mask,
 		libirc_colorparser_applymask (mask, destline, destlen, LIBIRC_COLORPARSER_COLOR, 0, "[/COLOR]");
 }
 
+static void libirc_colorparser_closetags_html (unsigned int * mask,
+		char ** destline, unsigned int * destlen)
+{
+	if ( *mask & LIBIRC_COLORPARSER_BOLD )
+		libirc_colorparser_applymask (mask, destline, destlen, LIBIRC_COLORPARSER_BOLD, 0, "</b>");
+
+	if ( *mask & LIBIRC_COLORPARSER_UNDERLINE )
+		libirc_colorparser_applymask (mask, destline, destlen, LIBIRC_COLORPARSER_UNDERLINE, 0, "</u>");
+
+	if ( *mask & LIBIRC_COLORPARSER_REVERSE )
+		libirc_colorparser_applymask (mask, destline, destlen, LIBIRC_COLORPARSER_REVERSE, 0, "</i>");
+
+	if ( *mask & LIBIRC_COLORPARSER_COLOR )
+		libirc_colorparser_applymask (mask, destline, destlen, LIBIRC_COLORPARSER_COLOR, 0, "</span>");
+}
 
 
 /*
@@ -233,12 +288,143 @@ static char * libirc_colorparser_irc2code (const char * source, int strip)
 	return destline;
 }
 
+/*
+ * IRC to [code] color conversion. Or strip.
+ */
+char * libirc_colorparser_irc2html (const char * source, int strip)
+{
+	syslog(LOG_INFO, "IN: %s", source);
+	unsigned int mask = 0, destlen = 0;
+	char * destline = 0, *d = 0;
+	const char *p;
+	int current_color = 1, current_bg = 0;
+
+    /*
+     * There will be two passes. First pass calculates the total length of
+     * the destination string. The second pass allocates memory for the string,
+     * and fills it.
+     */
+	while ( destline == 0 ) // destline will be set after the 2nd pass
+	{
+		if ( destlen > 0 )
+		{
+			// This is the 2nd pass; allocate memory.
+			if ( (destline = malloc (destlen)) == 0 )
+				return 0;
+
+			d = destline;
+		}
+
+		for ( p = source; *p; p++ )
+		{
+			switch (*p)
+			{
+			case 0x02:	// bold
+				if ( strip )
+					continue;
+
+				libirc_colorparser_applymask (&mask, &d, &destlen, LIBIRC_COLORPARSER_BOLD, "<b>", "</b>");
+				break;
+
+			case 0x1F:	// underline
+				if ( strip )
+					continue;
+
+				libirc_colorparser_applymask (&mask, &d, &destlen, LIBIRC_COLORPARSER_UNDERLINE, "<u>", "</u>");
+				break;
+
+			case 0x16:	// reverse
+				if ( strip )
+					continue;
+
+				libirc_colorparser_applymask (&mask, &d, &destlen, LIBIRC_COLORPARSER_REVERSE, "<i>", "</i>");
+				break;
+
+			case 0x0F:	// reset colors
+				if ( strip )
+					continue;
+
+				libirc_colorparser_closetags_html (&mask, &d, &destlen);
+				break;
+
+			case 0x03:	// set color
+				if ( isdigit (p[1]) )
+				{
+					// Parse
+					int bgcolor = -1, color = p[1] - 0x30;
+					p++;
+
+					if ( isdigit (p[1]) )
+					{
+						color = color * 10 + (p[1] - 0x30);
+						p++;
+					}
+
+					// If there is a comma, search for the following
+					// background color
+					if ( p[1] == ',' && isdigit (p[2]) )
+					{
+						bgcolor = p[2] - 0x30;
+						p += 2;
+
+						if ( isdigit (p[1]) )
+						{
+							bgcolor = bgcolor * 10 + (p[1] - 0x30);
+							p++;
+						}
+					}
+
+					// Check for range
+					if ( color <= LIBIRC_COLORPARSER_MAXCOLORS
+					&& bgcolor <= LIBIRC_COLORPARSER_MAXCOLORS )
+					{
+						if ( strip )
+							continue;
+
+						current_color = color;
+
+						if ( bgcolor != -1 )
+							current_bg = bgcolor;
+
+						libirc_colorparser_applycolor_html (&mask, &d, &destlen, color, current_bg);
+					}
+				}
+				break;
+
+			default:
+				if ( destline )
+					*d++ = *p;
+				else
+					destlen++;
+				break;
+			}
+		}
+
+		// Close all the opened tags
+		libirc_colorparser_closetags_html (&mask, &d, &destlen);
+		destlen++; // for 0-terminator
+	}
+
+	*d = '\0';
+	syslog(LOG_INFO, "OUT: %s", destline);
+	return destline;
+}
 
 static int libirc_colorparser_colorlookup (const char * color)
 {
 	int i;
 	for ( i = 0; color_replacement_table[i]; i++ )
 		if ( !strcmp (color, color_replacement_table[i]) )
+			return i;
+
+	return -1;
+}
+
+static int libirc_colorparser_colorlookup_html (const char * color)
+{
+	int i;
+	for ( i = 0; color_replacement_table_html[i]; i++ )
+		if ( !strcmp (color, color_replacement_table_html[i]) )
 			return i;
 
 	return -1;
