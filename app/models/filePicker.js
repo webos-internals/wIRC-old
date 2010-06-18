@@ -3,11 +3,20 @@
  * 
  * usage:
  * var f = new filePicker({
- * 		type: 'file', // or folder
- * 		onSelect: function, // function that will be called upon completion
- * 		folder: '/media/internal/wIRC/downloads/', // initial folder location
- * 		pop: false, // make truthy if you want the filePicker to pop its own stage for selecting
- * 		sceneTitle: 'Select A File' // title of scene
+ * 
+ * 		type: 'file',				// or folder, it changes the interface and what it returns
+ * 									   defaults to file
+ * 
+ * 		onSelect: function,			// function that will be called upon completion,
+ * 									   it will be passed either a file/folder based on type or false for a cancel
+ * 									   this is the only required parameter
+ * 
+ * 		folder: '/media/internal/',	// initial folder location, notice the trailing slash!
+ * 
+ * 		pop: false,					// make truthy if you want the filePicker to pop its own stage for selecting,
+ * 									   but it will do it automatically if no card is currently active, defaults to false
+ * 
+ * 		sceneTitle: 'Select File'	// title of scene, but since they all have defaults, this is optional
  * });
  * 
  * 
@@ -163,7 +172,7 @@ filePicker.prototype.close = function()
 
 filePicker.num = 0;
 
-filePicker.parseFolderString = function(folder)
+filePicker.parseFileString = function(f)
 {
-	return folder.replace(this.topLevel, this.topLevelString+'/');
+	return f.replace(this.topLevel, this.topLevelString+'/');
 }

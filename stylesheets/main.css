@@ -969,7 +969,7 @@ body.palm-dark .file-picker .drawer
 	width: 25px;
 	height: 48px;
 	margin-top: 2px;
-	margin-right: 8px;
+	margin-right: -4px;
 	margin-left: 4px;
 	background: url(../images/palm-default/arrow-right.png) center center no-repeat;
 }
@@ -984,6 +984,27 @@ body.palm-dark .file-picker #list .palm-row > .palm-row-wrapper > .icon
 body.palm-dark .file-picker #list .palm-row.down > .palm-row-wrapper > .icon
 {
 	background: url(../images/palm-dark/arrow-down-dark.png) center center no-repeat;
+}
+.file-picker #list .palm-row > .palm-row-wrapper > .check
+{
+	display: none;
+}
+.file-picker #list .palm-row.check > .palm-row-wrapper > .check
+{
+	display: block;
+	float: right;
+	width: 32px;
+	height: 48px;
+	margin-top: 2px;
+	margin-right: 8px;
+	margin-left: -10px;
+	background: url(../images/checkmark-green.png) center center no-repeat;
+}
+.file-picker #list .palm-row .palm-row-wrapper .title
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 

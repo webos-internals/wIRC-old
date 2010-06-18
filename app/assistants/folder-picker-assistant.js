@@ -30,7 +30,6 @@ function FolderPickerAssistant(picker)
 	this.selected = false;
 	this.loadedFolders = [];
 }
-
 FolderPickerAssistant.prototype.setup = function()
 {
 	// set theme
@@ -135,12 +134,10 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 	if (drawer.mojo && drawer.mojo.getOpenState())
 	{
 		this.controller.get('folder' + folderId).className = tmpCN + ' down';
-		alert('DOWN == folder' + folderId + ': ' + this.controller.get('folder' + folderId).className);
 	}
 	else
 	{
 		this.controller.get('folder' + folderId).className = tmpCN.replace(/down/g, '');
-		alert('UP == folder' + folderId + ': ' + this.controller.get('folder' + folderId).className);
 	}
 	
 	if (!initial)
@@ -148,17 +145,18 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 		this.selectFolder(folder);
 	}
 }
-
 FolderPickerAssistant.prototype.selectFolder = function(folder)
 {
 	if (this.selectedFolder)
 	{
-		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('&nbsp;');
+		var tmpCN = this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className;
+		this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className = tmpCN.replace(/check/g, '');
 	}
 	this.selectedFolder = folder;
 	if (this.selectedFolder)
 	{
-		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('selected');
+		var tmpCN = this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className;
+		this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className = tmpCN + ' check';
 	}
 	this.updateCommandMenu();
 }
@@ -200,7 +198,6 @@ FolderPickerAssistant.prototype.updateCommandMenu = function(skipUpdate)
 		this.controller.setMenuVisible(Mojo.Menu.commandMenu, true);
 	}		
 }
-
 FolderPickerAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
