@@ -56,7 +56,7 @@ ServerListAssistant.prototype.tryPlugin = function()
 {
 	try
 	{
-		plugin.get_uid();
+		githash = plugin.get_githash();
 		wircPlugin.isReady = true;
 		this.checkPlugin();
 	}

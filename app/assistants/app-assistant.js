@@ -23,6 +23,8 @@ var plugin = null;
 
 var wircPlugin;
 
+var githash;
+
 function AppAssistant() {
 	wircPlugin = new wircPlugin();
 }

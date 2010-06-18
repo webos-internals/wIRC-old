@@ -2,6 +2,8 @@ include ../Makefile.inc
 
 IRCLIB		:=	libircclient
 
+GITHASH		:=	"\"$(shell git log -1 --pretty=format:"%h")\""
+
 ifeq ($(USEPDK), 1)
 
 INCLUDES	:=	"-I/opt/PalmPDK/include/ -I/opt/PalmPDK/include/SDL"
@@ -10,7 +12,7 @@ CC			:=	"/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc"
 
 else 
 
-CFLAGS		:=	$(MARCH_TUNE)
+CFLAGS		:=	$(MARCH_TUNE) -DGITHASH=${GITHASH}
 
 INCLUDES	:=	-I${ROOT}/include \
 				-I${ROOT}${prefix}/include \

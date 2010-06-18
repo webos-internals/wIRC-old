@@ -261,10 +261,8 @@ PDL_bool client_send_raw(PDL_JSParameters *params) {
 			PDL_GetJSParamString(params, 1));
 }
 
-PDL_bool client_get_uid(PDL_JSParameters *params) {
-	char uid[64];
-	PDL_GetUniqueID(uid, 64);
-	return PDL_JSReply(params, uid);
+PDL_bool client_get_githash(PDL_JSParameters *params) {
+	return PDL_JSReply(params, GITHASH);
 }
 
 PDL_bool client_ctcp_rep(PDL_JSParameters *params) {
@@ -447,7 +445,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("cmd_away", client_cmd_away);
 	ret += PDL_RegisterJSHandler("disconnect", client_disconnect);
 	ret += PDL_RegisterJSHandler("send_raw", client_send_raw);
-	ret += PDL_RegisterJSHandler("get_uid", client_get_uid);
+	ret += PDL_RegisterJSHandler("get_githash", client_get_githash);
 	ret += PDL_RegisterJSHandler("ctcp_rep", client_ctcp_rep);
 	ret += PDL_RegisterJSHandler("ctcp_cmd", client_ctcp_cmd);
 	ret += PDL_RegisterJSHandler("dcc_accept", client_dcc_accept);

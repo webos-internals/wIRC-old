@@ -17,6 +17,7 @@ function HelpAssistant()
 			}
 	     ]
 	};
+	this.versionElement = false;
 };
 
 HelpAssistant.prototype.setup = function()
@@ -27,7 +28,7 @@ HelpAssistant.prototype.setup = function()
     this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.controller.get('appname').innerHTML = Mojo.appInfo.title;
-	this.controller.get('appdetails').innerHTML = Mojo.appInfo.version + $L(" by WebOS Internals");
+	this.controller.get('appdetails').innerHTML = Mojo.appInfo.version + $L(".") + githash;
 	
 	this.supportModel = 
 	{

@@ -1013,6 +1013,7 @@ body.palm-dark .file-picker #list .palm-row.down > .palm-row-wrapper > .icon
  */
 .help .palm-text-wrapper .palm-body-text#appdetails
 {
+	display:inline;
 	margin-bottom: 2px;
 }
 .help .palm-text-wrapper .palm-body-text.devs
