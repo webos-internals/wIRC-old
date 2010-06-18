@@ -73,7 +73,7 @@ function ircServer(params)
 	this.channelList =			[];
 	
 	this.dccListStageName =		'dcc-list-' + this.id;
-	
+	this.dccListAssistant =		false;
 }
 
 ircServer.prototype.setState = function(state)
@@ -613,6 +613,10 @@ ircServer.prototype.showStatusStageCallback = function(controller)
 ircServer.prototype.setStatusAssistant = function(assistant)
 {
 	this.statusAssistant = assistant;
+}
+ircServer.prototype.setDccListAssistant = function(assistant)
+{
+	this.dccListAssistant = assistant;
 }
 ircServer.prototype.updateStatusList = function()
 {

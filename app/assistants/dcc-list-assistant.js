@@ -1,6 +1,7 @@
 function DccListAssistant(server)
 {
 	this.server = server;
+	this.server.setDccListAssistant(this);
 	
 	this.listModel =
 	{

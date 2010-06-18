@@ -116,7 +116,7 @@ ircDcc.prototype.accept = function()
 	if (this.isFile())
 	{
 		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
-		this.openSendDash();
+		this.server.openDccList();
 	}
 	else
 	{
@@ -434,10 +434,9 @@ ircDcc.prototype.setSendDashAssistant = function(assistant)
 
 ircDcc.prototype.updateSendData = function()
 {
-	if (this.sendDashAssistant && this.sendDashAssistant.controller)
+	if (this.dccListAssistant && this.dccListAssistant.controller)
 	{
-		alert('I dont see this!');
-		this.sendDashAssistant.updateData(this.percent, this.filename, this.size);
+		this.dccListAssistant.updateList();
 	}
 }
 
