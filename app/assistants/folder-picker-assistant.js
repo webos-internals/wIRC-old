@@ -20,6 +20,12 @@ function FolderPickerAssistant(picker)
 		]
 	};
 	
+	this.cmdMenuModel =
+	{
+		label: $L('Menu'),
+		items: []
+	};
+	
 	this.selectedFolder = false;
 	this.loadedFolders = [];
 }
@@ -33,19 +39,15 @@ FolderPickerAssistant.prototype.setup = function()
 	
 	this.list = this.controller.get('list');
 	
+	this.updateCommandMenu(true);
+	this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
+	
 	this.initialData();
 }
 
 FolderPickerAssistant.prototype.initialData = function()
 {
-	try
-	{
-		this.addRow({name: 'USB Partition', location: this.picker.topLevel, rowClass: 'single'}, this.list);
-	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, "FolderPicker#initialData");
-	}
+	this.addRow({name: 'USB Partition', location: this.picker.topLevel, rowClass: 'single'}, this.list);
 }
 FolderPickerAssistant.prototype.activate = function(event)
 {
@@ -76,10 +78,6 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 	if (event) event.stop();
 	var folderId = this.fixPathForId(folder);
 	var drawer = this.controller.get('list' + folderId);
-	
-	alert('================');
-	alert(this.loadedFolders.include(folder));
-	alert(folder);
 	
 	if (!this.loadedFolders.include(folder))
 	{
@@ -116,14 +114,49 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 FolderPickerAssistant.prototype.selectFolder = function(folder)
 {
 	if (this.selectedFolder)
-	{
 		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('&nbsp;');
-	}
 	this.selectedFolder = folder;
 	if (this.selectedFolder)
-	{
 		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('selected');
+	this.updateCommandMenu();
+}
+
+FolderPickerAssistant.prototype.updateCommandMenu = function(skipUpdate)
+{
+	this.cmdMenuModel.items = [];
+	this.cmdMenuModel.items.push({});
+	
+	if (this.selectedFolder)
+	{
+		this.cmdMenuModel.items.push({
+			label: 'Ok',
+			command: 'ok',
+			width: 100
+		});
 	}
+	else
+	{
+		this.cmdMenuModel.items.push({
+			label: 'Ok',
+			disabled: true,
+			command: 'ok',
+			width: 100
+		});
+	}
+	
+	this.cmdMenuModel.items.push({
+		label: 'Cancel',
+		command: 'cancel',
+		width: 100
+	});
+	
+	this.cmdMenuModel.items.push({});
+	
+	if (!skipUpdate)
+	{
+		this.controller.modelChanged(this.cmdMenuModel);
+		this.controller.setMenuVisible(Mojo.Menu.commandMenu, true);
+	}		
 }
 
 FolderPickerAssistant.prototype.handleCommand = function(event)
@@ -138,6 +171,14 @@ FolderPickerAssistant.prototype.handleCommand = function(event)
 				
 			case 'do-prefs':
 				this.controller.stageController.pushScene('preferences-general');
+				break;
+				
+			case 'ok':
+				alert('=============== OK');
+				break;
+				
+			case 'cancel':
+				alert('=============== CANCEL');
 				break;
 		}
 	}
