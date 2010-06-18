@@ -954,15 +954,37 @@ table.date-row.palm-divider.labeled tr td.right
  */
 .file-picker .drawer
 {
-	border-left: 20px solid #bfbfbd;
+	border-left: 30px solid #bfbfbd;
 	background: url(../images/palm-default/list-separator-light.png) top left repeat-x
 }
 body.palm-dark .file-picker .drawer
 {
-	border-left: 20px solid #1b1e20;
+	border-left: 30px solid #1b1e20;
 	background: url(../images/palm-dark/list-separator-dark.png) top left repeat-x
 }
 
+.file-picker #list .palm-row > .palm-row-wrapper > .icon
+{
+	float: left;
+	width: 25px;
+	height: 48px;
+	margin-top: 2px;
+	margin-right: 8px;
+	margin-left: 4px;
+	background: url(../images/palm-default/arrow-right.png) center center no-repeat;
+}
+body.palm-dark .file-picker #list .palm-row > .palm-row-wrapper > .icon
+{
+	background: url(../images/palm-dark/arrow-right-dark.png) center center no-repeat;
+}
+.file-picker #list .palm-row.down > .palm-row-wrapper > .icon
+{
+	background: url(../images/palm-default/arrow-down.png) center center no-repeat;
+}
+body.palm-dark .file-picker #list .palm-row.down > .palm-row-wrapper > .icon
+{
+	background: url(../images/palm-dark/arrow-down-dark.png) center center no-repeat;
+}
 
 
 /*

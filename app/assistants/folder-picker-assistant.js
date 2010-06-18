@@ -124,18 +124,23 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 			this.loadedFolders.push(folder);
 			this.controller.setupWidget('list' + folderId, {modelProperty: 'open', unstyled: true}, {open: true});
 			this.controller.instantiateChildWidgets(this.list);
-			//this.controller.get('list' + folderId).mojo.setOpenState(true);
-			//alert('LOADED!!!');
-		}
-		else
-		{
-			//alert('EMPTY!!!');
 		}
 	}
 	else
 	{
-		this.controller.get('list' + folderId).mojo.toggleState();
-		//alert('TOGGLED!!!');
+		drawer.mojo.toggleState();
+	}
+	
+	var tmpCN = this.controller.get('folder' + folderId).className;
+	if (drawer.mojo && drawer.mojo.getOpenState())
+	{
+		this.controller.get('folder' + folderId).className = tmpCN + ' down';
+		alert('DOWN == folder' + folderId + ': ' + this.controller.get('folder' + folderId).className);
+	}
+	else
+	{
+		this.controller.get('folder' + folderId).className = tmpCN.replace(/down/g, '');
+		alert('UP == folder' + folderId + ': ' + this.controller.get('folder' + folderId).className);
 	}
 	
 	if (!initial)
