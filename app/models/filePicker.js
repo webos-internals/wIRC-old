@@ -5,8 +5,9 @@
  * var f = new filePicker({
  * 		type: 'file', // or folder
  * 		onSelect: function, // function that will be called upon completion
- * 		folder: '/media/internal/wIRC/downloads/' // initial folder location
- * 		pop: false // make truthy if you want the filePicker to pop its own stage for selecting
+ * 		folder: '/media/internal/wIRC/downloads/', // initial folder location
+ * 		pop: false, // make truthy if you want the filePicker to pop its own stage for selecting
+ * 		sceneTitle: 'Select A File' // title of scene
  * });
  * 
  * 
@@ -26,6 +27,8 @@ function filePicker(params)
 	this.pop =					(params.pop ? params.pop : false);
 	
 	this.folder =				(params.folder ? params.folder : false);
+		
+	this.sceneTitle =			(params.sceneTitle ? params.sceneTitle : false);
 	
 	this.stageName =			'filePicker-' + this.num;
 	this.sceneName =			this.type + '-picker';

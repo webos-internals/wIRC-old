@@ -41,6 +41,7 @@ FolderPickerAssistant.prototype.setup = function()
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.list = this.controller.get('list');
+	if (this.picker.sceneTitle) this.controller.get('header').update(this.picker.sceneTitle);
 	
 	this.updateCommandMenu(true);
 	this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
