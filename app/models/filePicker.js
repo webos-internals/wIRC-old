@@ -34,16 +34,6 @@ function filePicker(params)
 	this.popped =				false;
 	
 	this.openFilePicker();
-	/*
-	var test = this.getDirectory(this.topLevel);
-	alert('==========  FOLDER  ==========');
-	for (var t = 0; t < test.length; t++)
-	{
-		var f = test[t];
-		for (var o in f) alert(o+': '+f[o]);
-		alert('==========');
-	}
-	*/
 }
 
 filePicker.prototype.listDirectory = function(dir)
