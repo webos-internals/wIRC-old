@@ -20,6 +20,7 @@ function FolderPickerAssistant(picker)
 		]
 	};
 	
+	this.selectedFolder = false;
 	this.loadedFolders = [];
 }
 
@@ -50,7 +51,7 @@ FolderPickerAssistant.prototype.activate = function(event)
 {
 	if (!this.alreadyActivated)
 	{
-		this.tap(false, this.picker.topLevel);
+		this.tap(false, this.picker.topLevel, true);
 	}
 	this.alreadyActivated = true;
 }
@@ -70,7 +71,7 @@ FolderPickerAssistant.prototype.fixPathForId = function(folder)
 	return folder.replace(/\//g, '-');
 }
 
-FolderPickerAssistant.prototype.tap = function(event, folder)
+FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 {
 	if (event) event.stop();
 	var folderId = this.fixPathForId(folder);
@@ -104,6 +105,24 @@ FolderPickerAssistant.prototype.tap = function(event, folder)
 	{
 		this.controller.get('list' + folderId).mojo.toggleState();
 		//alert('TOGGLED!!!');
+	}
+	
+	if (!initial)
+	{
+		this.selectFolder(folder);
+	}
+}
+
+FolderPickerAssistant.prototype.selectFolder = function(folder)
+{
+	if (this.selectedFolder)
+	{
+		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('&nbsp;');
+	}
+	this.selectedFolder = folder;
+	if (this.selectedFolder)
+	{
+		this.controller.get('label' + this.fixPathForId(this.selectedFolder)).update('selected');
 	}
 }
 
