@@ -5,6 +5,7 @@
  * var f = new filePicker({
  * 		type: 'file', // or folder
  * 		onSelect: function, // function that will be called upon completion
+ * 		folder: '/media/internal/wIRC/downloads/' // initial folder location
  * 		pop: false // make truthy if you want the filePicker to pop its own stage for selecting
  * });
  * 
