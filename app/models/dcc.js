@@ -119,7 +119,7 @@ ircDcc.prototype.accept = function()
 		this.picker = new filePicker({
 			type: 'folder',
 			pop: true,
-			folder: '/media/internal/wIRC/downloads/', // replace this with 'default folder' from prefs
+			folder: '/media/internal/wIRC/downloads/',
 			onSelect: this.acceptSend.bind(this)
 		});
 	}
@@ -453,9 +453,9 @@ ircDcc.prototype.setSendDashAssistant = function(assistant)
 
 ircDcc.prototype.updateSendData = function()
 {
-	if (this.dccListAssistant && this.dccListAssistant.controller)
+	if (this.server.dccListAssistant && this.server.dccListAssistant.controller)
 	{
-		this.dccListAssistant.updateList();
+		this.server.dccListAssistant.updateList();
 	}
 }
 

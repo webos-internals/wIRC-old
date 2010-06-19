@@ -157,7 +157,7 @@ void handle_event_connect(irc_session_t * session, const char * event,
 
 	client->realServer = strdup(origin);
 
-	syslog(LOG_INFO, "Connection established");
+	//syslog(LOG_INFO, "Connection established");
 	process_event(session, event, origin, params, count, event_connect_);
 
 }
@@ -257,8 +257,7 @@ void handle_event_numeric(irc_session_t * session, unsigned int event,
 void handle_event_dcc_chat_req(irc_session_t * session, const char * nick,
 		const char * address, irc_dcc_t dcc_id) {
 
-	syslog(LOG_INFO, "handle_event_dcc_chat_req: %s %s %u", nick, address,
-			dcc_id);
+	//syslog(LOG_INFO, "handle_event_dcc_chat_req: %s %s %u", nick, address, dcc_id);
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
@@ -285,8 +284,7 @@ void handle_event_dcc_chat_req(irc_session_t * session, const char * nick,
 void handle_event_dcc_send_req(irc_session_t * session, const char * nick,
 		const char * address, const char * filename, int size, irc_dcc_t dcc_id) {
 
-	syslog(LOG_INFO, "handle_event_dcc_send_req: %s %s %s %u %u", nick,
-			address, filename, size, dcc_id);
+	//syslog(LOG_INFO, "handle_event_dcc_send_req: %s %s %s %u %u", nick, address, filename, size, dcc_id);
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
@@ -320,7 +318,7 @@ void handle_dcc_chat_callback(irc_session_t * session, irc_dcc_t dcc_id,
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
-	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
+	//syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
 
 	char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
 
@@ -356,7 +354,7 @@ void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
-	syslog(LOG_INFO, "%d %d %s", status, length, data);
+	//syslog(LOG_INFO, "%d %d %s", status, length, data);
 
 	if (length > 0)
 		fwrite(data, length, 1, (FILE*)ctx);
@@ -397,7 +395,7 @@ void handle_dcc_sendfile_callback(irc_session_t * session, irc_dcc_t dcc_id,
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
-	syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
+	//syslog(LOG_INFO, "%d %d %d %s", client->id, status, length, data);
 
 	/*char *id = 0, *status_s = 0, *dcc_id_s = 0, *length_s = 0, *data_s = 0;
 

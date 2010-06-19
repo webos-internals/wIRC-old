@@ -131,7 +131,7 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 
 	int id = PDL_GetJSParamInt(params, 0);
 
-	syslog(LOG_INFO, "Connecting to server: %d", id);
+	//syslog(LOG_INFO, "Connecting to server: %d", id);
 
 	if (servers[id].id != -1)
 		return PDL_FALSE;
@@ -269,7 +269,7 @@ PDL_bool client_ctcp_rep(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
 	const char *nick = PDL_GetJSParamString(params, 1);
 	const char *reply = PDL_GetJSParamString(params, 2);
-	syslog(LOG_INFO, "CTCP REPLY: %d %s %s", id, nick, reply);
+	//syslog(LOG_INFO, "CTCP REPLY: %d %s %s", id, nick, reply);
 	irc_cmd_ctcp_reply(servers[id].session, nick, reply);
 	return PDL_TRUE;
 }
@@ -409,7 +409,7 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 		}
 		(void) closedir(dp);
 		asprintf(&tmp, "{\"dir\":[%s]}", list);
-		syslog(LOG_INFO, "%s", tmp);
+		//syslog(LOG_INFO, "%s", tmp);
 		PDL_JSReply(params, tmp);
 		if (tmp)
 			free(tmp);
