@@ -136,7 +136,7 @@ function colorize (message) {
 				break;
 			case String.fromCharCode(3):
 				if (color)	{
-					newtext += '</span>';
+					newText += '</span>';
 					color = false;
 				}
 				foreColor = '';
