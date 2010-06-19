@@ -3,6 +3,8 @@ function DccListAssistant(server)
 	this.server = server;
 	this.server.setDccListAssistant(this);
 	
+	this.refreshTimer = false;
+	
 	this.listModel =
 	{
 		items: []
@@ -67,6 +69,14 @@ DccListAssistant.prototype.setup = function()
 	);
 	
 	Mojo.Event.listen(this.listElement, Mojo.Event.listTap, this.listTapHandler);
+	
+	this.refreshTimer = setTimeout(this.refreshList.bind(this), 100);
+}
+
+DccListAssistant.prototype.refreshList = function()
+{
+	this.updateList();
+	this.refreshTimer = setTimeout(this.refreshList.bind(this), 100);
 }
 
 DccListAssistant.prototype.updateList = function(skipUpdate)

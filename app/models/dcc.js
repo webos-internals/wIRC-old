@@ -174,12 +174,7 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 		}
 	}
 	else
-	{
-		var old = this.percent; 
-		this.percent = Math.round((this.bitsIn/this.size)*100);
-		if (this.percent>old) 
-			this.updateSendData();
-	}
+		this.percent = this.bitsIn/this.size*100;
 }
 
 ircDcc.prototype.newCommand = function(message)
