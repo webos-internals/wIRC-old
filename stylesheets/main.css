@@ -196,7 +196,10 @@ body.palm-dark .prefs .page-selector
 	padding-top: 0px;
 	margin-top: -14px;
 	padding-left: 16px;
-	padding-bottom: 6px;
+	padding-bottom: 8px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .server-list .palm-list .palm-row-wrapper .title.address
 {
@@ -410,6 +413,12 @@ body.palm-dark .form .textfield-group .hint-text
 /*
  * Channel List Scene Styles
  */
+.channel-list .palm-header
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .channel-list #searchText
 {
 	display: none;
@@ -635,8 +644,25 @@ body.palm-dark .channel-users #searchText
 
 
 /*
+ * Query Scene Styles
+ */
+.query-chat .palm-header
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+
+/*
  * DCC List Scene Styles
  */
+.dcc-list .palm-header
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .dcc-list #dccList .palm-row-wrapper
 {
 	position: relative;
@@ -669,7 +695,7 @@ body.palm-dark .channel-users #searchText
 }
 .dcc-list #dccList .palm-row-wrapper.send .title
 {
-	padding-top: 5px;
+	padding-top: 4px;
 	margin-top: 0px;
 }
 .dcc-list #dccList .palm-row-wrapper.send .sub
@@ -677,9 +703,12 @@ body.palm-dark .channel-users #searchText
 	color: #999;
 	font-size: 14px;
 	padding-top: 0px;
-	margin-top: -17px;
+	margin-top: -19px;
 	padding-left: 16px;
-	padding-bottom: 7px;
+	padding-bottom: 9px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .dcc-list #dccList .palm-row-wrapper.chat .icon
 {
@@ -690,7 +719,15 @@ body.palm-dark .channel-users #searchText
 {
 	display: none;
 }
-
+.dcc-list #dccList .palm-row-wrapper .title
+{
+	margin-top: 0px;
+	margin-left: 0px;
+	padding-left: 0px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 
 
 /*
@@ -729,6 +766,17 @@ body.palm-dark .channel-users #searchText
 	background: url(../icon-dcc-send.png) center center no-repeat;
 }
 
+
+
+/*
+ * DCC Chat Styles
+ */
+.dcc-chat .palm-header
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .dcc-chat #chatStats
 {
 	position: absolute;
