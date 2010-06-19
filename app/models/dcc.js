@@ -175,8 +175,10 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	}
 	else
 	{
+		var old = this.percent; 
 		this.percent = Math.round((this.bitsIn/this.size)*100);
-		this.updateSendData();
+		if (this.percent>old) 
+			this.updateSendData();
 	}
 }
 
