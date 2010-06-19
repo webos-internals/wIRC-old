@@ -73,7 +73,7 @@ ServerStatusAssistant.prototype.setup = function()
 
 		Mojo.Event.listen(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
 		
-		this.titleElement.update((this.server.alias?this.server.alias:this.server.address));
+		this.titleElement.update((this.server.alias?this.server.alias:this.server.address) + ': Server Messages');
 		this.loadPrefs(true);
 		
 		if (this.popped)	this.popButtonElement.style.display = 'none';

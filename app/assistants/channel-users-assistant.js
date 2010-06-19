@@ -52,7 +52,7 @@ ChannelUsersAssistant.prototype.setup = function()
 		this.keyHandler =			this.keyTest.bindAsEventListener(this);
 		this.searchFunction =		this.filter.bind(this);
 		
-		this.titleElement.innerHTML = this.channel.name;
+		this.titleElement.innerHTML = this.channel.name + ': Users';
 		
 		this.updateList(true);
 		this.controller.setupWidget

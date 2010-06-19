@@ -31,7 +31,7 @@ WhoisAssistant.prototype.setup = function()
 	this.titleElement =			this.controller.get('title');
 	this.dataElement =			this.controller.get('whoisData');
 	
-	this.titleElement.update('Whois - ' + this.nick.name);
+	this.titleElement.update('Whois: ' + this.nick.name);
 }
 
 WhoisAssistant.prototype.activate = function(event)

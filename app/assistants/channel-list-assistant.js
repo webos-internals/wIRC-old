@@ -52,7 +52,7 @@ ChannelListAssistant.prototype.setup = function()
 	this.keyHandler =			this.keyTest.bindAsEventListener(this);
 	this.searchFunction =		this.filter.bind(this);
 	
-	this.titleElement.update((this.server.alias?this.server.alias:this.server.address) + ' - Channel List');
+	this.titleElement.update((this.server.alias?this.server.alias:this.server.address) + ': Channel List');
 	
 	this.controller.setupWidget('spinner', {spinnerSize: 'large'}, {spinning:true});
 	
