@@ -9,7 +9,8 @@ function ircServers()
 	this.servers =			[];
 	this.listAssistant =	false;
 	
-	this.dccListStageName =	'dccListStage';
+	this.dccListStageName =	'dccListStage';;
+	this.dccListAssistant =	false;
 }
 
 ircServers.prototype.cmHandler = function(payload)
@@ -186,6 +187,10 @@ ircServers.prototype.openDccList = function()
 		};
 		Mojo.Controller.appController.createStageWithCallback({name: this.dccListStageName, lightweight: true}, f.bind(this));
 	}
+}
+ircServers.prototype.setDccListAssistant = function(assistant)
+{
+	this.dccListAssistant = assistant;
 }
 ircServers.prototype.getDccListObjects = function()
 {

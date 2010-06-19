@@ -454,6 +454,10 @@ ircDcc.prototype.updateSendData = function()
 	{
 		this.server.dccListAssistant.updateList();
 	}
+	else if (servers.dccListAssistant && servers.dccListAssistant.controller)
+	{
+		servers.dccListAssistant.updateList();
+	}
 }
 
 ircDcc.prototype.updateChatStats = function()

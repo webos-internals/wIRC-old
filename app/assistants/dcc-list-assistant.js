@@ -1,7 +1,11 @@
 function DccListAssistant(server)
 {
 	this.server = server;
-	this.server.setDccListAssistant(this);
+	
+	if (this.server)
+		this.server.setDccListAssistant(this);
+	else
+		servers.setDccListAssistant(this);
 	
 	this.refreshTimer = false;
 	
