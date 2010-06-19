@@ -62,12 +62,12 @@ function ircMessage(params)
 		// but whatever, we'll fix them all anyways.
 		for(var m = 0; m < params.message.length; m++)
 		{
-			params.message[m] = formatForHtml(params.message[m]);
+			params.message[m] = colorize(formatForHtml(params.message[m]));
 		}
 	}
 	else
 	{	// good message, you're actually a message, lets fix you.
-		params.message = formatForHtml(params.message);
+		params.message = colorize(formatForHtml(params.message));
 	}
 	
 	switch(this.type)
