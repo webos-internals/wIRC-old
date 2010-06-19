@@ -55,6 +55,7 @@ wircPlugin.prototype.registerHandlers = function() {
 	plugin.event_dcc_send_req = this.event_dcc_send_req_handler.bind(this);
 	plugin.event_dcc_chat_req = this.event_dcc_chat_req_handler.bind(this);
 	plugin.handle_dcc_callback = this.dcc_callback_handler.bind(this);
+	plugin.handle_dcc_send_callback = this.dcc_send_callback_handler.bind(this);
 	
 }
 
@@ -64,6 +65,19 @@ wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, length,
 	if (tmpDcc)
 	{
 		tmpDcc.handleEvent(status, length, data);
+	}
+	else
+	{
+		alert('****** NO SUCH DCC');
+	}
+}
+
+wircPlugin.prototype.dcc_send_callback_handler = function(id, dcc_id, status, bitsIn, percent){
+	
+	var tmpDcc = servers.servers[id].getDcc(dcc_id)
+	if (tmpDcc)
+	{
+		tmpDcc.handleSendEvent(status, bitsIn, percent);
 	}
 	else
 	{

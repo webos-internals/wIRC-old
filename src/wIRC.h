@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #include <netdb.h>
 #include <regex.h>
+#include <math.h>
 
 #define IN_BUILDING_LIBIRC
 typedef int socket_t;
@@ -105,6 +106,13 @@ typedef struct {
 } wIRCd_client_t;
 
 wIRCd_client_t *servers;
+
+typedef struct {
+	FILE *file;
+	unsigned int bitsIn;
+	unsigned int size;
+	int progress;
+} dcc_send_t;
 
 int plugin_client_init();
 void plugin_start();

@@ -125,7 +125,7 @@ ircDcc.prototype.accept = function()
 	}
 	else
 	{
-		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, "");
+		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, "", 0);
 	}
 }
 ircDcc.prototype.acceptSend = function(value)
@@ -133,7 +133,7 @@ ircDcc.prototype.acceptSend = function(value)
 	if (value)
 	{
 		this.filename = value + this.filename;
-		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
+		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename, this.size);
 		this.server.openDccList();
 	}
 	else
@@ -152,29 +152,31 @@ ircDcc.prototype.decline = function()
 ircDcc.prototype.handleEvent = function(status, length, data)
 {
 	this.bitsIn += parseInt(length);
+    
+    if (length == 0 && data == '(null)') {
+        if (this.status > 0) {
+            this.newMessage('type2', false, 'DCC CHAT to ' + this.nick.name + ' lost (' + status + ')');
+            this.status = 0;
+        }
+        else {
+            this.status = this.STATUS_ACTIVE;
+            this.openChatStage();
+            this.newMessage('type2', false, 'DCC CHAT connection established to ' + this.nick.name + ' [' + this.ip + ':' + this.port + ']', true);
+        }
+    }
+    else {
+        this.updateChatStats();
+        if (length > 0) 
+            this.newMessage('privmsg', this.nick, data);
+    }
 	
-	//alert('status: '+status+', length: '+length+', data: '+data);
-	
-	if (this.isChat())
-	{
-		if (length == 0 && data == '(null)') {
-			if (this.status > 0) {
-				this.newMessage('type2', false, 'DCC CHAT to ' + this.nick.name + ' lost (' + status + ')');
-				this.status = 0;
-			} else {
-				this.status = this.STATUS_ACTIVE;
-				this.openChatStage();
-				this.newMessage('type2', false, 'DCC CHAT connection established to ' + this.nick.name + ' [' + this.ip + ':' + this.port + ']', true);
-			}
-		}
-		else {
-			this.updateChatStats();
-			if (length > 0) 
-				this.newMessage('privmsg', this.nick, data);
-		}
-	}
-	else
-		this.percent = this.bitsIn/this.size*100;
+}
+
+ircDcc.prototype.handleSendEvent = function(status, bitsIn, percent)
+{
+	this.status = status;
+	this.bitsIn = bitsIn;
+	this.percent = percent;
 }
 
 ircDcc.prototype.newCommand = function(message)
