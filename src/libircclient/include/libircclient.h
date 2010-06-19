@@ -44,13 +44,10 @@
 #define INCLUDE_LIBIRC_H
 
 #include <sys/select.h>	/* fd_set */
-#include <syslog.h>
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
-char * libirc_colorparser_irc2html (const char * source, int strip);
 
 /*! \brief A libircclient IRC session.
  *
