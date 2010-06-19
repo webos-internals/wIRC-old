@@ -104,7 +104,7 @@ FolderPickerAssistant.prototype.addRow = function(data, parent)
 }
 FolderPickerAssistant.prototype.fixPathForId = function(folder)
 {
-	return folder.replace(/\//g, '-');
+	return folder.toLowerCase().replace(/\//g, '-');
 }
 
 FolderPickerAssistant.prototype.tap = function(event, folder, initial)

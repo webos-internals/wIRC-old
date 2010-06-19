@@ -104,13 +104,11 @@ filePicker.prototype.getDirectories = function(dir)
 
 filePicker.prototype.ok = function(value)
 {
-	this.params.value = value;
-	this.onSelect(this.params);
+	this.onSelect(value);
 }
 filePicker.prototype.cancel = function()
 {
-	this.params.value = false;
-	this.onSelect(this.params);
+	this.onSelect(false);
 }
 
 

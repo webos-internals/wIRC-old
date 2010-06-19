@@ -16,6 +16,8 @@ function ircDcc(params)
 	
 	this.status = 		false;
 	
+	this.picker =		false;
+	
 	this.bitsIn =		0;
 	this.bitsOut =		0;
 	
@@ -24,7 +26,6 @@ function ircDcc(params)
 	
 	this.requestBannerName =	'dcc-' + this.server.id + '-' + this.id;
 	this.requestDashName =		'dccdash-' + this.server.id + '-' + this.id;
-	
 	
 	this.chatBannerName =		'dccchatbanner-' + this.server.id + '-' + this.id;
 	this.chatDashName =			'dccchatdash-' + this.server.id + '-' + this.id;
@@ -115,13 +116,31 @@ ircDcc.prototype.accept = function()
 {
 	if (this.isFile())
 	{
-		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
-		this.server.openDccList();
+		this.picker = new filePicker({
+			type: 'folder',
+			pop: true,
+			folder: '/media/internal/wIRC/downloads/', // replace this with 'default folder' from prefs
+			onSelect: this.acceptSend.bind(this)
+		});
 	}
 	else
 	{
 		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, "");
 	}
+}
+ircDcc.prototype.acceptSend = function(value)
+{
+	if (value)
+	{
+		this.filename = value + this.filename;
+		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename);
+		this.server.openDccList();
+	}
+	else
+	{
+		this.decline();
+	}
+	this.filePicker = false;
 }
 
 ircDcc.prototype.decline = function()
@@ -156,7 +175,7 @@ ircDcc.prototype.handleEvent = function(status, length, data)
 	}
 	else
 	{
-		this.percent = this.bitsIn/this.size;
+		this.percent = Math.round((this.bitsIn/this.size)*100);
 		this.updateSendData();
 	}
 }
