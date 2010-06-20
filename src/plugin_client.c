@@ -144,9 +144,6 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 	servers[id].nick = PDL_GetJSParamString(params, 5);
 	servers[id].realname = PDL_GetJSParamString(params, 6);
 	servers[id].interface = PDL_GetJSParamString(params, 7);
-	servers[id].estabilshed = 0;
-	servers[id].worker_thread = 0;
-	servers[id].realServer = 0;
 
 	if (pthread_create(&servers[id].worker_thread, NULL, client_run,
 			(void*) &id)) {
@@ -238,11 +235,8 @@ PDL_bool client_cmd_user_mode(PDL_JSParameters *params) {
 
 PDL_bool client_cmd_ping(PDL_JSParameters *params) {
 	int id = PDL_GetJSParamInt(params, 0);
-	if (pthread_mutex_trylock(&servers[id].ping_mutex) == 0) {
-		ftime(&servers[id].ping);
-		irc_send_raw(servers[id].session, "PING %s", PDL_GetJSParamString(
-				params, 1));
-	}
+	const char *server = PDL_GetJSParamString(params, 1);
+	ping(id,server);
 	return PDL_TRUE;
 }
 
@@ -424,6 +418,22 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 	return ret;
 }
 
+PDL_bool client_set_autoping_interval(PDL_JSParameters *params) {
+	autoPingInterval = PDL_GetJSParamInt(params, 0);
+	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Set autoping interval: %d", autoPingInterval);
+	return PDL_TRUE;
+}
+
+PDL_bool client_set_autoping(PDL_JSParameters *params) {
+	autoPing = PDL_GetJSParamInt(params, 0);
+	if (autoPing) start_autoping();
+	else {
+		pthread_cancel(autoPingThread);
+	}
+	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Set autoping: %d", autoPing);
+	return PDL_TRUE;
+}
+
 int plugin_client_init() {
 
 	int ret = 0;
@@ -460,6 +470,8 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("list_directory", client_list_directory);
 	ret += PDL_RegisterJSHandler("stat_file", client_stat_file);
 	ret += PDL_RegisterJSHandler("get_external_ip", client_get_external_ip);
+	ret += PDL_RegisterJSHandler("set_autoping_interval", client_set_autoping_interval);
+	ret += PDL_RegisterJSHandler("set_autoping", client_set_autoping);
 
 	return ret;
 

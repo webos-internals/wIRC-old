@@ -449,17 +449,6 @@ ircServer.prototype.debugPayload = function(event, origin, params_s, visible)
 		this.newMessage('debug', false, event + ', origin: ' + origin + ', params_s: ' + params_s);
 }
 
-ircServer.prototype.doAutoPing = function(id, interval)
-{
-	try {
-		plugin.cmd_ping(id, this.realServer);	
-	} catch (e) {
-		alert(e);
-	}
-	this.autoPing = setTimeout(this.doAutoPing.bind(this), interval);
-}
-
-
 ircServer.prototype.runOnConnect = function()
 {
 	if (this.onConnect && this.onConnect.length > 0)
@@ -469,8 +458,6 @@ ircServer.prototype.runOnConnect = function()
 			// also defer these commands to run one after another when its not busy
 			this.newCommand.bind(this).defer(this.onConnect[c]);
 		}
-		if (!this.autoPing && prefs.get().lagMeter)
-			this.doAutoPing(servers.getServerArrayKey(this.id), prefs.get().autoPingInterval*1000);
 	}
 	
 	this.reJoinChannels.bind(this).defer();
@@ -494,9 +481,18 @@ ircServer.prototype.away = function(reason)
 {
 	plugin.cmd_away(servers.getServerArrayKey(this.id), reason);
 }
-ircServer.prototype.ping = function(server)
+ircServer.prototype.ping = function(val)
 {
-	plugin.cmd_ping(servers.getServerArrayKey(this.id), server);
+	var tmpMatch = twoValRegExp.exec(val);
+	if (tmpMatch) {
+		var tmpNick = this.getNick(tmpMatch[1]);
+		if (tmpNick) {
+			if (tmpMatch[2])
+				plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpNick.name, 'PING '+ tmpMatch[2]);
+			else
+				plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpNick.name, 'PING');
+		}	
+	}
 }
 ircServer.prototype.topic = function(channel, topic)
 {

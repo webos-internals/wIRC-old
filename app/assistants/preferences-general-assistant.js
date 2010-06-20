@@ -316,21 +316,7 @@ PreferencesGeneralAssistant.prototype.autoPingIntervalChanged = function(event)
 	{
 		this.toggleChanged(event);
 		var tmp = prefs.get(true);
-	}
-	if (this.prefs['lagMeter'])
-	{
-		if (servers.servers.length > 0)
-		{
-			for (var s = 0; s < servers.servers.length; s++)
-			{
-				if (servers.servers[s].isConnected())
-				{
-					clearTimeout(servers.servers[s].autoPing);
-					servers.servers[s].autoPing = false;
-					servers.servers[s].doAutoPing(servers.getServerArrayKey(servers.servers[s].id), this.prefs['autoPingInterval']*1000);
-				}
-			}
-		}
+		plugin.set_autoping_interval(this.prefs['autoPingInterval']);
 	}
 	
 }
@@ -341,20 +327,11 @@ PreferencesGeneralAssistant.prototype.lagMeterChanged = function(event)
 	{
 		this.toggleChanged(event);
 		var tmp = prefs.get(true);
+		plugin.set_autoping(this.prefs['lagMeter']?1:0);
 	}
 	if (this.prefs['lagMeter'])
 	{
 		this.controller.get('autoPing').style.display = '';
-		if (servers.servers.length > 0)
-		{
-			for (var s = 0; s < servers.servers.length; s++)
-			{
-				if (servers.servers[s].isConnected())
-				{
-					servers.servers[s].doAutoPing(servers.getServerArrayKey(servers.servers[s].id), this.prefs['autoPingInterval']*1000);
-				}
-			}
-		}
 	}
 	else
 	{

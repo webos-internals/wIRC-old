@@ -39,10 +39,20 @@ function wircPlugin(){
     var param3 = window.document.createElement("param");
     param3.name = "Param1"; // MAX_SERVERS
     param3.value = MAX_SERVERS;
+	
+	var param4 = window.document.createElement("param");
+    param4.name = "Param2"; // Lag meter state
+    param4.value = prefs.get().lagMeter?1:0;
+	
+	var param5 = window.document.createElement("param");
+    param5.name = "Param3"; // Auto ping interval
+    param5.value = prefs.get().autoPingInterval;
     
     this.pluginObj.appendChild(param1);
     this.pluginObj.appendChild(param2);
     this.pluginObj.appendChild(param3);
+	this.pluginObj.appendChild(param4);
+	this.pluginObj.appendChild(param5);
     
     this.df = window.document.createDocumentFragment();
     this.df.appendChild(this.pluginObj);

@@ -90,7 +90,6 @@ typedef struct {
 	int id;
 	pthread_mutex_t mutex;
 	pthread_t worker_thread;
-	pthread_t ping_thread;
 	irc_session_t *session;
 	const char *server;
 	const char *server_password;
@@ -101,11 +100,15 @@ typedef struct {
 	const char *realServer;
 	int estabilshed;
 	int port;
-	pthread_mutex_t ping_mutex;
+	pthread_mutex_t autoping_mutex;
 	struct timeb ping;
 } wIRCd_client_t;
 
 wIRCd_client_t *servers;
+
+int autoPing;
+int autoPingInterval;
+pthread_t autoPingThread;
 
 typedef struct {
 	FILE *file;
@@ -114,6 +117,7 @@ typedef struct {
 	int progress;
 } dcc_send_t;
 
+void start_autoping();
 int plugin_client_init();
 void plugin_start();
 void plugin_cleanup();

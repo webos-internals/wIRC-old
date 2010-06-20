@@ -135,7 +135,6 @@ void process_event(irc_session_t * session, const char * event,
 			PDL_CallJS("event_rtt", payload, 2);
 			if (rtt_string)
 				free(rtt_string);
-			pthread_mutex_unlock(&client->ping_mutex);
 		}
 		break;
 	case event_numeric_:

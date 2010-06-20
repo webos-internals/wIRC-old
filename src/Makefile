@@ -12,7 +12,7 @@ CC			:=	"/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc"
 
 else 
 
-CFLAGS		:=	$(MARCH_TUNE) -DGITHASH=${GITHASH}
+CFLAGS		:=	-g $(MARCH_TUNE) -DGITHASH=${GITHASH}
 
 INCLUDES	:=	-I${ROOT}/include \
 				-I${ROOT}${prefix}/include \
@@ -27,7 +27,7 @@ LIBS		:=  -lpdl -lSDL
 endif
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
-				plugin_client.o plugin_events.o plugin.o \
+				ping.o plugin_client.o plugin_events.o plugin.o \
 				main.o
 
 .PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
@@ -38,6 +38,9 @@ $(PLUGIN): $(OBJECTS)
 .PHONY: $(IRCLIB)/$(IRCLIB).o
 $(IRCLIB)/$(IRCLIB).o:
 	cd $(IRCLIB); $(MAKE)
+		
+ping.o: %.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 		
 plugin_client.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

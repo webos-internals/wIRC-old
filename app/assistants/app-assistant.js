@@ -16,7 +16,7 @@ var cmdHistory = [];
 var cmdHistoryIndex = 0;
 
 // max servers
-var MAX_SERVERS = 3;
+var MAX_SERVERS = 20;
 
 // the plugin
 var plugin = null;

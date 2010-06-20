@@ -20,6 +20,8 @@
 
 void cleanup(int sig) {
 	syslog(LOG_INFO, "Cleanup caused by: %d", sig);
+	autoPing = 0;
+	pthread_cancel(autoPingThread);
 	if (servers) {
 		plugin_cleanup();
 		free(servers);
@@ -69,9 +71,13 @@ int main(int argc, char *argv[]) {
 		cleanup(-2);
 	}
 
-	max_connections = *argv[1];
+	max_connections = atoi(argv[1]);
+	autoPing = atoi(argv[2]);
+	autoPingInterval = atoi(argv[3]);
 
 	servers = malloc(sizeof(wIRCd_client_t) * max_connections);
+
+	start_autoping();
 
 	max_retries = DEFAULT_MAX_RETRIES;
 	pre_run_usleep = DEFAULT_PRE_RUN_USLEEP;
