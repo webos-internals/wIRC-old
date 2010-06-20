@@ -210,6 +210,15 @@ body.palm-dark .prefs .page-selector
 {
 	display: none;
 }
+.server-list .palm-list .palm-row-wrapper .network
+{
+	margin-right: -7px;
+}
+.server-list .palm-list .palm-row-wrapper.address-title .network
+{
+	margin-top: 18px;
+	margin-right: 9px;
+}
 .server-list .palm-list .palm-row-wrapper.address-title .title.address
 {
 	display: block;
