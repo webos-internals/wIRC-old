@@ -210,6 +210,15 @@ body.palm-dark .prefs .page-selector
 {
 	display: none;
 }
+.server-list .palm-list .palm-row-wrapper .network
+{
+	margin-right: -7px;
+}
+.server-list .palm-list .palm-row-wrapper.address-title .network
+{
+	margin-top: 18px;
+	margin-right: 9px;
+}
 .server-list .palm-list .palm-row-wrapper.address-title .title.address
 {
 	display: block;
@@ -369,6 +378,15 @@ body.palm-dark .form .textfield-group .hint-text
 /*
  * Server Status Scene Styles
  */
+.server-status .palm-header #title
+{
+	float: left;
+	display: block;
+	width: 225px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .server-status #popButton
 {
 	position: absolute;
@@ -530,6 +548,15 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 /*
  * Channel Chat Scene Styles
  */
+.channel-chat .palm-header #title
+{
+	float: left;
+	display: block;
+	width: 210px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .channel-chat #topicContainer
 {
 	position: fixed;
@@ -592,6 +619,12 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 /*
  * Channel Users Scene Styles
  */
+.channel-users .palm-header
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .channel-users #searchText
 {
 	display: none;
@@ -646,8 +679,11 @@ body.palm-dark .channel-users #searchText
 /*
  * Query Scene Styles
  */
-.query-chat .palm-header
+.query-chat .palm-header #title
 {
+	float: left;
+	display: block;
+	width: 250px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -737,6 +773,12 @@ body.palm-dark .channel-users #searchText
 /*
  * Whois Scene Styles
  */
+.whois .palm-header
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .whois #whoisData .palm-row-wrapper .title .mode
 {
 	float: left;
