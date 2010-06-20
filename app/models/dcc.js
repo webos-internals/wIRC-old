@@ -14,7 +14,9 @@ function ircDcc(params)
 	this.filename =		params.filename;
 	this.size =			params.size;
 	
-	this.status = 		false;
+	this.fileDestination = '/media/internal/wIRC/downloads/';
+	
+	this.status = 		-1;
 	
 	this.picker =		false;
 	
@@ -119,7 +121,7 @@ ircDcc.prototype.accept = function()
 		this.picker = new filePicker({
 			type: 'folder',
 			pop: true,
-			folder: '/media/internal/wIRC/downloads/',
+			folder: this.fileDestination,
 			onSelect: this.acceptSend.bind(this)
 		});
 	}
@@ -132,8 +134,8 @@ ircDcc.prototype.acceptSend = function(value)
 {
 	if (value)
 	{
-		this.filename = value + this.filename;
-		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, this.filename, this.size);
+		this.fileDestination = value;
+		plugin.dcc_accept(servers.getServerArrayKey(this.server.id), this.id, value + this.filename, this.size);
 		this.server.openDccList();
 	}
 	else
@@ -478,7 +480,8 @@ ircDcc.prototype.getListObject = function()
 		key:		this.server.getDccArrayKey(this.id),
 		id:			this.id,
 		server:		(this.server.alias?this.server.alias:this.server.address),
-		text:		this.nick.name,
+		text:		'',
+		sender:		this.nick.name,
 		type:		'',
 		bitsIn:		this.bitsIn,
 		bitsOut:	this.bitsOut,
@@ -490,10 +493,14 @@ ircDcc.prototype.getListObject = function()
 	if (this.isChat())
 	{
 		obj.type = 'chat';
+		if (this.status == -1)
+			obj.text = Mojo.Format.formatDate(new Date(), 'short'); 		
 	}
 	else
 	{
 		obj.type = 'send';
+		obj.text = this.filename;
+		obj.filename = this.bitsIn + ' / ' + this.size;
 	}
 	
 	return obj;

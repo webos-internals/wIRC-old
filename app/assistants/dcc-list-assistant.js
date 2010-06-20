@@ -58,7 +58,9 @@ DccListAssistant.prototype.setup = function()
 	{
 		itemTemplate: "dcc-list/dcc-row",
 		swipeToDelete: false,
-		reorderable: false
+		reorderable: false,
+		dividerTemplate: "dcc-list/sender-divider",
+		dividerFunction: this.getSenderDivider.bind(this)
 	};
 	if (!this.server)
 	{
@@ -117,6 +119,11 @@ DccListAssistant.prototype.updateList = function(skipUpdate)
 DccListAssistant.prototype.getDivider = function(item)
 {
 	if (item.server) return item.server;
+	else return '';
+}
+DccListAssistant.prototype.getSenderDivider = function(item)
+{
+	if (item.sender) return item.sender;
 	else return '';
 }
 

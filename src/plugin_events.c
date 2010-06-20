@@ -370,7 +370,7 @@ void handle_dcc_send_callback(irc_session_t * session, irc_dcc_t dcc_id,
 
 	if (dccInfo->progress > oldProgress) {
 
-		syslog(LOG_INFO, "Progress %d, BitsIn: %u, Size: %u", (int)dccInfo->progress, dccInfo->bitsIn, dccInfo->size);
+		//syslog(LOG_INFO, "Progress %d, BitsIn: %u, Size: %u", (int)dccInfo->progress, dccInfo->bitsIn, dccInfo->size);
 
 		char *id = 0, *status_s = 0, *dcc_id_s = 0, *bitsIn_s = 0, *percent_s = 0;
 
