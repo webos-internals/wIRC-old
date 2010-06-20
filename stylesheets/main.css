@@ -683,28 +683,31 @@ body.palm-dark .channel-users #searchText
 }
 .dcc-list #dccList .palm-row-wrapper.send .title
 {
-	padding-top: 4px;
-	margin-top: 0px;
+	padding-top: 0px;
+	margin-top: -4px;
+	font-size: 16px;
 }
 .dcc-list #dccList .palm-row-wrapper.send .sub
 {
 	color: 'lightgray';
-	font-size: 14px;
+	font-size: 12px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	text-align: center;
 	-webkit-border-radius: 8px; 
 	border: 1px inset;
+	width: 220px;
+	height: 16px;
+	margin-top: -12px;
 }
 .dcc-list #dccList .palm-row-wrapper.send .sub .progress
 {
 	z-index: -1;
 	position: absolute;
+	margin-top: -16px;
 	width: 220px;
 	height: 16px;
-	padding-top: 0px;
-	margin-top: -19px;
 }
 .dcc-list #dccList .palm-row-wrapper.send .sub .progress .bar
 {
