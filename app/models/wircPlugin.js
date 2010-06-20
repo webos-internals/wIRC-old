@@ -1,5 +1,23 @@
 function wircPlugin(){
 
+	this.LIBIRC_ERR_OK			=	0;
+	this.LIBIRC_ERR_INVAL		=	1;
+	this.LIBIRC_ERR_RESOLV		=	2;
+	this.LIBIRC_ERR_SOCKET		=	3;
+	this.LIBIRC_ERR_CONNECT		=	4;
+	this.LIBIRC_ERR_CLOSED		=	5;
+	this.LIBIRC_ERR_NOMEM		=	6;
+	this.LIBIRC_ERR_ACCEPT		=	7;
+	this.LIBIRC_ERR_NODCCSEND	=	9;
+	this.LIBIRC_ERR_READ		=	10;
+	this.LIBIRC_ERR_WRITE		=	11;
+	this.LIBIRC_ERR_STATE		=	12;
+	this.LIBIRC_ERR_TIMEOUT		=	13;
+	this.LIBIRC_ERR_OPENFILE	=	14;
+	this.LIBIRC_ERR_TERMINATED	=	15;
+	this.LIBIRC_ERR_NOIPV6		=	16;
+	this.LIBIRC_ERR_MAX			=	17;
+
     this.isReady = false;
     
     this.pluginObj = window.document.createElement("object");
@@ -28,6 +46,51 @@ function wircPlugin(){
     
     this.df = window.document.createDocumentFragment();
     this.df.appendChild(this.pluginObj);
+}
+
+wircPlugin.prototype.getErrorMsg = function(error)
+{
+	var errMsg = 'Unknown error code';
+
+	switch (error) {
+		case this.LIBIRC_ERR_OK:
+			errMsg = 'No error'; break;
+		case this.LIBIRC_ERR_INVAL:
+			errMsg = 'Invalid argument'; break;
+		case this.LIBIRC_ERR_RESOLV:
+			errMsg = 'Could not resolve host'; break;
+		case this.LIBIRC_ERR_SOCKET:
+			errMsg = 'Could not create socket'; break;
+		case this.LIBIRC_ERR_CONNECT:
+			errMsg = 'Could not connect'; break;
+		case this.LIBIRC_ERR_CLOSED:
+			errMsg = 'Connection closed by remote peer'; break;
+		case this.LIBIRC_ERR_NOMEM:
+			errMsg = 'Out of memory'; break;
+		case this.LIBIRC_ERR_ACCEPT:
+			errMsg = 'Could not accept new connection'; break;
+		case this.LIBIRC_ERR_NODCCSEND:
+			errMsg = 'Could not send this'; break;
+		case this.LIBIRC_ERR_READ:
+			errMsg = 'Could not read DCC file or socket'; break;
+		case this.LIBIRC_ERR_WRITE:
+			errMsg = 'Could not write DCC file or socket'; break;
+		case this.LIBIRC_ERR_STATE:
+			errMsg = 'Invalid state'; break;
+		case this.LIBIRC_ERR_TIMEOUT:
+			errMsg = 'Operation timed out'; break;
+		case this.LIBIRC_ERR_OPENFILE:
+			errMsg = 'Could not open file for DCC send'; break;
+		case this.LIBIRC_ERR_TERMINATED:
+			errMsg = 'IRC server connection terminated'; break;
+		case this.LIBIRC_ERR_NOIPV6:
+			errMsg = 'IPv6 not supported'; break;
+		case this.LIBIRC_ERR_MAX:
+			errMsg = 'Internal max error value count'; break;
+	}
+
+	return errMsg;
+
 }
 
 wircPlugin.prototype.registerHandlers = function() {
@@ -63,26 +126,18 @@ wircPlugin.prototype.dcc_callback_handler = function(id, dcc_id, status, length,
 	
 	var tmpDcc = servers.servers[id].getDcc(dcc_id)
 	if (tmpDcc)
-	{
 		tmpDcc.handleEvent(status, length, data);
-	}
 	else
-	{
 		alert('****** NO SUCH DCC');
-	}
 }
 
 wircPlugin.prototype.dcc_send_callback_handler = function(id, dcc_id, status, bitsIn, percent){
 	
 	var tmpDcc = servers.servers[id].getDcc(dcc_id)
 	if (tmpDcc)
-	{
 		tmpDcc.handleSendEvent(status, bitsIn, percent);
-	}
 	else
-	{
 		alert('****** NO SUCH DCC');
-	}
 }
 
 wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {
@@ -95,7 +150,6 @@ wircPlugin.prototype.event_dcc_send_req_handler = function(id, nick, address, fi
 		dcc_id: dcc_id
 	};
 	servers.servers[id].startDcc(params);
-	//servers.servers[id].newMessage('debug', false, 'dcc_send_req, nick: ' + nick + ', address: ' + address + ', filename: ' + filename + ', size: ' + size + ', dcc_id: ' + dcc_id);
 }
 
 wircPlugin.prototype.event_dcc_chat_req_handler = function(id, nick, address, dcc_id) {
@@ -108,7 +162,6 @@ wircPlugin.prototype.event_dcc_chat_req_handler = function(id, nick, address, dc
 		dcc_id: dcc_id
 	};;
 	servers.servers[id].startDcc(params);
-	//servers.servers[id].newMessage('debug', false, 'dcc_chat_req, nick: ' + nick + ', address: ' + address + ', dcc_id: ' + dcc_id);
 }
 
 wircPlugin.prototype.event_connect_handler = function(id, event, origin, params_s, ip)
@@ -200,13 +253,9 @@ wircPlugin.prototype.event_privmsg_handler = function(id, event, origin, params_
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpQuery = servers.servers[id].getQuery(tmpNick);
 	if (tmpQuery)
-	{
 		tmpQuery.newMessage('privmsg', tmpNick, params[1]);
-	}
 	else
-	{
 		servers.servers[id].startQuery(tmpNick, false, 'message', params[1]);
-	}
 }
 
 wircPlugin.prototype.event_nick_handler = function(id, event, origin, params_s)
@@ -278,12 +327,8 @@ wircPlugin.prototype.event_quit_handler = function(id, event, origin, params_s)
 	if (tmpNick)
 	{
 		for (var i = 0; i< tmpNick.channels.length; i++)
-		{
 			if (prefs.get().eventQuit)
-			{
 				tmpNick.channels[i].newMessage('type5', false, tmpNick.name + ' has quit (' + params + ')');
-			}
-		}
 		servers.servers[id].removeNick(tmpNick);
 	}	
 }
