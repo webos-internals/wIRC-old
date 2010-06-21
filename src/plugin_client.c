@@ -420,7 +420,6 @@ PDL_bool client_list_directory(PDL_JSParameters *params) {
 
 PDL_bool client_set_autoping_interval(PDL_JSParameters *params) {
 	autoPingInterval = PDL_GetJSParamInt(params, 0);
-	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Set autoping interval: %d", autoPingInterval);
 	return PDL_TRUE;
 }
 
@@ -430,7 +429,6 @@ PDL_bool client_set_autoping(PDL_JSParameters *params) {
 	else {
 		pthread_cancel(autoPingThread);
 	}
-	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Set autoping: %d", autoPing);
 	return PDL_TRUE;
 }
 

@@ -18,18 +18,12 @@
 
 #include "wIRC.h"
 
-pthread_mutex_t autoping_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t autoping_cond = PTHREAD_COND_INITIALIZER;
-
 void ping(int id, const char *server) {
 	ftime(&servers[id].ping);
 	irc_send_raw(servers[id].session, "PING %s", server);
-	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Auto pinging: %d %d %s", autoPingInterval, id, server);
 }
 
 void *autoping(void *ptr) {
-
-	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Auto pinging started");
 
 	int i;
 	while (autoPing) {
@@ -41,8 +35,6 @@ void *autoping(void *ptr) {
 		}
 		sleep(autoPingInterval);
 	}
-
-	syslog(LOG_INFO, "<<<<<<<<<<<<<<<<<<<<<<<<< Auto pinging done");
 
 }
 
