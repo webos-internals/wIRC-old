@@ -144,10 +144,7 @@ DccListAssistant.prototype.invisibleWindow = function(event){
 
 DccListAssistant.prototype.activate = function(event)
 {
-    if (this.alreadyActivated) {
-        this.updateList();
-    }
-    this.alreadyActivated = true;
+	this.updateList();
 }
 
 DccListAssistant.prototype.handleCommand = function(event)
