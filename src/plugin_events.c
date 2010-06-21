@@ -154,6 +154,7 @@ void handle_event_connect(irc_session_t * session, const char * event,
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
+	if (autoPing) ping(client->id, origin);
 	client->realServer = strdup(origin);
 
 	//syslog(LOG_INFO, "Connection established");
