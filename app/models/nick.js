@@ -114,7 +114,7 @@ ircNick.prototype.getRandomColor3 = function(lightTheme)
 	if (lightTheme)
 		value = Math.ceil(Math.random()*20)+70;
 	else
-		saturation = Math.ceil(Math.random()*20)+60;
+		saturation = Math.ceil(Math.random()*40)+50;
 	var rgb = ColorConverter.toRGB(new HSV(hue,saturation,value));
 	return "rgb(" + rgb.r + "," + rgb.b + "," + rgb.g + ")";
 }
