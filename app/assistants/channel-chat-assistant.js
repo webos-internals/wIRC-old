@@ -616,7 +616,7 @@ ChannelChatAssistant.prototype.cleanup = function(event){
     Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
 	Mojo.Event.stopListening(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
     Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
-    if (this.channel.containsNick(this.channel.server.nick)) {
-        this.channel.part();
+    if (this.channel.containsNick(this.channel.server.nick) && prefs.get().partOnClose) {
+		this.channel.part();
     }
 }
