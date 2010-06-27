@@ -130,14 +130,26 @@ FilePickerAssistant.prototype.fixPathForId = function(location)
 
 FilePickerAssistant.prototype.folderTap = function(event, location)
 {
-	alert('====== FOLDER-TAP ======');
-	alert(location);
 	this.addFolder(location+'/', this.folderHolder);
 }
 FilePickerAssistant.prototype.fileTap = function(event, location)
 {
-	alert('====== FILE-TAP ======');
-	alert(location);
+	this.selectFile(location);
+}
+FilePickerAssistant.prototype.selectFile = function(file)
+{
+	if (this.selectedFile)
+	{
+		var tmpCN = this.controller.get('file' + this.fixPathForId(this.selectedFile)).className;
+		this.controller.get('file' + this.fixPathForId(this.selectedFile)).className = tmpCN.replace(/check/g, '');
+	}
+	this.selectedFile = file;
+	if (this.selectedFile)
+	{
+		var tmpCN = this.controller.get('file' + this.fixPathForId(this.selectedFile)).className;
+		this.controller.get('file' + this.fixPathForId(this.selectedFile)).className = tmpCN + ' check';
+	}
+	this.updateCommandMenu();
 }
 
 FilePickerAssistant.prototype.updateCommandMenu = function(skipUpdate)
