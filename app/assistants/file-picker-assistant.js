@@ -59,6 +59,21 @@ FilePickerAssistant.prototype.initialData = function()
 	try
 	{
 		this.addFolder(this.picker.topLevel, this.folderHolder, true);
+		
+		var tmp = this.picker.folder.replace(this.picker.topLevel, '').split('/');
+		var build = this.picker.topLevel;
+		if (tmp.length > 0)
+		{
+			for (var t = 0; t < tmp.length; t++)
+			{
+				if (tmp[t])
+				{
+					build += tmp[t];
+					this.folderTap(false, build);
+					build += '/';
+				}
+			}
+		}
 	}
 	catch (e) 
 	{
