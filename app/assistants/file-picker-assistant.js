@@ -132,6 +132,7 @@ FilePickerAssistant.prototype.fixPathForId = function(location)
 FilePickerAssistant.prototype.folderTap = function(event, location)
 {
 	this.addFolder(location+'/', this.folderHolder);
+	this.selectFile(false);
 }
 FilePickerAssistant.prototype.back = function()
 {
