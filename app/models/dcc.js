@@ -14,7 +14,7 @@ function ircDcc(params)
 	this.filename =		params.filename;
 	this.size =			params.size;
 	
-	this.fileDestination = '/media/internal/wIRC/downloads/';
+	this.fileDestination = prefs.get().dccDefaultFolder;
 	
 	this.status = 		-1;
 	
