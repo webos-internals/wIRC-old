@@ -73,7 +73,7 @@ FilePickerAssistant.prototype.activate = function(event)
 FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 {
 	var tpl = 'file-picker/folder-container';
-	var folderId = this.fixPathForId(folder);
+	var folderId = filePicker.parseFileStringForId(folder);
 	
 	var html = Mojo.View.render({object: {folder: folderId, left: (initial?0:321)}, template: tpl});
 	parent.insert({bottom: html});
@@ -94,7 +94,7 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 	if (!initial)
 	{
 		Mojo.Animation.animateStyle(
-		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-2])),
+		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
 		    'linear',
 			{from: 0, to: -321, duration: .1}
@@ -110,7 +110,7 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 FilePickerAssistant.prototype.addRow = function(data, parent)
 {
 	var tpl = 'file-picker/file-row';
-	var fileId = this.fixPathForId(data.location);
+	var fileId = filePicker.parseFileStringForId(data.location);
 	
 	var html = Mojo.View.render({object: {name: data.name, file: fileId, rowClass: data.rowClass, iconClass: (data.isFolder?'folderIcon':'fileIcon')}, template: tpl});
 	parent.insert({bottom: html});
@@ -124,10 +124,6 @@ FilePickerAssistant.prototype.addRow = function(data, parent)
 		this.controller.listen('file' + fileId, Mojo.Event.tap, this.fileTap.bindAsEventListener(this, data.location));
 	}
 }
-FilePickerAssistant.prototype.fixPathForId = function(location)
-{
-	return location.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
-}
 
 FilePickerAssistant.prototype.folderTap = function(event, location)
 {
@@ -140,14 +136,14 @@ FilePickerAssistant.prototype.back = function()
 	{
 		this.movingBack = true;
 		Mojo.Animation.animateStyle(
-		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-1])),
+		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-1])),
 		    'left',
 		    'linear',
 			{from: 0, to: 321, duration: .1,
 			onComplete: this.delFolder.bind(this)}
 		);
 		Mojo.Animation.animateStyle(
-		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-2])),
+		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
 		    'linear',
 			{from: -321, to: 0, duration: .1}
@@ -168,14 +164,14 @@ FilePickerAssistant.prototype.selectFile = function(file)
 {
 	if (this.selectedFile)
 	{
-		var tmpCN = this.controller.get('file' + this.fixPathForId(this.selectedFile)).className;
-		this.controller.get('file' + this.fixPathForId(this.selectedFile)).className = tmpCN.replace(/check/g, '');
+		var tmpCN = this.controller.get('file' + filePicker.parseFileStringForId(this.selectedFile)).className;
+		this.controller.get('file' + filePicker.parseFileStringForId(this.selectedFile)).className = tmpCN.replace(/check/g, '');
 	}
 	this.selectedFile = file;
 	if (this.selectedFile)
 	{
-		var tmpCN = this.controller.get('file' + this.fixPathForId(this.selectedFile)).className;
-		this.controller.get('file' + this.fixPathForId(this.selectedFile)).className = tmpCN + ' check';
+		var tmpCN = this.controller.get('file' + filePicker.parseFileStringForId(this.selectedFile)).className;
+		this.controller.get('file' + filePicker.parseFileStringForId(this.selectedFile)).className = tmpCN + ' check';
 	}
 	this.updateCommandMenu();
 }

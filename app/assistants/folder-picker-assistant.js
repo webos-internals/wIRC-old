@@ -81,7 +81,7 @@ FolderPickerAssistant.prototype.activate = function(event)
 			}
 			this.controller.sceneScroller.mojo.scrollTo(
 				0,
-				0-(this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).cumulativeOffset().top-(this.controller.window.innerHeight-110)),
+				0-(this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).cumulativeOffset().top-(this.controller.window.innerHeight-110)),
 				false);
 		}
 		else
@@ -96,22 +96,19 @@ FolderPickerAssistant.prototype.activate = function(event)
 FolderPickerAssistant.prototype.addRow = function(data, parent)
 {
 	var tpl = 'folder-picker/folder-row';
-	var folderId = this.fixPathForId(data.location);
+	var folderId = filePicker.parseFileStringForId(data.location);
 	
 	var html = Mojo.View.render({object: {name: data.name, folder: folderId, rowClass: data.rowClass}, template: tpl});
 	parent.insert({bottom: html});
 	
 	this.controller.listen('folder' + folderId, Mojo.Event.tap, this.tap.bindAsEventListener(this, data.location));
 }
-FolderPickerAssistant.prototype.fixPathForId = function(location)
-{
-	return location.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
-}
+
 
 FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 {
 	if (event) event.stop();
-	var folderId = this.fixPathForId(folder);
+	var folderId = filePicker.parseFileStringForId(folder);
 	var drawer = this.controller.get('list' + folderId);
 	
 	if (!this.loadedFolders.include(folder))
@@ -153,14 +150,14 @@ FolderPickerAssistant.prototype.selectFolder = function(folder)
 {
 	if (this.selectedFolder)
 	{
-		var tmpCN = this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className;
-		this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className = tmpCN.replace(/check/g, '');
+		var tmpCN = this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className;
+		this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className = tmpCN.replace(/check/g, '');
 	}
 	this.selectedFolder = folder;
 	if (this.selectedFolder)
 	{
-		var tmpCN = this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className;
-		this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className = tmpCN + ' check';
+		var tmpCN = this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className;
+		this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className = tmpCN + ' check';
 	}
 	this.updateCommandMenu();
 }

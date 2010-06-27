@@ -193,3 +193,7 @@ filePicker.parseFileString = function(f)
 {
 	return f.replace(this.topLevel, this.topLevelString+'/');
 }
+filePicker.parseFileStringForId = function(path)
+{
+	return path.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
+}
