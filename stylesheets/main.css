@@ -83,6 +83,12 @@ body.palm-dark .prefs .page-selector
 	overflow: hidden;
 	-webkit-palm-mouse-target: ignore;
 }
+.prefs #dccDefaultFolderDisplay
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 
 
 /*
