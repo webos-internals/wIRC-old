@@ -26,6 +26,7 @@ function FilePickerAssistant(picker)
 		items: []
 	};
 	
+	this.movingBack = false;
 	this.selectedFile = false;
 	this.selected = false;
 	this.folderTree = [];
@@ -95,7 +96,7 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
-		    'linear', //linear/bezier/zeno
+		    'linear',
 			{from: 0, to: -321, duration: .1}
 		);
 		Mojo.Animation.animateStyle(
@@ -131,6 +132,32 @@ FilePickerAssistant.prototype.fixPathForId = function(location)
 FilePickerAssistant.prototype.folderTap = function(event, location)
 {
 	this.addFolder(location+'/', this.folderHolder);
+}
+FilePickerAssistant.prototype.back = function()
+{
+	if (this.folderTree.length > 1)
+	{
+		this.movingBack = true;
+		Mojo.Animation.animateStyle(
+		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-1])),
+		    'left',
+		    'linear',
+			{from: 0, to: 321, duration: .1,
+			onComplete: this.delFolder.bind(this)}
+		);
+		Mojo.Animation.animateStyle(
+		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-2])),
+		    'left',
+		    'linear',
+			{from: -321, to: 0, duration: .1}
+		);
+	}
+}
+FilePickerAssistant.prototype.delFolder = function(e)
+{
+	e.remove();
+	this.folderTree = this.folderTree.without(this.folderTree[this.folderTree.length-1]);
+	this.movingBack = false;
 }
 FilePickerAssistant.prototype.fileTap = function(event, location)
 {
@@ -191,7 +218,21 @@ FilePickerAssistant.prototype.updateCommandMenu = function(skipUpdate)
 }
 FilePickerAssistant.prototype.handleCommand = function(event)
 {
-	if (event.type == Mojo.Event.command)
+	if(event.type == Mojo.Event.back || event.type == Mojo.Event.forward)
+	{
+		if (this.folderTree.length > 1 && !this.movingBack)
+		{
+			event.preventDefault();
+			event.stopPropagation();
+			this.back();
+		}
+		else if (this.movingBack)
+		{
+			event.preventDefault();
+			event.stopPropagation();
+		}
+	}
+	else if(event.type == Mojo.Event.command)
 	{
 		switch (event.command)
 		{
