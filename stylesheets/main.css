@@ -1046,18 +1046,18 @@ table.date-row.palm-divider.labeled tr td.right
 /*
  * File/Folder Picker Styles
  */
-.file-picker #list .drawer
+.folder-picker #list .drawer
 {
 	border-left: 30px solid #bfbfbd;
 	background: url(../images/palm-default/list-separator-light.png) top left repeat-x
 }
-body.palm-dark .file-picker #list .drawer
+body.palm-dark .folder-picker #list .drawer
 {
 	border-left: 30px solid #1b1e20;
 	background: url(../images/palm-dark/list-separator-dark.png) top left repeat-x
 }
 
-.file-picker #list .palm-row > .palm-row-wrapper > .icon
+.folder-picker #list .palm-row > .palm-row-wrapper > .icon
 {
 	float: left;
 	width: 25px;
@@ -1067,23 +1067,23 @@ body.palm-dark .file-picker #list .drawer
 	margin-left: 4px;
 	background: url(../images/palm-default/arrow-right.png) center center no-repeat;
 }
-body.palm-dark .file-picker #list .palm-row > .palm-row-wrapper > .icon
+body.palm-dark .folder-picker #list .palm-row > .palm-row-wrapper > .icon
 {
 	background: url(../images/palm-dark/arrow-right-dark.png) center center no-repeat;
 }
-.file-picker #list .palm-row.down > .palm-row-wrapper > .icon
+.folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 {
 	background: url(../images/palm-default/arrow-down.png) center center no-repeat;
 }
-body.palm-dark .file-picker #list .palm-row.down > .palm-row-wrapper > .icon
+body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 {
 	background: url(../images/palm-dark/arrow-down-dark.png) center center no-repeat;
 }
-.file-picker #list .palm-row > .palm-row-wrapper > .check
+.folder-picker #list .palm-row > .palm-row-wrapper > .check
 {
 	display: none;
 }
-.file-picker #list .palm-row.check > .palm-row-wrapper > .check
+.folder-picker #list .palm-row.check > .palm-row-wrapper > .check
 {
 	display: block;
 	float: right;
@@ -1094,12 +1094,22 @@ body.palm-dark .file-picker #list .palm-row.down > .palm-row-wrapper > .icon
 	margin-left: -10px;
 	background: url(../images/checkmark-green.png) center center no-repeat;
 }
-.file-picker #list .palm-row .palm-row-wrapper .title
+.folder-picker #list .palm-row .palm-row-wrapper .title
 {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
+/*.asdf {
+	position: absolute;
+	top:0px;
+	width: 321px;
+	height:70px;
+	border-width: 38px 26px 13px 25px;
+	-webkit-border-image: url(../images/header-background-9tile-week.png) 38 26 13 25;
+	-webkit-box-sizing: border-box;
+}*/
+
 
 
 /*

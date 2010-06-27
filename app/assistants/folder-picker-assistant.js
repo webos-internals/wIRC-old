@@ -79,12 +79,13 @@ FolderPickerAssistant.prototype.activate = function(event)
 					}
 				}
 			}
-			// i don't know why this doesn't work
-			this.controller.sceneScroller.mojo.revealElement(this.controller.get('folder' + this.fixPathForId(this.selectedFolder)));
+			this.controller.sceneScroller.mojo.scrollTo(
+				0,
+				0-(this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).cumulativeOffset().top-(this.controller.window.innerHeight-110)),
+				false);
 		}
 		else
 		{
-			// because this one certainly does...
 			this.controller.sceneScroller.mojo.revealTop();
 		}
 

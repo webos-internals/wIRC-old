@@ -123,7 +123,7 @@ filePicker.prototype.openFilePicker = function()
 		this.stageController = Mojo.Controller.appController.getActiveStageController('card');
 	    if (this.stageController)
 		{
-			this.stageController.pushScene(this.sceneName, this);
+			this.stageController.pushScene({name: this.sceneName, disableSceneScroller: (this.type=='file'?true:false)}, this);
 		}
 		else
 		{
@@ -148,7 +148,7 @@ filePicker.prototype.popFilePicker = function()
 	{
 		var f = function(controller)
 		{
-			controller.pushScene(this.sceneName, this);
+			controller.pushScene({name: this.sceneName, disableSceneScroller: (this.type=='file'?true:false)}, this);
 			this.popped = true;
 		};
 		Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, f.bind(this));
@@ -166,7 +166,7 @@ filePicker.prototype.close = function()
 	}
 	else
 	{
-		this.controller.stageController.popScene();
+		this.stageController.popScene();
 	}
 }
 
