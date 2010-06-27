@@ -9,7 +9,8 @@ function PreferencesNotificationsAssistant()
 		{label: 'Messages',			command: 'messages'},
 		{label: 'Events'		,	command: 'events'},
 		{label: 'Keybindings'	,	command: 'keybindings'},
-		{label: 'Notifications',	command: 'notifications'}
+		{label: 'Notifications',	command: 'notifications'},
+		{label: 'DCC',				command: 'dcc'}
 	];
 	this.currentPage = 'notifications';
 	

@@ -1,4 +1,4 @@
-function PreferencesKeybindingsAssistant()
+function PreferencesDccAssistant()
 {
 	// setup default preferences in the prefCookie.js model
 	this.cookie = new preferenceCookie();
@@ -7,12 +7,12 @@ function PreferencesKeybindingsAssistant()
 	this.pageList = [
 		{label: 'General',			command: 'general'},
 		{label: 'Messages',			command: 'messages'},
-		{label: 'Events'		,	command: 'events'},
-		{label: 'Keybindings'	,	command: 'keybindings'},
+		{label: 'Events',			command: 'events'},
+		{label: 'Keybindings',		command: 'keybindings'},
 		{label: 'Notifications',	command: 'notifications'},
 		{label: 'DCC',				command: 'dcc'}
 	];
-	this.currentPage = 'keybindings';
+	this.currentPage = 'dcc';
 	
 	// setup menu
 	this.menuModel =
@@ -29,7 +29,7 @@ function PreferencesKeybindingsAssistant()
 	}
 }
 
-PreferencesKeybindingsAssistant.prototype.setup = function()
+PreferencesDccAssistant.prototype.setup = function()
 {
 	try
 	{
@@ -61,27 +61,27 @@ PreferencesKeybindingsAssistant.prototype.setup = function()
 
 }
 
-PreferencesKeybindingsAssistant.prototype.toggleChanged = function(event)
+PreferencesDccAssistant.prototype.toggleChanged = function(event)
 {
 	this.prefs[event.target.id] = event.value;
 	this.cookie.put(this.prefs);
 }
-PreferencesKeybindingsAssistant.prototype.sliderChanged = function(event)
+PreferencesDccAssistant.prototype.sliderChanged = function(event)
 {
 	this.cookie.put(this.prefs);
 }
-PreferencesKeybindingsAssistant.prototype.listChanged = function(event)
+PreferencesDccAssistant.prototype.listChanged = function(event)
 {
 	this.cookie.put(this.prefs);
 }
 
-PreferencesKeybindingsAssistant.prototype.pageSwitch = function(page)
+PreferencesDccAssistant.prototype.pageSwitch = function(page)
 {
 	if (page === null || page == "" || page == undefined || page == this.currentPage) return;
 	this.controller.stageController.swapScene({name: 'preferences-'+page, transition: Mojo.Transition.crossFade});
 }
 
-PreferencesKeybindingsAssistant.prototype.pageTap = function(event)
+PreferencesDccAssistant.prototype.pageTap = function(event)
 {
 	this.controller.popupSubmenu(
 	{
@@ -93,7 +93,7 @@ PreferencesKeybindingsAssistant.prototype.pageTap = function(event)
 	});
 }
 
-PreferencesKeybindingsAssistant.prototype.handleCommand = function(event)
+PreferencesDccAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
 	{
@@ -106,7 +106,7 @@ PreferencesKeybindingsAssistant.prototype.handleCommand = function(event)
 	}
 }
 
-PreferencesKeybindingsAssistant.prototype.activate = function(event)
+PreferencesDccAssistant.prototype.activate = function(event)
 {
 	if (!this.hasBennActivated)
 	{
@@ -115,7 +115,7 @@ PreferencesKeybindingsAssistant.prototype.activate = function(event)
 	this.hasBennActivated = true;
 }
 
-PreferencesKeybindingsAssistant.prototype.deactivate = function(event)
+PreferencesDccAssistant.prototype.deactivate = function(event)
 {
 	this.alertListSave();
 	
@@ -123,7 +123,7 @@ PreferencesKeybindingsAssistant.prototype.deactivate = function(event)
 	var tmp = prefs.get(true);
 }
 
-PreferencesKeybindingsAssistant.prototype.cleanup = function(event)
+PreferencesDccAssistant.prototype.cleanup = function(event)
 {
 	this.controller.stopListening(this.pageSelectorElement, Mojo.Event.tap,			   this.pageTapHandler);
 }

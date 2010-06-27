@@ -70,6 +70,10 @@
         "source": "app/assistants/preferences-notifications-assistant.js"
     },
     {
+        "scenes": "preferences-dcc",
+        "source": "app/assistants/preferences-dcc-assistant.js"
+    },
+    {
         "scenes": "identity",
         "source": "app/assistants/identity-assistant.js"
     },
