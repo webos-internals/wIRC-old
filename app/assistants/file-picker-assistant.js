@@ -45,6 +45,7 @@ FilePickerAssistant.prototype.setup = function()
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	if (this.picker.sceneTitle) this.controller.get('header').update(this.picker.sceneTitle);
+	this.controller.get('header').update('Select A File');
 	
 	this.folderHolder = this.controller.get('folderHolder');
 	
