@@ -103,9 +103,9 @@ FolderPickerAssistant.prototype.addRow = function(data, parent)
 	
 	this.controller.listen('folder' + folderId, Mojo.Event.tap, this.tap.bindAsEventListener(this, data.location));
 }
-FolderPickerAssistant.prototype.fixPathForId = function(folder)
+FolderPickerAssistant.prototype.fixPathForId = function(location)
 {
-	return folder.toLowerCase().replace(/\//g, '-');
+	return location.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
 }
 
 FolderPickerAssistant.prototype.tap = function(event, folder, initial)

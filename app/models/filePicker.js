@@ -71,7 +71,7 @@ filePicker.prototype.getDirectory = function(dir)
 	{
 		for (var f = 0; f < d.length; f++)
 		{
-			if (d[f] != '.' && d[f] != '..')
+			if (!d[f].match(folderRegExp))
 			{
 				var file = this.statFile(dir + d[f]);
 				if (file && file.st_size)
