@@ -111,7 +111,7 @@ FilePickerAssistant.prototype.addRow = function(data, parent)
 	var tpl = 'file-picker/file-row';
 	var fileId = this.fixPathForId(data.location);
 	
-	var html = Mojo.View.render({object: {name: data.name + ' ('+(data.isFolder?'folder':'file')+')', file: fileId, rowClass: data.rowClass}, template: tpl});
+	var html = Mojo.View.render({object: {name: data.name/* + ' ('+(data.isFolder?'folder':'file')+')'*/, file: fileId, rowClass: data.rowClass}, template: tpl});
 	parent.insert({bottom: html});
 	
 	if (data.isFolder)
