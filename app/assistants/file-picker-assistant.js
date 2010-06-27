@@ -26,6 +26,8 @@ function FilePickerAssistant(picker)
 		items: []
 	};
 	
+	this.animationDuration = .05;
+	
 	this.movingBack = false;
 	this.selectedFile = false;
 	this.selected = false;
@@ -101,13 +103,13 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
 		    'linear',
-			{from: 0, to: -321, duration: .1}
+			{from: 0, to: -321, duration: this.animationDuration}
 		);
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + folderId),
 		    'left',
 		    'linear',
-			{from: 321, to: 0, duration: .1, currentValue: 321}
+			{from: 321, to: 0, duration: this.animationDuration, currentValue: 321}
 		);
 	}
 }
@@ -144,14 +146,14 @@ FilePickerAssistant.prototype.back = function()
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-1])),
 		    'left',
 		    'linear',
-			{from: 0, to: 321, duration: .1,
+			{from: 0, to: 321, duration: this.animationDuration,
 			onComplete: this.delFolder.bind(this)}
 		);
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
 		    'linear',
-			{from: -321, to: 0, duration: .1}
+			{from: -321, to: 0, duration: this.animationDuration}
 		);
 	}
 }
