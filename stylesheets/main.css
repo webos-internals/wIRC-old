@@ -1136,7 +1136,38 @@ body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 	margin-left: -10px;
 	background: url(../images/checkmark-green.png) center center no-repeat;
 }
-
+.file-picker #folderHolder .fileIcon,
+.file-picker #folderHolder .folderIcon
+{
+	float: left;
+	width: 25px;
+	height: 48px;
+	margin-top: 2px;
+	margin-right: -4px;
+	margin-left: 4px;
+}
+.file-picker #folderHolder .fileIcon
+{
+	background: url(../images/palm-default/file.png) center center no-repeat;
+}
+body.palm-dark .file-picker #folderHolder .fileIcon
+{
+	background: url(../images/palm-dark/file.png) center center no-repeat;
+}
+.file-picker #folderHolder .folderIcon
+{
+	background: url(../images/palm-default/folder.png) center center no-repeat;
+}
+body.palm-dark .file-picker #folderHolder .folderIcon
+{
+	background: url(../images/palm-dark/folder.png) center center no-repeat;
+}
+.file-picker #folderHolder .palm-row .palm-row-wrapper .title
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 
 /*
  * Help Scene Styles
