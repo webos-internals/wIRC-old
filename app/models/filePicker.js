@@ -28,7 +28,6 @@ function filePicker(params)
 	this.num =					filePicker.num;
 	
 	this.topLevel =				'/media/internal/';
-	this.topLevelString =		'USB';
 	
 	this.params =				params;
 	
@@ -191,9 +190,9 @@ filePicker.num = 0;
 
 filePicker.parseFileString = function(f)
 {
-	return f.replace(this.topLevel, this.topLevelString+'/');
+	return f.replace(/\/media\/internal\//i, 'USB/');
 }
-filePicker.parseFileStringForId = function(path)
+filePicker.parseFileStringForId = function(p)
 {
-	return path.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
+	return p.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
 }

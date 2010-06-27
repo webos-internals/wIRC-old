@@ -79,7 +79,7 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 	var tpl = 'file-picker/folder-container';
 	var folderId = filePicker.parseFileStringForId(folder);
 	
-	var html = Mojo.View.render({object: {folder: folderId, left: (initial?0:321)}, template: tpl});
+	var html = Mojo.View.render({object: {folder: folderId, left: (initial?0:321), location: filePicker.parseFileString(folder)}, template: tpl});
 	parent.insert({bottom: html});
 	this.folderTree.push(folder);
 	

@@ -1110,16 +1110,55 @@ body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 	-webkit-border-image: url(../images/file-picker-background.png) 38 26 13 25;
 	-webkit-box-sizing: border-box;
 }
+.file-picker .folder .palm-page-header
+{
+	position: absolute;
+	top: -38px;
+	left: -25px;
+	width: 320px;
+	padding-top: 42px;
+	padding-bottom: 0px;
+	z-index: 2;
+}
+.file-picker .folder .palm-page-header .palm-page-header-wrapper
+{
+	padding-bottom: 0px;
+	margin-bottom: -18px;
+}
+.file-picker .folder .palm-page-header .palm-page-header-wrapper .headerFolderIcon
+{
+	float: left;
+	width: 25px;
+	height: 48px;
+	margin-top: 2px;
+	margin-left: 8px;
+	margin-right: 6px;
+	background: url(../images/palm-default/folder-open.png) center center no-repeat;
+}
+body.palm-dark .file-picker .folder .palm-page-header .palm-page-header-wrapper .headerFolderIcon
+{
+	background: url(../images/palm-dark/folder-open.png) center center no-repeat;
+}
+.file-picker .folder .palm-page-header .palm-page-header-wrapper .title
+{
+	font-weight: bold;
+	text-transform: none !important;
+	padding-left: 0px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 .file-picker #folderHolder .folder .palm-list
 {
 	width: 320px;
 	margin-left: -25px;
 	margin-top: -38px;
-	padding-top: 50px;
+	padding-top: 90px;
+	z-index: 1;
 }
 .file-picker #folderHolder .folder .palm-list .file-list
 {
-	margin-bottom: 50px;
+	margin-bottom: 90px;
 }
 .file-picker #folderHolder .palm-row > .palm-row-wrapper > .check
 {
@@ -1143,22 +1182,24 @@ body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 	width: 25px;
 	height: 48px;
 	margin-top: 2px;
-	margin-right: -4px;
-	margin-left: 4px;
+	margin-right: -6px;
+	margin-left: 6px;
 }
-.file-picker #folderHolder .fileIcon
+.file-picker #folderHolder .palm-row .fileIcon
 {
 	background: url(../images/palm-default/file.png) center center no-repeat;
 }
-body.palm-dark .file-picker #folderHolder .fileIcon
+.file-picker #folderHolder .palm-row.selected .fileIcon,
+body.palm-dark .file-picker #folderHolder .palm-row .fileIcon
 {
 	background: url(../images/palm-dark/file.png) center center no-repeat;
 }
-.file-picker #folderHolder .folderIcon
+.file-picker #folderHolder .palm-row .folderIcon
 {
 	background: url(../images/palm-default/folder.png) center center no-repeat;
 }
-body.palm-dark .file-picker #folderHolder .folderIcon
+.file-picker #folderHolder .palm-row.selected .folderIcon,
+body.palm-dark .file-picker #folderHolder .palm-row .folderIcon
 {
 	background: url(../images/palm-dark/folder.png) center center no-repeat;
 }
