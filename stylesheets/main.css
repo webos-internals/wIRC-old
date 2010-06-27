@@ -1070,19 +1070,23 @@ body.palm-dark .folder-picker #list .drawer
 	margin-top: 2px;
 	margin-right: -4px;
 	margin-left: 4px;
-	background: url(../images/palm-default/arrow-right.png) center center no-repeat;
+	background: url(../images/palm-default/folder.png) center center no-repeat;
 }
+.folder-picker #list .palm-row.selected > .palm-row-wrapper > .icon,
 body.palm-dark .folder-picker #list .palm-row > .palm-row-wrapper > .icon
 {
-	background: url(../images/palm-dark/arrow-right-dark.png) center center no-repeat;
+	background: url(../images/palm-dark/folder.png) center center no-repeat;
 }
-.folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
+.folder-picker #list .palm-row.open > .palm-row-wrapper > .icon
 {
-	background: url(../images/palm-default/arrow-down.png) center center no-repeat;
+	margin-left: 6px;
+	margin-right: -6px;
+	background: url(../images/palm-default/folder-open.png) center center no-repeat;
 }
-body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
+.folder-picker #list .palm-row.selected.open > .palm-row-wrapper > .icon,
+body.palm-dark .folder-picker #list .palm-row.open > .palm-row-wrapper > .icon
 {
-	background: url(../images/palm-dark/arrow-down-dark.png) center center no-repeat;
+	background: url(../images/palm-dark/folder-open.png) center center no-repeat;
 }
 .folder-picker #list .palm-row > .palm-row-wrapper > .check
 {
@@ -1139,11 +1143,11 @@ body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 	margin-top: 2px;
 	margin-left: 8px;
 	margin-right: 6px;
-	background: url(../images/palm-default/folder-open.png) center center no-repeat;
+	background: url(../images/palm-default/folder-open-head.png) center center no-repeat;
 }
 body.palm-dark .file-picker .folder .palm-page-header .palm-page-header-wrapper .headerFolderIcon
 {
-	background: url(../images/palm-dark/folder-open.png) center center no-repeat;
+	background: url(../images/palm-dark/folder-open-head.png) center center no-repeat;
 }
 .file-picker .folder .palm-page-header .palm-page-header-wrapper .title
 {

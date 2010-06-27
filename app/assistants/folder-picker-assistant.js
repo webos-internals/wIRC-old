@@ -135,11 +135,11 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 	var tmpCN = this.controller.get('folder' + folderId).className;
 	if (drawer.mojo && drawer.mojo.getOpenState())
 	{
-		this.controller.get('folder' + folderId).className = tmpCN + ' down';
+		this.controller.get('folder' + folderId).className = tmpCN + ' open';
 	}
 	else
 	{
-		this.controller.get('folder' + folderId).className = tmpCN.replace(/down/g, '');
+		this.controller.get('folder' + folderId).className = tmpCN.replace(/open/g, '');
 	}
 	
 	if (!initial)

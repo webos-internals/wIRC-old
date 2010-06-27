@@ -118,6 +118,8 @@ ServerListAssistant.prototype.checkPlugin = function()
 		this.controller.get('noPlugin').style.display = 'none';
 		this.controller.get('yesPlugin').style.display = '';
 		wircPlugin.registerHandlers();
+		
+		var f = new filePicker({type:'file'});
 	}
 	else
 	{
