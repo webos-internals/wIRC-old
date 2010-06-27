@@ -184,7 +184,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
-		Mojo.Event.listen(this.partOnChangeElement,		Mojo.Event.propertyChange,	this.toggleChanged);
+		Mojo.Event.listen(this.partOnCloseElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 		
 		this.controller.setupWidget
 		(
