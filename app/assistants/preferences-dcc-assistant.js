@@ -136,7 +136,7 @@ PreferencesDccAssistant.prototype.setup = function()
 		
 		this.dccSendActionChanged();
 		this.controller.listen('dccSendAction',			Mojo.Event.propertyChange, this.dccSendActionChanged.bindAsEventListener(this));
-		this.controller.listen('dccSendInviteSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
+		this.controller.listen('dccSendRequestSound',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		this.controller.listen('dccSendAlwaysDefault',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 	}

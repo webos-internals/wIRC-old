@@ -66,29 +66,37 @@ ircDcc.prototype.openRequest = function()
 			var icon = 'icon-dcc-chat.png';
 		}
 		
-		Mojo.Controller.appController.showBanner
-		(
-			{
-				icon: icon,
-				messageText: msgText,
-				soundClass: (prefs.get().dashboardInviteSound?"alerts":"")
-			},
-			{
-				type: 'dcc',
-				server: this.server.id,
-				id: this.id
-			},
-			this.requestBannerName
-		);
-					
-		var tmpController = Mojo.Controller.appController.getStageController(this.requestDashName);
-	    if (tmpController) 
+		if ((prefs.get().dccChatAction == 'prompt' && this.isChat()) ||
+			(prefs.get().dccSendAction == 'prompt' && this.isFile())) 
 		{
-			// do nothing on second invite if dash already exists?
+			Mojo.Controller.appController.showBanner
+			(
+				{
+					icon: icon,
+					messageText: msgText,
+					soundClass: ((prefs.get().dccChatInviteSound && this.isChat()) || (prefs.get().dccSendRequestSound && this.isFile()) ? "alerts" : "")
+				},
+				{
+					type: 'dcc',
+					server: this.server.id,
+					id: this.id
+				},
+				this.requestBannerName
+			);
+						
+			var tmpController = Mojo.Controller.appController.getStageController(this.requestDashName);
+		    if (tmpController) 
+			{
+				// do nothing on second invite if dash already exists?
+			}
+			else
+			{
+				Mojo.Controller.appController.createStageWithCallback({name: this.requestDashName, lightweight: true}, this.openRequestCallback.bind(this), "dashboard");
+			}
 		}
-		else
+		else if (prefs.get().dccChatAction == 'accept' && this.isChat())
 		{
-			Mojo.Controller.appController.createStageWithCallback({name: this.requestDashName, lightweight: true}, this.openRequestCallback.bind(this), "dashboard");
+			this.accept();
 		}
 		
 	}
@@ -118,12 +126,19 @@ ircDcc.prototype.accept = function()
 {
 	if (this.isFile())
 	{
-		this.picker = new filePicker({
-			type: 'folder',
-			pop: true,
-			folder: this.fileDestination,
-			onSelect: this.acceptSend.bind(this)
-		});
+		if (prefs.get().dccSendAlwaysDefault)
+		{
+			this.acceptSend(prefs.get().dccDefaultFolder);
+		}
+		else
+		{
+			this.picker = new filePicker({
+				type: 'folder',
+				pop: true,
+				folder: this.fileDestination,
+				onSelect: this.acceptSend.bind(this)
+			});
+		}
 	}
 	else
 	{
