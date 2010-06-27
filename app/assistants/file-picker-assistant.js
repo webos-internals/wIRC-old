@@ -37,6 +37,8 @@ FilePickerAssistant.prototype.setup = function()
 	this.controller.document.body.className = prefs.get().theme;
 
 	this.picker.setAssistant(this);
+	
+    this.flickHandler = this.flickHandler.bindAsEventListener(this);
 
 	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
@@ -91,6 +93,8 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 	this.controller.setupWidget('scroller'+folderId, {mode: 'vertical'}, {});
 	this.controller.instantiateChildWidgets(this.controller.get('folder'+folderId));
 	
+    this.controller.listen('folder'+folderId, Mojo.Event.flick, this.flickHandler);
+	
 	if (!initial)
 	{
 		Mojo.Animation.animateStyle(
@@ -134,6 +138,7 @@ FilePickerAssistant.prototype.back = function()
 {
 	if (this.folderTree.length > 1)
 	{
+		this.selectFile(false);
 		this.movingBack = true;
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-1])),
@@ -174,6 +179,15 @@ FilePickerAssistant.prototype.selectFile = function(file)
 		this.controller.get('file' + filePicker.parseFileStringForId(this.selectedFile)).className = tmpCN + ' check';
 	}
 	this.updateCommandMenu();
+}
+
+FilePickerAssistant.prototype.flickHandler = function(event)
+{
+	event.stop();
+	if (event.velocity.x > 500 && this.folderTree.length > 1 && !this.movingBack)
+	{
+		this.back();
+	}
 }
 
 FilePickerAssistant.prototype.updateCommandMenu = function(skipUpdate)
