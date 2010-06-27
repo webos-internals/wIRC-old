@@ -1114,6 +1114,12 @@ body.palm-dark .folder-picker #list .palm-row.down > .palm-row-wrapper > .icon
 {
 	width: 320px;
 	margin-left: -25px;
+	margin-top: -38px;
+	padding-top: 50px;
+}
+.file-picker #folderHolder .folder .palm-list .file-list
+{
+	margin-bottom: 50px;
 }
 .file-picker #folderHolder .palm-row > .palm-row-wrapper > .check
 {

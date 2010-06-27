@@ -87,19 +87,22 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 		}
 	}
 	
+	this.controller.setupWidget('scroller'+folderId, {mode: 'vertical'}, {});
+	this.controller.instantiateChildWidgets(this.controller.get('folder'+folderId));
+	
 	if (!initial)
 	{
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + this.fixPathForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
-		    'linear',
-			{from: 0, to: -321, duration: .15}
+		    'linear', //linear/bezier/zeno
+			{from: 0, to: -321, duration: .1}
 		);
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + folderId),
 		    'left',
 		    'linear',
-			{from: 321, to: 0, duration: .15, currentValue: 321}
+			{from: 321, to: 0, duration: .1, currentValue: 321}
 		);
 	}
 }

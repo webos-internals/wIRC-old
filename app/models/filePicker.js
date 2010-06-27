@@ -83,6 +83,22 @@ filePicker.prototype.getDirectory = function(dir)
 			}
 		}
 	}
+	if (returnArray.length > 0)
+	{
+		returnArray.sort(function(a, b)
+		{
+			if (a.name && b.name)
+			{
+				strA = a.name.toLowerCase();
+				strB = b.name.toLowerCase();
+				return ((strA < strB) ? -1 : ((strA > strB) ? 1 : 0));
+			}
+			else
+			{
+				return -1;
+			}
+		});
+	}
 	return returnArray;
 }
 filePicker.prototype.getDirectories = function(dir)
