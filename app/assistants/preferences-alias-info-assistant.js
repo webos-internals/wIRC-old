@@ -1,10 +1,16 @@
-function PreferencesAliasInfoAssistant(param)
+function PreferencesAliasInfoAssistant(params)
 {
 	
-	alert(param);
-	if (param)
-		for (var p in param)
-			alert(p+': '+param[p]);
+	if (params)
+	{
+		this.isAdd = false;
+		this.params = params;
+	}
+	else
+	{
+		this.isAdd = true;
+		this.params = {alias: '', command: ''};
+	}
 	
 	// setup menu
 	this.menuModel =
@@ -31,8 +37,55 @@ PreferencesAliasInfoAssistant.prototype.setup = function()
 		// set this scene's default transition
 		this.controller.setDefaultTransition(Mojo.Transition.zoomFade);
 		
+		if (this.isAdd) this.controller.get('header').update('Add Alias');
+		else this.controller.get('header').update('Edit Alias');
 		
+		this.controller.setupWidget
+		(
+			'alias',
+			{
+				multiline: false,
+				enterSubmits: false,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode,
+				modelProperty: 'alias'
+			},
+			this.params
+		);
 		
+		this.controller.setupWidget
+		(
+			'command',
+			{
+				multiline: false, // true?
+				enterSubmits: false,
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode,
+				modelProperty: 'command'
+			},
+			this.params
+		);
+		
+		if (this.isAdd)
+		{
+			this.controller.setupWidget
+			(
+				'saveButton',
+				{
+					type: Mojo.Widget.activityButton
+				},
+				{
+					buttonLabel: 'Save',
+					buttonClass: 'affirmative',
+					disabled: (this.params.alias == '' && this.params.command == '')
+				}
+			);
+			
+			//Mojo.Event.listen(this.saveButtonElement, Mojo.Event.tap, this.saveButtonPressed);
+		}
+		
+		// make it so nothing is selected by default (textbox rage)
+		this.controller.setInitialFocusedElement(null);
 		
 	}
 	catch (e)

@@ -13,7 +13,13 @@
 		<div class="palm-group-title">Alias</div>
 		<div class="palm-list">
 			
-			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div id="alias" x-mojo-element="TextField"></div>
+					</div>
+				</div>
+			</div>
 			
 		</div>
 	</div>
@@ -22,8 +28,26 @@
 		<div class="palm-group-title">Command</div>
 		<div class="palm-list">
 			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div id="command" x-mojo-element="TextField"></div>
+					</div>
+				</div>
+			</div>
 			
-			
+		</div>
+	</div>
+	
+	<div id="saveButton" x-mojo-element="Button"></div>
+	
+	<div class="palm-text-wrapper">
+		<div class="title left">Replacements:</div>
+		<div class="palm-body-text">
+			<strong>%2</strong> = word 2<br />
+			<strong>%3</strong> = word 3<br />
+			<strong>&2</strong> = word 2 to the end<br />
+			<strong>&3</strong> = word 3 to the end<br />
 		</div>
 	</div>
 	
