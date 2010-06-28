@@ -74,6 +74,10 @@
         "source": "app/assistants/preferences-dcc-assistant.js"
     },
     {
+        "scenes": "preferences-aliases",
+        "source": "app/assistants/preferences-aliases-assistant.js"
+    },
+    {
         "scenes": "identity",
         "source": "app/assistants/identity-assistant.js"
     },
