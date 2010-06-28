@@ -325,6 +325,44 @@ ircChannel.prototype.clearMessages = function()
 	this.messages = [];
 }
 
+ircChannel.prototype.isFav = function()
+{
+	if (this.server.favoriteChannels.length > 0)
+	{
+		for (var c = 0; c < this.server.favoriteChannels.length; c++)
+		{
+			if (this.server.favoriteChannels[c].toLowerCase() == this.name)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+ircChannel.prototype.addFav = function()
+{
+	var tmpServer = this.server.getEditObject();
+	tmpServer.favoriteChannels.push(this.name);
+	this.server.saveInfo(tmpServer);
+}
+ircChannel.prototype.delFav = function()
+{
+	var tmpServer = this.server.getEditObject();
+	var newFavs = [];
+	if (tmpServer.favoriteChannels.length > 0)
+	{
+		for (var c = 0; c < tmpServer.favoriteChannels.length; c++)
+		{
+			if (tmpServer.favoriteChannels[c].toLowerCase() != this.name)
+			{
+				newFavs.push(tmpServer.favoriteChannels[c]);
+			}
+		}
+	}
+	tmpServer.favoriteChannels = newFavs;
+	this.server.saveInfo(tmpServer);
+}
+
 ircChannel.prototype.openDash = function(message)
 {
 	try

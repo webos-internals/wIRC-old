@@ -462,7 +462,22 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
 		});
 	}
     
-    // Channel menu options   
+    // Channel menu options
+	if (!this.channel.isFav())
+	{
+	    channelItems.push({
+	        label: "Add To Favorites",
+	        command: 'do-add-fav'
+	    });
+	}
+	else
+	{
+	    channelItems.push({
+	        label: "Delete From Favorites",
+	        command: 'do-del-fav'
+	    });
+	}
+	
     channelItems.push({
         label: "Clear Backlog",
         command: 'do-clear-backlog'
@@ -535,6 +550,15 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
 					this.controller.stageController.pushScene('server-info', this.channel.server.id);
 					break;
 					
+                case 'do-add-fav':
+					this.channel.addFav();
+					this.updateAppMenu();
+					break;
+                case 'do-del-fav':
+					this.channel.delFav();
+					this.updateAppMenu();
+					break;
+
                 case 'do-clear-backlog':
                     this.channel.clearMessages();
                     this.listModel.items = [];

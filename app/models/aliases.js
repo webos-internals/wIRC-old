@@ -79,7 +79,7 @@ aliasesModel.prototype.add = function(alias, command)
 		this.aliases.push({alias: alias, command: command});
 		this.save();
 	} 
-	catch (e) 
+	catch (e)
 	{
 		Mojo.Log.logException(e, 'aliasesModel#add');
 	}
