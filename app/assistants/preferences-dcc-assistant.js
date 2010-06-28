@@ -10,7 +10,8 @@ function PreferencesDccAssistant()
 		{label: 'Events',			command: 'events'},
 		{label: 'Keybindings',		command: 'keybindings'},
 		{label: 'Notifications',	command: 'notifications'},
-		{label: 'DCC',				command: 'dcc'}
+		{label: 'DCC',				command: 'dcc'},
+		{label: 'Aliases',			command: 'aliases'}
 	];
 	this.currentPage = 'dcc';
 	
