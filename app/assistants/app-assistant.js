@@ -1,15 +1,13 @@
 // our main stage
 var serverStage = 'serverStage';
 
-// load our database object
-var db = new database();
-
 // get the cookies
-var prefs = new preferenceCookie();
-var vers =  new versionCookie();
+var prefs =		new preferenceCookie();
+var vers =		new versionCookie();
+var aliases =	new aliasesModel();
 
 // holds the servers
-var servers = new ircServers();
+var servers =	new ircServers();
 
 // Command History
 var cmdHistory = [];

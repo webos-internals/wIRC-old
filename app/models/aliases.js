@@ -1,0 +1,91 @@
+function aliasesModel()
+{
+	this.cookie = false;
+	this.aliases = [];
+	this.defaultNum = 0;
+	this.load();
+};
+aliasesModel.prototype.load = function()
+{
+	try
+	{
+		if (!this.cookie) 
+		{
+			this.cookie = new Mojo.Model.Cookie('aliases');
+			var cookieData = this.cookie.get();
+			if (cookieData)
+			{
+				this.aliases = cookieData.aliases;
+				this.defaultNum = cookieData.defaultNum;
+				this.loadDefaults();
+			}
+			else
+			{
+				this.aliases = aliasesModel.defaultAliases;
+				this.defaultNum = aliasesModel.defaultHighest;
+			}
+		}
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'aliasesModel#load');
+	}
+};
+aliasesModel.prototype.loadDefaults = function()
+{
+	for (var a = 0; a < aliasesModel.defaultAliases.length; a++)
+	{
+		if (aliasesModel.defaultAliases[a] > this.defaultNum)
+		{
+			this.add(aliasesModel.defaultAliases[a]);
+		}
+	}
+}
+aliasesModel.prototype.save = function()
+{
+	try
+	{
+		if (!this.cookie) 
+		{
+			this.load();
+		}
+		this.cookie.put({aliases: this.aliases, defaultNum: this.defaultNum});
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'aliasesModel#save');
+	}
+};
+aliasesModel.prototype.get = function()
+{
+	try 
+	{
+		if (this.aliases.length > 0) 
+		{
+			return this.aliases;
+		}
+		return [];
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'aliasesModel#get');
+	}
+};
+aliasesModel.prototype.add = function(alias, command)
+{
+	try 
+	{
+		this.aliases.push({alias: alias, command: command});
+		this.save();
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'aliasesModel#add');
+	}
+};
+
+aliasesModel.defaultHighest = 1;
+aliasesModel.defaultAliases =
+[
+	{num: 1, alias: 'j', command: 'join'}
+];
