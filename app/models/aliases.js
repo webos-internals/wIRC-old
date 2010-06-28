@@ -72,11 +72,32 @@ aliasesModel.prototype.get = function()
 		Mojo.Log.logException(e, 'aliasesModel#get');
 	}
 };
+aliasesModel.prototype.getAliasKey = function(alias)
+{
+	try 
+	{
+		if (this.aliases.length > 0) 
+		{
+			for (var a = 0; a < this.aliases.length; a++)
+			{
+				if (this.aliases[a].alias.toLowerCase() == alias.toLowerCase())
+				{
+					return a;
+				}
+			}
+		}
+		return false;
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'aliasesModel#getAliasKey');
+	}
+};
 aliasesModel.prototype.add = function(alias, command)
 {
 	try 
 	{
-		this.aliases.push({alias: alias, command: command});
+		this.aliases.push({alias: alias.toLowerCase(), command: command.toLowerCase()});
 		this.save();
 	} 
 	catch (e)
@@ -88,7 +109,7 @@ aliasesModel.prototype.edit = function(key, alias, command)
 {
 	try 
 	{
-		this.aliases[key] = {alias: alias, command: command};
+		this.aliases[key] = {alias: alias.toLowerCase(), command: command.toLowerCase()};
 		this.save();
 	}
 	catch (e) 
