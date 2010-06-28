@@ -89,6 +89,11 @@ body.palm-dark .prefs .page-selector
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
+.prefs .palm-group .palm-group-title .right
+{
+	float: right;
+	margin-right: 12px;
+}
 
 
 /*
