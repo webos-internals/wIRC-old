@@ -43,13 +43,29 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		// setup page selector
 		this.pageSelectorElement =	this.controller.get('pageSelector');
 		this.pageNameElement =		this.controller.get('pageName');
+		this.aliasListElement =		this.controller.get('aliasList');
 		this.pageTapHandler =		this.pageTap.bindAsEventListener(this);
 		this.pageSwitcher =			this.pageSwitch.bindAsEventListener(this);
 		this.controller.listen(this.pageSelectorElement, Mojo.Event.tap, this.pageTapHandler);
 		
 		this.pageNameElement.update(this.currentPage);
 		
-		alert(aliases.get());
+		this.buildAliasList(true);
+		this.controller.setupWidget
+		(
+			'aliasList',
+			{
+				itemTemplate: "preferences-aliases/alias-row",
+				swipeToDelete: true,
+				reorderable: true,
+				addItemLabel: 'Add'
+			},
+			this.listModel
+		);
+		
+		this.controller.listen(this.aliasListElement, Mojo.Event.listAdd,		this.aliasListAdd.bindAsEventListener(this));
+		this.controller.listen(this.aliasListElement, Mojo.Event.listReorder,	this.aliasListReorder.bindAsEventListener(this));
+		this.controller.listen(this.aliasListElement, Mojo.Event.listDelete,	this.aliasListDelete.bindAsEventListener(this));
 		
 	}
 	catch (e)
@@ -57,6 +73,107 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		Mojo.Log.logException(e, 'preferences#setup');
 	}
 
+}
+
+PreferencesAliasesAssistant.prototype.buildAliasList = function(initial)
+{
+	this.listModel = {items:[]};
+	this.aliasData = aliases.get();
+	
+	if (this.aliasData.length > 0)
+	{
+		for (var d = 0; d < this.aliasData.length; d++)
+		{
+			this.listModel.items.push({id: this.listModel.items.length+1, index: this.listModel.items.length, alias: this.aliasData[d].alias, command: this.aliasData[d].command});
+		}
+	}
+	
+	if (!initial)
+	{
+		this.aliasListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+	 	this.aliasListElement.mojo.setLength(this.listModel.items.length);
+	}
+}
+PreferencesAliasesAssistant.prototype.aliasListAdd = function(event)
+{
+	
+}
+PreferencesAliasesAssistant.prototype.aliasListReorder = function(event)
+{
+	for (var i = 0; i < this.listModel.items.length; i++) 
+	{
+		if (this.listModel.items[i].index == event.fromIndex) 
+		{
+			this.listModel.items[i].index = event.toIndex;
+		}
+		else 
+		{
+			if (event.fromIndex > event.toIndex) 
+			{
+				if (this.listModel.items[i].index < event.fromIndex &&
+					this.listModel.items[i].index >= event.toIndex) 
+				{
+					this.listModel.items[i].index++;
+				}
+			}
+			else if (event.fromIndex < event.toIndex) 
+			{
+				if (this.listModel.items[i].index > event.fromIndex &&
+					this.listModel.items[i].index <= event.toIndex) 
+				{
+					this.listModel.items[i].index--;
+				}
+			}
+		}
+	}
+	this.aliasListSave();
+}
+PreferencesAliasesAssistant.prototype.aliasListDelete = function(event)
+{
+	var newData = [];
+	if (this.listModel.items.length > 0) 
+	{
+		for (var i = 0; i < this.listModel.items.length; i++) 
+		{
+			if (this.listModel.items[i].id == event.item.id) 
+			{
+				// ignore
+			}
+			else 
+			{
+				if (this.listModel.items[i].index > event.index) 
+				{
+					this.listModel.items[i].index--;
+				}
+				newData.push(this.listModel.items[i]);
+			}
+		}
+	}
+	this.listModel.items = newData;
+	this.aliasListElement.mojo.noticeUpdatedItems(0, this.listModel.items);
+ 	this.aliasListElement.mojo.setLength(this.listModel.items.length);
+	this.aliasListSave();
+}
+PreferencesAliasesAssistant.prototype.aliasListSave = function()
+{
+	var newData = [];
+	if (this.listModel.items.length > 0) 
+	{
+		if (this.listModel.items.length > 1) 
+		{
+			this.listModel.items.sort(function(a, b)
+			{
+				return a.index - b.index;
+			});
+		}
+		
+		for (var i = 0; i < this.listModel.items.length; i++) 
+		{
+			newData.push({alias: this.listModel.items[i].alias, command: this.listModel.items[i].command});
+		}
+	}
+	aliases.aliases = newData;
+	aliases.save();
 }
 
 PreferencesAliasesAssistant.prototype.pageSwitch = function(page)
@@ -101,6 +218,7 @@ PreferencesAliasesAssistant.prototype.activate = function(event)
 
 PreferencesAliasesAssistant.prototype.deactivate = function(event)
 {
+	this.aliasListSave();
 }
 
 PreferencesAliasesAssistant.prototype.cleanup = function(event)

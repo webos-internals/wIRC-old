@@ -18,7 +18,7 @@ aliasesModel.prototype.load = function()
 			{
 				this.aliases = cookieData.aliases;
 				this.defaultNum = cookieData.defaultNum;
-				this.loadDefaults();
+				if (aliasesModel.defaultHighest > this.defaultNum) this.loadDefaults();
 			}
 			else
 			{
@@ -48,7 +48,7 @@ aliasesModel.prototype.save = function()
 	{
 		if (!this.cookie) 
 		{
-			this.load();
+			return;
 		}
 		this.cookie.put({aliases: this.aliases, defaultNum: this.defaultNum});
 	}
@@ -90,10 +90,10 @@ aliasesModel.prototype.edit = function(key, alias, command)
 	{
 		this.aliases[key] = {alias: alias, command: command};
 		this.save();
-	} 
+	}
 	catch (e) 
 	{
-		Mojo.Log.logException(e, 'aliasesModel#add');
+		Mojo.Log.logException(e, 'aliasesModel#edit');
 	}
 };
 aliasesModel.prototype.del = function(key)
@@ -105,7 +105,7 @@ aliasesModel.prototype.del = function(key)
 	} 
 	catch (e) 
 	{
-		Mojo.Log.logException(e, 'aliasesModel#add');
+		Mojo.Log.logException(e, 'aliasesModel#del');
 	}
 };
 
@@ -114,8 +114,9 @@ aliasesModel.defaultAliases =
 [
 	{num: 1, alias: 'j',		command: 'join &2'},
 	{num: 1, alias: 'part',		command: 'leave &2'},
+	{num: 1, alias: 'm',		command: 'query &2'},
 	{num: 1, alias: 'msg',		command: 'query &2'},
 	{num: 1, alias: 'raw',		command: 'quote &2'},
 	{num: 1, alias: 'ns',		command: 'msg NickServ &2'},
-	{num: 1, alias: 'authserv',	command: 'msg AuthServ &2'},
+	{num: 1, alias: 'authserv',	command: 'msg AuthServ &2'}
 ];
