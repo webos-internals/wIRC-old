@@ -49,11 +49,6 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		
 		this.pageNameElement.update(this.currentPage);
 		
-		// setup handlers for preferences
-		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
-		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
-		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
-		
 		alert(aliases.get());
 		
 	}
@@ -62,20 +57,6 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		Mojo.Log.logException(e, 'preferences#setup');
 	}
 
-}
-
-PreferencesAliasesAssistant.prototype.toggleChanged = function(event)
-{
-	this.prefs[event.target.id] = event.value;
-	this.cookie.put(this.prefs);
-}
-PreferencesAliasesAssistant.prototype.sliderChanged = function(event)
-{
-	this.cookie.put(this.prefs);
-}
-PreferencesAliasesAssistant.prototype.listChanged = function(event)
-{
-	this.cookie.put(this.prefs);
 }
 
 PreferencesAliasesAssistant.prototype.pageSwitch = function(page)
@@ -120,10 +101,6 @@ PreferencesAliasesAssistant.prototype.activate = function(event)
 
 PreferencesAliasesAssistant.prototype.deactivate = function(event)
 {
-	this.alertListSave();
-	
-	// reload global storage of preferences when we get rid of this stage
-	var tmp = prefs.get(true);
 }
 
 PreferencesAliasesAssistant.prototype.cleanup = function(event)

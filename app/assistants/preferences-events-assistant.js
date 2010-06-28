@@ -244,8 +244,6 @@ PreferencesEventsAssistant.prototype.activate = function(event)
 
 PreferencesEventsAssistant.prototype.deactivate = function(event)
 {
-	this.alertListSave();
-	
 	// reload global storage of preferences when we get rid of this stage
 	var tmp = prefs.get(true);
 }
