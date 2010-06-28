@@ -84,6 +84,30 @@ aliasesModel.prototype.add = function(alias, command)
 		Mojo.Log.logException(e, 'aliasesModel#add');
 	}
 };
+aliasesModel.prototype.edit = function(key, alias, command)
+{
+	try 
+	{
+		this.aliases[key] = {alias: alias, command: command};
+		this.save();
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'aliasesModel#add');
+	}
+};
+aliasesModel.prototype.del = function(key)
+{
+	try 
+	{
+		this.aliases[key] = false;
+		this.save();
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'aliasesModel#add');
+	}
+};
 
 aliasesModel.defaultHighest = 1;
 aliasesModel.defaultAliases =
