@@ -619,6 +619,7 @@ ChannelChatAssistant.prototype.visibleWindow = function(event){
     }
     this.channel.closeDash();
     this.updateLagMeter();
+	this.updateAppMenu();
 }
 ChannelChatAssistant.prototype.invisibleWindow = function(event){
     this.isVisible = false;
