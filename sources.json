@@ -78,6 +78,10 @@
         "source": "app/assistants/preferences-aliases-assistant.js"
     },
     {
+        "scenes": "preferences-alias-info",
+        "source": "app/assistants/preferences-alias-info-assistant.js"
+    },
+    {
         "scenes": "identity",
         "source": "app/assistants/identity-assistant.js"
     },

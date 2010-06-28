@@ -63,6 +63,7 @@ PreferencesAliasesAssistant.prototype.setup = function()
 			this.listModel
 		);
 		
+		this.controller.listen(this.aliasListElement, Mojo.Event.listTap,		this.aliasListTap.bindAsEventListener(this));
 		this.controller.listen(this.aliasListElement, Mojo.Event.listAdd,		this.aliasListAdd.bindAsEventListener(this));
 		this.controller.listen(this.aliasListElement, Mojo.Event.listReorder,	this.aliasListReorder.bindAsEventListener(this));
 		this.controller.listen(this.aliasListElement, Mojo.Event.listDelete,	this.aliasListDelete.bindAsEventListener(this));
@@ -94,9 +95,13 @@ PreferencesAliasesAssistant.prototype.buildAliasList = function(initial)
 	 	this.aliasListElement.mojo.setLength(this.listModel.items.length);
 	}
 }
+PreferencesAliasesAssistant.prototype.aliasListTap = function(event)
+{
+	this.controller.stageController.pushScene('preferences-alias-info', event.item);
+}
 PreferencesAliasesAssistant.prototype.aliasListAdd = function(event)
 {
-	
+	this.controller.stageController.pushScene('preferences-alias-info', false);
 }
 PreferencesAliasesAssistant.prototype.aliasListReorder = function(event)
 {
@@ -212,6 +217,10 @@ PreferencesAliasesAssistant.prototype.activate = function(event)
 	if (!this.hasBennActivated)
 	{
 		this.pageSwitcher(this.currentPage);
+	}
+	else
+	{
+		this.buildAliasList();
 	}
 	this.hasBennActivated = true;
 }
