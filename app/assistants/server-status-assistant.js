@@ -51,6 +51,7 @@ ServerStatusAssistant.prototype.setup = function()
             omitDefaultItems: true
         }, this.menuModel);
 		
+        this.documentElement = this.controller.stageController.document;
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
 		this.networkLagElement =		this.controller.get('networkLag');
