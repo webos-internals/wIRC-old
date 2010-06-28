@@ -53,7 +53,9 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		this.toggleChangeHandler = this.toggleChanged.bindAsEventListener(this);
 		this.sliderChangeHandler = this.sliderChanged.bindAsEventListener(this);
 		this.listChangedHandler  = this.listChanged.bindAsEventListener(this);
-				
+		
+		alert(aliases.get());
+		
 	}
 	catch (e)
 	{

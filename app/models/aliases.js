@@ -12,6 +12,7 @@ aliasesModel.prototype.load = function()
 		if (!this.cookie) 
 		{
 			this.cookie = new Mojo.Model.Cookie('aliases');
+			//this.cookie.remove(); // uncomment to delete cookie for testing
 			var cookieData = this.cookie.get();
 			if (cookieData)
 			{
@@ -35,7 +36,7 @@ aliasesModel.prototype.loadDefaults = function()
 {
 	for (var a = 0; a < aliasesModel.defaultAliases.length; a++)
 	{
-		if (aliasesModel.defaultAliases[a] > this.defaultNum)
+		if (aliasesModel.defaultAliases[a].num > this.defaultNum)
 		{
 			this.add(aliasesModel.defaultAliases[a]);
 		}
@@ -87,5 +88,10 @@ aliasesModel.prototype.add = function(alias, command)
 aliasesModel.defaultHighest = 1;
 aliasesModel.defaultAliases =
 [
-	{num: 1, alias: 'j', command: 'join'}
+	{num: 1, alias: 'j',		command: 'join &2'},
+	{num: 1, alias: 'part',		command: 'leave &2'},
+	{num: 1, alias: 'msg',		command: 'query &2'},
+	{num: 1, alias: 'raw',		command: 'quote &2'},
+	{num: 1, alias: 'ns',		command: 'msg NickServ &2'},
+	{num: 1, alias: 'authserv',	command: 'msg AuthServ &2'},
 ];
