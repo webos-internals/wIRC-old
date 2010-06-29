@@ -169,7 +169,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 					autoIdentify:		false,
 					identifyService:	'',
 					identifyPassword:	'',
-					onConnect:			['/j '+params.join],
+					onConnect:			['/join '+params.join],
 					favoriteChannels:	[],
 					defaultNick:		(prefs.get().nicknames[0]?prefs.get().nicknames[0]:(params.nick?params.nick:'wIRCer_'+Math.floor(Math.random()*9999))),
 					isTemporary:		true

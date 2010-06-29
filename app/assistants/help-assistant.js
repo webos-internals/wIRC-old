@@ -122,7 +122,7 @@ HelpAssistant.prototype.listTapHandler = function(event)
 					autoIdentify:		false,
 					identifyService:	'',
 					identifyPassword:	'',
-					onConnect:			['/j #wirc'],
+					onConnect:			['/join #wirc'],
 					favoriteChannels:	[],
 					defaultNick:		(prefs.get().nicknames[0]?prefs.get().nicknames[0]:'wIRCer_'+Math.floor(Math.random()*9999)),
 					isTemporary:		true
