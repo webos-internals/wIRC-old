@@ -112,8 +112,16 @@ PreferencesAliasInfoAssistant.prototype.saveButtonPressed = function(event)
 	{
 		if (!aliases.getAliasKey(this.params.alias))
 		{
-			aliases.add(this.params.alias, this.params.command);
-			this.doneSaving();
+			if (!aliasesModel.commands.include(this.params.alias.toLowerCase()))
+			{
+				aliases.add(this.params.alias, this.params.command);
+				this.doneSaving();
+			}
+			else
+			{
+				// tell the user this can't be used as an alias, as its already a hard command
+				this.saveButtonElement.mojo.deactivate();
+			}
 		}
 		else
 		{
@@ -124,7 +132,7 @@ PreferencesAliasInfoAssistant.prototype.saveButtonPressed = function(event)
 }
 PreferencesAliasInfoAssistant.prototype.textChanged = function(event)
 {
-	if (this.params.alias != '' && this.params.command != '')
+	if (this.params.alias != '' && this.params.command != '' && !aliasesModel.commands.include(this.params.alias.toLowerCase()))
 	{
 		this.buttonModel.disabled = false;
 		this.controller.modelChanged(this.buttonModel);
@@ -163,7 +171,14 @@ PreferencesAliasInfoAssistant.prototype.deactivate = function(event)
 {
 	if (this.aliasKey !== false && this.params.alias != '' && this.params.command != '')
 	{
-		aliases.edit(this.aliasKey, this.params.alias, this.params.command);
+		if (!aliasesModel.commands.include(this.params.alias.toLowerCase()))
+		{
+			aliases.edit(this.aliasKey, this.params.alias, this.params.command);
+		}
+		else
+		{
+			// at this point, we can't really tell them that their alias is already a hard command
+		}
 	}
 }
 

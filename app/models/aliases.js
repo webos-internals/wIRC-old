@@ -210,7 +210,7 @@ aliasesModel.prototype.del = function(key)
 
 aliasesModel.defaultHighest = 1;
 aliasesModel.defaultAliases =
-[
+[	// aliases to load automatically
 	{num: 1, alias: 'j',		command: 'join &2'},
 	{num: 1, alias: 'leave',	command: 'part &2'},
 	{num: 1, alias: 'm',		command: 'msg &2'},
@@ -218,4 +218,28 @@ aliasesModel.defaultAliases =
 	{num: 1, alias: 'exit',		command: 'quit'},
 	{num: 1, alias: 'ns',		command: 'msg NickServ &2'},
 	{num: 1, alias: 'authserv',	command: 'msg AuthServ &2'}
+];
+aliasesModel.commands =
+[	// built-in commands that can't be an alias
+	'away',
+	'ctcp',
+	'dcc',
+	'getip',
+	'ignore',
+	'join',
+	'kick',
+	'list',
+	'me',
+	'mode',
+	'msg',
+	'nick',
+	'notice',
+	'part',
+	'ping',
+	'query',
+	'quit',
+	'quote',
+	'topic',
+	'umode',
+	'whois'
 ];
