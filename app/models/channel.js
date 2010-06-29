@@ -57,7 +57,7 @@ ircChannel.prototype.newCommand = function(message)
 				case 'kick':
 					var tmpMatch = twoValRegExp.exec(val);
 					this.kick(tmpMatch[1], tmpMatch[2]);
-					break;				
+					break;
 				
 				case 'topic':
 					if (val) 

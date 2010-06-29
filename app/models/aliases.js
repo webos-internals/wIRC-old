@@ -7,38 +7,79 @@ function aliasesModel()
 };
 aliasesModel.prototype.parse = function(message, object, objectType)
 {
-	if (this.aliases.length < 1)
-		return message;
-	
-	var match = cmdRegExp.exec(message);
-	if (match)
+	try
 	{
-		var cmd = match[1].toLowerCase();
-		var val = match[2];
+		if (this.aliases.length < 1)
+			return message;
 		
-		for (var a = 0; a < this.aliases.length; a++)
+		var match = cmdRegExp.exec(message);
+		if (match)
 		{
-			if (cmd == this.aliases[a].alias)
+			var cmd = match[1].toLowerCase();
+			var val = match[2];
+			
+			for (var a = 0; a < this.aliases.length; a++)
 			{
-				var parsed = '/'+this.aliases[a].command;
-				
-				if (this.aliases[a].command.include('&2'))
-					parsed = parsed.replace('&2', val);
-				
-				/*
-				alert('=============');
-				alert('message: '+message);
-				alert('alias:   '+this.aliases[a].alias);
-				alert('command: '+this.aliases[a].command);
-				alert('parsed:  '+parsed);
-				*/
-				
-				return parsed;
+				if (cmd == this.aliases[a].alias)
+				{
+					var parsed = '/'+this.aliases[a].command;
+					var pTwo   = twoValRegExp.exec(val);
+					var pThree = threeValRegExp.exec(val);
+					
+					// %2 - word 2
+					if (this.aliases[a].command.include('%2'))
+					{
+						if (pTwo && pTwo[1])
+							parsed = parsed.replace('%2', pTwo[1]);
+						else
+							parsed = parsed.replace('%2', '');
+					}
+					
+					// %3 - word 3
+					if (this.aliases[a].command.include('%3'))
+					{
+						if (pThree && pThree[2])
+							parsed = parsed.replace('%3', pThree[2]);
+						else
+							parsed = parsed.replace('%3', '');
+					}
+					
+					// &2 - word 2 to end
+					if (this.aliases[a].command.include('&2'))
+					{
+						if (val)
+							parsed = parsed.replace('&2', val);
+						else
+							parsed = parsed.replace('&2', '');
+					}
+					
+					// &3 - word 3 to end
+					if (this.aliases[a].command.include('&3'))
+					{
+						if (pTwo && pTwo[2])
+							parsed = parsed.replace('&3', pTwo[1]);
+						else
+							parsed = parsed.replace('&3', '');
+					}
+					
+					alert('=============');
+					alert('message: '+message);
+					alert('alias:   '+this.aliases[a].alias);
+					alert('command: '+this.aliases[a].command);
+					alert('parsed:  '+parsed);
+					
+					return parsed;
+				}
 			}
 		}
+		
+		return message;
 	}
-	
-	return message;
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'aliasesModel#parse');
+		return message;
+	}
 }
 aliasesModel.prototype.load = function()
 {
