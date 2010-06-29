@@ -148,6 +148,8 @@ ircServer.prototype.newCommand = function(message)
 		if (cmdHistory.length>prefs.get().cmdHistoryMax)
 			cmdHistory.pop();
 		
+		message = aliases.parse(message, 'server', this);
+		
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{

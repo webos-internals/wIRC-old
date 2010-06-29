@@ -5,6 +5,41 @@ function aliasesModel()
 	this.defaultNum = 0;
 	this.load();
 };
+aliasesModel.prototype.parse = function(message, object, objectType)
+{
+	if (this.aliases.length < 1)
+		return message;
+	
+	var match = cmdRegExp.exec(message);
+	if (match)
+	{
+		var cmd = match[1].toLowerCase();
+		var val = match[2];
+		
+		for (var a = 0; a < this.aliases.length; a++)
+		{
+			if (cmd == this.aliases[a].alias)
+			{
+				var parsed = '/'+this.aliases[a].command;
+				
+				if (this.aliases[a].command.include('&2'))
+					parsed = parsed.replace('&2', val);
+				
+				/*
+				alert('=============');
+				alert('message: '+message);
+				alert('alias:   '+this.aliases[a].alias);
+				alert('command: '+this.aliases[a].command);
+				alert('parsed:  '+parsed);
+				*/
+				
+				return parsed;
+			}
+		}
+	}
+	
+	return message;
+}
 aliasesModel.prototype.load = function()
 {
 	try

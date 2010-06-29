@@ -31,6 +31,8 @@ ircChannel.prototype.newCommand = function(message)
 		if (cmdHistory.length>prefs.get().cmdHistoryMax)
 			cmdHistory.pop();
 		
+		message = aliases.parse(message, 'channel', this);
+		
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{
