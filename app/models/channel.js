@@ -42,7 +42,6 @@ ircChannel.prototype.newCommand = function(message)
 			switch(cmd.toLowerCase())
 			{
 				case 'part':
-				case 'leave':
 					this.part(val);
 					break;
 					
@@ -50,7 +49,6 @@ ircChannel.prototype.newCommand = function(message)
 					this.me(val);
 					break;
 					
-				case 'j':
 				case 'join':
 					var vals = val.split(" ");
 					this.server.joinChannel(vals[0],vals[1]);

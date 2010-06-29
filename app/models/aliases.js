@@ -169,10 +169,10 @@ aliasesModel.defaultHighest = 1;
 aliasesModel.defaultAliases =
 [
 	{num: 1, alias: 'j',		command: 'join &2'},
-	{num: 1, alias: 'part',		command: 'leave &2'},
-	{num: 1, alias: 'm',		command: 'query &2'},
-	{num: 1, alias: 'msg',		command: 'query &2'},
+	{num: 1, alias: 'leave',	command: 'part &2'},
+	{num: 1, alias: 'm',		command: 'msg &2'},
 	{num: 1, alias: 'raw',		command: 'quote &2'},
+	{num: 1, alias: 'exit',		command: 'quit'},
 	{num: 1, alias: 'ns',		command: 'msg NickServ &2'},
 	{num: 1, alias: 'authserv',	command: 'msg AuthServ &2'}
 ];

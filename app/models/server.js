@@ -162,6 +162,7 @@ ircServer.prototype.newCommand = function(message)
 					var ip = plugin.get_external_ip();
 					alert(ip);
 					break;
+					
 				case 'dcc':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) {
@@ -189,23 +190,14 @@ ircServer.prototype.newCommand = function(message)
 				case 'nick':
 					plugin.cmd_nick(servers.getServerArrayKey(this.id), val);
 					break;
-						
-				case 'j':
+				
 				case 'join':
 					var vals = val.split(" ");
 					this.joinChannel(vals[0],vals[1]);
 					break;
 				
-				case 'authserv':
-					this.newCommand('/msg AuthServ ' + val);
-					break;
-				
-				case 'ns':
-					this.newCommand('/msg NickServ ' + val);
-					break;
-
-				case 'query':					
 				case 'msg':
+				case 'query':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch) 
 					{
@@ -321,7 +313,6 @@ ircServer.prototype.newCommand = function(message)
 					this.disconnect(val);
 					break;
 					
-				case 'raw':
 				case 'quote':
 					plugin.send_raw(servers.getServerArrayKey(this.id), val);
 					break;
