@@ -62,11 +62,13 @@ aliasesModel.prototype.parse = function(message, object, objectType)
 							parsed = parsed.replace('&3', '');
 					}
 					
+					/*
 					alert('=============');
 					alert('message: '+message);
 					alert('alias:   '+this.aliases[a].alias);
 					alert('command: '+this.aliases[a].command);
 					alert('parsed:  '+parsed);
+					*/
 					
 					return parsed;
 				}
