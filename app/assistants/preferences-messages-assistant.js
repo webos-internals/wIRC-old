@@ -8,7 +8,7 @@ function PreferencesMessagesAssistant()
 		{label: 'General',			command: 'general'},
 		{label: 'Messages',			command: 'messages'},
 		{label: 'Events',			command: 'events'},
-		{label: 'Keybindings',		command: 'keybindings'},
+		//{label: 'Keybindings',		command: 'keybindings'},
 		{label: 'Notifications',	command: 'notifications'},
 		{label: 'DCC',				command: 'dcc'},
 		{label: 'Aliases',			command: 'aliases'}
