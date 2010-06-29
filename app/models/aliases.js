@@ -5,7 +5,7 @@ function aliasesModel()
 	this.defaultNum = 0;
 	this.load();
 };
-aliasesModel.prototype.parse = function(message, object, objectType)
+aliasesModel.prototype.parse = function(message, objectType, object)
 {
 	try
 	{
@@ -23,8 +23,46 @@ aliasesModel.prototype.parse = function(message, object, objectType)
 				if (cmd == this.aliases[a].alias)
 				{
 					var parsed = '/'+this.aliases[a].command;
+					
 					var pTwo   = twoValRegExp.exec(val);
 					var pThree = threeValRegExp.exec(val);
+					
+					// %c - current channel
+					if (this.aliases[a].command.include('%c'))
+					{
+						if (objectType == 'channel')
+							parsed = parsed.replace('%c', object.name);
+						else
+							parsed = parsed.replace('%c', '');
+					}
+					
+					// %e - current network name
+					if (this.aliases[a].command.include('%e'))
+					{
+						if (objectType == 'channel')
+							parsed = parsed.replace('%e', (object.server.alias?object.server.alias:object.server.address));
+						else if (objectType == 'server')
+							parsed = parsed.replace('%e', (object.alias?object.alias:object.address));
+						else
+							parsed = parsed.replace('%e', '');
+					}
+					
+					// %n - users nick
+					if (this.aliases[a].command.include('%n'))
+					{
+						if (objectType == 'channel')
+							parsed = parsed.replace('%n', (object.server.nick?object.server.nick.name:''));
+						else if (objectType == 'server')
+							parsed = parsed.replace('%n', (object.nick?object.nick.name:''));
+						else
+							parsed = parsed.replace('%n', '');
+					}
+					
+					// %t - time/date
+					if (this.aliases[a].command.include('%t'))
+					{
+						parsed = parsed.replace('%t', Mojo.Format.formatDate(new Date(), {time: 'default', date: 'default'}));
+					}
 					
 					// %2 - word 2
 					if (this.aliases[a].command.include('%2'))
@@ -211,6 +249,9 @@ aliasesModel.prototype.del = function(key)
 aliasesModel.defaultHighest = 1;
 aliasesModel.defaultAliases =
 [	// aliases to load automatically
+	// add one to num and increment defaultHighest above
+	// so only the new default will be added
+	// not sure how to handle replacement or removal
 	{num: 1, alias: 'j',		command: 'join &2'},
 	{num: 1, alias: 'leave',	command: 'part &2'},
 	{num: 1, alias: 'm',		command: 'msg &2'},
