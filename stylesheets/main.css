@@ -21,6 +21,7 @@
 	background: url(../images/palm-default/fade-bottom.png) bottom center repeat-x;
 	-webkit-palm-mouse-target: ignore;
 }
+
 body.palm-dark .scene-fade-top
 {
 	background: url(../images/palm-dark/fade-top.png) top center repeat-x;

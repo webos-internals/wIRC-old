@@ -2,7 +2,6 @@ function ChannelChatAssistant(channel){
     this.channel = channel;
     this.nick = false;
     this.tabText = false;
-    this.action = false;
     
     this.documentElement = false;
     this.sceneScroller = false;
@@ -356,14 +355,13 @@ ChannelChatAssistant.prototype.updateLagMeter = function(){
     this.networkLagElement.className = netClass;
 }
 
-ChannelChatAssistant.prototype.keyHandler = function(event) {
-	
-	var isActionKey = (event.keyCode === Mojo.Char.metaKey);
+ChannelChatAssistant.prototype.keyHandler = function(event)
+{
     var isTabKey = (event.altKey);
 	var isCmdUp = (event.keyCode === Mojo.Char.q);
 	var isCmdDown = (event.keyCode === Mojo.Char.a);
 	
-	if (this.action) {
+	if (event.metaKey) {
 		if (event.type === 'keyup') {
 			if (isCmdDown || isCmdUp) {
 				if (isCmdUp && cmdHistoryIndex<cmdHistory.length) 
@@ -393,19 +391,14 @@ ChannelChatAssistant.prototype.keyHandler = function(event) {
 						event.target.mojo.setText(this.nick.name + prefs.get().tabSuffix + " ");
 				}
 			}
-		 	else if (isActionKey) {
-            	this.action = false;
-				this.tabText = false;
-            	this.text = false;
-            	this.nick = false;
-        	}	
 		}
 		
 	}
-	else {
-		if (event.type === 'keydown' && isActionKey) {
-     	   this.action = true;
-    	}
+	else
+	{
+		this.tabText = false;
+    	this.text = false;
+    	this.nick = false;
 	}
 	
 }

@@ -512,7 +512,8 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 	var msgType = 'type2';
 	var nick = false;
 	var dontUpdate = true;
-	 
+	
+	
     var i = 2;
     var msg = params[1];
     if (params.length > i) 
@@ -523,33 +524,43 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
         while (i < params.length);
 		
 	switch (evt) {
-		case 1:
-			clearTimeout(servers.servers[id].connectionTimeout);
+		case 1:		clearTimeout(servers.servers[id].connectionTimeout);	break;
+			
+		case 305:	servers.servers[id].setAwayStatus(false);	break;
+		case 306:	servers.servers[id].setAwayStatus(true);	break;
+			
+		case 301:
+		case 311:
+		case 312:
+		case 313: 
+		case 317:
+		case 318:
+		case 319:
+		case 320:
+			var tmpNick = servers.servers[id].getNick(params[1]);
+			if (tmpNick)
+				tmpNick.whoisEvent(event, params_s);
 			break;
+			
+		case 321:	servers.servers[id].listStart();	break;
+		case 322:	servers.servers[id].listAddChannel(params[1], params[2], params[3]);	break;
+		case 323:	servers.servers[id].listEnd();	break;
+		
 		case 324:
 			var tmpChan = servers.servers[id].getChannel(params[1]);
 			if (tmpChan)
 				tmpChan.channelMode(params[2]);
 			break;
-		case 305:
-			servers.servers[id].setAwayStatus(false);
-		case 306:
-			servers.servers[id].setAwayStatus(true);
+			
+		case '329':
+			msgType = 'type8';
+			msgTarget = servers.servers[id].getChannel(params[1]);
+			var newDate = new Date();
+			newDate.setTime(params[3]*1000);
+			dateString = newDate.toUTCString();
+			msg = 'Channel ' + params[1] + ' created on ' + dateString;
 			break;
-		case 301: case 311: case 312: case 313: case 317: case 318: case 319: case 320:
-			var tmpNick = servers.servers[id].getNick(params[1]);
-			if (tmpNick)
-				tmpNick.whoisEvent(event, params_s);
-			break;
-		case 321:
-			servers.servers[id].listStart();
-			break;
-		case 322:
-			servers.servers[id].listAddChannel(params[1], params[2], params[3]);
-			break;
-		case 323:
-			servers.servers[id].listEnd(); 
-			break;
+			
 		case 332:
 			msgType = 'type8';
 			msgTarget = servers.servers[id].getChannel(params[1]);
@@ -562,14 +573,7 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				msg = 'Topic for ' + params[1] + ' is "' + params[2] + '"';
 			}
 			break;
-		case '329':
-			msgType = 'type8';
-			msgTarget = servers.servers[id].getChannel(params[1]);
-			var newDate = new Date();
-			newDate.setTime(params[3]*1000);
-			dateString = newDate.toUTCString();
-			msg = 'Channel ' + params[1] + ' created on ' + dateString;
-			break;
+			
 		case '333':
 			msgType = 'type8';
 			msgTarget = servers.servers[id].getChannel(params[1]);
@@ -578,9 +582,7 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 			dateString = newDate.toUTCString();
 			msg = 'Topic set by ' + params[2] + ' on ' + dateString;
 			break;
-		case 375: case 376:
-			servers.servers[id].updateStatusList();
-			break;
+			
 		case 353:
 			msg = false;
 			var nicks = params[3].split(" ");
@@ -602,13 +604,20 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				}
 			}
 			break;
+			
+		case 375:
+		case 376:
+			servers.servers[id].updateStatusList();
+			break;
+			
 		case 404:
 			msgTarget = servers.servers[id].getChannel(params[2]);
 			if (msgTarget && msgTarget.containsNick(servers.servers[id].nick))
 				msg = params[3];
 			break;
 		
-		case 477: case 482:
+		case 477:
+		case 482:
 			msgTarget = servers.servers[id].getChannel(params[1]);
 			if (msgTarget && tmpChan.containsNick(servers.servers[id].nick))
 				msg = params[2];
