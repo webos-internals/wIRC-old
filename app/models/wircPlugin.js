@@ -542,9 +542,18 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 				tmpNick.whoisEvent(event, params_s);
 			break;
 			
-		case 321:	servers.servers[id].listStart();	break;
-		case 322:	servers.servers[id].listAddChannel(params[1], params[2], params[3]);	break;
-		case 323:	servers.servers[id].listEnd();	break;
+		case 321:
+			servers.servers[id].listStart();
+			msg = false;
+			break;
+		case 322:
+			servers.servers[id].listAddChannel(params[1], params[2], params[3]);
+			msg = false;
+			break;
+		case 323:
+			servers.servers[id].listEnd();
+			msg = false;
+			break;
 		
 		case 324:
 			var tmpChan = servers.servers[id].getChannel(params[1]);
