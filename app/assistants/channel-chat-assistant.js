@@ -209,7 +209,7 @@ ChannelChatAssistant.prototype.updateTitle = function(){
     this.titleElement.update(this.channel.name + (this.channel.mode ? ' (' + this.channel.mode + ')' : ''));
 }
 ChannelChatAssistant.prototype.updateTopic = function(){
-    var tmpTopic = formatLinks(formatForHtml(this.channel.topic));
+    var tmpTopic = colorize(formatLinks(formatForHtml(this.channel.topic)));
     this.topicElement.update(tmpTopic);
 }
 

@@ -663,7 +663,7 @@ ircServer.prototype.listStart = function()
 }
 ircServer.prototype.listAddChannel = function(channel, users, topic)
 {
-	this.channelList.push({channel: channel, users: users, topic: topic});
+	this.channelList.push({channel: channel, users: users, topic: colorize(topic)});
 	this.listDisplay++;
 	
 	if (this.listAssistant && this.listAssistant.controller)
