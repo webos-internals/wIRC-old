@@ -501,6 +501,8 @@ wircPlugin.prototype.event_kick_handler = function(id, event, origin, params_s)
 /*
  * We need to figure out a more generic way to handle all these numeric events.
  * There must be some sort of rule/heuristic we can follow to format them.
+ * 
+ * Doesn't look like there's much of a pattern: http://www.mirc.net/raws/
  */
 wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_s)
 {
@@ -618,7 +620,7 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 		case 376:
 			servers.servers[id].updateStatusList();
 			break;
-			
+		
 		case 404:
 			msgTarget = servers.servers[id].getChannel(params[2]);
 			if (msgTarget && msgTarget.containsNick(servers.servers[id].nick))
