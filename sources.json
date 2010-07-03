@@ -18,6 +18,10 @@
     {"source": "app/assistants/app-assistant.js"},
     {"source": "app/assistants/dialog-assistant.js"},
     {
+        "scenes": "master-list",
+        "source": "app/assistants/master-list-assistant.js"
+    },
+    {
         "scenes": "server-list",
         "source": "app/assistants/server-list-assistant.js"
     },
