@@ -31,6 +31,8 @@ ircChannel.prototype.newCommand = function(message)
 		if (cmdHistory.length>prefs.get().cmdHistoryMax)
 			cmdHistory.pop();
 		
+		message = aliases.parse(message, 'channel', this);
+		
 		var match = cmdRegExp.exec(message);
 		if (match)
 		{
@@ -40,7 +42,6 @@ ircChannel.prototype.newCommand = function(message)
 			switch(cmd.toLowerCase())
 			{
 				case 'part':
-				case 'leave':
 					this.part(val);
 					break;
 					
@@ -48,7 +49,6 @@ ircChannel.prototype.newCommand = function(message)
 					this.me(val);
 					break;
 					
-				case 'j':
 				case 'join':
 					var vals = val.split(" ");
 					this.server.joinChannel(vals[0],vals[1]);
@@ -57,7 +57,7 @@ ircChannel.prototype.newCommand = function(message)
 				case 'kick':
 					var tmpMatch = twoValRegExp.exec(val);
 					this.kick(tmpMatch[1], tmpMatch[2]);
-					break;				
+					break;
 				
 				case 'topic':
 					if (val) 
@@ -323,6 +323,44 @@ ircChannel.prototype.disconnectPart = function()
 ircChannel.prototype.clearMessages = function()
 {
 	this.messages = [];
+}
+
+ircChannel.prototype.isFav = function()
+{
+	if (this.server.favoriteChannels.length > 0)
+	{
+		for (var c = 0; c < this.server.favoriteChannels.length; c++)
+		{
+			if (this.server.favoriteChannels[c].toLowerCase() == this.name)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+ircChannel.prototype.addFav = function()
+{
+	var tmpServer = this.server.getEditObject();
+	tmpServer.favoriteChannels.push(this.name);
+	this.server.saveInfo(tmpServer);
+}
+ircChannel.prototype.delFav = function()
+{
+	var tmpServer = this.server.getEditObject();
+	var newFavs = [];
+	if (tmpServer.favoriteChannels.length > 0)
+	{
+		for (var c = 0; c < tmpServer.favoriteChannels.length; c++)
+		{
+			if (tmpServer.favoriteChannels[c].toLowerCase() != this.name)
+			{
+				newFavs.push(tmpServer.favoriteChannels[c]);
+			}
+		}
+	}
+	tmpServer.favoriteChannels = newFavs;
+	this.server.saveInfo(tmpServer);
 }
 
 ircChannel.prototype.openDash = function(message)

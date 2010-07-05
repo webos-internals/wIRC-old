@@ -1,0 +1,70 @@
+<div class="form prefs">
+	
+	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
+	
+	<div class="palm-page-header multi-line">
+		<div class="palm-page-header-wrapper">
+			<div class="icon"></div>
+			<div class="title" id="header"></div>
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Alias</div>
+		<div class="palm-list">
+			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div id="alias" x-mojo-element="TextField"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Command</div>
+		<div class="palm-list">
+			
+			<div class="palm-row single">
+				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="title">
+						<div id="command" x-mojo-element="TextField"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div id="saveButton" x-mojo-element="Button"></div>
+	
+	<div class="palm-text-wrapper">
+		<div class="title left">Replacements:</div>
+		<div class="palm-body-text">
+			<strong>%c</strong> = current channel<br />
+			<strong>%e</strong> = current network<br />
+			<strong>%n</strong> = your nick<br />
+			<strong>%t</strong> = time/date<br />
+			
+			<strong>%2</strong> = word 2<br />
+			<strong>%3</strong> = word 3<br />
+			<strong>&2</strong> = word 2 to the end<br />
+			<strong>&3</strong> = word 3 to the end<br />
+		</div>
+	</div>
+	
+	<div class="palm-text-wrapper">
+		<div class="title left">Example:</div>
+		<div class="palm-body-text">
+			<strong>/alias foo bar</strong><br />
+			%2 = "foo"<br />
+			&2 = "foo bar"<br />
+		</div>
+	</div>
+	
+	<div class="scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>
+	
+</div>

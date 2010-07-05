@@ -1,0 +1,72 @@
+<div class="form prefs">
+	
+	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
+	
+	<div class="palm-page-header multi-line">
+		<div class="palm-page-header-wrapper">
+			<div id="pageSelector" class="page-selector">
+				<div id="pageName" class="page-name">none</div>
+			</div>
+			<div class="icon"></div>
+			<div class="title">Preferences</div>
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Chats</div>
+		<div class="palm-list">
+			
+			<div class="palm-row first" id="dccChatInviteContainer">
+				<div class="palm-row-wrapper">
+					<div id="dccChatAction" x-mojo-element="ListSelector"></div>
+				</div>
+			</div>
+			
+			<div class="palm-row last" id="dccChatInviteSoundRow">
+				<div class="palm-row-wrapper">
+					<div class="label left">Dcc Chat Invite Sound</div>
+					<div id="dccChatInviteSound" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div class="palm-group">
+		<div class="palm-group-title">Files</div>
+		<div class="palm-list">
+			
+			<div class="palm-row first" id="dccDefaultFolderButton" x-mojo-tap-highlight="momentary">
+				<div class="palm-row-wrapper">
+					<div class="label left">Default Save Folder</div>
+					<br style="clear: both;" />
+					<div class="title right" id="dccDefaultFolderDisplay">...</div>
+				</div>
+			</div>
+			
+			<div class="palm-row" id="dccSendRequestContainer">
+				<div class="palm-row-wrapper">
+					<div id="dccSendAction" x-mojo-element="ListSelector"></div>
+				</div>
+			</div>
+			
+			<div class="palm-row" id="dccSendRequestSoundRow">
+				<div class="palm-row-wrapper">
+					<div class="label left">Dcc Send Request Sound</div>
+					<div id="dccSendRequestSound" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>
+			
+			<div class="palm-row last" id="dccSendAlwaysDefaultRow">
+				<div class="palm-row-wrapper">
+					<div class="label left">Always Save To Default</div>
+					<div id="dccSendAlwaysDefault" x-mojo-element="ToggleButton"></div>
+				</div>
+			</div>	
+			
+		</div>
+	</div>
+	
+	<div class="scene-fade-bottom" x-mojo-scroll-fade="bottom"></div>
+	
+</div>

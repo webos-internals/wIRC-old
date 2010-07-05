@@ -7,11 +7,13 @@ function STUB()
 	this.pageList = [
 		{label: 'General',			command: 'general'},
 		{label: 'Messages',			command: 'messages'},
-		{label: 'Events'		,	command: 'events'},
-		{label: 'Keybindings'	,	command: 'keybindings'},
-		{label: 'Notifications',	command: 'notifications'}
+		{label: 'Events',			command: 'events'},
+		{label: 'Keybindings',		command: 'keybindings'},
+		{label: 'Notifications',	command: 'notifications'},
+		{label: 'DCC',				command: 'dcc'},
+		{label: 'Aliases',			command: 'aliases'}
 	];
-	this.currentPage = 'events';
+	this.currentPage = 'stub';
 	
 	// setup menu
 	this.menuModel =
@@ -116,8 +118,6 @@ STUB.prototype.activate = function(event)
 
 STUB.prototype.deactivate = function(event)
 {
-	this.alertListSave();
-	
 	// reload global storage of preferences when we get rid of this stage
 	var tmp = prefs.get(true);
 }

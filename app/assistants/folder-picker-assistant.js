@@ -41,6 +41,7 @@ FolderPickerAssistant.prototype.setup = function()
 	
 	this.list = this.controller.get('list');
 	if (this.picker.sceneTitle) this.controller.get('header').update(this.picker.sceneTitle);
+	else this.controller.get('header').update('Select A Folder');
 	
 	this.updateCommandMenu(true);
 	this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
@@ -79,12 +80,13 @@ FolderPickerAssistant.prototype.activate = function(event)
 					}
 				}
 			}
-			// i don't know why this doesn't work
-			this.controller.sceneScroller.mojo.revealElement(this.controller.get('folder' + this.fixPathForId(this.selectedFolder)));
+			this.controller.sceneScroller.mojo.scrollTo(
+				0,
+				0-(this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).cumulativeOffset().top-(this.controller.window.innerHeight-110)),
+				false);
 		}
 		else
 		{
-			// because this one certainly does...
 			this.controller.sceneScroller.mojo.revealTop();
 		}
 
@@ -95,22 +97,19 @@ FolderPickerAssistant.prototype.activate = function(event)
 FolderPickerAssistant.prototype.addRow = function(data, parent)
 {
 	var tpl = 'folder-picker/folder-row';
-	var folderId = this.fixPathForId(data.location);
+	var folderId = filePicker.parseFileStringForId(data.location);
 	
 	var html = Mojo.View.render({object: {name: data.name, folder: folderId, rowClass: data.rowClass}, template: tpl});
 	parent.insert({bottom: html});
 	
 	this.controller.listen('folder' + folderId, Mojo.Event.tap, this.tap.bindAsEventListener(this, data.location));
 }
-FolderPickerAssistant.prototype.fixPathForId = function(folder)
-{
-	return folder.toLowerCase().replace(/\//g, '-');
-}
+
 
 FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 {
 	if (event) event.stop();
-	var folderId = this.fixPathForId(folder);
+	var folderId = filePicker.parseFileStringForId(folder);
 	var drawer = this.controller.get('list' + folderId);
 	
 	if (!this.loadedFolders.include(folder))
@@ -136,11 +135,11 @@ FolderPickerAssistant.prototype.tap = function(event, folder, initial)
 	var tmpCN = this.controller.get('folder' + folderId).className;
 	if (drawer.mojo && drawer.mojo.getOpenState())
 	{
-		this.controller.get('folder' + folderId).className = tmpCN + ' down';
+		this.controller.get('folder' + folderId).className = tmpCN + ' open';
 	}
 	else
 	{
-		this.controller.get('folder' + folderId).className = tmpCN.replace(/down/g, '');
+		this.controller.get('folder' + folderId).className = tmpCN.replace(/open/g, '');
 	}
 	
 	if (!initial)
@@ -152,14 +151,14 @@ FolderPickerAssistant.prototype.selectFolder = function(folder)
 {
 	if (this.selectedFolder)
 	{
-		var tmpCN = this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className;
-		this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className = tmpCN.replace(/check/g, '');
+		var tmpCN = this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className;
+		this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className = tmpCN.replace(/check/g, '');
 	}
 	this.selectedFolder = folder;
 	if (this.selectedFolder)
 	{
-		var tmpCN = this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className;
-		this.controller.get('folder' + this.fixPathForId(this.selectedFolder)).className = tmpCN + ' check';
+		var tmpCN = this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className;
+		this.controller.get('folder' + filePicker.parseFileStringForId(this.selectedFolder)).className = tmpCN + ' check';
 	}
 	this.updateCommandMenu();
 }

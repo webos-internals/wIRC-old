@@ -2,7 +2,6 @@ function ChannelChatAssistant(channel){
     this.channel = channel;
     this.nick = false;
     this.tabText = false;
-    this.action = false;
     
     this.documentElement = false;
     this.sceneScroller = false;
@@ -210,7 +209,7 @@ ChannelChatAssistant.prototype.updateTitle = function(){
     this.titleElement.update(this.channel.name + (this.channel.mode ? ' (' + this.channel.mode + ')' : ''));
 }
 ChannelChatAssistant.prototype.updateTopic = function(){
-    var tmpTopic = formatLinks(formatForHtml(this.channel.topic));
+    var tmpTopic = colorize(formatLinks(formatForHtml(this.channel.topic)));
     this.topicElement.update(tmpTopic);
 }
 
@@ -356,14 +355,13 @@ ChannelChatAssistant.prototype.updateLagMeter = function(){
     this.networkLagElement.className = netClass;
 }
 
-ChannelChatAssistant.prototype.keyHandler = function(event) {
-	
-	var isActionKey = (event.keyCode === Mojo.Char.metaKey);
+ChannelChatAssistant.prototype.keyHandler = function(event)
+{
     var isTabKey = (event.altKey);
 	var isCmdUp = (event.keyCode === Mojo.Char.q);
 	var isCmdDown = (event.keyCode === Mojo.Char.a);
 	
-	if (this.action) {
+	if (event.metaKey) {
 		if (event.type === 'keyup') {
 			if (isCmdDown || isCmdUp) {
 				if (isCmdUp && cmdHistoryIndex<cmdHistory.length) 
@@ -393,19 +391,14 @@ ChannelChatAssistant.prototype.keyHandler = function(event) {
 						event.target.mojo.setText(this.nick.name + prefs.get().tabSuffix + " ");
 				}
 			}
-		 	else if (isActionKey) {
-            	this.action = false;
-				this.tabText = false;
-            	this.text = false;
-            	this.nick = false;
-        	}	
 		}
 		
 	}
-	else {
-		if (event.type === 'keydown' && isActionKey) {
-     	   this.action = true;
-    	}
+	else
+	{
+		this.tabText = false;
+    	this.text = false;
+    	this.nick = false;
 	}
 	
 }
@@ -462,7 +455,22 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
 		});
 	}
     
-    // Channel menu options   
+    // Channel menu options
+	if (!this.channel.isFav())
+	{
+	    channelItems.push({
+	        label: "Add To Favorites",
+	        command: 'do-add-fav'
+	    });
+	}
+	else
+	{
+	    channelItems.push({
+	        label: "Delete From Favorites",
+	        command: 'do-del-fav'
+	    });
+	}
+	
     channelItems.push({
         label: "Clear Backlog",
         command: 'do-clear-backlog'
@@ -535,6 +543,15 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
 					this.controller.stageController.pushScene('server-info', this.channel.server.id);
 					break;
 					
+                case 'do-add-fav':
+					this.channel.addFav();
+					this.updateAppMenu();
+					break;
+                case 'do-del-fav':
+					this.channel.delFav();
+					this.updateAppMenu();
+					break;
+
                 case 'do-clear-backlog':
                     this.channel.clearMessages();
                     this.listModel.items = [];
@@ -595,6 +612,7 @@ ChannelChatAssistant.prototype.visibleWindow = function(event){
     }
     this.channel.closeDash();
     this.updateLagMeter();
+	this.updateAppMenu();
 }
 ChannelChatAssistant.prototype.invisibleWindow = function(event){
     this.isVisible = false;

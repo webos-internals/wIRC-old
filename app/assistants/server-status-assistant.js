@@ -15,6 +15,7 @@ function ServerStatusAssistant(server, popped)
 	this.action = 					false;
 	
 	this.autoScroll =				true;
+    this.isVisible =				false;
     
     this.timestamp = 0;
     this.timestamp_s = "";
@@ -50,6 +51,7 @@ ServerStatusAssistant.prototype.setup = function()
             omitDefaultItems: true
         }, this.menuModel);
 		
+        this.documentElement = this.controller.stageController.document;
 		this.sceneScroller =			this.controller.sceneScroller;
 		this.titleElement =				this.controller.get('title');
 		this.networkLagElement =		this.controller.get('networkLag');
@@ -62,11 +64,17 @@ ServerStatusAssistant.prototype.setup = function()
 		
 		this.scrollHandler =			this.onScrollStarted.bindAsEventListener(this);
 		this.popButtonPressed =			this.popButtonPressed.bindAsEventListener(this);
+        this.visibleWindowHandler =		this.visibleWindow.bindAsEventListener(this);
+        this.invisibleWindowHandler =	this.invisibleWindow.bindAsEventListener(this);
 		this.inputChanged =				this.inputChanged.bindAsEventListener(this);
 		this.inputElementLoseFocus =	this.inputFocus.bind(this);
 		this.sendButtonPressed =		this.sendButtonPressed.bindAsEventListener(this);
 		this.messageTapHandler = 		this.messageTap.bindAsEventListener(this);
 		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
+		
+        Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
+        Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
+   		this.isVisible = true;
 		
 		Mojo.Event.listen(this.inputWidgetElement, 'keydown', this.keyHandler);
         Mojo.Event.listen(this.inputWidgetElement, 'keyup', this.keyHandler);
@@ -594,9 +602,25 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
 	}
 }
 
+ServerStatusAssistant.prototype.visibleWindow = function(event)
+{
+    if (!this.isVisible)
+	{
+        this.isVisible = true;
+    }
+    this.updateLagMeter();
+	this.updateAppMenu();
+}
+ServerStatusAssistant.prototype.invisibleWindow = function(event)
+{
+    this.isVisible = false;
+}
+
 ServerStatusAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
+    Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
+    Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
 	if (!this.popped) 
 	{
 		Mojo.Event.stopListening(this.popButtonElement, Mojo.Event.tap, 			this.popButtonPressed);

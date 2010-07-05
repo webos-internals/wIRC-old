@@ -63,10 +63,17 @@ ircNick.prototype.updateMode = function(mode, channel)
 	switch (mode.substr(0, 1))
 	{
 		case '-':
-			this.channelModes[channel.name] = this.channelModes[channel.name].without(mode.substr(1, 1));
+			if (this.channelModes[channel.name])
+			{
+				this.channelModes[channel.name] = this.channelModes[channel.name].without(mode.substr(1, 1));
+			}
 			break;
 		
 		case '+':
+			if (!this.channelModes[channel.name])
+			{
+				this.channelModes[channel.name] = [];
+			}
 			this.channelModes[channel.name].push(mode.substr(1, 1));
 			break;
 	}

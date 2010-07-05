@@ -14,48 +14,48 @@ preferenceCookie.prototype.get = function(reload)
 			this.prefs = 
 			{
 				// Global Group
-				theme:				'palm-default',
-				piface:				'',
-				aiface:				false,
-				lagMeter:			false,
-				blockScreenTimeout:	true,
-				dimScreen:			true,
+				theme:					'palm-default',
+				piface:					'',
+				aiface:					false,
+				lagMeter:				false,
+				blockScreenTimeout:		true,
+				dimScreen:				true,
 				
-				autoPingInterval:	10,
-				connectionTimeout:	30,
-				cmdHistoryMax:		30,
-				useExternalIP:		true,
+				autoPingInterval:		10,
+				connectionTimeout:		30,
+				cmdHistoryMax:			30,
+				useExternalIP:			true,
 				
 				// CTCP Replies,
-				ctcpReplyVersion:	'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%) -- http://git.webos-internals.org/trac/wIRC',
-				ctcpReplyTime:		'%DATETIME%',
-				ctcpReplyFinger:	'%REALNAME%',
-				ctcpReplyUserinfo:	'',
+				ctcpReplyVersion:		'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%) -- http://git.webos-internals.org/trac/wIRC',
+				ctcpReplyTime:			'%DATETIME%',
+				ctcpReplyFinger:		'%REALNAME%',
+				ctcpReplyUserinfo:		'',
 				
 				// Identity Scene
-				realname:			'',
-				nicknames:			[],
+				realname:				'',
+				nicknames:				[],
 				
 				// Server Status Group
-				statusPop:			false,
+				statusPop:				false,
 				
 				// Input Group
-				tabSuffix:			':',
-				autoCap:			false,
-				autoReplace:		true,
+				tabSuffix:				':',
+				autoCap:				false,
+				autoReplace:			true,
 				
 				// Messages Group
-				messagesStyle:		'lefta',
-				messageSplit:		'25',
-				fontSize:			'15',
-				timeStamp:			5,
-				timeStampStyle:		'default',
-				senderColoring:		true,
+				messagesStyle:			'lefta',
+				messageSplit:			'25',
+				fontSize:				'15',
+				timeStamp:				5,
+				timeStampStyle:			'default',
+				senderColoring:			true,
 				
 				// Highlight Group
-				highlightStyle:		'color',
-				highlightPart:		'all',
-				alertWords:			'',
+				highlightStyle:			'color',
+				highlightPart:			'all',
+				alertWords:				'',
 				
 				// Dashboard/Banner Group
 				dashboardChannel:		true,
@@ -65,26 +65,35 @@ preferenceCookie.prototype.get = function(reload)
 				dashboardInviteSound:	true,
 				
 				// Color scheme
-				colorNotice:		['orangered','orangered'],
-				colorAction:		['firebrick','firebrick'],
-				colorStatus:		['mediumpurple','mediumpurple'],
-				colorText:			['black','darkgray'],
-				colorMarker:		['red','red'],
-				colorHighlightFG:	['black','black'],
-				colorHighlightBG:	['lightpink','lightpink'],
-				colorOwnNick:		['black','darkgray'],
-				colorOtherNicks:	['green','green'],
-				colorCTCP:			['chocolate','chocolate'],
+				colorNotice:			['orangered','orangered'],
+				colorAction:			['firebrick','firebrick'],
+				colorStatus:			['mediumpurple','mediumpurple'],
+				colorText:				['black','darkgray'],
+				colorMarker:			['red','red'],
+				colorHighlightFG:		['black','black'],
+				colorHighlightBG:		['lightpink','lightpink'],
+				colorOwnNick:			['black','darkgray'],
+				colorOtherNicks:		['green','green'],
+				colorCTCP:				['chocolate','chocolate'],
 				
 				// Events
-				quitReason:			'wIRC',
-				kickReason:			'Kicked!',
-				partReason:			'wIRC',
+				quitReason:				'wIRC',
+				kickReason:				'Kicked!',
+				partReason:				'wIRC',
 
-				eventJoin:			true,
-				eventPart:			true,
-				eventQuit:			true,
-				eventMode:			true
+				eventJoin:				true,
+				eventPart:				true,
+				eventQuit:				true,
+				eventMode:				true,
+				
+				// Dcc
+				dccChatAction:			'prompt',
+				dccChatInviteSound:		true,
+				dccDefaultFolder:		'/media/internal/wIRC/downloads/',
+				dccSendAction:			'prompt',
+				dccSendRequestSound:	true,
+				dccSendAlwaysDefault:	false
+				
 			};
 			
 			// uncomment to delete cookie for testing

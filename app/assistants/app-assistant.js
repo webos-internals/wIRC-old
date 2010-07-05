@@ -1,15 +1,13 @@
 // our main stage
 var serverStage = 'serverStage';
 
-// load our database object
-var db = new database();
-
 // get the cookies
-var prefs = new preferenceCookie();
-var vers =  new versionCookie();
+var prefs =		new preferenceCookie();
+var vers =		new versionCookie();
+var aliases =	new aliasesModel();
 
 // holds the servers
-var servers = new ircServers();
+var servers =	new ircServers();
 
 // Command History
 var cmdHistory = [];
@@ -171,7 +169,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 					autoIdentify:		false,
 					identifyService:	'',
 					identifyPassword:	'',
-					onConnect:			['/j '+params.join],
+					onConnect:			['/join '+params.join],
 					favoriteChannels:	[],
 					defaultNick:		(prefs.get().nicknames[0]?prefs.get().nicknames[0]:(params.nick?params.nick:'wIRCer_'+Math.floor(Math.random()*9999))),
 					isTemporary:		true

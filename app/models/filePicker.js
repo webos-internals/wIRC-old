@@ -28,7 +28,6 @@ function filePicker(params)
 	this.num =					filePicker.num;
 	
 	this.topLevel =				'/media/internal/';
-	this.topLevelString =		'USB';
 	
 	this.params =				params;
 	
@@ -71,7 +70,7 @@ filePicker.prototype.getDirectory = function(dir)
 	{
 		for (var f = 0; f < d.length; f++)
 		{
-			if (d[f] != '.' && d[f] != '..')
+			if (!d[f].match(folderRegExp))
 			{
 				var file = this.statFile(dir + d[f]);
 				if (file && file.st_size)
@@ -82,6 +81,22 @@ filePicker.prototype.getDirectory = function(dir)
 				}
 			}
 		}
+	}
+	if (returnArray.length > 0)
+	{
+		returnArray.sort(function(a, b)
+		{
+			if (a.name && b.name)
+			{
+				strA = a.name.toLowerCase();
+				strB = b.name.toLowerCase();
+				return ((strA < strB) ? -1 : ((strA > strB) ? 1 : 0));
+			}
+			else
+			{
+				return -1;
+			}
+		});
 	}
 	return returnArray;
 }
@@ -123,7 +138,7 @@ filePicker.prototype.openFilePicker = function()
 		this.stageController = Mojo.Controller.appController.getActiveStageController('card');
 	    if (this.stageController)
 		{
-			this.stageController.pushScene(this.sceneName, this);
+			this.stageController.pushScene({name: this.sceneName, disableSceneScroller: (this.type=='file'?true:false)}, this);
 		}
 		else
 		{
@@ -148,7 +163,7 @@ filePicker.prototype.popFilePicker = function()
 	{
 		var f = function(controller)
 		{
-			controller.pushScene(this.sceneName, this);
+			controller.pushScene({name: this.sceneName, disableSceneScroller: (this.type=='file'?true:false)}, this);
 			this.popped = true;
 		};
 		Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, f.bind(this));
@@ -166,7 +181,7 @@ filePicker.prototype.close = function()
 	}
 	else
 	{
-		this.controller.stageController.popScene();
+		this.stageController.popScene();
 	}
 }
 
@@ -175,5 +190,9 @@ filePicker.num = 0;
 
 filePicker.parseFileString = function(f)
 {
-	return f.replace(this.topLevel, this.topLevelString+'/');
+	return f.replace(/\/media\/internal\//i, 'USB/');
+}
+filePicker.parseFileStringForId = function(p)
+{
+	return p.toLowerCase().replace(/\//g, '-').replace(/ /g, '-').replace(/\./g, '-');
 }
