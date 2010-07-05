@@ -17,7 +17,6 @@
  =============================================================================*/
 
 #include "wIRC.h"
-#include "SDL.h"
 
 int isPlugin = 1;
 pthread_mutex_t plugin_mutex = PTHREAD_MUTEX_INITIALIZER;

@@ -4,14 +4,6 @@ IRCLIB		:=	libircclient
 
 GITHASH		:=	"\"$(shell git log -1 --pretty=format:"%h")\""
 
-ifeq ($(USEPDK), 1)
-
-INCLUDES	:=	"-I/opt/PalmPDK/include/ -I/opt/PalmPDK/include/SDL"
-CFLAGS		:=	"--sysroot=/opt/PalmPDK/arm-gcc/sysroot -L/opt/PalmPDK/device/lib -Wl,--allow-shlib-undefined"
-CC			:=	"/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc"
-
-else 
-
 CFLAGS		:=	-g $(MARCH_TUNE) -DGITHASH=${GITHASH}
 
 INCLUDES	:=	-I${ROOT}/include \
@@ -20,11 +12,9 @@ INCLUDES	:=	-I${ROOT}/include \
 				-I$(ROOT)${prefix}/include/pdl \
 				-I$(IRCLIB)/include
 				
-LIBDIRS		:=	-L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined
+LIBDIRS		:=	-Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined
 	
-LIBS		:=  -lpdl -lSDL
-
-endif
+LIBS		:=  -lpdl -lpthread -lm
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 				ping.o plugin_client.o plugin_events.o plugin.o \
@@ -32,8 +22,12 @@ OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 
 .PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
 
-$(PLUGIN): $(OBJECTS)
+$(PLUGIN): libpdl/libpdl.so $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) -o $(PLUGIN)
+
+.PHONY: libpdl/libpdl.so
+libpdl/libpdl.so:
+	cd libpdl; $(MAKE)
 
 .PHONY: $(IRCLIB)/$(IRCLIB).o
 $(IRCLIB)/$(IRCLIB).o:

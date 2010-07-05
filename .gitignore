@@ -14,3 +14,4 @@
 libircclient/include/config.h
 src/wirc
 src/libircclient/config.*
+src/libpdl/libpdl.so

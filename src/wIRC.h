@@ -48,7 +48,7 @@
 typedef int socket_t;
 typedef pthread_mutex_t port_mutex_t;
 
-#include <PDL.h>
+#include "libpdl/PDL.h"
 #include <libircclient.h>
 
 #define DEFAULT_MAX_RETRIES 10
