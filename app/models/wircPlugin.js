@@ -319,7 +319,19 @@ wircPlugin.prototype.event_join_handler = function(id, event, origin, params_s)
 		var tmpNick = servers.servers[id].getNick(origin);
 		if (tmpNick.me)
 		{
-			tmpChan.openStage();
+			if (servers.servers[id].autoOpenFavs) {
+			    var favoriteChannels = servers.servers[id].favoriteChannels;
+			    if (favoriteChannels && (favoriteChannels.length > 0)) {
+				for (var c = 0; c < favoriteChannels.length; c++) {
+				    if (tmpChan.name == favoriteChannels[c]) {
+					tmpChan.openStage();
+				    }
+				}
+			    }
+			}
+			else {
+			    tmpChan.openStage();
+			}
 			tmpChan.joined = true;
 		}
 		tmpNick.addChannel(tmpChan, '');
