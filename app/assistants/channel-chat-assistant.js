@@ -202,8 +202,12 @@ ChannelChatAssistant.prototype.getDivider = function(item){
     return this.timestamp_s;
 }
 
-ChannelChatAssistant.prototype.updateUserCount = function(){
-    this.userCountElement.update(this.channel.nicks.length);
+ChannelChatAssistant.prototype.updateUserCount = function()
+{
+	if (this.channel.nicks)
+	{
+    	this.userCountElement.update(this.channel.nicks.length);
+	}
 }
 ChannelChatAssistant.prototype.updateTitle = function(){
     this.titleElement.update(this.channel.name + (this.channel.mode ? ' (' + this.channel.mode + ')' : ''));
