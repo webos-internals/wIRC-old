@@ -23,7 +23,7 @@ function ircServer(params)
 	this.identifyPassword =		params.identifyPassword;
 	this.onConnect =			params.onConnect;
 	this.favoriteChannels =		params.favoriteChannels;
-	this.partOnClose =			params.partOnClose;
+	this.dontPartOnClose =		params.dontPartOnClose;
 	this.autoOpenFavs =			params.autoOpenFavs;
 	this.defaultNick =			params.defaultNick;
 	this.nextNick =				0;
@@ -1103,7 +1103,7 @@ ircServer.prototype.getEditObject = function()
 		identifyPassword:	this.identifyPassword,
 		onConnect:			this.onConnect,
 		favoriteChannels:	this.favoriteChannels,
-		partOnClose:		this.partOnClose,
+		dontPartOnClose:	this.dontPartOnClose,
 		autoOpenFavs:		this.autoOpenFavs
 	};
 	return obj;
@@ -1126,7 +1126,7 @@ ircServer.prototype.saveInfo = function(params)
 		this.identifyPassword =	params.identifyPassword;
 		this.onConnect =		params.onConnect;
 		this.favoriteChannels =	params.favoriteChannels;
-		this.partOnClose = 		params.partOnClose;
+		this.dontPartOnClose = 	params.dontPartOnClose;
 		this.autoOpenFavs =		params.autoOpenFavs;
 		
 		var serverCookie = new Mojo.Model.Cookie('server-' + this.id);
@@ -1153,7 +1153,7 @@ ircServer.getBlankServerObject = function()
 		identifyPassword:	'',
 		onConnect:			[],
 		favoriteChannels:	[],
-		partOnClose:		true,
+		dontPartOnClose:	false,
 		autoOpenFavs:		true,
 	};
 	return obj;

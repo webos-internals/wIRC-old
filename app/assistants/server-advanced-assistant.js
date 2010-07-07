@@ -15,7 +15,7 @@ function ServerAdvancedAssistant(serverobj)
 	this.saveButtFonElement =		false;
 	this.onConnectList =			false;
 	this.favoriteChannelsList = 	false;
-	this.partOnCloseElement =		false;
+	this.dontPartOnCloseElement =	false;
 	this.autoOpenFavsElement =		false;
 	
 	this.onConnectData =			[];
@@ -83,7 +83,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		this.identifyPasswordElement =	this.controller.get('identifyPassword');
 		this.onConnectList =			this.controller.get('onConnect');
 		this.favoriteChannelsList =		this.controller.get('favoriteChannels');
-		this.partOnCloseElement =		this.controller.get('partOnClose');
+		this.dontPartOnCloseElement =	this.controller.get('dontPartOnClose');
 		this.autoOpenFavsElement =		this.controller.get('autoOpenFavs');
 		
 		this.textChanged =			this.textChanged.bindAsEventListener(this);
@@ -171,11 +171,11 @@ ServerAdvancedAssistant.prototype.setup = function()
 		
 		this.controller.setupWidget
 		(
-			'partOnClose',
+			'dontPartOnClose',
 			{
 	  			trueLabel:  'Yes',
 	 			falseLabel: 'No',
-				modelProperty: 'partOnClose'
+				modelProperty: 'dontPartOnClose'
 			},
 			this.server
 		);
@@ -197,7 +197,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
-		Mojo.Event.listen(this.partOnCloseElement,		Mojo.Event.propertyChange,	this.toggleChanged);
+		Mojo.Event.listen(this.dontPartOnCloseElement,	Mojo.Event.propertyChange,	this.toggleChanged);
 		Mojo.Event.listen(this.autoOpenFavsElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 		
 		this.controller.setupWidget
@@ -606,7 +606,7 @@ ServerAdvancedAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
-	Mojo.Event.stopListening(this.partOnCloseElement,		Mojo.Event.propertyChange,	this.toggleChanged);
+	Mojo.Event.stopListening(this.dontPartOnCloseElement,	Mojo.Event.propertyChange,	this.toggleChanged);
 	Mojo.Event.stopListening(this.autoOpenFavsElement,		Mojo.Event.propertyChange,	this.toggleChanged);
 	
 	Mojo.Event.stopListening(this.autoIdentifyElement,		Mojo.Event.propertyChange,	this.autoIdentifyChanged);
