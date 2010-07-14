@@ -32,8 +32,6 @@ function DccChatAssistant(dcc)
 		value:''
 	};
 	
-	this.dcc.setChatAssistant(this);
-	
 	// setup menu
 	this.menuModel =
 	{
@@ -154,6 +152,7 @@ DccChatAssistant.prototype.activate = function(event)
 	}
 	else
 	{
+		this.dcc.setChatAssistant(this);
 		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
 		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}

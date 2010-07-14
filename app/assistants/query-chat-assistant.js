@@ -30,8 +30,6 @@ function QueryChatAssistant(query)
 		value:''
 	};
 	
-	this.query.setChatAssistant(this);
-	
 	// setup menu
 	this.menuModel =
 	{
@@ -148,6 +146,7 @@ QueryChatAssistant.prototype.activate = function(event)
 	}
 	else
 	{
+		this.query.setChatAssistant(this);
 		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
 		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
 	}

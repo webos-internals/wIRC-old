@@ -297,8 +297,13 @@ ServerListAssistant.prototype.handleCommand = function(event)
 	}
 }
 
+ServerListAssistant.prototype.deactivate = function(event)
+{
+	alert('ServerListAssistant#deactivate');
+}
 ServerListAssistant.prototype.cleanup = function(event)
 {
+	alert('ServerListAssistant#cleanup');
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 	

@@ -14,8 +14,6 @@ function ChannelUsersAssistant(channel)
 	this.searching =	false;
 	this.searchText =	'';
 	
-	this.channel.setUsersAssistant(this);
-	
 	// setup menu
 	this.menuModel =
 	{
@@ -324,6 +322,18 @@ ChannelUsersAssistant.prototype.handleCommand = function(event)
 				break;
 		}
 	}
+}
+
+ChannelUsersAssistant.prototype.activate = function(event)
+{
+	if (this.alreadyActivated)
+	{
+	}
+	else
+	{
+		this.channel.setUsersAssistant(this);
+	}
+	this.alreadyActivated = true;
 }
 
 ChannelUsersAssistant.prototype.cleanup = function(event)

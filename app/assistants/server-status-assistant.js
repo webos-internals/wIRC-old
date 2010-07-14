@@ -29,8 +29,6 @@ function ServerStatusAssistant(server, popped)
 		value:''
 	};
 	
-	this.server.setStatusAssistant(this);
-	
 	// setup menu
 	this.menuModel =
 	{
@@ -162,6 +160,7 @@ ServerStatusAssistant.prototype.activate = function(event)
 	}
 	else
 	{
+		this.server.setStatusAssistant(this);
 		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
 		this.startAutoFocus();
 	}
