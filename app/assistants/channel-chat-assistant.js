@@ -33,8 +33,6 @@ function ChannelChatAssistant(channel){
         value: ''
     };
     
-    this.channel.setChatAssistant(this);
-    
     // setup menu
     this.menuModel = {
         visible: true,
@@ -146,6 +144,7 @@ ChannelChatAssistant.prototype.activate = function(event){
         this.updateList();
     }
     else {
+		this.channel.setChatAssistant(this);
         this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
         Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
     }
