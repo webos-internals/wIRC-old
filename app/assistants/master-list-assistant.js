@@ -13,10 +13,6 @@ function MasterListAssistant()
 		{weight:  2, text: 'Random Taglines Are Awesome'}
 	];
 	
-	this.serverListModel =
-	{
-		items: []
-	};
 	this.cmdMenuModel =
 	{
 		label: $L('Menu'),
@@ -28,7 +24,7 @@ function MasterListAssistant()
 	this.noServersElement =		false;
 	this.serverListElement =	false;
 	
-	servers.setMasterAssistant(this);
+	servers.setListAssistant(this);
 	
 	// setup menu
 	this.menuModel =
@@ -83,23 +79,10 @@ MasterListAssistant.prototype.setup = function()
 		this.noServersElement =		this.controller.get('noServers');
 		this.serverListElement =	this.controller.get('serverList');
 		
-		this.listTapHandler =		this.listTapHandler.bindAsEventListener(this);
-		this.listDeleteHandler =	this.listDeleteHandler.bindAsEventListener(this);
-		
 		this.versionElement.innerHTML = "v" + Mojo.Controller.appInfo.version;
 		this.subTitleElement.innerHTML = this.getRandomSubTitle();
 		
 		this.updateList(true);
-		this.controller.setupWidget('serverList', 
-		{
-			itemTemplate: "server-list/server-row",
-			swipeToDelete: true,
-			reorderable: false,
-			preventDeleteProperty: 'temp',
-			spinnerSize: Mojo.Widget.spinnerSmall
-		}, this.serverListModel);
-		Mojo.Event.listen(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
-		Mojo.Event.listen(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 		
 		this.updateCommandMenu(false);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
@@ -139,68 +122,67 @@ MasterListAssistant.prototype.activate = function(event)
 	}
 	this.alreadyActivated = true;
 }
-MasterListAssistant.prototype.updateList = function(skipUpdate)
+MasterListAssistant.prototype.updateList = function(skipInstantiate)
 {
 	try
 	{
-		this.serverListModel.items = [];
-		this.serverListModel.items = servers.getListObjects();
+		var serverList = servers.getListObjects();
+		var html = '';
 		
-		if (this.serverListModel.items.length > 0)
+		if (serverList.length > 0)
 		{
+			for (var s = 0; s < serverList.length; s++)
+			{
+				html += Mojo.View.render({object: serverList[s], template: 'master-list/server-row'});
+			}
+		
+			this.serverListElement.update(html);
+			
+			for (var s = 0; s < serverList.length; s++)
+			{
+				this.controller.listen('server-'+serverList[s].id, Mojo.Event.tap, this.listTapHandler.bindAsEventListener(this, serverList[s]));
+				this.controller.setupWidget('server-spinner-'+serverList[s].id, {spinnerSize: Mojo.Widget.spinnerSmall}, {spinning: serverList[s].spinning});
+			}
+			
+			if (!skipInstantiate) this.controller.instantiateChildWidgets(this.serverListElement);
+			
 			this.noServersElement.hide();
 		}
 		else
 		{
+			this.serverListElement.update('');
 			this.noServersElement.show();
 		}
 		
-		if (!skipUpdate) 
-		{
-			this.serverListElement.mojo.noticeUpdatedItems(0, this.serverListModel.items);
-			this.serverListElement.mojo.setLength(this.serverListModel.items.length);
-		}
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, 'server-list#updateList');
 	}
 }
-MasterListAssistant.prototype.changeNickPrompt = function()
+MasterListAssistant.prototype.listTapHandler = function(event, item)
 {
-	this.controller.showAlertDialog(
+	if (event.target.className.include('prefs'))
 	{
-		title:				'wIRC',
-		allowHTMLMessage:	true,
-		message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
-							'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
-		choices:			[{label:$L('Ok'), value:''}],
-		onChoose:			function(value){}
-	});
-}
-MasterListAssistant.prototype.listTapHandler = function(event)
-{
-	if (event.originalEvent.target.className.include('prefs'))
-	{
-		this.controller.stageController.pushScene('server-info', event.item.id);
+		this.controller.stageController.pushScene('server-info', item.id);
 	}
-	else if (event.originalEvent.target.className.include('status'))
+	else if (event.target.className.include('status'))
 	{		
 		//event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
-		//if (event.item.connected)
-		if (servers.servers[event.item.key].state > 0) 
+		//if (item.connected)
+		if (servers.servers[item.key].state > 0) 
 		{
-			servers.servers[event.item.key].disconnect();
+			servers.servers[item.key].disconnect();
 		}
 		else
 		{
-			//servers.servers[event.item.key].connect();
-			servers.servers[event.item.key].init();
+			//servers.servers[item.key].connect();
+			servers.servers[item.key].init();
 		}
 	}
 	else
 	{
-		servers.servers[event.item.key].showStatusScene(prefs.get().statusPop);
+		servers.servers[item.key].showStatusScene(prefs.get().statusPop);
 	}
 }
 MasterListAssistant.prototype.listDeleteHandler = function(event)
@@ -295,6 +277,19 @@ MasterListAssistant.prototype.handleCommand = function(event)
 				break;
 		}
 	}
+}
+
+MasterListAssistant.prototype.changeNickPrompt = function()
+{
+	this.controller.showAlertDialog(
+	{
+		title:				'wIRC',
+		allowHTMLMessage:	true,
+		message:			'You should really change your nick away from the "wIRCer" default before connecting to this server.<br><br>' + 
+							'You can do so by bringing down the app menu and selecting "Identity" and changing the "Primary" nick to something else.',
+		choices:			[{label:$L('Ok'), value:''}],
+		onChoose:			function(value){}
+	});
 }
 
 MasterListAssistant.prototype.cleanup = function(event)

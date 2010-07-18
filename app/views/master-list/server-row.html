@@ -1,11 +1,19 @@
-<div class="palm-row" x-mojo-tap-highlight="momentary">
-	<div class="palm-row-wrapper #{rowStyle}">
-		<div class="button spinner"><div class="spinner" x-mojo-element="Spinner"></div></div><div class="button status" x-mojo-tap-highlight="momentary"><div class="icon"></div></div><div class="button prefs" x-mojo-tap-highlight="momentary"><div class="icon"></div></div>
-		<div class="title alias">#{-alias}</div>
-		<div>
-			<div class="#{networkLag}"></div>
-			<div class="sub">#{-address}</div>
+<div id="server-container-#{id}">
+	
+	<div class="palm-row single" x-mojo-tap-highlight="momentary" id="server-#{id}">
+		<div class="palm-row-wrapper #{rowStyle}">
+			<div class="button spinner"><div class="spinner" x-mojo-element="Spinner" id="server-spinner-#{id}"></div></div><div class="button status" x-mojo-tap-highlight="momentary"><div class="icon"></div></div><div class="button prefs" x-mojo-tap-highlight="momentary"><div class="icon"></div></div>
+			<div class="title alias">#{-alias}</div>
+			<div>
+				<div class="#{networkLag}" id="server-lag-#{id}"></div>
+				<div class="sub">#{-address}</div>
+			</div>
+			<div class="title address">#{-address}</div>
 		</div>
-		<div class="title address">#{-address}</div>
 	</div>
+	
+	<div id="server-children-#{id}"></div>
+	
+	<div class="palm-divider solid" id="server-divider-#{id}"></div>
+
 </div>
