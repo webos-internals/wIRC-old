@@ -60,7 +60,7 @@ strnstr(s, find, slen)
 
 
 
-#define IS_DEBUG_ENABLED(s)	((s)->option & LIBIRC_OPTION_DEBUG)
+#define IS_DEBUG_ENABLED(s)	((s)->options & LIBIRC_OPTION_DEBUG)
 
 
 irc_session_t * irc_create_session (irc_callbacks_t	* callbacks, const char * interface)
@@ -780,8 +780,10 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 				libirc_dump_data ("RECV", session->incoming_buf, offset);
 #endif
 			// parse the string
-			libirc_process_incoming_data (session, offset - 2);
+			libirc_process_incoming_data (session, offset);
 
+			offset = libirc_findcrlf_offset(session->incoming_buf, offset, session->incoming_offset);
+			
 			if ( session->incoming_offset - offset > 0 )
 				memmove (session->incoming_buf, session->incoming_buf + offset, session->incoming_offset - offset);
 

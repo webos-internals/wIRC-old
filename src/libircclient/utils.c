@@ -36,13 +36,28 @@ static void libirc_dump_data (const char * prefix, const char * buf, unsigned in
 static int libirc_findcrlf (const char * buf, int length)
 {
 	int offset = 0;
-	for ( ; offset < (length - 1); offset++ )
-		if ( buf[offset] == 0x0D && buf[offset+1] == 0x0A )
-			return (offset + 2);
+	for ( ; offset < length; offset++ )
+	{
+		if ( buf[offset] == 0x0D && offset < length - 1 && buf[offset+1] == 0x0A )
+			return offset;
+		if ( buf[offset] == 0x0A)
+			return offset;
+	}
 
 	return 0;
 }
 
+static int libirc_findcrlf_offset(const char *buf, int offset, const int length)
+{
+	for(; offset < length; offset++)
+	{
+		if(buf[offset] != 0x0D && buf[offset] != 0x0A)
+		{
+			break;
+		}
+	}
+	return offset;
+}
 
 static int libirc_findcrorlf (char * buf, int length)
 {
