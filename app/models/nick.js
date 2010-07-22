@@ -26,8 +26,8 @@ ircNick.prototype.setMode = function(mode)
 ircNick.prototype.addChannel = function(channel, mode)
 { 
 	if (channel) 
-	{ 
-		if (this.channels.indexOf(channel) === -1) 
+	{
+		if (this.channels.indexOf(channel) === -1 || !channel.containsNick(this))
 		{ 
 			channel.addNick(this);
 			this.channels.push(channel);
