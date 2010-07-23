@@ -37,7 +37,7 @@ PreferencesAliasInfoAssistant.prototype.setup = function()
 		// set this scene's default transition
 		this.controller.setDefaultTransition(Mojo.Transition.zoomFade);
 		
-		if (this.isAdd) this.controller.get('header').update('Add Alias');
+		if (this.aliasKey === false) this.controller.get('header').update('Add Alias');
 		else this.controller.get('header').update('Edit Alias');
 		
 		this.aliasElement =			this.controller.get('alias');
