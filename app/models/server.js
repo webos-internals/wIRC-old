@@ -400,7 +400,7 @@ ircServer.prototype.connect = function()
 			servers.getServerArrayKey(this.id),
 			this.address,
 			(this.port?this.port:6667),
-			(this.serverUser?this.serverUser:"wicer"),
+			(this.serverUser?this.serverUser:"wircer"),
 			(this.serverPassword?this.serverPassword:null),
 			this.defaultNick?this.defaultNick:prefs.get().nicknames[this.nextNick],
 			prefs.get().realname,
