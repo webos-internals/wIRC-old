@@ -9,6 +9,13 @@ function StartupAssistant()
     this.newMessages =
 	[
 		{
+			version: '0.3.1',
+			log:
+			[
+				'Fixed bug in lost-focus marker color usage',
+			]
+		},
+		{
 			version: '0.3.0',
 			log:
 			[
