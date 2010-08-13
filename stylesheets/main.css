@@ -738,7 +738,7 @@ body.palm-dark .channel-users #searchText
 {
 	float: left;
 	display: block;
-	width: 250px;
+	width: 240px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;

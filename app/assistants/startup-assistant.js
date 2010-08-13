@@ -12,7 +12,8 @@ function StartupAssistant()
 			version: '0.3.1',
 			log:
 			[
-				'Fixed bug in lost-focus marker color usage',
+				'Fixed bug in marker line color usage',
+				'Fixed bug in query-chat title',
 			]
 		},
 		{
