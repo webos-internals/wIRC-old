@@ -662,13 +662,13 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 			if (servers.servers[id].nextNick < prefs.get().nicknames.length)
 			{
 				servers.servers[id].newMessage('debug', false, 'Trying next nick [' + servers.servers[id].nextNick + '] - ' + prefs.get().nicknames[servers.servers[id].nextNick]);
-				servers.servers[id].setNick(prefs.get().nicknames[servers.servers[id].nextNick]);
+				servers.servers[id].setNick.bind(servers.servers[id]).defer(prefs.get().nicknames[servers.servers[id].nextNick]);
 				servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
 			}
 			else
 			{
 				servers.servers[id].newMessage('debug', false, 'No more nicks to try!');
-				servers.servers[id].disconnect();
+				servers.servers[id].disconnect.bind(servers.servers[id]).defer();
 			}
 		}
 	}
