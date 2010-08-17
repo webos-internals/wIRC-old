@@ -26,7 +26,7 @@ function ircServer(params)
 	this.dontPartOnClose =		params.dontPartOnClose;
 	this.autoOpenFavs =			params.autoOpenFavs;
 	this.defaultNick =			params.defaultNick;
-	this.nextNick =				0;
+	this.nextNick =				1;
 	
 	this.isTemporary =			params.isTemporary;
 	
@@ -189,7 +189,7 @@ ircServer.prototype.newCommand = function(message)
 					break;
 				
 				case 'nick':
-					plugin.cmd_nick(servers.getServerArrayKey(this.id), val);
+					this.setNick(val);
 					break;
 				
 				case 'join':
@@ -402,7 +402,7 @@ ircServer.prototype.connect = function()
 			(this.port?this.port:6667),
 			(this.serverUser?this.serverUser:"wircer"),
 			(this.serverPassword?this.serverPassword:null),
-			this.defaultNick?this.defaultNick:prefs.get().nicknames[this.nextNick],
+			this.defaultNick?this.defaultNick:prefs.get().nicknames[0],
 			prefs.get().realname,
 			prefs.get().piface
 		);	
@@ -470,6 +470,11 @@ ircServer.prototype.reJoinChannels = function()
 			}
 		}
 	}
+}
+
+ircServer.prototype.setNick = function(nick)
+{
+	plugin.cmd_nick(servers.getServerArrayKey(this.id), nick);
 }
 
 ircServer.prototype.away = function(reason)

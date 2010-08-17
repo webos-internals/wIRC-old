@@ -648,16 +648,28 @@ wircPlugin.prototype.event_numeric_handler = function(id, event, origin, params_
 	}
 	if (msg) msgTarget.newMessage(msgType, nick, msg, dontUpdate);
 	
-	if (evt == 433 || evt == 437) {
-		servers.servers[id].newMessage('debug', false, msg[0] = params[1] + " : " + params[2]);
-		if (servers.servers[id].nextNick < prefs.get().nicknames.length - 1) {
-			servers.servers[id].newMessage('debug', false, 'Trying next nick [' + servers.servers[id].nextNick + '] - ' + prefs.get().nicknames[servers.servers[id].nextNick]);
-			servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
-			plugin.cmd_nick(null, servers.servers[id].sessionToken, prefs.get().nicknames[servers.servers[id].nextNick]);
+	if (evt == 433)
+	{
+		//alert('**************** EVENT #433: '+servers.servers[id].state);
+		//for (var p = 0; p < params.length; p++) alert('**************** * '+p+': '+params[p]);
+		
+		if (servers.servers[id].state == servers.servers[id].STATE_CONNECTED)
+		{
+			servers.servers[id].newMessage('debug', false, msg[0] = params[1] + " : " + params[2]);
 		}
-		else {
-			servers.servers[id].newMessage('debug', false, 'No more nicks to try!');
-			servers.servers[id].disconnect();
+		else if (servers.servers[id].state == servers.servers[id].STATE_CONNECTING)
+		{
+			if (servers.servers[id].nextNick < prefs.get().nicknames.length)
+			{
+				servers.servers[id].newMessage('debug', false, 'Trying next nick [' + servers.servers[id].nextNick + '] - ' + prefs.get().nicknames[servers.servers[id].nextNick]);
+				servers.servers[id].setNick(prefs.get().nicknames[servers.servers[id].nextNick]);
+				servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
+			}
+			else
+			{
+				servers.servers[id].newMessage('debug', false, 'No more nicks to try!');
+				servers.servers[id].disconnect();
+			}
 		}
 	}
 

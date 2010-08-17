@@ -58,7 +58,10 @@ AppAssistant.prototype.handleLaunch = function(params)
 					else if (prefs.get().realname.length==0 || prefs.get().nicknames.length==0)
 						controller.pushScene('identity', true, true);
 					else
+					{
+						//controller.pushScene('master-list');
 						controller.pushScene('server-list');
+					}
 				};
 				this.controller.createStageWithCallback({name: serverStage, lightweight: true}, f.bind(this));
 			}
