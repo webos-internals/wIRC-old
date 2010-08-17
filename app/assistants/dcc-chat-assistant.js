@@ -17,6 +17,7 @@ function DccChatAssistant(dcc)
 	this.isVisible = 				false;
 	this.lastFocusMarker =			false;
 	this.lastFocusMessage =			false;
+	this.copyStart = 				-1;
 
 	this.action =					false;
     
@@ -285,18 +286,35 @@ DccChatAssistant.prototype.messageTap = function(event)
 			popupList.push({label: 'Whois',				 command: 'whois'});
 		}
 		popupList.push({label: 'Message'});
-		popupList.push({label: 'Copy',	 command: 'copy'});
+		if (this.copyStart > -1)
+		{
+			popupList.push({label: 'Copy',				command: 'copy'});
+			if (this.copyStart == event.index)
+			{
+				this.copyStart = -1;
+				popupList.push({label: 'Copy From Here',	command: 'copy-from'});
+			}
+			else
+			{
+				popupList.push({label: '... To Here',		command: 'copy-to'});
+			}
+		}
+		else
+		{
+			popupList.push({label: 'Copy',				command: 'copy'});
+			popupList.push({label: 'Copy From Here',	command: 'copy-from'});
+		}
 		
 		this.controller.popupSubmenu(
 		{
-			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
+			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item, event.index),
 			popupClass: 'group-popup',
 			placeNear: event.originalEvent.target,
 			items: popupList
 		});
 	}
 }
-DccChatAssistant.prototype.messageTapListHandler = function(choice, item)
+DccChatAssistant.prototype.messageTapListHandler = function(choice, item, index)
 {
 	switch(choice)
 	{
@@ -308,6 +326,41 @@ DccChatAssistant.prototype.messageTapListHandler = function(choice, item)
 			this.stopAutoFocus();
 			this.controller.stageController.setClipboard(item.copyText);
 			this.startAutoFocus();
+			
+			if (this.copyStart)
+			{
+				this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
+				this.copyStart = -1;
+			}
+			break;
+			
+		case 'copy-from':
+			this.copyStart = index;
+			this.messageListElement.mojo.getNodeByIndex(this.copyStart).addClassName('selected');
+			break;
+			
+		case 'copy-to':
+			if (this.listModel.items.length > 0)
+			{
+				var message = '';
+				
+				var start = (this.copyStart > index ? index : this.copyStart);
+				var end   = (this.copyStart < index ? index : this.copyStart);
+				
+				for (var i = start; i <= end; i++)
+				{
+					if (message != '') message += '\n';
+					message += this.listModel.items[i].copyText;
+				}
+				if (message != '')
+				{
+					this.stopAutoFocus();
+					this.controller.stageController.setClipboard(message);
+					this.startAutoFocus();
+				}
+			}
+			this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
+			this.copyStart = -1;
 			break;
 	}
 }

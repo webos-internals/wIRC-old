@@ -1,4 +1,5 @@
-function ChannelChatAssistant(channel){
+function ChannelChatAssistant(channel)
+{
     this.channel = channel;
     this.nick = false;
     this.tabText = false;
@@ -22,6 +23,7 @@ function ChannelChatAssistant(channel){
     this.isVisible = false;
     this.lastFocusMarker = false;
     this.lastFocusMessage = false;
+	this.copyStart = -1;
     
     this.timestamp = 0;
     this.timestamp_s = "";
@@ -40,13 +42,16 @@ function ChannelChatAssistant(channel){
     }
 }
 
-ChannelChatAssistant.prototype.setup = function(){
-    try {
+ChannelChatAssistant.prototype.setup = function()
+{
+    try
+	{
         // set theme
         this.controller.document.body.className = prefs.get().theme;
         
         this.updateAppMenu(true);
-        this.controller.setupWidget(Mojo.Menu.appMenu, {
+        this.controller.setupWidget(Mojo.Menu.appMenu,
+		{
             omitDefaultItems: true
         }, this.menuModel);
         
@@ -274,19 +279,37 @@ ChannelChatAssistant.prototype.messageTap = function(event)
 			popupList.push({label: 'Private Message',	 command: 'pm'});
 			popupList.push({label: 'Whois',				 command: 'whois'});
 		}
+		
 		popupList.push({label: 'Message'});
-		popupList.push({label: 'Copy',	 command: 'copy'});
+		if (this.copyStart > -1)
+		{
+			popupList.push({label: 'Copy',				command: 'copy'});
+			if (this.copyStart == event.index)
+			{
+				this.copyStart = -1;
+				popupList.push({label: 'Copy From Here',	command: 'copy-from'});
+			}
+			else
+			{
+				popupList.push({label: '... To Here',		command: 'copy-to'});
+			}
+		}
+		else
+		{
+			popupList.push({label: 'Copy',				command: 'copy'});
+			popupList.push({label: 'Copy From Here',	command: 'copy-from'});
+		}
 		
 		this.controller.popupSubmenu(
 		{
-			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item),
+			onChoose: this.messageTapListHandler.bindAsEventListener(this, event.item, event.index),
 			popupClass: 'group-popup',
 			placeNear: event.originalEvent.target,
 			items: popupList
 		});
 	}
 }
-ChannelChatAssistant.prototype.messageTapListHandler = function(choice, item)
+ChannelChatAssistant.prototype.messageTapListHandler = function(choice, item, index)
 {
 	switch(choice)
 	{
@@ -300,15 +323,62 @@ ChannelChatAssistant.prototype.messageTapListHandler = function(choice, item)
 			{
 				this.channel.server.newQuery(item.nick);
 			}
+			
+			if (this.copyStart)
+			{
+				this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
+				this.copyStart = -1;
+			}
 			break;
 		case 'whois':
 			this.channel.server.whois(item.nick);
+			
+			if (this.copyStart)
+			{
+				this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
+				this.copyStart = -1;
+			}
 			break;
 			
 		case 'copy':
 			this.stopAutoFocus();
 			this.controller.stageController.setClipboard(item.copyText);
 			this.startAutoFocus();
+			
+			if (this.copyStart)
+			{
+				this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
+				this.copyStart = -1;
+			}
+			break;
+			
+		case 'copy-from':
+			this.copyStart = index;
+			this.messageListElement.mojo.getNodeByIndex(this.copyStart).addClassName('selected');
+			break;
+			
+		case 'copy-to':
+			if (this.listModel.items.length > 0)
+			{
+				var message = '';
+				
+				var start = (this.copyStart > index ? index : this.copyStart);
+				var end   = (this.copyStart < index ? index : this.copyStart);
+				
+				for (var i = start; i <= end; i++)
+				{
+					if (message != '') message += '\n';
+					message += this.listModel.items[i].copyText;
+				}
+				if (message != '')
+				{
+					this.stopAutoFocus();
+					this.controller.stageController.setClipboard(message);
+					this.startAutoFocus();
+				}
+			}
+			this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
+			this.copyStart = -1;
 			break;
 	}
 }

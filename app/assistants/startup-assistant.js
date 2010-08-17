@@ -12,6 +12,7 @@ function StartupAssistant()
 			version: '0.3.1',
 			log:
 			[
+				'Added multi-line copy',
 				'Fixed bug in marker line color usage',
 				'Fixed bug in query-chat title',
 				'Fixed bug in "next nick" code that caused crashes'
