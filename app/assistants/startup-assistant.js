@@ -14,6 +14,7 @@ function StartupAssistant()
 			[
 				'Fixed bug in marker line color usage',
 				'Fixed bug in query-chat title',
+				'Fixed bug in "next nick" code that caused crashes'
 			]
 		},
 		{
