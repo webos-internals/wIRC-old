@@ -716,6 +716,10 @@ ircServer.prototype.joinChannel = function(name, key)
 		plugin.cmd_join(servers.getServerArrayKey(this.id), name, key);
 		tmpChan.join();
 	}
+	else
+	{
+		tmpChan.openStage();
+	}
 }
 
 ircServer.prototype.formatChannelName = function(name)
