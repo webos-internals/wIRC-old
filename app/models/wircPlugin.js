@@ -284,15 +284,25 @@ wircPlugin.prototype.event_mode_handler = function(id, event, origin, params_s)
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
 	
+	//servers.servers[id].debugPayload(event, origin, params_s, true);
+	
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpChan = servers.servers[id].getChannel(params[0]);
 	if (tmpChan) 
 	{
-		var modeNick = servers.servers[id].getNick(params[2]);
-		if (modeNick)
-			modeNick.updateMode(params[1], tmpChan);
-		if (prefs.get().eventMode)
-			tmpChan.newMessage('type3', false, 'Mode ' + params[0] + ' ' + params[1] + ' by ' + tmpNick.name);
+		if (params[2])
+		{
+			var modeNick = servers.servers[id].getNick(params[2]);
+			if (modeNick)
+				modeNick.updateMode(params[1], tmpChan);
+			if (prefs.get().eventMode)
+				tmpChan.newMessage('type3', false, 'Mode ' + modeNick.name + ' ' + params[1] + ' by ' + tmpNick.name);
+		}
+		else
+		{
+			if (prefs.get().eventMode)
+				tmpChan.newMessage('type3', false, 'Mode ' + params[0] + ' ' + params[1] + ' by ' + tmpNick.name);
+		}
 	}
 }
 
@@ -300,6 +310,8 @@ wircPlugin.prototype.event_umode_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
 	var params = JSON.parse(params_s);
+	
+	//servers.servers[id].debugPayload(event, origin, params_s, true);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	if (tmpNick) {

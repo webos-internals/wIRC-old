@@ -12,7 +12,8 @@ function StartupAssistant()
 			version: '0.3.2',
 			log:
 			[
-				'Fixed bug in message copy code'
+				'Fixed bug in message copy code',
+				'Fixed how channel/user mode messages are displayed'
 			]
 		},
 		{
