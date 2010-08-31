@@ -327,7 +327,7 @@ ServerStatusAssistant.prototype.messageTapListHandler = function(choice, item, i
 			this.controller.stageController.setClipboard(item.copyText);
 			this.startAutoFocus();
 			
-			if (this.copyStart)
+			if (this.copyStart > -1)
 			{
 				this.messageListElement.mojo.getNodeByIndex(this.copyStart).removeClassName('selected');
 				this.copyStart = -1;
