@@ -828,7 +828,14 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 		// Because outgoing_buf could be changed asynchronously, we should
 		// lock any change
 		libirc_mutex_lock (&session->mutex_session);
-		length = socket_send (&session->sock, session->outgoing_buf, session->outgoing_offset);
+		switch (session->encryption) {
+		case LIBIRC_ENCRYPTION_NONE:
+			length = socket_send (&session->sock, session->outgoing_buf, session->outgoing_offset);
+			break;
+		case LIBIRC_ENCRYPTION_SSL:
+			length = ssl_socket_send (session->sslHandle, session->outgoing_buf, session->outgoing_offset);
+			break;
+		}
 
 		if ( length <= 0 )
 		{
