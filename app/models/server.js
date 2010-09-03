@@ -17,7 +17,7 @@ function ircServer(params)
 	this.serverUser =			params.serverUser;
 	this.serverPassword =		params.serverPassword;
 	this.port =					params.port;
-	this.encryption = 			0;
+	this.encryption = 			params.encryption;
 	this.autoConnect =			params.autoConnect;
 	this.autoIdentify =			params.autoIdentify;
 	this.identifyService =		params.identifyService;
@@ -1105,6 +1105,7 @@ ircServer.prototype.getEditObject = function()
 		alias:				this.alias,
 		address:			this.address,
 		port:				this.port,
+		encryption:			this.encryption,
 		defaultNick:		this.defaultNick,
 		serverUser:			this.serverUser,
 		serverPassword:		this.serverPassword,
@@ -1130,6 +1131,7 @@ ircServer.prototype.saveInfo = function(params)
 		this.serverUser =		params.serverUser;
 		this.serverPassword =	params.serverPassword;
 		this.port =				params.port;
+		this.encryption =		params.encryption;
 		this.defaultNick =		params.defaultNick;
 		this.autoConnect =		params.autoConnect;
 		this.autoIdentify =		params.autoIdentify;
@@ -1157,6 +1159,7 @@ ircServer.getBlankServerObject = function()
 		serverUser:			'',
 		serverPassword:		'',
 		port:				'',
+		encryption:			0,
 		defaultNick:		'',
 		autoConnect:		false,
 		autoIdentify:		false,

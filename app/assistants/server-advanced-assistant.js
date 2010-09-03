@@ -5,6 +5,7 @@ function ServerAdvancedAssistant(serverobj)
 	this.aliasElement =				false;
 	this.addressElement =			false;
 	this.portElement =				false;
+	this.encryptionElement = 		false;
 	this.serverUserElement =		false;
 	this.serverPasswordElement =	false;
 	this.autoConnectElement =		false;
@@ -74,6 +75,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		this.aliasElement =				this.controller.get('alias');
 		this.addressElement =			this.controller.get('address');
 		this.portElement =				this.controller.get('port');
+		this.encryptionElement =		this.controller.get('encryption');
 		this.serverUserElement =		this.controller.get('serverUser');
 		this.serverPasswordElement =	this.controller.get('serverPassword');
 		this.autoConnectElement =		this.controller.get('autoConnect');
@@ -128,6 +130,20 @@ ServerAdvancedAssistant.prototype.setup = function()
 				charsAllow: Mojo.Char.isDigit,
 				modifierState: Mojo.Widget.numLock,
 				focusMode: Mojo.Widget.focusSelectMode
+			},
+			this.server
+		);
+		this.controller.setupWidget
+		(
+			'encryption',
+			{
+				label: 'Encryption',
+				choices:
+				[
+					{label:'None',	value:0},
+					{label:'SSL',	value:1}
+				],
+				modelProperty: 'encryption'
 			},
 			this.server
 		);
@@ -194,6 +210,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
+		Mojo.Event.listen(this.encryptionElement,		Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
@@ -603,6 +620,7 @@ ServerAdvancedAssistant.prototype.activate = function(event)
 ServerAdvancedAssistant.prototype.cleanup = function(event)
 {
 	Mojo.Event.stopListening(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.encryptionElement,		Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 	Mojo.Event.stopListening(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);
