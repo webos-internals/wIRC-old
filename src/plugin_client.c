@@ -139,11 +139,12 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 	servers[id].id = id;
 	servers[id].server = PDL_GetJSParamString(params, 1);
 	servers[id].port = PDL_GetJSParamInt(params, 2);
-	servers[id].username = PDL_GetJSParamString(params, 3);
-	servers[id].server_password = PDL_GetJSParamString(params, 4);
-	servers[id].nick = PDL_GetJSParamString(params, 5);
-	servers[id].realname = PDL_GetJSParamString(params, 6);
-	servers[id].interface = PDL_GetJSParamString(params, 7);
+	servers[id].encryption = PDL_GetJSParamInt(params, 3);
+	servers[id].username = PDL_GetJSParamString(params, 4);
+	servers[id].server_password = PDL_GetJSParamString(params, 5);
+	servers[id].nick = PDL_GetJSParamString(params, 6);
+	servers[id].realname = PDL_GetJSParamString(params, 7);
+	servers[id].interface = PDL_GetJSParamString(params, 8);
 
 	if (pthread_create(&servers[id].worker_thread, NULL, client_run,
 			(void*) &id)) {
