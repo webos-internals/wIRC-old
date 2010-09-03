@@ -43,6 +43,8 @@
 #ifndef INCLUDE_LIBIRC_H
 #define INCLUDE_LIBIRC_H
 
+#include <syslog.h>
+
 #include <sys/select.h>	/* fd_set */
 
 #ifdef	__cplusplus

@@ -204,8 +204,16 @@ int irc_connect (irc_session_t * session,
 		return 1;
 	}
 
+	// and connect to the IRC server
+	if ( socket_connect (&session->sock, (struct sockaddr *) &saddr, sizeof(saddr)) )
+	{
+		session->lasterror = LIBIRC_ERR_CONNECT;
+		return 1;
+	}
+
 	// do encryption shit here
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
+		syslog(LOG_INFO, "Trying to use SSL.\n");
 		SSL_load_error_strings();
 		SSL_library_init();
 		session->sslContext = SSL_CTX_new(SSLv23_client_method());
@@ -218,13 +226,7 @@ int irc_connect (irc_session_t * session,
 			ERR_print_errors_fp (stderr);
 		if (SSL_connect (session->sslHandle) != 1)
 			ERR_print_errors_fp (stderr);
-	}
-
-	// and connect to the IRC server
-	if ( socket_connect (&session->sock, (struct sockaddr *) &saddr, sizeof(saddr)) )
-	{
-		session->lasterror = LIBIRC_ERR_CONNECT;
-		return 1;
+		syslog(LOG_INFO, "SSL Connected.\n");
 	}
 
 	session->state = LIBIRC_STATE_CONNECTING;
