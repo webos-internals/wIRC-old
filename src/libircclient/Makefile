@@ -2,6 +2,7 @@ include ../../Makefile.inc
 
 CFLAGS		:=	$(CFLAGS) -DIN_BUILDING_LIBIRC -DENABLE_THREADS -D_REENTRANT
 INCLUDES	:=	$(INCLUDES) -I./include
+LDFLAGS		:=	-lssl -lcrypto
 
 IRCLIB		:=	libircclient.o
 
@@ -11,4 +12,4 @@ clean:
 	rm -f $(IRCLIB)
 
 .c.o: $(IRCLIB)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) -c -o $@ $<

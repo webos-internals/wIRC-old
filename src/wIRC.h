@@ -100,6 +100,7 @@ typedef struct {
 	const char *realServer;
 	int estabilshed;
 	int port;
+	int encryption;
 	struct timeb ping;
 } wIRCd_client_t;
 

@@ -34,5 +34,7 @@
 #define LIBIRC_STATE_CONFIRM_SIZE	5	// Used only by DCC send to confirm the amount of sent data
 #define LIBIRC_STATE_REMOVED		10	// this state is used only in DCC
 
+#define LIBIRC_ENCRYPTION_NONE		0
+#define LIBIRC_ENCRYPTION_SSL		1
 
 #endif /* INCLUDE_IRC_PARAMS_H */

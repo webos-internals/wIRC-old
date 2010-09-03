@@ -216,6 +216,7 @@ void irc_destroy_session (irc_session_t * session);
 int irc_connect (irc_session_t * session,
 			const char * server,
 			unsigned short port,
+			unsigned int encryption,
 			const char * server_password,
 			const char * nick,
 			const char * username,

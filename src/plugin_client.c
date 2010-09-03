@@ -104,7 +104,7 @@ void *client_run(void *ptr) {
 
 		irc_set_ctx(server->session, server);
 
-		int c = irc_connect(server->session, server->server, server->port,
+		int c = irc_connect(server->session, server->server, server->port, server->encryption,
 				server->server_password, server->nick, server->username,
 				server->realname);
 		usleep(pre_run_usleep);

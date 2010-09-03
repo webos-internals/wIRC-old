@@ -17,6 +17,7 @@ function ircServer(params)
 	this.serverUser =			params.serverUser;
 	this.serverPassword =		params.serverPassword;
 	this.port =					params.port;
+	this.encryption = 			0;
 	this.autoConnect =			params.autoConnect;
 	this.autoIdentify =			params.autoIdentify;
 	this.identifyService =		params.identifyService;
@@ -400,6 +401,7 @@ ircServer.prototype.connect = function()
 			servers.getServerArrayKey(this.id),
 			this.address,
 			(this.port?this.port:6667),
+			this.encryption,
 			(this.serverUser?this.serverUser:"wircer"),
 			(this.serverPassword?this.serverPassword:null),
 			this.defaultNick?this.defaultNick:prefs.get().nicknames[0],
