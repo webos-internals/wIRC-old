@@ -11,10 +11,10 @@ INCLUDES	:=	-I${ROOT}/include \
 				-I$(ROOT)${prefix}/include/SDL \
 				-I$(ROOT)${prefix}/include/pdl \
 				-I$(IRCLIB)/include
-				
+								
 LIBDIRS		:=	-Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined
 	
-LIBS		:=  -lpdl -lpthread -lm
+LIBS		:=  -lpdl -lpthread -lm -lssl -lcrypto
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 				ping.o plugin_client.o plugin_events.o plugin.o \

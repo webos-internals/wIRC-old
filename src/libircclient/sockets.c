@@ -22,6 +22,10 @@
 #include <netinet/in.h>
 #include <fcntl.h>
 
+#include <openssl/rand.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+
 #define IS_SOCKET_ERROR(a)	((a)<0)
 typedef int 			socket_t;
 
@@ -106,12 +110,33 @@ static int socket_recv (socket_t * sock, void * buf, size_t len)
 	return length;
 }
 
+static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
+{
+	int length;
+
+	while ( (length = SSL_read (sslHandle, buf, len)) < 0
+	&& socket_error() == EINTR )
+		continue;
+
+	return length;
+}
 
 static int socket_send (socket_t * sock, const void *buf, size_t len)
 {
 	int length;
 
 	while ( (length = send (*sock, buf, len, 0)) < 0
+	&& socket_error() == EINTR )
+		continue;
+
+	return length;
+}
+
+static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
+{
+	int length;
+
+	while ( (length = SSL_write (sslHandle, buf, len)) < 0
 	&& socket_error() == EINTR )
 		continue;
 

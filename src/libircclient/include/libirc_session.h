@@ -26,6 +26,10 @@
 #include "libirc_dcc.h"
 #include "libirc_events.h"
 
+#include <openssl/rand.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+
 
 struct irc_session_s
 {
@@ -41,6 +45,11 @@ struct irc_session_s
 	char 			outgoing_buf[LIBIRC_BUFFER_SIZE];
 	unsigned int	outgoing_offset;
 	port_mutex_t	mutex_session;
+
+	unsigned int	encryption;
+
+	SSL 		  * sslHandle;
+	SSL_CTX 	  * sslContext;
 
 	socket_t		sock;
 	int				state;
