@@ -114,22 +114,18 @@ static int socket_recv (socket_t * sock, void * buf, size_t len)
 
 static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
 {
-	int length, r;
+	int length, err;
 
-	do {
-		syslog(LOG_INFO, "SSL_RECV: %s\n", buf);
-		r=SSL_read(sslHandle, buf, len);
-		switch(SSL_get_error(sslHandle, r)){
-		case SSL_ERROR_NONE:
-			length=r;
-			break;
-		case SSL_ERROR_WANT_READ:
-			continue;
-		case SSL_ERROR_WANT_WRITE:
-			syslog(LOG_INFO, "** wants write\n");
-			break;
-		}
-	} while (SSL_pending(sslHandle));
+	syslog(LOG_INFO, "SSL_RECV: %s\n", buf);
+	length = SSL_read(sslHandle, buf, len);
+	err = SSL_get_error(sslHandle, length);
+	switch(err){
+	case SSL_ERROR_NONE:
+		break;
+	default:
+		syslog(LOG_INFO, "** recv error: %d\n", err);
+		break;
+	}
 
 	return length;
 }
@@ -147,22 +143,18 @@ static int socket_send (socket_t * sock, const void *buf, size_t len)
 
 static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
 {
-	int length, r;
+	int length, err;
 
-	do {
-		syslog(LOG_INFO, "SSL_SEND: %s\n", buf);
-		r=SSL_write(sslHandle, buf, len);
-		switch(SSL_get_error(sslHandle, r)){
-		case SSL_ERROR_NONE:
-			length=r;
-			break;
-		case SSL_ERROR_WANT_WRITE:
-			continue;
-		case SSL_ERROR_WANT_READ:
-			syslog(LOG_INFO, "** wants read\n");
-			break;
-		}
-	} while (SSL_pending(sslHandle));
+	syslog(LOG_INFO, "SSL_SEND: %s\n", buf);
+	length = SSL_write(sslHandle, buf, len);
+	err = SSL_get_error(sslHandle, length);
+	switch(err){
+	case SSL_ERROR_NONE:
+		break;
+	default:
+		syslog(LOG_INFO, "** send error: %d\n", err);
+		break;
+	}
 
 	return length;
 }
