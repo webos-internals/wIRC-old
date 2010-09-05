@@ -17,7 +17,7 @@ function ircServer(params)
 	this.serverUser =			params.serverUser;
 	this.serverPassword =		params.serverPassword;
 	this.port =					params.port;
-	this.encryption = 			params.encryption;
+	this.encryption = 			(params.encryption?params.encryption:0);
 	this.autoConnect =			params.autoConnect;
 	this.autoIdentify =			params.autoIdentify;
 	this.identifyService =		params.identifyService;
