@@ -22,7 +22,7 @@
 #include <netinet/in.h>
 #include <fcntl.h>
 
-#include <openssl/rand.h>
+#include <openssl/bio.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 

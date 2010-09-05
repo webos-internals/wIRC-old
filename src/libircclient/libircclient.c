@@ -246,12 +246,9 @@ int irc_connect (irc_session_t * session,
 		session->sslContext = SSL_CTX_new(SSLv23_client_method());
 		SSL_CTX_set_info_callback(session->sslContext, (void*)apps_ssl_info_callback);
 		session->sslHandle = SSL_new(session->sslContext);
-		session->sslBIO = BIO_new_socket(session->sock, BIO_NOCLOSE);
-		SSL_set_bio(session->sslHandle, session->sslBIO, session->sslBIO);
-		int cn = SSL_connect (session->sslHandle);
-		syslog(LOG_INFO, "SSL_connect: %d\n", cn);
+		SSL_set_fd(session->sslHandle, (int)session->sock);
+		SSL_set_connect_state(session->sslHandle);
 		syslog(LOG_INFO, "SSL init end\n");
-		if (cn==-1) return 1;
 	}
 
 	session->state = LIBIRC_STATE_CONNECTING;
