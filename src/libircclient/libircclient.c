@@ -129,6 +129,10 @@ void irc_destroy_session (irc_session_t * session)
 	free (session);
 }
 
+/**
+ * This info right now is getting dumped to syslog but might be something that
+ * should get piped back into wIRC at some point.
+ */
 void apps_ssl_info_callback(SSL *s, int where, int ret) {
 	const char *str;
 	int w;
@@ -155,11 +159,6 @@ void apps_ssl_info_callback(SSL *s, int where, int ret) {
 					str,SSL_state_string_long(s));
 		}
 	}
-}
-
-int verify_callback(X509_STORE_CTX *ctx) {
-	syslog(LOG_INFO, "verify callback\n");
-	return 1;
 }
 
 int irc_connect (irc_session_t * session,
@@ -244,16 +243,13 @@ int irc_connect (irc_session_t * session,
 
 	// do encryption shit here
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
-		//syslog(LOG_INFO, "SSL init start\n");
 		SSL_load_error_strings();
 		SSL_library_init();
 		session->sslContext = SSL_CTX_new(SSLv23_client_method());
 		SSL_CTX_set_info_callback(session->sslContext, (void*)apps_ssl_info_callback);
-		SSL_CTX_set_verify(session->sslContext, SSL_VERIFY_PEER, (void*)verify_callback);
 		session->sslHandle = SSL_new(session->sslContext);
 		SSL_set_fd(session->sslHandle, (int)session->sock);
-		SSL_connect(session->sslHandle);
-		//syslog(LOG_INFO, "SSL init end\n");
+		if (SSL_connect(session->sslHandle) <= 0) return 1;
 	}
 
 	socket_make_nonblocking (&session->sock);
