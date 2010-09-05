@@ -129,6 +129,33 @@ void irc_destroy_session (irc_session_t * session)
 	free (session);
 }
 
+void apps_ssl_info_callback(SSL *s, int where, int ret) {
+	const char *str;
+	int w;
+	w=where& ~SSL_ST_MASK;
+	if (w & SSL_ST_CONNECT) str="SSL_connect";
+	else if (w & SSL_ST_ACCEPT) str="SSL_accept";
+	else str="undefined";
+	if (where & SSL_CB_LOOP) {
+		syslog(LOG_INFO, "%s:%s\n",str,SSL_state_string_long(s));
+	}
+	else if (where & SSL_CB_ALERT) {
+		str=(where & SSL_CB_READ)?"read":"write";
+		syslog(LOG_INFO, "SSL3 alert %s:%s:%s\n",
+				str,
+				SSL_alert_type_string_long(ret),
+				SSL_alert_desc_string_long(ret));
+	}
+	else if (where & SSL_CB_EXIT) {
+		if (ret == 0)
+			syslog(LOG_INFO, "%s:failed in %s\n",
+					str,SSL_state_string_long(s));
+		else if (ret < 0) {
+			syslog(LOG_INFO, "%s:error in %s\n",
+					str,SSL_state_string_long(s));
+		}
+	}
+}
 
 int irc_connect (irc_session_t * session,
 		const char * server,
@@ -213,20 +240,18 @@ int irc_connect (irc_session_t * session,
 
 	// do encryption shit here
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
-		syslog(LOG_INFO, "Trying to use SSL.\n");
+		syslog(LOG_INFO, "SSL init start\n");
 		SSL_load_error_strings();
 		SSL_library_init();
 		session->sslContext = SSL_CTX_new(SSLv23_client_method());
-		if (session->sslContext == NULL)
-			ERR_print_errors_fp (stderr);
+		SSL_CTX_set_info_callback(session->sslContext, (void*)apps_ssl_info_callback);
 		session->sslHandle = SSL_new(session->sslContext);
-		if (session->sslHandle == NULL)
-			ERR_print_errors_fp (stderr);
-		if (!SSL_set_fd (session->sslHandle, session->sock))
-			ERR_print_errors_fp (stderr);
-		if (SSL_connect (session->sslHandle) != 1)
-			ERR_print_errors_fp (stderr);
-		syslog(LOG_INFO, "SSL Connected.\n");
+		session->sslBIO = BIO_new_socket(session->sock, BIO_NOCLOSE);
+		SSL_set_bio(session->sslHandle, session->sslBIO, session->sslBIO);
+		int cn = SSL_connect (session->sslHandle);
+		syslog(LOG_INFO, "SSL_connect: %d\n", cn);
+		syslog(LOG_INFO, "SSL init end\n");
+		if (cn==-1) return 1;
 	}
 
 	session->state = LIBIRC_STATE_CONNECTING;
@@ -718,6 +743,7 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 	if ( session->state == LIBIRC_STATE_CONNECTING
 			&& FD_ISSET (session->sock, out_set) )
 	{
+		syslog(LOG_INFO, "We are in process_select_descriptions handle connection area\n");
 		// Now we have to determine whether the socket is connected
 		// or the connect is failed
 		struct sockaddr_storage saddr, laddr;

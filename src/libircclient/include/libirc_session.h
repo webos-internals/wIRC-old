@@ -50,6 +50,7 @@ struct irc_session_s
 
 	SSL 		  * sslHandle;
 	SSL_CTX 	  * sslContext;
+	BIO 		  * sslBIO;
 
 	socket_t		sock;
 	int				state;
