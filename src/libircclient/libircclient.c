@@ -747,7 +747,7 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 	if ( session->state == LIBIRC_STATE_CONNECTING
 			&& FD_ISSET (session->sock, out_set) )
 	{
-		syslog(LOG_INFO, "We are in process_select_descriptions handle connection area\n");
+		//syslog(LOG_INFO, "We are in process_select_descriptions handle connection area\n");
 		// Now we have to determine whether the socket is connected
 		// or the connect is failed
 		struct sockaddr_storage saddr, laddr;

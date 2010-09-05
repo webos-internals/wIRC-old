@@ -116,12 +116,14 @@ static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
 {
 	int length, err;
 
-	syslog(LOG_INFO, "SSL_RECV: %s\n", buf);
+	read:
 	length = SSL_read(sslHandle, buf, len);
 	err = SSL_get_error(sslHandle, length);
 	switch(err){
 	case SSL_ERROR_NONE:
 		break;
+	case SSL_ERROR_WANT_READ:
+		goto read;
 	default:
 		syslog(LOG_INFO, "** recv error: %d\n", err);
 		break;
@@ -145,12 +147,14 @@ static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
 {
 	int length, err;
 
-	syslog(LOG_INFO, "SSL_SEND: %s\n", buf);
+	write:
 	length = SSL_write(sslHandle, buf, len);
 	err = SSL_get_error(sslHandle, length);
 	switch(err){
 	case SSL_ERROR_NONE:
 		break;
+	case SSL_ERROR_WANT_WRITE:
+		goto write;
 	default:
 		syslog(LOG_INFO, "** send error: %d\n", err);
 		break;
