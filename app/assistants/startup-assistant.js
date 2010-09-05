@@ -13,7 +13,9 @@ function StartupAssistant()
 			log:
 			[
 				'Fixed bug in message copy code',
-				'Fixed how channel/user mode messages are displayed'
+				'Fixed how channel/user mode messages are displayed',
+				'Fixed fstab bug',
+				'Beta SSL support'
 			]
 		},
 		{
