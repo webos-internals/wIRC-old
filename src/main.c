@@ -59,16 +59,13 @@ int main(int argc, char *argv[]) {
 		mkdir("/media/internal/wirc/backlogs", S_IRWXU);
 		if (!isDir("/media/internal/wirc/backlogs")) {
 			syslog(LOG_NOTICE, "!/media/internal/wirc/backlogs");
-			cleanup(-2);
 		}
 		mkdir("/media/internal/wirc/downloads", S_IRWXU);
 		if (!isDir("/media/internal/wirc/downloads")) {
 			syslog(LOG_NOTICE, "!/media/internal/wirc/downloads");
-			cleanup(-2);
 		}
 	} else {
 		syslog(LOG_NOTICE, "!/media/internal/wirc");
-		cleanup(-2);
 	}
 
 	max_connections = atoi(argv[1]);
