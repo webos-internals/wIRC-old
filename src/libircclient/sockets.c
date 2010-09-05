@@ -26,6 +26,8 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
+#include <syslog.h>
+
 #define IS_SOCKET_ERROR(a)	((a)<0)
 typedef int 			socket_t;
 
@@ -112,11 +114,19 @@ static int socket_recv (socket_t * sock, void * buf, size_t len)
 
 static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
 {
-	int length;
+	int length, r;
 
-	while ( (length = SSL_read (sslHandle, buf, len)) < 0
-	&& socket_error() == EINTR )
-		continue;
+	do {
+		syslog(LOG_INFO, "SSL_RECV: %s\n", buf);
+		r=SSL_read(sslHandle, buf, len);
+		switch(SSL_get_error(sslHandle, r)){
+		case SSL_ERROR_NONE:
+			length=r;
+			break;
+		case SSL_ERROR_WANT_READ:
+			continue;
+		}
+	} while (SSL_pending(sslHandle));
 
 	return length;
 }
@@ -134,11 +144,19 @@ static int socket_send (socket_t * sock, const void *buf, size_t len)
 
 static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
 {
-	int length;
+	int length, r;
 
-	while ( (length = SSL_write (sslHandle, buf, len)) < 0
-	&& socket_error() == EINTR )
-		continue;
+	do {
+		syslog(LOG_INFO, "SSL_SEND: %s\n", buf);
+		r=SSL_write(sslHandle, buf, len);
+		switch(SSL_get_error(sslHandle, r)){
+		case SSL_ERROR_NONE:
+			length=r;
+			break;
+		case SSL_ERROR_WANT_WRITE:
+			continue;
+		}
+	} while (SSL_pending(sslHandle));
 
 	return length;
 }

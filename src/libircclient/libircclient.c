@@ -240,7 +240,7 @@ int irc_connect (irc_session_t * session,
 
 	// do encryption shit here
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
-		syslog(LOG_INFO, "SSL init start\n");
+		//syslog(LOG_INFO, "SSL init start\n");
 		SSL_load_error_strings();
 		SSL_library_init();
 		session->sslContext = SSL_CTX_new(SSLv23_client_method());
@@ -248,7 +248,8 @@ int irc_connect (irc_session_t * session,
 		session->sslHandle = SSL_new(session->sslContext);
 		SSL_set_fd(session->sslHandle, (int)session->sock);
 		SSL_set_connect_state(session->sslHandle);
-		syslog(LOG_INFO, "SSL init end\n");
+		SSL_connect(session->sslHandle);
+		//syslog(LOG_INFO, "SSL init end\n");
 	}
 
 	session->state = LIBIRC_STATE_CONNECTING;
@@ -824,6 +825,9 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 
 		session->incoming_offset += length;
 
+		if (session->encryption==LIBIRC_ENCRYPTION_SSL && !SSL_is_init_finished(session->sslHandle))
+			goto next;
+
 		// process the incoming data
 		while ( (offset = libirc_findcrlf (session->incoming_buf, session->incoming_offset)) > 0 )
 		{
@@ -842,6 +846,8 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 			session->incoming_offset -= offset;
 		}
 	}
+
+	next:
 
 	// We can write a stored buffer
 	if ( FD_ISSET (session->sock, out_set) )
