@@ -157,6 +157,11 @@ void apps_ssl_info_callback(SSL *s, int where, int ret) {
 	}
 }
 
+int verify_callback(X509_STORE_CTX *ctx) {
+	syslog(LOG_INFO, "verify callback\n");
+	return 1;
+}
+
 int irc_connect (irc_session_t * session,
 		const char * server,
 		unsigned short port,
@@ -224,8 +229,7 @@ int irc_connect (irc_session_t * session,
 	}
 
 	// create the IRC server socket
-	if ( socket_create( PF_INET, SOCK_STREAM, &session->sock, session->interface)
-			|| socket_make_nonblocking (&session->sock) )
+	if ( socket_create( PF_INET, SOCK_STREAM, &session->sock, session->interface) )
 	{
 		session->lasterror = LIBIRC_ERR_SOCKET;
 		return 1;
@@ -245,12 +249,14 @@ int irc_connect (irc_session_t * session,
 		SSL_library_init();
 		session->sslContext = SSL_CTX_new(SSLv23_client_method());
 		SSL_CTX_set_info_callback(session->sslContext, (void*)apps_ssl_info_callback);
+		SSL_CTX_set_verify(session->sslContext, SSL_VERIFY_PEER, (void*)verify_callback);
 		session->sslHandle = SSL_new(session->sslContext);
 		SSL_set_fd(session->sslHandle, (int)session->sock);
-		SSL_set_connect_state(session->sslHandle);
 		SSL_connect(session->sslHandle);
 		//syslog(LOG_INFO, "SSL init end\n");
 	}
+
+	socket_make_nonblocking (&session->sock);
 
 	session->state = LIBIRC_STATE_CONNECTING;
 	session->motd_received = 0; // reset in case of reconnect
@@ -825,9 +831,6 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 
 		session->incoming_offset += length;
 
-		if (session->encryption==LIBIRC_ENCRYPTION_SSL && !SSL_is_init_finished(session->sslHandle))
-			goto next;
-
 		// process the incoming data
 		while ( (offset = libirc_findcrlf (session->incoming_buf, session->incoming_offset)) > 0 )
 		{
@@ -846,8 +849,6 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 			session->incoming_offset -= offset;
 		}
 	}
-
-	next:
 
 	// We can write a stored buffer
 	if ( FD_ISSET (session->sock, out_set) )

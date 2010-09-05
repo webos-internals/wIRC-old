@@ -125,6 +125,9 @@ static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
 			break;
 		case SSL_ERROR_WANT_READ:
 			continue;
+		case SSL_ERROR_WANT_WRITE:
+			syslog(LOG_INFO, "** wants write\n");
+			break;
 		}
 	} while (SSL_pending(sslHandle));
 
@@ -155,6 +158,9 @@ static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
 			break;
 		case SSL_ERROR_WANT_WRITE:
 			continue;
+		case SSL_ERROR_WANT_READ:
+			syslog(LOG_INFO, "** wants read\n");
+			break;
 		}
 	} while (SSL_pending(sslHandle));
 
