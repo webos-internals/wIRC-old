@@ -8,6 +8,7 @@ function ServerAdvancedAssistant(serverobj)
 	this.encryptionElement = 		false;
 	this.serverUserElement =		false;
 	this.serverPasswordElement =	false;
+	this.networkElement =			false;
 	this.autoConnectElement =		false;
 	this.autoIdentifyWrapper =		false;
 	this.autoIdentifyElement =		false;
@@ -77,6 +78,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		this.portElement =				this.controller.get('port');
 		this.encryptionElement =		this.controller.get('encryption');
 		this.serverUserElement =		this.controller.get('serverUser');
+		this.networkElement =			this.controller.get('proxyNetwork');
 		this.serverPasswordElement =	this.controller.get('serverPassword');
 		this.autoConnectElement =		this.controller.get('autoConnect');
 		this.autoIdentifyWrapper =		this.controller.get('autoIdentifyWrapper');
@@ -182,6 +184,20 @@ ServerAdvancedAssistant.prototype.setup = function()
 	  			trueLabel:  'Yes',
 	 			falseLabel: 'No',
 				modelProperty: 'autoConnect'
+			},
+			this.server
+		);
+		
+		this.controller.setupWidget
+		(
+			'proxyNetwork',
+			{
+				multiline: false,
+				enterSubmits: false,
+				hintText: 'Optional',
+				modelProperty: 'proxyNetwork',
+				textCase: Mojo.Widget.steModeLowerCase,
+				focusMode: Mojo.Widget.focusSelectMode
 			},
 			this.server
 		);

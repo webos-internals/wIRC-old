@@ -18,6 +18,7 @@ function ircServer(params)
 	this.serverPassword =		params.serverPassword;
 	this.port =					params.port;
 	this.encryption = 			(params.encryption?params.encryption:0);
+	this.proxyNetwork =			(params.proxyNetwork?params.proxyNetwork:"");
 	this.autoConnect =			params.autoConnect;
 	this.autoIdentify =			params.autoIdentify;
 	this.identifyService =		params.identifyService;
@@ -397,17 +398,31 @@ ircServer.prototype.connect = function()
 		var timeout = prefs.get().connectionTimeout;
 		if (timeout)
 			this.connectionTimeout = setTimeout(this.abortConnection.bind(this), 1000*timeout);
-		plugin.connect(
-			servers.getServerArrayKey(this.id),
-			this.address,
-			(this.port?this.port:6667),
-			this.encryption,
-			(this.serverUser?this.serverUser:"wircer"),
-			(this.serverPassword?this.serverPassword:null),
-			this.defaultNick?this.defaultNick:prefs.get().nicknames[0],
-			prefs.get().realname,
-			prefs.get().piface
-		);	
+		if (this.proxyNetwork && this.serverUser && this.serverPassword) {
+			plugin.connect(
+				servers.getServerArrayKey(this.id),
+				this.address,
+				(this.port?this.port:6667),
+				this.encryption,
+				"wircer",
+				this.serverUser + ':' + this.serverPassword + ':' + this.proxyNetwork,
+				this.defaultNick?this.defaultNick:prefs.get().nicknames[0],
+				prefs.get().realname,
+				prefs.get().piface
+			);
+		} else {
+			plugin.connect(
+				servers.getServerArrayKey(this.id),
+				this.address,
+				(this.port?this.port:6667),
+				this.encryption,
+				(this.serverUser?this.serverUser:"wircer"),
+				(this.serverPassword?this.serverPassword:null),
+				this.defaultNick?this.defaultNick:prefs.get().nicknames[0],
+				prefs.get().realname,
+				prefs.get().piface
+			);
+		}	
 	}
 	catch(e)
 	{
@@ -1109,6 +1124,7 @@ ircServer.prototype.getEditObject = function()
 		defaultNick:		this.defaultNick,
 		serverUser:			this.serverUser,
 		serverPassword:		this.serverPassword,
+		proxyNetwork:		this.proxyNetwork,
 		autoConnect:		this.autoConnect,
 		autoIdentify:		this.autoIdentify,
 		identifyService:	this.identifyService,
@@ -1132,6 +1148,7 @@ ircServer.prototype.saveInfo = function(params)
 		this.serverPassword =	params.serverPassword;
 		this.port =				params.port;
 		this.encryption =		params.encryption;
+		this.proxyNetwork =		params.proxyNetwork;
 		this.defaultNick =		params.defaultNick;
 		this.autoConnect =		params.autoConnect;
 		this.autoIdentify =		params.autoIdentify;
@@ -1161,6 +1178,7 @@ ircServer.getBlankServerObject = function()
 		port:				'',
 		encryption:			0,
 		defaultNick:		'',
+		proxyNetwork:		'',
 		autoConnect:		false,
 		autoIdentify:		false,
 		identifyService:	'NickServ',
