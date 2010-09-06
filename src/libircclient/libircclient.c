@@ -242,10 +242,13 @@ int irc_connect (irc_session_t * session,
 	}
 
 	// do encryption shit here
-	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
+	if (session->encryption == LIBIRC_ENCRYPTION_SSL || session->encryption == LIBIRC_ENCRYPTION_TLS) {
 		SSL_load_error_strings();
 		SSL_library_init();
-		session->sslContext = SSL_CTX_new(SSLv23_client_method());
+		if (session->encryption == LIBIRC_ENCRYPTION_SSL)
+			session->sslContext = SSL_CTX_new(SSLv23_client_method());
+		else if (session->encryption == LIBIRC_ENCRYPTION_TLS)
+			session->sslContext = SSL_CTX_new(TLSv1_client_method());
 		SSL_CTX_set_info_callback(session->sslContext, (void*)apps_ssl_info_callback);
 		session->sslHandle = SSL_new(session->sslContext);
 		SSL_set_fd(session->sslHandle, (int)session->sock);

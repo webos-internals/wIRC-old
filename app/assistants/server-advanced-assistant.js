@@ -141,7 +141,8 @@ ServerAdvancedAssistant.prototype.setup = function()
 				choices:
 				[
 					{label:'None',	value:0},
-					{label:'SSL',	value:1}
+					{label:'SSL',	value:1},
+					{label:'TLS',	value:2}
 				],
 				modelProperty: 'encryption'
 			},
