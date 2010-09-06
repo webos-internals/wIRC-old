@@ -1,7 +1,7 @@
 include ../../Makefile.inc
 
 CFLAGS		:=	$(CFLAGS) -DIN_BUILDING_LIBIRC -DENABLE_THREADS -D_REENTRANT
-INCLUDES	:=	$(INCLUDES) -I./include -I../include -I${ROOT}${prefix}/include
+INCLUDES	:=	$(INCLUDES) -I./include -I${ROOT}${prefix}/include
 
 IRCLIB		:=	libircclient.o
 

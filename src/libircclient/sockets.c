@@ -22,9 +22,8 @@
 #include <netinet/in.h>
 #include <fcntl.h>
 
-#include <openssl/bio.h>
-#include <openssl/ssl.h>
-#include <openssl/err.h>
+#include "../include/openssl/ssl.h"
+#include "../include/openssl/err.h"
 
 #include <syslog.h>
 
