@@ -415,6 +415,14 @@ body.palm-dark .server-list .palm-list .palm-row-wrapper .button
 {
 	text-align: right;
 }
+.form .noflip .palm-list-selector .label
+{
+	float: right;
+}
+.form .noflip .palm-list-selector .title
+{
+	text-align: left;
+}
 .form .textfield-group .hint-text
 {
 	color: #666;
