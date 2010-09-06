@@ -12,11 +12,9 @@ INCLUDES	:=	-I${ROOT}/include \
 			-I$(ROOT)${prefix}/include/pdl \
 			-I$(IRCLIB)/include \
 								
-LIBDIRS		:=	-Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined
+LIBDIRS		:=	-L. -Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined -Wl,-rpath,.
 	
-LIBS		:=  -lpdl -lpthread -lm -ldl
-
-ARCHIVES	:=	libs-arm/libssl.a libs-arm/libcrypto.a libs-arm/libz.a
+LIBS		:=  -lpdl -lpthread -lm -lssl
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 				ping.o plugin_client.o plugin_events.o plugin.o \
@@ -25,7 +23,7 @@ OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 .PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
 
 $(PLUGIN): libpdl/libpdl.so $(OBJECTS)
-	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) $(ARCHIVES) -o $(PLUGIN)
+	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) -o $(PLUGIN)
 
 .PHONY: libpdl/libpdl.so
 libpdl/libpdl.so:
