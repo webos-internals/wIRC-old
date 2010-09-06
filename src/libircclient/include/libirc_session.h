@@ -26,8 +26,8 @@
 #include "libirc_dcc.h"
 #include "libirc_events.h"
 
-#include "../include/openssl/ssl.h"
-#include "../include/openssl/err.h"
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
 
 struct irc_session_s
