@@ -696,18 +696,27 @@ ChannelChatAssistant.prototype.invisibleWindow = function(event){
     this.lastFocusMessage = this.messageListElement.mojo.getNodeByIndex(this.messageListElement.mojo.getLength() - 1);
 }
 
-ChannelChatAssistant.prototype.cleanup = function(event){
-    Mojo.Event.stopListening(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
-    Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
-    Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
-    Mojo.Event.stopListening(this.messageListElement, Mojo.Event.dragStart, this.dragStartHandler);
-    Mojo.Event.stopListening(this.messageListElement, Mojo.Event.dragging, this.draggingHandler);
-    Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
-    Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
-    Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
-	Mojo.Event.stopListening(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
-    Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
-    if (this.channel.containsNick(this.channel.server.nick) && !this.channel.server.dontPartOnClose) {
-		this.channel.part();
-    }
+ChannelChatAssistant.prototype.cleanup = function(event)
+{
+	try
+	{
+	    Mojo.Event.stopListening(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
+	    Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
+	    Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
+	    Mojo.Event.stopListening(this.messageListElement, Mojo.Event.dragStart, this.dragStartHandler);
+	    Mojo.Event.stopListening(this.messageListElement, Mojo.Event.dragging, this.draggingHandler);
+	    Mojo.Event.stopListening(this.userButtonElement, Mojo.Event.tap, this.userButtonPressed);
+	    Mojo.Event.stopListening(this.inputWidgetElement, Mojo.Event.propertyChange, this.inputChanged);
+	    Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+		Mojo.Event.stopListening(this.messageListElement, Mojo.Event.listTap, this.messageTapHandler);
+	    Mojo.Event.stopListening(this.sendButtonElement, Mojo.Event.tap, this.sendButtonPressed);
+	    if (this.channel.containsNick(this.channel.server.nick) && !this.channel.server.dontPartOnClose)
+		{
+			this.channel.part();
+	    }
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'server-list#cleanup');
+	}
 }

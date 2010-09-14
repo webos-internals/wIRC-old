@@ -310,7 +310,7 @@ ircChannel.prototype.channelMode = function(mode)
 ircChannel.prototype.part = function(reason)
 {
 	if (!reason) reason = prefs.get().partReason;
-	plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name, reason);
+	if (plugin && plugin.cmd_part) plugin.cmd_part(servers.getServerArrayKey(this.server.id), this.name, reason);
 	this.closeStage();
 }
 ircChannel.prototype.disconnectPart = function()
