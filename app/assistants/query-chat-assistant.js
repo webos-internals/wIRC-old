@@ -396,6 +396,14 @@ QueryChatAssistant.prototype.inputFocus = function(event)
 	}
 }
 
+QueryChatAssistant.prototype.startAutoFocus = function(){
+    Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+    this.inputWidgetElement.mojo.focus();
+}
+QueryChatAssistant.prototype.stopAutoFocus = function(){
+    Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+}
+
 QueryChatAssistant.prototype.updateLagMeter = function()
 {
 	var netClass = '';

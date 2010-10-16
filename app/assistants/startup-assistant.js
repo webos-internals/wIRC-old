@@ -9,6 +9,13 @@ function StartupAssistant()
     this.newMessages =
 	[
 		{
+			version: '0.3.3',
+			log:
+			[
+				'Fixed another bug in message copy code'
+			]
+		},
+		{
 			version: '0.3.2',
 			log:
 			[

@@ -308,5 +308,5 @@ ServerListAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 	
 	// hey this works, cool!
-	Mojo.Controller.appController.closeAllStages();	
+	Mojo.Controller.appController.closeAllStages();
 }
