@@ -77,7 +77,7 @@ IdentityAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
-		Mojo.Event.listen(this.realName, Mojo.Event.propertyChange, this.textChanged);
+		Mojo.Event.listen(this.realName, Mojo.Event.propertyChange, this.textChanged.bindAsEventListener(this));
 		
 		this.nickListBuildList();
 		this.controller.setupWidget
@@ -335,7 +335,7 @@ IdentityAssistant.prototype.deactivate = function(event)
 }
 IdentityAssistant.prototype.cleanup = function(event)
 {
-	Mojo.Event.stopListening(this.realName, Mojo.Event.propertyChange,	this.textChanged);
+	Mojo.Event.stopListening(this.realName, Mojo.Event.propertyChange,	this.textChanged.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.listAdd,			this.nickListAdd.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.propertyChanged,	this.nickListChange.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.listReorder,		this.nickListReorder.bindAsEventListener(this));
