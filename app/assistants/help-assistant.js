@@ -42,9 +42,14 @@ HelpAssistant.prototype.setup = function()
 	});
 	this.supportModel.items.push({
 		text: $L("Bug Reports"),
-		detail: 'http://git.webos-internals.org/trac/wIRC/report/3',
+		detail: 'http://redmine.webos-internals.org/projects/wirc/issues',
 		Class: 'img_web',
 		type: 'web'
+	});
+	this.supportModel.items.push({
+		text: $L('Changelog'),
+		Class: 'img_changelog',
+		type: 'changelog'
 	});
 	this.supportModel.items.push({
 		text:'Send Email',
@@ -101,6 +106,10 @@ HelpAssistant.prototype.listTapHandler = function(event)
 					target: 'mailto:' + event.item.address + "?subject=" + Mojo.appInfo.title + " " + event.item.subject
 				}
 			});
+			break;
+			
+		case 'changelog':
+			this.controller.stageController.pushScene('startup', true);
 			break;
 			
 		case 'scene':

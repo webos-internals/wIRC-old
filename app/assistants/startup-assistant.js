@@ -1,5 +1,7 @@
-function StartupAssistant()
+function StartupAssistant(changelog)
 {
+	this.justChangelog = changelog;
+	
     // on first start, this message is displayed, along with the current version message from below
     this.firstMessage = $L("Internet Relay Chat (IRC) is a form of real-time Internet text messaging (chat) or synchronous conferencing. It is mainly designed for group communication in discussion forums, called channels, but also allows one-to-one communication via private message.");
 	
@@ -202,40 +204,61 @@ StartupAssistant.prototype.setup = function()
     this.dataContainer =  this.controller.get('data');
 	
     // set title
-    if (vers.isFirst || !vers.isFirst) 
+	if (this.justChangelog)
 	{
-	    this.titleContainer.innerHTML = $L("Welcome To wIRC");
+		this.titleContainer.innerHTML = $L('Changelog');
 	}
-    else if (vers.isNew) 
-	{
-	    this.titleContainer.innerHTML = $L("wIRC Changelog");
+	else
+		{
+	    if (vers.isFirst || !vers.isFirst) 
+		{
+		    this.titleContainer.innerHTML = $L("Welcome To wIRC");
+		}
+	    else if (vers.isNew) 
+		{
+		    this.titleContainer.innerHTML = $L("wIRC Changelog");
+		}
 	}
 	
 	
     // build data
     var html = '';
-    if (vers.isFirst)
+	if (this.justChangelog)
 	{
-	    html += '<div class="text">' + this.firstMessage + '</div>';
-	}
-	
-	if (!vers.isNew)
-	{
-	    html = '<div class="text">You shouldn\'t be seeing this. The button to get past this will appear shortly.</div>';
-	}
-    if (vers.isNew)
-	{
-	    html += '<div class="text">' + this.secondMessage + '</div>';
-	    for (var m = 0; m < this.newMessages.length; m++)
+		for (var m = 0; m < this.newMessages.length; m++) 
 		{
 		    html += Mojo.View.render({object: {title: 'v' + this.newMessages[m].version}, template: 'startup/changeLog'});
-		    html += '<ul class="changelog">';
+		    html += '<ul>';
 		    for (var l = 0; l < this.newMessages[m].log.length; l++)
 			{
-			    html += '<li>' + this.newMessages[m].log[l] + '</li>';
-			}
+				html += '<li>' + this.newMessages[m].log[l] + '</li>';
+		    }
 		    html += '</ul>';
 		}
+	}
+	else
+	{
+		if (vers.isFirst)
+		{
+			html += '<div class="text">' + this.firstMessage + '</div>';
+		}
+	    if (vers.isNew)
+		{
+			if (!this.justChangelog)
+			{
+				html += '<div class="text">' + this.secondMessage + '</div>';
+			}
+			for (var m = 0; m < this.newMessages.length; m++) 
+			{
+			    html += Mojo.View.render({object: {title: 'v' + this.newMessages[m].version}, template: 'startup/changeLog'});
+			    html += '<ul>';
+			    for (var l = 0; l < this.newMessages[m].log.length; l++)
+				{
+					html += '<li>' + this.newMessages[m].log[l] + '</li>';
+			    }
+			    html += '</ul>';
+			}
+	    }
 	}
 	
     // set data
@@ -245,8 +268,11 @@ StartupAssistant.prototype.setup = function()
     // setup menu
     this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
-    // set command menu
-    this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
+	if (!this.justChangelog)
+	{
+	    // set command menu
+	    this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
+	}
 	
     // set this scene's default transition
     this.controller.setDefaultTransition(Mojo.Transition.zoomFade);
