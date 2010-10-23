@@ -250,6 +250,7 @@ int irc_connect (irc_session_t * session,
 		else if (session->encryption == LIBIRC_ENCRYPTION_TLS)
 			session->sslContext = SSL_CTX_new(TLSv1_client_method());
 		SSL_CTX_set_info_callback(session->sslContext, (void*)apps_ssl_info_callback);
+		SSL_CTX_set_verify(session->sslContext, SSL_VERIFY_NONE, NULL);
 		session->sslHandle = SSL_new(session->sslContext);
 		SSL_set_fd(session->sslHandle, (int)session->sock);
 		if (SSL_connect(session->sslHandle) <= 0) return 1;
