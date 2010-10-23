@@ -14,7 +14,11 @@ function StartupAssistant(changelog)
 			version: '0.3.3',
 			log:
 			[
-				'Fixed another bug in message copy code'
+				'Added TLS Support',
+				'Added "network" field for bip',
+				'Fixed another bug in message copy code',
+				'Updated bug report url in help scene to go to redmine',
+				'Added changelog to help scene'
 			]
 		},
 		{
