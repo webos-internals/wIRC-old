@@ -11,6 +11,6 @@
 	"icon" : "icon.png",
 	"noWindow" : true,
 	"noDeprecatedStyles" : true,
-	"keywords" : [ "IRC" ],
+	"keywords" : [ "IRC", "chat" ],
 	"section" : "net"
 }
