@@ -4,9 +4,7 @@ function ServerListAssistant()
 	this.randomSub = 
 	[
 		{weight: 30, text: 'The webOS IRC Client'},
-		{weight: 50, text: 'Coming soon... SSL!'},
 		{weight: 30, text: 'Mobile IRC Done Right'},
-		{weight: 20, text: 'More features than XChat'},
 		{weight:  8, text: 'Now you can IRC from the crapper'},
 		{weight:  8, text: 'Now you can IRC from the bar'},
 		{weight:  2, text: 'You can, but can\'t'},
