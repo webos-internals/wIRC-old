@@ -1,12 +1,11 @@
 <div class="palm-row" x-mojo-tap-highlight="momentary">
 	<div class="palm-row-wrapper #{type} #{rowClass}">
-		<div class="icon"></div>
-		<div class="title text">#{-text}</div>
-		<div class="sub file">
-			#{-filename}
-			<div class="progress">
-				<div class="bar" style="width: #{percent}%;"></div>
-			</div>
+		<div class="progress">
+			<div class="bar" style="width: #{percent}%;"><div></div></div>
 		</div>
+		<div class="icon"></div>
+		<!-- #{-filename} - #{percent} //-->
+		<div class="label">#{text}</div>
+		<div class="title">#{sender}</div>
 	</div>
 </div>
