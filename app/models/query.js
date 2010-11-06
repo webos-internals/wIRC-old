@@ -69,7 +69,7 @@ ircQuery.prototype.newCommand = function(message)
 ircQuery.prototype.me = function(message)
 {
 	plugin.cmd_me(servers.getServerArrayKey(this.server.id), this.nick.name, message);
-	this.newMessage('action', this.server.nick, message);
+	this.newMessage('type7', this.server.nick, message);
 }
 
 ircQuery.prototype.msg = function(message)
