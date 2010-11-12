@@ -452,12 +452,14 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 		// Server menu options
 		serverItems.push({
 			label: 'Join Channel',
-			command: 'do-join-channel'
+			command: 'do-join-channel',
+			shortcut: 'j'
 		});
 		
 		serverItems.push({
 			label: 'Channel List',
-			command: 'do-channel-list'
+			command: 'do-channel-list',
+			shortcut: 'l'
 		});
 		
 		var favorites = [];
