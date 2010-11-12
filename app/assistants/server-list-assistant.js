@@ -8,6 +8,7 @@ function ServerListAssistant()
 		{weight:  8, text: 'It\'s pronounced "werk"'},
 		{weight:  8, text: 'Now you can IRC from the crapper'},
 		{weight:  8, text: 'Now you can IRC from the bar'},
+		{weight:  2, text: 'In Windows on Cygwin'},
 		{weight:  2, text: 'You can, but can\'t'},
 		{weight:  2, text: 'Random Taglines Are Awesome'}
 	];
