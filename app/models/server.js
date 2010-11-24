@@ -551,7 +551,7 @@ ircServer.prototype.disconnect = function(reason)
 ircServer.prototype.disrupt = function()
 {
 	this.setState(this.STATE_DISRUPTED);
-	plugin.cmd_quit(servers.getServerArrayKey(this.id), false);
+	plugin.cmd_quit(servers.getServerArrayKey(this.id), "Lost Connection");
 	
 	if (this.channels.length > 0)
 	{
