@@ -11,6 +11,16 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.4',
+			log:
+			[
+				'Added some keyboard shortcuts to server status scene (gesture+j for join, gesture+l for channel list)',
+				'Fixed "false" quit bug',
+				'Fixed ACTION messages in query chat scene',
+				'Some style updates to the DCC list scene'
+			]
+		},
+		{
 			version: '0.3.3',
 			log:
 			[
