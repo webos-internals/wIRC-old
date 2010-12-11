@@ -66,3 +66,4 @@ PDL_Err PDL_CallJS(const char *functionName, const char **params, int numParams)
 
 int SDL_WaitEvent(SDL_Event *event) {return 0;}
 int SDL_Init(Uint32 flags) {return 0;}
+void SDL_Quit(void) {}

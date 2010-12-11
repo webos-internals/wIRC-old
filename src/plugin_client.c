@@ -433,10 +433,16 @@ PDL_bool client_set_autoping(PDL_JSParameters *params) {
 	return PDL_TRUE;
 }
 
+PDL_bool client_kill(PDL_JSParameters *params) {
+	SDL_Quit();
+	return PDL_TRUE;
+}
+
 int plugin_client_init() {
 
 	int ret = 0;
 
+	ret += PDL_RegisterJSHandler("kill", client_kill);
 	ret += PDL_RegisterJSHandler("connect", client_connect);
 	ret += PDL_RegisterJSHandler("cmd_msg", client_cmd_msg);
 	ret += PDL_RegisterJSHandler("cmd_me", client_cmd_me);

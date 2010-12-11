@@ -58,6 +58,8 @@ int max_retries;
 int pre_run_usleep;
 int max_connections;
 
+void cleanup(int sig);
+
 typedef enum {
 	event_connect_, // 0
 	event_nick_, // 1

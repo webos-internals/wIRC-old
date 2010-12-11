@@ -306,7 +306,9 @@ ServerListAssistant.prototype.cleanup = function(event)
 	alert('ServerListAssistant#cleanup');
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
-	
+
+	plugin.kill()
+
 	// hey this works, cool!
 	Mojo.Controller.appController.closeAllStages();
 }

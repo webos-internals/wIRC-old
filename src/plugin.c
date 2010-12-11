@@ -40,6 +40,7 @@ PDL_Err plugin_initialize() {
 
 void plugin_start() {
 	SDL_Event Event;
+	int cont = 1;
 	do {
 		SDL_WaitEvent(&Event);
 	} while (Event.type != SDL_QUIT);
