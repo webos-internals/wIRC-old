@@ -18,10 +18,6 @@
 
 #include "wIRC.h"
 
-int isPlugin = 1;
-pthread_mutex_t plugin_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-
 PDL_Err plugin_initialize() {
 
 	int i = 0;
