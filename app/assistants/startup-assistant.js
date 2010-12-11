@@ -11,6 +11,13 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.5',
+			log:
+			[
+				'Hackish fix for the "wIRC stays open after closing" bug'
+			]
+		},
+		{
 			version: '0.3.4',
 			log:
 			[
