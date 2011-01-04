@@ -6,6 +6,7 @@ function MasterListAssistant()
 		{weight: 30, text: 'The webOS IRC Client'},
 		{weight: 30, text: 'Mobile IRC Done Right'},
 		{weight:  8, text: 'It\'s pronounced "werk"'},
+		{weight:  8, text: 'Whistle while you wIRC'},
 		{weight:  8, text: 'Now you can IRC from the crapper'},
 		{weight:  8, text: 'Now you can IRC from the bar'},
 		{weight:  2, text: 'In Windows on Cygwin'},
