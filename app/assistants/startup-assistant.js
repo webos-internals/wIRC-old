@@ -11,6 +11,13 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.7',
+			log:
+			[
+				'Fixed auto-connect after launch not connecting bug'
+			]
+		},
+		{
 			version: '0.3.6',
 			log:
 			[

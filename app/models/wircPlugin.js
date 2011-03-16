@@ -132,6 +132,10 @@ wircPluginModel.prototype.registerHandlers = function() {
 	plugin.handle_dcc_callback = this.dcc_callback_handler.bind(this);
 	plugin.handle_dcc_send_callback = this.dcc_send_callback_handler.bind(this);
 	
+	// register handlers is the last thing to the plugin being "ready"
+	// here we should also init any autoconnect servers!
+	servers.initAutoConnectServers();
+	
 }
 
 wircPluginModel.prototype.dcc_callback_handler = function(id, dcc_id, status, length, data){

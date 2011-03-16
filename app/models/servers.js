@@ -217,7 +217,7 @@ ircServers.prototype.getDccListObjects = function()
 	return returnArray;
 }
 
-ircServers.prototype.load = function()
+ircServers.prototype.initAutoConnectServers = function()
 {
 	if (this.servers.length > 0)
 	{
@@ -226,7 +226,10 @@ ircServers.prototype.load = function()
 			if (this.servers[s].autoConnect) this.servers[s].init();
 		}
 	}
-	
+}
+
+ircServers.prototype.load = function()
+{
 	this.cookieData = this.cookie.get();
 	if (this.cookieData)
 	{
@@ -260,7 +263,6 @@ ircServers.prototype.loadServer = function(id)
 	{
 		var newServer = new ircServer(serverParams);
 		this.servers.push(newServer);
-		if (newServer.autoConnect) newServer.init();
 	}
 	if (this.listAssistant)
 	{
