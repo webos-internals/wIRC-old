@@ -23,9 +23,7 @@ var wircPlugin;
 
 var githash;
 
-function AppAssistant() {
-	wircPlugin = new wircPlugin();
-}
+function AppAssistant() {}
 
 AppAssistant.prototype.handleLaunch = function(params)
 {	
@@ -50,8 +48,6 @@ AppAssistant.prototype.handleLaunch = function(params)
 				var f = function(controller)
 				{
 					vers.init();
-					controller.window.document.body.appendChild(wircPlugin.df);
-					plugin = controller.get('wircPlugin');
 					
 					if (vers.showStartupScene())
 						controller.pushScene('startup');
