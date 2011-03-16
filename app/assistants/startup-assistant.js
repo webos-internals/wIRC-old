@@ -14,7 +14,7 @@ function StartupAssistant(changelog)
 			version: '0.3.7',
 			log:
 			[
-				'Fixed dash(-) breaking link bug',
+				'Fixed dash(-) breaking links in the chat bug',
 				'Fixed setting away status from server-status bug',
 				'Fixed auto-connect after launch not connecting bug'
 			]
