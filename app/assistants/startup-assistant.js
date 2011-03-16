@@ -15,6 +15,7 @@ function StartupAssistant(changelog)
 			log:
 			[
 				'Fixed dash(-) breaking link bug',
+				'Fixed setting away status from server-status bug',
 				'Fixed auto-connect after launch not connecting bug'
 			]
 		},
