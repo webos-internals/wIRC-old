@@ -14,6 +14,7 @@ function StartupAssistant(changelog)
 			version: '0.3.7',
 			log:
 			[
+				'Fixed dash(-) breaking link bug',
 				'Fixed auto-connect after launch not connecting bug'
 			]
 		},

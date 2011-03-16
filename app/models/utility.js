@@ -49,7 +49,8 @@ formatForHtml = function(string){
 
 // parses urls to html links, not using Mojo.Format.runTextIndexer because it tries to parse email addresses and other crap stupidly
 formatLinks = function(string){
-    return string.replace(/((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ig, function(url){
+													  // \/ changed this from a \w to a \S fixes the - thing
+    return string.replace(/((https?\:\/\/)|(www\.))(\S+)(\S{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ig, function(url){
         var full_url = url;
         if (!full_url.match('^https?:\/\/')) {
             full_url = 'http://' + full_url;
