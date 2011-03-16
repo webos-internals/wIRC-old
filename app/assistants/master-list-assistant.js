@@ -69,8 +69,7 @@ MasterListAssistant.prototype.setup = function()
 	try
 	{	
 		wircPlugin = new wircPluginModel();
-		Mojo.Log.error(this.controller.window.document.body);
-		wircPlugin.createElement(this.controller.window.document.body);
+		wircPlugin.createElement(this.controller.window.document);
 		plugin = this.controller.get('wircPlugin');
 		
 		// set theme

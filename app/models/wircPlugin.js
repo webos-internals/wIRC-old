@@ -23,7 +23,7 @@ function wircPluginModel(){
 
 wircPluginModel.prototype.createElement = function(document)
 {
-    var pluginObj = window.document.createElement("object");
+    var pluginObj = document.createElement("object");
     
     pluginObj.id = "wircPlugin";
     pluginObj.type = "application/x-palm-remote";
@@ -31,23 +31,23 @@ wircPluginModel.prototype.createElement = function(document)
     pluginObj.height = 0;
     pluginObj['x-palm-pass-event'] = true;
     
-    var param1 = window.document.createElement("param");
+    var param1 = document.createElement("param");
     param1.name = "appid";
     param1.value = "org.webosinternals.wirc";
     
-    var param2 = window.document.createElement("param");
+    var param2 = document.createElement("param");
     param2.name = "exe";
     param2.value = "wirc";
     
-    var param3 = window.document.createElement("param");
+    var param3 = document.createElement("param");
     param3.name = "Param1"; // MAX_SERVERS
     param3.value = MAX_SERVERS;
 	
-	var param4 = window.document.createElement("param");
+	var param4 = document.createElement("param");
     param4.name = "Param2"; // Lag meter state
     param4.value = prefs.get().lagMeter?1:0;
 	
-	var param5 = window.document.createElement("param");
+	var param5 = document.createElement("param");
     param5.name = "Param3"; // Auto ping interval
     param5.value = prefs.get().autoPingInterval;
     
@@ -57,7 +57,7 @@ wircPluginModel.prototype.createElement = function(document)
 	pluginObj.appendChild(param4);
 	pluginObj.appendChild(param5);
     
-    this.controller.window.document.body.appendChild(pluginObj);
+    document.body.appendChild(pluginObj);
 }
 
 wircPluginModel.prototype.getErrorMsg = function(error)
