@@ -68,9 +68,7 @@ MasterListAssistant.prototype.setup = function()
 {
 	try
 	{	
-		wircPlugin = new wircPluginModel();
-		wircPlugin.createElement(this.controller.window.document);
-		plugin = this.controller.get('wircPlugin');
+		this.tryPlugin();
 		
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
@@ -89,9 +87,6 @@ MasterListAssistant.prototype.setup = function()
 		
 		this.updateCommandMenu(false);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
-		
-		this.tryPlugin();
-		
 	} 
 	catch (e) 
 	{

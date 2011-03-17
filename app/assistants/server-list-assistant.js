@@ -50,8 +50,6 @@ function ServerListAssistant()
 			}
 		]
 	}
-	
-	this.wircPlugin = false;
 }
 
 ServerListAssistant.prototype.tryPlugin = function()
@@ -59,7 +57,7 @@ ServerListAssistant.prototype.tryPlugin = function()
 	try
 	{
 		githash = plugin.get_githash();
-		this.wircPlugin.isReady = true;
+		wircPlugin.isReady = true;
 		this.checkPlugin();
 	}
 	catch (e)
@@ -72,9 +70,7 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
-		this.wircPlugin = new wircPluginModel();
-		this.wircPlugin.createElement(this.controller.window.document);
-		plugin = this.controller.get('wircPlugin');
+		this.tryPlugin();
 		
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
@@ -106,9 +102,6 @@ ServerListAssistant.prototype.setup = function()
 		
 		this.updateCommandMenu(false);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
-	
-		this.tryPlugin();
-		
 	} 
 	catch (e) 
 	{
@@ -118,11 +111,11 @@ ServerListAssistant.prototype.setup = function()
 
 ServerListAssistant.prototype.checkPlugin = function()
 {
-	if (this.wircPlugin.isReady)
+	if (wircPlugin.isReady)
 	{
 		this.controller.get('noPlugin').style.display = 'none';
 		this.controller.get('yesPlugin').style.display = '';
-		this.wircPlugin.registerHandlers();
+		wircPlugin.registerHandlers();
 	}
 	else
 	{
@@ -225,7 +218,7 @@ ServerListAssistant.prototype.updateCommandMenu = function(skipUpdate)
 		this.cmdMenuModel.items.push({});
 			
 		if ((servers.servers.length - 2) < MAX_SERVERS) {
-			this.cmdMenuModel.visible = this.wircPlugin.isReady;
+			this.cmdMenuModel.visible = wircPlugin.isReady;
 			this.cmdMenuModel.items.push({
 				label: $L('New'),
 				icon: 'new',

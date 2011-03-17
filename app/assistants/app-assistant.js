@@ -18,10 +18,13 @@ var MAX_SERVERS = 20;
 
 // the plugin
 var plugin = null;
+var wircPlugin = false;
 
-var githash;
+var githash = false;
 
-function AppAssistant() {}
+function AppAssistant() {
+	wircPlugin = new wircPluginModel();
+}
 
 AppAssistant.prototype.handleLaunch = function(params)
 {	
@@ -46,6 +49,8 @@ AppAssistant.prototype.handleLaunch = function(params)
 				var f = function(controller)
 				{
 					vers.init();
+					wircPlugin.createElement(controller.window.document);
+					plugin = controller.get('wircPlugin');
 					
 					if (vers.showStartupScene())
 						controller.pushScene('startup');
