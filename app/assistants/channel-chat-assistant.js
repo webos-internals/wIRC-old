@@ -1,6 +1,10 @@
 function ChannelChatAssistant(channel)
 {
-    this.channel = channel;
+	if(channel && channel.creationCB)
+    this.channel = channel.name;
+	else
+		this.channel=channel;
+		
     this.nick = false;
     this.tabText = false;
     
@@ -23,7 +27,7 @@ function ChannelChatAssistant(channel)
     this.isVisible = false;
     this.lastFocusMarker = false;
     this.lastFocusMessage = false;
-	this.copyStart = -1;
+		this.copyStart = -1;
     
     this.timestamp = 0;
     this.timestamp_s = "";
@@ -40,12 +44,16 @@ function ChannelChatAssistant(channel)
         visible: true,
         items: []
     }
+		this.creationCB=null;
+		if(channel.creationCB)
+			this.creationCB=channel.creationCB;
 }
 
 ChannelChatAssistant.prototype.setup = function()
 {
     try
 	{
+
         // set theme
         this.controller.document.body.className = prefs.get().theme;
         
@@ -141,21 +149,27 @@ ChannelChatAssistant.prototype.loadPrefs = function(initial){
     this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 ChannelChatAssistant.prototype.activate = function(event){
-	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
-    this.updateLagMeter();
-	this.updateAppMenu(false);
-    this.loadPrefs();
-    if (this.alreadyActivated) {
-        this.updateList();
-    }
-    else {
-		this.channel.setChatAssistant(this);
-        this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
-        Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
-    }
-    this.alreadyActivated = true;
-    this.revealBottom();
-    this.inputWidgetElement.mojo.focus();
+	try{
+		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
+	    this.updateLagMeter();
+		this.updateAppMenu(false);
+	    this.loadPrefs();
+	    if (this.alreadyActivated) {
+	        this.updateList();
+	    }
+	    else {
+			this.channel.setChatAssistant(this);
+	        this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
+	        Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+	    }
+	    this.alreadyActivated = true;
+	    this.revealBottom();
+	    this.inputWidgetElement.mojo.focus();
+	}catch(e)
+	{
+		Mojo.Log.logException(e, 'channel-chat#activate');
+	}
+
 }
 ChannelChatAssistant.prototype.updateList = function(initial){
     try {
@@ -680,12 +694,20 @@ ChannelChatAssistant.prototype.draggingHandler = function(event){
     this.messageListElement.className = this.messagesStyle + ' fixed-' + this.messageSplit + ' font-' + this.fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 ChannelChatAssistant.prototype.visibleWindow = function(event){
-    if (!this.isVisible) {
-        this.isVisible = true;
-    }
-    this.channel.closeDash();
-    this.updateLagMeter();
-	this.updateAppMenu();
+	try{
+		  if (!this.isVisible) {
+	        this.isVisible = true;
+	    }
+	    this.channel.closeDash();
+	    this.updateLagMeter();
+		this.updateAppMenu();
+		if(this.creationCB && typeof this.creationCB == "function")
+			this.creationCB();
+	}catch(e)
+	{
+			Mojo.Log.logException(e, 'channel-chat#visibleWindow');
+	}
+
 }
 ChannelChatAssistant.prototype.invisibleWindow = function(event){
     this.isVisible = false;
