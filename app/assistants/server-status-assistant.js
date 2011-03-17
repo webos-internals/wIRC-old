@@ -565,7 +565,7 @@ ServerStatusAssistant.prototype.handleCommand = function(event)
                     if (!this.server.isAway) {
                         SingleLineCommandDialog.pop(this, {
                             command: 'away',
-                            onSubmit: this.newCommand.bind(this.server),
+                            onSubmit: this.server.newCommand.bind(this.server),
                             dialogTitle: 'Set Away Status',
                             textLabel: 'Reason',
                             onActivate: this.stopAutoFocus.bind(this),

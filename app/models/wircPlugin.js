@@ -144,7 +144,7 @@ wircPluginModel.prototype.dcc_callback_handler = function(id, dcc_id, status, le
 	if (tmpDcc)
 		tmpDcc.handleEvent(status, length, data);
 	else
-		alert('****** NO SUCH DCC');
+		Mojo.Log.error('****** NO SUCH DCC');
 }
 
 wircPluginModel.prototype.dcc_send_callback_handler = function(id, dcc_id, status, bitsIn, percent){
@@ -153,7 +153,7 @@ wircPluginModel.prototype.dcc_send_callback_handler = function(id, dcc_id, statu
 	if (tmpDcc)
 		tmpDcc.handleSendEvent(status, bitsIn, percent);
 	else
-		alert('****** NO SUCH DCC');
+		Mojo.Log.error('****** NO SUCH DCC');
 }
 
 wircPluginModel.prototype.event_dcc_send_req_handler = function(id, nick, address, filename, size, dcc_id) {
@@ -668,8 +668,8 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 	
 	if (evt == 433)
 	{
-		//alert('**************** EVENT #433: '+servers.servers[id].state);
-		//for (var p = 0; p < params.length; p++) alert('**************** * '+p+': '+params[p]);
+		//Mojo.Log.error('**************** EVENT #433: '+servers.servers[id].state);
+		//for (var p = 0; p < params.length; p++) Mojo.Log.error('**************** * '+p+': '+params[p]);
 		
 		if (servers.servers[id].state == servers.servers[id].STATE_CONNECTED)
 		{

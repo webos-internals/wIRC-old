@@ -29,8 +29,6 @@ function ServerListAssistant()
 	this.noServersElement =		false;
 	this.serverListElement =	false;
 	
-	servers.setListAssistant(this);
-	
 	// setup menu
 	this.menuModel =
 	{
@@ -72,9 +70,7 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
-		wircPlugin = new wircPluginModel();
-		wircPlugin.createElement(this.controller.window.document);
-		plugin = this.controller.get('wircPlugin');
+		this.tryPlugin();
 		
 		// set theme
 		this.controller.document.body.className = prefs.get().theme;
@@ -106,9 +102,6 @@ ServerListAssistant.prototype.setup = function()
 		
 		this.updateCommandMenu(false);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
-	
-		this.tryPlugin();
-		
 	} 
 	catch (e) 
 	{
@@ -141,6 +134,10 @@ ServerListAssistant.prototype.activate = function(event)
 	if (this.alreadyActivated)
 	{
 		this.updateList();
+	}
+	else
+	{
+		servers.setListAssistant(this);
 	}
 	this.alreadyActivated = true;
 }
@@ -304,16 +301,19 @@ ServerListAssistant.prototype.handleCommand = function(event)
 
 ServerListAssistant.prototype.deactivate = function(event)
 {
-	alert('ServerListAssistant#deactivate');
+	//Mojo.Log.error('ServerListAssistant#deactivate');
 }
 ServerListAssistant.prototype.cleanup = function(event)
 {
-	alert('ServerListAssistant#cleanup');
+	//Mojo.Log.error('ServerListAssistant#cleanup');
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
 	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 
-	plugin.kill()
-
+	servers.cmSubscription.cancel();
+	plugin.kill();
+	
 	// hey this works, cool!
 	Mojo.Controller.appController.closeAllStages();
+	
+	Mojo.Log.error('ServerListAssistant#cleanedup');
 }
