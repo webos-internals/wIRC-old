@@ -50,6 +50,10 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		
 		this.pageNameElement.update(this.currentPage);
 		
+		// listener for help toggle
+		this.helpTap = this.helpRowTapped.bindAsEventListener(this);
+		this.controller.listen(this.controller.get('help-toggle'), Mojo.Event.tap, this.helpButtonTapped.bindAsEventListener(this));
+		
 		this.buildAliasList(true);
 		this.controller.setupWidget
 		(
@@ -68,12 +72,45 @@ PreferencesAliasesAssistant.prototype.setup = function()
 		this.controller.listen(this.aliasListElement, Mojo.Event.listReorder,	this.aliasListReorder.bindAsEventListener(this));
 		this.controller.listen(this.aliasListElement, Mojo.Event.listDelete,	this.aliasListDelete.bindAsEventListener(this));
 		
+		// add listeners to all the help-overlays
+		var helps = this.controller.get('container').querySelectorAll('div.help-overlay');
+		for (var h = 0; h < helps.length; h++) {
+			this.controller.listen(helps[h], Mojo.Event.tap, this.helpTap);
+		}
 	}
 	catch (e)
 	{
 		Mojo.Log.logException(e, 'preferences#setup');
 	}
 
+}
+
+PreferencesAliasesAssistant.prototype.helpButtonTapped = function(event)
+{
+	if (this.controller.get('container').hasClassName('help'))
+	{
+		this.controller.get('container').removeClassName('help');
+		event.target.removeClassName('selected');
+	}
+	else
+	{
+		this.controller.get('container').addClassName('help');
+		event.target.addClassName('selected');
+	}
+}
+PreferencesAliasesAssistant.prototype.helpRowTapped = function(event)
+{
+	event.stop();
+	event.stopPropagation();
+	event.preventDefault();
+	
+	var lookup = event.target.id.replace(/help-/, '');
+	var help = helpData.get(lookup);
+	
+	if (lookup && help)
+	{
+		this.controller.stageController.pushScene('help-data', help);
+	}
 }
 
 PreferencesAliasesAssistant.prototype.buildAliasList = function(initial)

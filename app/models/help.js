@@ -82,10 +82,19 @@ helpData.lookup =
 	'dccSendAction':			{ title: '',		data: ''},
 	'dccSendRequestSound':		{ title: '',		data: ''},
 	'dccSendAlwaysDefault':		{ title: '',		data: ''},
-	
+
+	// ALIAS
+	'aliasList':				{ title: '',		data: ''},
+
+	// ALIAS INFO
+	'aliasInfo':				{ title: '',		data: ''},
+	'aliasCommand':				{ title: '',		data: ''},
+
+
 	// IDENTITY
 	'realname':					{ title: '',		data: ''},
 	'nickList':					{ title: '',		data: ''},
+
 
 	// SERVER INFO
 	'alias':					{ title: '',		data: ''},

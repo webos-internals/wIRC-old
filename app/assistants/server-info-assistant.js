@@ -109,6 +109,7 @@ ServerInfoAssistant.prototype.setup = function()
 		(
 			'defaultNick',
 			{
+				label: ' ',
 				modelProperty: 'value'
 			},
 			this.nickSelectModel

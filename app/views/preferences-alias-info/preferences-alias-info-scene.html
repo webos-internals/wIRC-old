@@ -1,9 +1,10 @@
-<div class="form prefs">
+<div class="form prefs" id="container">
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div class="help-toggle" id="help-toggle" x-mojo-tap-highlight="persistent"></div>
 			<div class="icon"></div>
 			<div class="title" id="header"></div>
 		</div>
@@ -15,6 +16,7 @@
 			
 			<div class="palm-row single">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-aliasInfo"></div>
 					<div class="title">
 						<div id="alias" x-mojo-element="TextField"></div>
 					</div>
@@ -30,6 +32,7 @@
 			
 			<div class="palm-row single">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-aliasCommand"></div>
 					<div class="title">
 						<div id="command" x-mojo-element="TextField"></div>
 					</div>
