@@ -79,8 +79,12 @@ body.palm-dark .add-item .title
 	-webkit-border-image:url(../images/palm-default/header-selector.png) 0 22 0 16 stretch stretch;
 	-webkit-box-sizing: border-box;
 	
-	margin: 9px 9px 0px 0px;
+	margin: 9px 48px 0px 0px;
 	color: #555;
+}
+.prefs.no-help .page-selector 
+{
+	margin-right: 9px;
 }
 body.palm-dark .prefs .page-selector
 {
@@ -94,7 +98,7 @@ body.palm-dark .prefs .page-selector
 	background: transparent;
 	display: inline-block;
 	min-width: 12px;
-	max-width: 95px;
+	max-width: 63px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -138,6 +142,73 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 	float: right;
 	max-width: 273px;
 }
+
+
+.prefs .palm-row .palm-row-wrapper
+{
+	position: relative;
+}
+.prefs .palm-row .palm-row-wrapper:not(.textfield-group)
+{
+	min-height: 53px;
+}
+.prefs .palm-row .palm-row-wrapper.textfield-group
+{
+	min-height: 23px;
+}
+.prefs .palm-row .palm-row-wrapper.textfield-group .help-overlay
+{
+	top: -15px;
+	left: -15px;
+}
+.prefs .palm-row .palm-row-wrapper .help-overlay
+{
+	display: none;
+	position: absolute;
+	z-index: 10000;
+	width: auto;
+	height: auto;
+	border: 20px;
+	top: 2px;
+	left: 2px;
+	right: 2px;
+	bottom: 4px;
+	-webkit-border-image: url(../images/palm-default/helprow.png) 20 20 20 20 stretch stretch;
+}
+.prefs.help .palm-row .palm-row-wrapper .help-overlay
+{
+	display: block;
+}
+.prefs .palm-row.first .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-first.png) 20 20 20 20 stretch stretch;
+}
+.prefs .palm-row.single .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-single.png) 20 20 20 20 stretch stretch;
+	bottom: 3px;
+}
+.prefs .palm-row.last .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-last.png) 20 20 20 20 stretch stretch;
+	bottom: 3px;
+}
+.prefs .help-toggle
+{
+	position: absolute;
+	right: 11px;
+	top: 11px;
+	width: 32px;
+	height: 32px;
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	background-image: url(../images/palm-default/help-toggle.png);
+}
+.prefs .help-toggle.selected
+{
+	background-position: 0px -32px;
+}
+
 
 
 /*
@@ -1384,6 +1455,19 @@ body.palm-dark .file-picker #folderHolder .palm-row .folderIcon
 	vertical-align:bottom;
 	padding: 0px 0px 0px 5px;
 	float:left;
+}
+.help #data
+{
+	padding: 10px;
+	font-size: 18px;
+}
+.help #data ul
+{
+	margin: 0px;
+	padding-top: 10px;
+	padding-left: 26px;
+	padding-right: 0px;
+	padding-bottom: 10px;
 }
 
 

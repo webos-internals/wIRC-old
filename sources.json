@@ -1,5 +1,6 @@
 [
 	{"source": "app/models/regularExpressions.js"},
+    {"source": "app/models/help.js"},
     {"source": "app/models/utility.js"},
 	{"source": "app/models/color-conversion.js"},
     {"source": "app/models/filePicker.js"},
@@ -48,6 +49,10 @@
     {
         "scenes": "help",
         "source": "app/assistants/help-assistant.js"
+    },
+    {
+        "scenes": "help-data",
+        "source": "app/assistants/help-data-assistant.js"
     },
     {
         "scenes": "startup",

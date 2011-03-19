@@ -1,9 +1,10 @@
-<div class="form prefs">
+<div class="form prefs" id="container">
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div class="help-toggle" id="help-toggle" x-mojo-tap-highlight="persistent"></div>
 			<div id="pageSelector" class="page-selector">
 				<div id="pageName" class="page-name">none</div>
 			</div>
@@ -18,6 +19,7 @@
 			
 			<div class="palm-row first">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-partReason"></div>
 					<div class="title">
 						<div class="label">Part</div>
 						<div id="partReason" x-mojo-element="TextField"></div>
@@ -27,6 +29,7 @@
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-quitReason"></div>
 					<div class="title">
 						<div class="label">Quit</div>
 						<div id="quitReason" x-mojo-element="TextField"></div>
@@ -36,6 +39,7 @@
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-kickReason"></div>
 					<div class="title">
 						<div class="label">Kick</div>
 						<div id="kickReason" x-mojo-element="TextField"></div>
@@ -52,6 +56,7 @@
 			
 			<div class="palm-row first">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-eventJoin"></div>
 					<div class="label left">Join</div>
 					<div id="eventJoin" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -59,6 +64,7 @@
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-eventPart"></div>
 					<div class="label left">Part</div>
 					<div id="eventPart" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -66,6 +72,7 @@
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-eventQuit"></div>
 					<div class="label left">Quit</div>
 					<div id="eventQuit" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -73,6 +80,7 @@
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-eventMode"></div>
 					<div class="label left">Mode</div>
 					<div id="eventMode" x-mojo-element="ToggleButton"></div>
 				</div>

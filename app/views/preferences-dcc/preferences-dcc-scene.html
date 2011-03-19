@@ -1,9 +1,10 @@
-<div class="form prefs">
+<div class="form prefs" id="container">
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div class="help-toggle" id="help-toggle" x-mojo-tap-highlight="persistent"></div>
 			<div id="pageSelector" class="page-selector">
 				<div id="pageName" class="page-name">none</div>
 			</div>
@@ -18,12 +19,14 @@
 			
 			<div class="palm-row first" id="dccChatInviteContainer">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-dccChatAction"></div>
 					<div id="dccChatAction" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row last" id="dccChatInviteSoundRow">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-dccChatInviteSound"></div>
 					<div class="label left">Dcc Chat Invite Sound</div>
 					<div id="dccChatInviteSound" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -38,6 +41,7 @@
 			
 			<div class="palm-row first" id="dccDefaultFolderButton" x-mojo-tap-highlight="momentary">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-dccDefaultFolder"></div>
 					<div class="label left">Default Save Folder</div>
 					<br style="clear: both;" />
 					<div class="title right" id="dccDefaultFolderDisplay">...</div>
@@ -46,12 +50,14 @@
 			
 			<div class="palm-row" id="dccSendRequestContainer">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-dccSendAction"></div>
 					<div id="dccSendAction" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row" id="dccSendRequestSoundRow">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-dccSendRequestSound"></div>
 					<div class="label left">Dcc Send Request Sound</div>
 					<div id="dccSendRequestSound" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -59,6 +65,7 @@
 			
 			<div class="palm-row last" id="dccSendAlwaysDefaultRow">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-dccSendAlwaysDefault"></div>
 					<div class="label left">Always Save To Default</div>
 					<div id="dccSendAlwaysDefault" x-mojo-element="ToggleButton"></div>
 				</div>

@@ -1,9 +1,10 @@
-<div class="form prefs">
+<div class="form prefs" id="container">
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div class="help-toggle" id="help-toggle" x-mojo-tap-highlight="persistent"></div>
 			<div id="pageSelector" class="page-selector">
 				<div id="pageName" class="page-name">none</div>
 			</div>
@@ -19,12 +20,14 @@
 
 			<div class="palm-row first">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-tabSuffix"></div>
 					<div id="tabSuffix" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 				
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-autoCap"></div>
 					<div class="label left">Auto Capitalization</div>
 					<div id="autoCap" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -32,6 +35,7 @@
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-autoReplace"></div>
 					<div class="label left">Smart Text Engine</div>
 					<div id="autoReplace" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -47,18 +51,21 @@
 			
 			<div class="palm-row first">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-messagesStyle"></div>
 					<div id="messagesStyle" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row" id="messageFixedSplit">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-messageSplit"></div>
 					<div id="messageSplit" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-fontSize"></div>
 					<div class="label left">Font Size</div>
 					<div class="title right sliderTitle" id="fontSizeTest">&nbsp;</div>
 					<div id="fontSize" x-mojo-element="Slider" class="slider"></div>
@@ -67,6 +74,7 @@
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-senderColoring"></div>
 					<div class="label left">Sender Coloring</div>
 					<div id="senderColoring" x-mojo-element="ToggleButton"></div>
 				</div>
@@ -74,12 +82,14 @@
 				
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-timeStamp"></div>
 					<div id="timeStamp" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-timeStampStyle"></div>
 					<div id="timeStampStyle" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>			
@@ -93,12 +103,14 @@
 			
 			<div class="palm-row first">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-highlightStyle"></div>
 					<div id="highlightStyle" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-highlightPart"></div>
 					<div id="highlightPart" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
@@ -112,24 +124,28 @@
 			
 			<div class="palm-row first">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorNotice"></div>
 					<div id="colorNotice" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorAction"></div>
 					<div id="colorAction" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorStatus"></div>
 					<div id="colorStatus" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>			
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorText"></div>
 					<div id="colorText" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
@@ -137,6 +153,7 @@
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorOwnNick"></div>
 					<div id="colorOwnNick" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
@@ -145,6 +162,7 @@
 				
 				<div class="palm-row">
 					<div class="palm-row-wrapper">
+						<div class="help-overlay" id="help-colorOtherNicks"></div>
 						<div id="colorOtherNicks" x-mojo-element="ListSelector"></div>
 					</div>
 				</div>
@@ -155,12 +173,14 @@
 			
 				<div class="palm-row">
 					<div class="palm-row-wrapper">
+						<div class="help-overlay" id="help-colorHighlightFG"></div>
 						<div id="colorHighlightFG" x-mojo-element="ListSelector"></div>
 					</div>
 				</div>
 			
 				<div class="palm-row">
 					<div class="palm-row-wrapper">
+						<div class="help-overlay" id="help-colorHighlightBG"></div>
 						<div id="colorHighlightBG" x-mojo-element="ListSelector"></div>
 					</div>
 				</div>
@@ -169,12 +189,14 @@
 			
 			<div class="palm-row">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorCTCP"></div>
 					<div id="colorCTCP" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-colorMarker"></div>
 					<div id="colorMarker" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>
@@ -188,6 +210,7 @@
 			
 			<div class="palm-row first">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-ctcpReplyVersion"></div>
 					<div class="title">
 						<div class="label">Version</div>
 						<div id="ctcpReplyVersion" x-mojo-element="TextField"></div>
@@ -196,6 +219,7 @@
 			</div>
 			<div class="palm-row">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-ctcpReplyTime"></div>
 					<div class="title">
 						<div class="label">Time</div>
 						<div id="ctcpReplyTime" x-mojo-element="TextField"></div>
@@ -204,6 +228,7 @@
 			</div>
 			<div class="palm-row">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-ctcpReplyFinger"></div>
 					<div class="title">
 						<div class="label">Finger</div>
 						<div id="ctcpReplyFinger" x-mojo-element="TextField"></div>
@@ -212,6 +237,7 @@
 			</div>
 			<div class="palm-row last">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-ctcpReplyUserinfo"></div>
 					<div class="title">
 						<div class="label">Userinfo</div>
 						<div id="ctcpReplyUserinfo" x-mojo-element="TextField"></div>
