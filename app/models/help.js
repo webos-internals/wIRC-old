@@ -18,7 +18,7 @@ helpData.get = function(lookup)
 helpData.lookup = 
 {
 	// GENERAL
-	'theme':					{ title: 'Theme',	data:  'This changes the entire look of the app. The options themselves should be self-explanatory' },
+	'theme':					{ title: 'Theme',	data: 'This changes the entire look of the app. The options themselves should be self-explanatory' },
 	/*
 	'cmdHistoryMax':			{ title: '',		data: ''},
 	'blockScreenTimeout':		{ title: '',		data: ''},

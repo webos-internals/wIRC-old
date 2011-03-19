@@ -477,15 +477,15 @@ body.palm-dark .form .textfield-group .hint-text
 {
 	-webkit-border-image: url(../images/palm-default/helprow-first.png) 20 20 20 20 stretch stretch;
 }
-.form .palm-row.single .palm-row-wrapper .help-overlay
-{
-	-webkit-border-image: url(../images/palm-default/helprow-single.png) 20 20 20 20 stretch stretch;
-	bottom: 3px;
-}
 .form .palm-row.last .palm-row-wrapper .help-overlay
 {
 	-webkit-border-image: url(../images/palm-default/helprow-last.png) 20 20 20 20 stretch stretch;
 	bottom: 2px;
+}
+.form .palm-row.single .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-single.png) 20 20 20 20 stretch stretch;
+	bottom: 3px;
 }
 .form .palm-row.last .palm-row-wrapper.textfield-group .help-overlay,
 .form .palm-row.single .palm-row-wrapper.textfield-group .help-overlay
@@ -531,7 +531,6 @@ body.palm-dark .form .textfield-group .hint-text
 {
 	background-position: 0px -32px;
 }
-
 
 
 /*
