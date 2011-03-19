@@ -295,7 +295,7 @@ function ircMessage(params)
 ircMessage.prototype.highlightTest = function()
 {
 	// first test is current nick (it may have been /nick'd to and not in the nicklist tested below)
-	if (this.message.toLowerCase().include(this.me.toLowerCase())) 
+	if (ircMessage.stringTest(this.message, this.me)) 
 	{
 		this.highlightMessage();
 		return;
@@ -307,7 +307,7 @@ ircMessage.prototype.highlightTest = function()
 	{
 		for (var n = 0; n < testNicks.length; n++)
 		{
-			if (this.message.toLowerCase().include(testNicks[n].toLowerCase())) 
+			if (ircMessage.stringTest(this.message, testNicks[n])) 
 			{
 				this.highlightMessage();
 				return;
@@ -321,7 +321,7 @@ ircMessage.prototype.highlightTest = function()
 	{
 		for (var w = 0; w < testWords.length; w++)
 		{
-			if (this.message.toLowerCase().include(testWords[w].toLowerCase())) 
+			if (ircMessage.stringTest(this.message, testWords[w])) 
 			{
 				this.highlightMessage();
 				return;
@@ -399,3 +399,8 @@ ircMessage.prototype.getListObject = function()
 }
 
 ircMessage.num = 0;
+
+ircMessage.stringTest = function(string, lookup)
+{
+	return new RegExp("\\b" + lookup + "\\b", "gi").test(string);
+}

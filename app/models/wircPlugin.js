@@ -31,8 +31,8 @@ wircPluginModel.jsonParse = function(string)
 	}
 	catch (e)
 	{
-		Mojo.Log.logException(e, 'wircPlugin#jsonParse');
-		Mojo.Log.error('string:', string);
+		//Mojo.Log.logException(e, 'wircPlugin#jsonParse');
+		//Mojo.Log.error('string:', string);
 		
 		// fall back to eval parser
 		return eval(string);

@@ -23,7 +23,7 @@ helpData.lookup =
 	
 	
 	// GENERAL
-	'theme':					{ title: 'Theme',					data: 'This changes the entire look of the app. The options themselves should be self-explanatory' },
+	'theme':					{ title: 'Theme',					data: 'This changes the entire look of the app. The options themselves should be self-explanatory.' },
 	'cmdHistoryMax':			{ title: 'Max Command History',		data: ''},
 	'blockScreenTimeout':		{ title: 'Block Screen Timeout',	data: ''},
 	'dimScreen':				{ title: 'Dim Screen',				data: ''},
@@ -89,8 +89,6 @@ helpData.lookup =
 
 	// ALIAS
 	'aliasList':				{ title: 'Alias List',				data: ''},
-
-	// ALIAS INFO
 	'aliasInfo':				{ title: 'Alias',					data: ''},
 	'aliasCommand':				{ title: 'Command',					data: ''},
 	

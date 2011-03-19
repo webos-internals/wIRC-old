@@ -62,7 +62,7 @@ ServerListAssistant.prototype.tryPlugin = function()
 	}
 	catch (e)
 	{
-		Mojo.Log.logException(e, 'server-list#tryPlugin');
+		//Mojo.Log.logException(e, 'server-list#tryPlugin');
 		this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
 	}
 }
