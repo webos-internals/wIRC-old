@@ -62,6 +62,7 @@ ServerListAssistant.prototype.tryPlugin = function()
 	}
 	catch (e)
 	{
+		Mojo.Log.logException(e, 'server-list#tryPlugin');
 		this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
 	}
 }
@@ -231,7 +232,7 @@ ServerListAssistant.prototype.updateCommandMenu = function(skipUpdate)
 		
 		if (!skipUpdate) {
 			this.controller.modelChanged(this.cmdMenuModel);
-			this.controller.setMenuVisible(Mojo.Menu.commandMenu, true);
+			this.controller.setMenuVisible(Mojo.Menu.commandMenu, wircPlugin.isReady);
 		}		
 	}
 	catch (e)
@@ -305,15 +306,23 @@ ServerListAssistant.prototype.deactivate = function(event)
 }
 ServerListAssistant.prototype.cleanup = function(event)
 {
-	//Mojo.Log.error('ServerListAssistant#cleanup');
-	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
-	Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
-
-	servers.cmSubscription.cancel();
-	plugin.kill();
+	try
+	{
+		//Mojo.Log.error('ServerListAssistant#cleanup');
+		Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listTap, this.listTapHandler);
+		Mojo.Event.stopListening(this.serverListElement, Mojo.Event.listDelete, this.listDeleteHandler);
 	
-	// hey this works, cool!
-	Mojo.Controller.appController.closeAllStages();
-	
-	Mojo.Log.error('ServerListAssistant#cleanedup');
+		servers.cmSubscription.cancel();
+		plugin.kill();
+		
+		// hey this works, cool!
+		Mojo.Controller.appController.closeAllStages();
+		
+		//Mojo.Log.error('ServerListAssistant#cleanedup');
+	} 
+	catch (e) 
+	{
+		Mojo.Log.logException(e, 'server-list#cleanup');
+	}
+		
 }

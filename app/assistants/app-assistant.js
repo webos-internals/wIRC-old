@@ -49,6 +49,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 				var f = function(controller)
 				{
 					vers.init();
+					
 					wircPlugin.createElement(controller.window.document);
 					plugin = controller.get('wircPlugin');
 					

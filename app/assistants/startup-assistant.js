@@ -11,6 +11,14 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.8',
+			log:
+			[
+				'Channel cards stack together during auto-join on 2.x (Thanks to halfhalo)',
+				'Color codes in received messages fixed in 2.x'
+			]
+		},
+		{
 			version: '0.3.7',
 			log:
 			[

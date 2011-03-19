@@ -113,7 +113,7 @@ formatSeconds = function(seconds, longFormat){
     return toReturn;
 }
 
-function colorize (message) {
+colorize = function (message) {
 	var pageBack  = 'white';
 	var pageFront = 'black';
 	var length    = message.length;
@@ -212,10 +212,11 @@ function colorize (message) {
 	return newText;
 }
 
-function getColor(numeric)
+getColor = function(numeric)
 {
 	var num = parseInt(numeric);
-	switch (num) {
+	switch (num)
+	{
 		case 0:  return 'white';
 		case 1:  return 'black';
 		case 2:  return 'navy';

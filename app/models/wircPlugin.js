@@ -21,6 +21,26 @@ function wircPluginModel(){
     this.isReady = false;
 }
 
+// abstracted this so we can change all the parsing at one point
+wircPluginModel.jsonParse = function(string)
+{
+	try
+	{
+		// attempt parser
+		return JSON.parse(string);
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, 'wircPlugin#jsonParse');
+		Mojo.Log.error('string:', string);
+		
+		// fall back to eval parser
+		return eval(string);
+	}
+	// wtf?
+	return false;
+}
+
 wircPluginModel.prototype.createElement = function(document)
 {
     var pluginObj = document.createElement("object");
@@ -183,7 +203,7 @@ wircPluginModel.prototype.event_dcc_chat_req_handler = function(id, nick, addres
 wircPluginModel.prototype.event_connect_handler = function(id, event, origin, params_s, ip)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	if (event=='MAXRETRIES')
 	{
@@ -216,7 +236,7 @@ wircPluginModel.prototype.event_connect_handler = function(id, event, origin, pa
 wircPluginModel.prototype.event_part_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);	
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpChan = servers.servers[id].getChannel(params[0]);
 	if (tmpChan) 
@@ -233,7 +253,7 @@ wircPluginModel.prototype.event_part_handler = function(id, event, origin, param
 wircPluginModel.prototype.event_invite_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	if (prefs.get().inviteAction != 'ignore') 
 	{
@@ -250,7 +270,7 @@ wircPluginModel.prototype.event_invite_handler = function(id, event, origin, par
 wircPluginModel.prototype.event_channel_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpChan = servers.servers[id].getChannel(params[0]);
 	if (tmpChan) 
@@ -264,7 +284,7 @@ wircPluginModel.prototype.event_channel_handler = function(id, event, origin, pa
 wircPluginModel.prototype.event_privmsg_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpQuery = servers.servers[id].getQuery(tmpNick);
@@ -277,7 +297,7 @@ wircPluginModel.prototype.event_privmsg_handler = function(id, event, origin, pa
 wircPluginModel.prototype.event_nick_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	if (tmpNick === servers.servers[id].nick)
@@ -288,7 +308,7 @@ wircPluginModel.prototype.event_nick_handler = function(id, event, origin, param
 wircPluginModel.prototype.event_mode_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	//servers.servers[id].debugPayload(event, origin, params_s, true);
 	
@@ -315,7 +335,7 @@ wircPluginModel.prototype.event_mode_handler = function(id, event, origin, param
 wircPluginModel.prototype.event_umode_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	//servers.servers[id].debugPayload(event, origin, params_s, true);
 	
@@ -329,7 +349,7 @@ wircPluginModel.prototype.event_umode_handler = function(id, event, origin, para
 wircPluginModel.prototype.event_join_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpChan = servers.servers[id].getOrCreateChannel(params[0], null);
 	if (tmpChan) 
@@ -361,7 +381,7 @@ wircPluginModel.prototype.event_join_handler = function(id, event, origin, param
 wircPluginModel.prototype.event_quit_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	if (tmpNick)
@@ -376,7 +396,7 @@ wircPluginModel.prototype.event_quit_handler = function(id, event, origin, param
 wircPluginModel.prototype.event_topic_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpChan = servers.servers[id].getChannel(params[0]);
 	if (tmpChan)
@@ -397,7 +417,7 @@ wircPluginModel.prototype.event_topic_handler = function(id, event, origin, para
 wircPluginModel.prototype.event_notice_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	servers.servers[id].getVisibleScene().newMessage('type6', tmpNick, params[1]);
@@ -409,7 +429,7 @@ wircPluginModel.prototype.event_notice_handler = function(id, event, origin, par
 wircPluginModel.prototype.event_channel_notice_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpChan = servers.servers[id].getChannel(params[0]);
@@ -425,7 +445,7 @@ wircPluginModel.prototype.ctcp_rep = function(id, nick, reply)
 wircPluginModel.prototype.event_ctcp_req_handler = function(id, event, origin, params_s) {
 	
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	var tmpMatch = twoValRegExp.exec(params[0]);
 	servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + tmpMatch[1] + ' request by '+ ' ' + origin, false);
 	
@@ -474,7 +494,7 @@ wircPluginModel.prototype.event_ctcp_req_handler = function(id, event, origin, p
 }
 wircPluginModel.prototype.event_ctcp_rep_handler = function(id, event, origin, params_s) {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpMatch = twoValRegExp.exec(params[0]);
 	if (tmpMatch)
@@ -488,7 +508,7 @@ wircPluginModel.prototype.event_ctcp_rep_handler = function(id, event, origin, p
 wircPluginModel.prototype.event_ctcp_action_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpChan = servers.servers[id].getChannel(params[0]);
@@ -507,7 +527,7 @@ wircPluginModel.prototype.event_ctcp_action_handler = function(id, event, origin
 wircPluginModel.prototype.event_kick_handler = function(id, event, origin, params_s)
 {
 	var id = parseInt(id);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var tmpChan = servers.servers[id].getChannel(params[0]);
 	if (tmpChan) 
@@ -538,7 +558,7 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 {
 	var id = parseInt(id);
 	var evt = parseInt(event);
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	var msgTarget = servers.servers[id];
 	var msgType = 'type2';
@@ -695,7 +715,7 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 
 wircPluginModel.prototype.event_unknown_handler = function(id, event, origin, params_s)
 {
-	var params = JSON.parse(params_s);
+	var params = wircPluginModel.jsonParse(params_s);
 	
 	switch (event) {
 		case 'PONG':
