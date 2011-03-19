@@ -15,7 +15,10 @@ function StartupAssistant(changelog)
 			log:
 			[
 				'Channel cards stack together during auto-join on 2.x (Thanks to halfhalo)',
-				'Color codes in received messages fixed in 2.x'
+				'Added help toggle/overlay to preferences and server setup',
+				'Added a list of available commands to help scene',
+				'Fixed color codes in received messages on 2.x',
+				'Fixed bug with mentions and alert word highlighting'
 			]
 		},
 		{
