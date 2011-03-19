@@ -17,6 +17,11 @@ helpData.get = function(lookup)
 
 helpData.lookup = 
 {
+	
+	// MISC
+	'availableCommands':		{ title: 'Available Commands',	func: aliasesModel.commandHelp},
+	
+	
 	// GENERAL
 	'theme':					{ title: 'Theme',	data: 'This changes the entire look of the app. The options themselves should be self-explanatory' },
 	/*
@@ -89,8 +94,7 @@ helpData.lookup =
 	// ALIAS INFO
 	'aliasInfo':				{ title: '',		data: ''},
 	'aliasCommand':				{ title: '',		data: ''},
-
-
+	
 	// IDENTITY
 	'realname':					{ title: '',		data: ''},
 	'nickList':					{ title: '',		data: ''},

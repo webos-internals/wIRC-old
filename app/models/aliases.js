@@ -260,6 +260,16 @@ aliasesModel.defaultAliases =
 	{num: 1, alias: 'ns',		command: 'msg NickServ &2'},
 	{num: 1, alias: 'authserv',	command: 'msg AuthServ &2'}
 ];
+aliasesModel.commandHelp = function()
+{
+	var r = 'Commands are entered by typing a / then the command.<br /><br /><span style="text-transform: uppercase;">';
+	for (var c = 0; c < aliasesModel.commands.length; c++)
+	{
+		r += '<div style="display: inline-block; width: 32%;">' + aliasesModel.commands[c] + '</div>';
+	}
+	r += '</span><br /><br />This list doesn\'t include any of the aliases defined in the preferences.';
+	return r;
+};
 aliasesModel.commands =
 [	// built-in commands that can't be an alias
 	'away',

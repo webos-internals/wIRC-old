@@ -1,11 +1,11 @@
 [
 	{"source": "app/models/regularExpressions.js"},
+    {"source": "app/models/aliases.js"},
     {"source": "app/models/help.js"},
     {"source": "app/models/utility.js"},
 	{"source": "app/models/color-conversion.js"},
     {"source": "app/models/filePicker.js"},
     {"source": "app/models/cookie.js"},
-    {"source": "app/models/aliases.js"},
     {"source": "app/models/connectionmanager.js"},
     {"source": "app/models/preconfigured.js"},
 	{"source": "app/models/wircPlugin.js"},

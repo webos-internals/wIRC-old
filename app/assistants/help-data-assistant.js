@@ -6,7 +6,14 @@ function HelpDataAssistant(data)
 HelpDataAssistant.prototype.setup = function()
 {
 	this.controller.get('help-title').innerHTML = $L(this.data.title);
-	this.controller.get('data').innerHTML = $L(this.data.data);
+	if (this.data.data)
+	{
+		this.controller.get('data').innerHTML = $L(this.data.data);
+	}
+	if (this.data.func)
+	{
+		this.controller.get('data').innerHTML = this.data.func();
+	}
 	
 	this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: false});
 	

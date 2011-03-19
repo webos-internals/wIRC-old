@@ -322,7 +322,11 @@ ircServer.prototype.newCommand = function(message)
 					
 				case 'whois':
 					this.whois(val);
-					break;			
+					break;
+				
+				case 'help':
+					this.getVisibleScene().newMessage('status', tmpNick, 'You can find help in the app menu.');
+					break;
 					
 				default: // this could probably be left out later
 					this.newMessage('status', false, 'Unknown Command: ' + cmd);
@@ -426,9 +430,7 @@ ircServer.prototype.connect = function()
 	}
 	catch(e)
 	{
-		Mojo.Log.info("########################################################");
-		Mojo.Log.info(e);
-		Mojo.Log.info("########################################################");
+		Mojo.Log.logException(e, 'server#connect');
 	}
 	
 }

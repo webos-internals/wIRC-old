@@ -27,7 +27,31 @@ HelpAssistant.prototype.setup = function()
     this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 	this.controller.get('appname').innerHTML = Mojo.appInfo.title;
-	this.controller.get('appdetails').innerHTML = Mojo.appInfo.version + $L(".") + githash;
+	this.controller.get('appdetails').innerHTML = Mojo.appInfo.version + '-' + githash;
+	
+	this.usageModel = 
+	{
+		items: []
+	};
+	
+	this.usageModel.items.push({
+		text: $L("Available Commands"),
+		detail: 'availableCommands',
+		type: 'help'
+	});
+	
+	this.controller.setupWidget
+	(
+		'usageList', 
+		{
+			itemTemplate: "help/rowTemplate",
+			swipeToDelete: false,
+			reorderable: false
+		},
+		this.usageModel
+	);
+	
+	this.controller.listen('usageList', Mojo.Event.listTap, this.listTapHandler.bindAsEventListener(this));
 	
 	this.supportModel = 
 	{
@@ -35,7 +59,7 @@ HelpAssistant.prototype.setup = function()
 	};
 	
 	this.supportModel.items.push({
-		text: $L("webOS-Internals Wiki"),
+		text: $L("WebOS Internals Wiki"),
 		detail: 'http://www.webos-internals.org/wiki/Application:WIRC',
 		Class: 'img_web',
 		type: 'web'
@@ -47,9 +71,9 @@ HelpAssistant.prototype.setup = function()
 		type: 'web'
 	});
 	this.supportModel.items.push({
-		text: $L('Changelog'),
-		Class: 'img_changelog',
-		type: 'changelog'
+		text:'#wirc on Freenode',
+		Class:'img_wirc',
+		type:'wirc'
 	});
 	this.supportModel.items.push({
 		text:'Send Email',
@@ -59,9 +83,9 @@ HelpAssistant.prototype.setup = function()
 		type:'email'
 	});
 	this.supportModel.items.push({
-		text:'#wirc on Freenode',
-		Class:'img_wirc',
-		type:'wirc'
+		text: $L('Changelog'),
+		Class: 'img_changelog',
+		type: 'changelog'
 	});
 	
 	this.controller.setupWidget
@@ -114,6 +138,10 @@ HelpAssistant.prototype.listTapHandler = function(event)
 			
 		case 'scene':
 			this.controller.stageController.pushScene(event.item.detail);
+			break;
+			
+		case 'help':
+			this.controller.stageController.pushScene('help-data', helpData.get(event.item.detail));
 			break;
 			
 		case 'wirc':
