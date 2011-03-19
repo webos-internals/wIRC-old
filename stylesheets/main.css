@@ -144,73 +144,6 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 }
 
 
-.prefs .palm-row .palm-row-wrapper
-{
-	position: relative;
-}
-.prefs .palm-row .palm-row-wrapper:not(.textfield-group)
-{
-	min-height: 53px;
-}
-.prefs .palm-row .palm-row-wrapper.textfield-group
-{
-	min-height: 23px;
-}
-.prefs .palm-row .palm-row-wrapper.textfield-group .help-overlay
-{
-	top: -15px;
-	left: -15px;
-}
-.prefs .palm-row .palm-row-wrapper .help-overlay
-{
-	display: none;
-	position: absolute;
-	z-index: 10000;
-	width: auto;
-	height: auto;
-	border: 20px;
-	top: 2px;
-	left: 2px;
-	right: 2px;
-	bottom: 4px;
-	-webkit-border-image: url(../images/palm-default/helprow.png) 20 20 20 20 stretch stretch;
-}
-.prefs.help .palm-row .palm-row-wrapper .help-overlay
-{
-	display: block;
-}
-.prefs .palm-row.first .palm-row-wrapper .help-overlay
-{
-	-webkit-border-image: url(../images/palm-default/helprow-first.png) 20 20 20 20 stretch stretch;
-}
-.prefs .palm-row.single .palm-row-wrapper .help-overlay
-{
-	-webkit-border-image: url(../images/palm-default/helprow-single.png) 20 20 20 20 stretch stretch;
-	bottom: 3px;
-}
-.prefs .palm-row.last .palm-row-wrapper .help-overlay
-{
-	-webkit-border-image: url(../images/palm-default/helprow-last.png) 20 20 20 20 stretch stretch;
-	bottom: 3px;
-}
-.prefs .help-toggle
-{
-	position: absolute;
-	right: 11px;
-	top: 11px;
-	width: 32px;
-	height: 32px;
-	background-position: 0px 0px;
-	background-repeat: no-repeat;
-	background-image: url(../images/palm-default/help-toggle.png);
-}
-.prefs .help-toggle.selected
-{
-	background-position: 0px -32px;
-}
-
-
-
 /*
  * Startup Scene Styles
  */
@@ -505,6 +438,98 @@ body.palm-dark .form .textfield-group .hint-text
 .form .palm-group.disabled
 {
 	opacity: 0.35;
+}
+
+.form .palm-row .palm-row-wrapper
+{
+	position: relative;
+}
+.form .palm-row .palm-row-wrapper:not(.textfield-group)
+{
+	min-height: 53px;
+}
+.form .palm-row .palm-row-wrapper.textfield-group
+{
+	min-height: 23px;
+}
+.form .palm-row .palm-row-wrapper.textfield-group .help-overlay
+{
+	top: -13px;
+	left: -13px;
+	bottom: -11px;
+	right: -13px;
+}
+.form .palm-row .palm-row-wrapper .help-overlay
+{
+	display: none;
+	position: absolute;
+	z-index: 10000;
+	width: auto;
+	height: auto;
+	border: 20px;
+	top: 2px;
+	left: 2px;
+	right: 2px;
+	bottom: 4px;
+	-webkit-border-image: url(../images/palm-default/helprow.png) 20 20 20 20 stretch stretch;
+}
+.form .palm-row.first .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-first.png) 20 20 20 20 stretch stretch;
+}
+.form .palm-row.single .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-single.png) 20 20 20 20 stretch stretch;
+	bottom: 3px;
+}
+.form .palm-row.last .palm-row-wrapper .help-overlay
+{
+	-webkit-border-image: url(../images/palm-default/helprow-last.png) 20 20 20 20 stretch stretch;
+	bottom: 2px;
+}
+.form .palm-row.last .palm-row-wrapper.textfield-group .help-overlay,
+.form .palm-row.single .palm-row-wrapper.textfield-group .help-overlay
+{
+	bottom: -13px;
+}
+.form .palm-group
+{
+	position: relative;
+}
+.form .palm-group > .help-overlay
+{
+	display: none;
+	position: absolute;
+	z-index: 10000;
+	width: auto;
+	height: auto;
+	border: 20px;
+	top: -12px;
+	left: -14px;
+	bottom: -13px;
+	right: -13px;
+	-webkit-border-image: url(../images/palm-default/helprow-single.png) 20 20 20 20 stretch stretch;
+}
+.form.help .palm-row .palm-row-wrapper .help-overlay,
+.form.help .palm-group > .help-overlay
+{
+	display: block;
+}
+
+.form .help-toggle
+{
+	position: absolute;
+	right: 11px;
+	top: 11px;
+	width: 32px;
+	height: 32px;
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	background-image: url(../images/palm-default/help-toggle.png);
+}
+.form .help-toggle.selected
+{
+	background-position: 0px -32px;
 }
 
 

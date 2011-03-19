@@ -1,9 +1,10 @@
-<div class="form server-info">
+<div class="form server-info" id="container">
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div class="help-toggle" id="help-toggle" x-mojo-tap-highlight="persistent"></div>
 			<div class="icon"></div>
 			<div class="title">Server Information</div>
 		</div>
@@ -15,15 +16,17 @@
 		
 			<div class="palm-row first">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-alias"></div>
 					<div class="title">
 						<div class="label">Alias</div>
 						<div id="alias" x-mojo-element="TextField"></div>
 					</div>
 				</div>
-			</div>		
+			</div>
 			
 			<div class="palm-row last">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-address"></div>
 					<div class="title">
 						<div class="label">Address</div>
 						<div id="address" x-mojo-element="TextField"></div>
@@ -41,6 +44,7 @@
 
 			<div class="palm-row single">
 				<div class="palm-row-wrapper">
+					<div class="help-overlay" id="help-defaultNick"></div>
 					<div id="defaultNick" x-mojo-element="ListSelector"></div>
 				</div>
 			</div>

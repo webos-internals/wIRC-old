@@ -1,9 +1,10 @@
-<div class="form identity">
+<div class="form identity" id="container">
 	
 	<div class="scene-fade-top" x-mojo-scroll-fade="top"></div>
 	
 	<div class="palm-page-header multi-line">
 		<div class="palm-page-header-wrapper">
+			<div class="help-toggle" id="help-toggle" x-mojo-tap-highlight="persistent"></div>
 			<div class="icon"></div>
 			<div class="title">Identity</div>
 		</div>
@@ -15,6 +16,7 @@
 		
 			<div class="palm-row single">
 				<div class="palm-row-wrapper textfield-group" x-mojo-focus-highlight="true">
+					<div class="help-overlay" id="help-realname"></div>
 					<div class="title">
 						<div id="realname" x-mojo-element="TextField"></div>
 					</div>
@@ -26,8 +28,8 @@
 	
 	<div class="palm-group">
 		<div class="palm-group-title">Nicknames</div>
-			<div class="palm-list" id="nickList" x-mojo-element="List">
-		</div>
+		<div class="help-overlay" id="help-nickList"></div>
+		<div class="palm-list" id="nickList" x-mojo-element="List"></div>
 	</div>
 	
 	<div x-mojo-element="Button" id="identDone" class="identDone"></div>

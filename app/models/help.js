@@ -73,6 +73,7 @@ helpData.lookup =
 	'dashboardQuerySound':		{ title: '',		data: ''},
 	'inviteAction':				{ title: '',		data: ''},
 	'dashboardInviteSound':		{ title: '',		data: ''},
+	'alertList':				{ title: '',		data: ''},
 
 	// DCC
 	'dccChatAction':			{ title: '',		data: ''},
@@ -81,6 +82,30 @@ helpData.lookup =
 	'dccSendAction':			{ title: '',		data: ''},
 	'dccSendRequestSound':		{ title: '',		data: ''},
 	'dccSendAlwaysDefault':		{ title: '',		data: ''},
+	
+	// IDENTITY
+	'realname':					{ title: '',		data: ''},
+	'nickList':					{ title: '',		data: ''},
+
+	// SERVER INFO
+	'alias':					{ title: '',		data: ''},
+	'address':					{ title: '',		data: ''},
+	'defaultNick':				{ title: '',		data: ''},
+
+	// ADVANCED SERVER INFO
+	'port':						{ title: '',		data: ''},
+	'encryption':				{ title: '',		data: ''},
+	'serverUser':				{ title: '',		data: ''},
+	'serverPassword':			{ title: '',		data: ''},
+	'autoConnect':				{ title: '',		data: ''},
+	'proxyNetwork':				{ title: '',		data: ''},
+	'dontPartOnClose':			{ title: '',		data: ''},
+	'autoOpenFavs':				{ title: '',		data: ''},
+	'autoIdentify':				{ title: '',		data: ''},
+	'identifyService':			{ title: '',		data: ''},
+	'identifyPassword':			{ title: '',		data: ''},
+	'onConnect':				{ title: '',		data: ''},
+	'favoriteChannels':			{ title: '',		data: ''},
 	*/
 	
 };

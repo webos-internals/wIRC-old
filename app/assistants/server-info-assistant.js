@@ -64,6 +64,10 @@ ServerInfoAssistant.prototype.setup = function()
 		this.advancedButtonElement =	this.controller.get('advancedButton');
 		this.defaultNick = 				this.controller.get('defaultNick');
 		
+		// listener for help toggle
+		this.helpTap = this.helpRowTapped.bindAsEventListener(this);
+		this.controller.listen(this.controller.get('help-toggle'), Mojo.Event.tap, this.helpButtonTapped.bindAsEventListener(this));
+		
 		this.textChanged =				this.textChanged.bindAsEventListener(this);
 		this.saveButtonPressed =		this.saveButtonPressed.bindAsEventListener(this);
 		this.advancedButtonPressed =	this.advancedButtonPressed.bindAsEventListener(this);
@@ -152,10 +156,43 @@ ServerInfoAssistant.prototype.setup = function()
 		// make it so nothing is selected by default (textbox rage)
 		this.controller.setInitialFocusedElement(null);
 		
+		// add listeners to all the help-overlays
+		var helps = this.controller.get('container').querySelectorAll('div.help-overlay');
+		for (var h = 0; h < helps.length; h++) {
+			this.controller.listen(helps[h], Mojo.Event.tap, this.helpTap);
+		}
 	} 
 	catch (e) 
 	{
 		Mojo.Log.logException(e, 'server-info#setup');
+	}
+}
+
+ServerInfoAssistant.prototype.helpButtonTapped = function(event)
+{
+	if (this.controller.get('container').hasClassName('help'))
+	{
+		this.controller.get('container').removeClassName('help');
+		event.target.removeClassName('selected');
+	}
+	else
+	{
+		this.controller.get('container').addClassName('help');
+		event.target.addClassName('selected');
+	}
+}
+ServerInfoAssistant.prototype.helpRowTapped = function(event)
+{
+	event.stop();
+	event.stopPropagation();
+	event.preventDefault();
+	
+	var lookup = event.target.id.replace(/help-/, '');
+	var help = helpData.get(lookup);
+	
+	if (lookup && help)
+	{
+		this.controller.stageController.pushScene('help-data', help);
 	}
 }
 
