@@ -374,7 +374,7 @@ ircServer.prototype.newMessage = function(type, nick, message, dontUpdate)
 	};
 	var newMsg = new ircMessage(obj);
 	this.statusMessages.push(newMsg);
-	if (!dontUpdate) 
+	if (!dontUpdate || (dontUpdate && this.statusAssistant && this.statusAssistant.isVisible))
 	{
 		this.updateStatusList();
 	}
