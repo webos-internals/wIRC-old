@@ -92,7 +92,7 @@ helpData.lookup =
 	'aliasCommand':			{ title: 'Command',					data: 'This is the command which will be sent to the server when you type in the alias above.<br /><br />Don\'t prefix it with a / here.'},
 	
 	// IDENTITY
-	'realname':				{ title: 'Real Name',				data: 'This name will be displayed besides your nickname when you join or part a channel.'},
+	'realname':				{ title: 'Real Name',				data: 'This will be displayed if someone runs a whois command on you.'},
 	'nickList':				{ title: 'Nicknames',				data: 'This is a list of nicknames (or "handles") you will be using for connecting to servers.'},
 
 
