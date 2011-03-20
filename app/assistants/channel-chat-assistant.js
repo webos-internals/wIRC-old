@@ -515,10 +515,12 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
             });
         }
     }
-    serverItems.push({
-        label: "Favorite Channels",
-        items: favorites
-    });
+	if (favorites.length > 0) {
+    	serverItems.push({
+	        label: "Favorite Channels",
+        	items: favorites
+    	});
+	}
     if (this.channel.server.isAway) {
         serverItems.push({
             label: "Back",

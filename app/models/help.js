@@ -24,7 +24,7 @@ helpData.lookup =
 	
 	// GENERAL
 	'theme':					{ title: 'Theme',					data: 'This changes the entire look of the app. The options themselves should be self-explanatory.' },
-	'cmdHistoryMax':			{ title: 'Max Command History',		data: ''},
+	'cmdHistoryMax':			{ title: 'Max Command History',		data: 'This is the number of commands wIRC will remember.<br /><br />You can access them with Hold Gesture + Q (to go back,) and Hold Gesture + A (to go forward.)'},
 	'blockScreenTimeout':		{ title: 'Block Screen Timeout',	data: ''},
 	'dimScreen':				{ title: 'Dim Screen',				data: ''},
 	'statusPop':				{ title: 'Default in New Card',		data: ''},

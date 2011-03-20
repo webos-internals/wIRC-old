@@ -469,10 +469,12 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 	            });
         	}
     	}
-    	serverItems.push({
-	        label: "Favorite Channels",
-        	items: favorites
-    	});
+		if (favorites.length > 0) {
+	    	serverItems.push({
+		        label: "Favorite Channels",
+	        	items: favorites
+	    	});
+		}
 		
 		if (this.server.isAway) {
 			serverItems.push({
@@ -661,6 +663,7 @@ ServerStatusAssistant.prototype.visibleWindow = function(event)
 	{
         this.isVisible = true;
     }
+	this.updateList();
     this.updateLagMeter();
 	this.updateAppMenu();
 }
