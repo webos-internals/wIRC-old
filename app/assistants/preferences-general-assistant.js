@@ -125,23 +125,8 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			}
 		);
 		
-		this.controller.setupWidget
-		(
-			'dimScreen',
-			{
-	  			trueLabel:  'Yes',
-	 			falseLabel: 'No',
-	  			fieldName:  'dimScreen'
-			},
-			{
-				value : this.prefs.blockScreenTimeout,
-	 			disabled: false
-			}
-		);
-		
 		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 		this.controller.listen('blockScreenTimeout', Mojo.Event.propertyChange, this.toggleChangeHandler);
-		this.controller.listen('dimScreen',	Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		// Server Status Group
 		this.controller.setupWidget

@@ -19,7 +19,7 @@ preferenceCookie.prototype.get = function(reload)
 				aiface:					false,
 				lagMeter:				false,
 				blockScreenTimeout:		true,
-				dimScreen:				true,
+				dimScreen:				false, // this is gone, but leave it around incase anything that used it was missed somewhere
 				
 				autoPingInterval:		10,
 				connectionTimeout:		30,
@@ -27,7 +27,7 @@ preferenceCookie.prototype.get = function(reload)
 				useExternalIP:			true,
 				
 				// CTCP Replies,
-				ctcpReplyVersion:		'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%) -- http://git.webos-internals.org/trac/wIRC',
+				ctcpReplyVersion:		'wIRC %WIRCVER% webOS %WEBOSVER% (%CARRIER% %MODEL%)',
 				ctcpReplyTime:			'%DATETIME%',
 				ctcpReplyFinger:		'%REALNAME%',
 				ctcpReplyUserinfo:		'',

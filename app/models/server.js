@@ -470,7 +470,10 @@ ircServer.prototype.runOnConnect = function()
 		for (var c = 0; c < this.onConnect.length; c++)
 		{
 			// also defer these commands to run one after another when its not busy
-			this.newCommand.bind(this).defer(this.onConnect[c]);
+			if (this.onConnect[c].charAt(0) != '/') 
+				this.newCommand.bind(this).defer('/' + this.onConnect[c]);
+			else
+				this.newCommand.bind(this).defer(this.onConnect[c]);
 		}
 	}
 	

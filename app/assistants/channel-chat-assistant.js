@@ -150,7 +150,7 @@ ChannelChatAssistant.prototype.loadPrefs = function(initial){
 }
 ChannelChatAssistant.prototype.activate = function(event){
 	try{
-		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
+		this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout});
 	    this.updateLagMeter();
 		this.updateAppMenu(false);
 	    this.loadPrefs();
