@@ -1,10 +1,7 @@
 function ChannelChatAssistant(channel)
 {
-	if(channel && channel.creationCB)
-    this.channel = channel.name;
-	else
-		this.channel=channel;
-		
+	this.channel = channel;
+	
     this.nick = false;
     this.tabText = false;
     
@@ -44,9 +41,6 @@ function ChannelChatAssistant(channel)
         visible: true,
         items: []
     }
-		this.creationCB=null;
-		if(channel.creationCB)
-			this.creationCB=channel.creationCB;
 }
 
 ChannelChatAssistant.prototype.setup = function()
@@ -696,16 +690,17 @@ ChannelChatAssistant.prototype.draggingHandler = function(event){
     this.messageListElement.className = this.messagesStyle + ' fixed-' + this.messageSplit + ' font-' + this.fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 ChannelChatAssistant.prototype.visibleWindow = function(event){
-	try{
-		  if (!this.isVisible) {
+	try
+	{
+		if (!this.isVisible)
+		{
 	        this.isVisible = true;
 	    }
 	    this.channel.closeDash();
 	    this.updateLagMeter();
 		this.updateAppMenu();
-		if(this.creationCB && typeof this.creationCB == "function")
-			this.creationCB();
-	}catch(e)
+	}
+	catch(e)
 	{
 			Mojo.Log.logException(e, 'channel-chat#visibleWindow');
 	}

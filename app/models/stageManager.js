@@ -1,5 +1,6 @@
 var stageStack = [];
 var stageMakerActive = false;
+var stageMakerTimer = false;
 
 function stageManager() {}
 
@@ -9,33 +10,50 @@ stageManager.openStage = function(stage, callback)
 {
 	if(stageMakerActive == true)
 	{
-		stageStack.push({"stage": stage, cb: callback});
+		stageStack.push({"stage": stage, "callback": callback});
 	}
 	else
 	{
-		stageStack.push({"stage": stage, cb: callback});
-		stageManager.createStages(function(){
-		})
+		stageStack.push({"stage": stage, "callback": callback});
+		stageManager.createStages();
 	}
 }
-stageManager.createStages = function(callback, og)
+stageManager.stageInQueue = function(stage)
 {
-	stageMakerActive = true
-	if(stageStack.length > 0)
+	if (stageStack.length > 0)
 	{
-		var stack = stageStack.pop();
-		Mojo.Controller.appController.createStageWithCallback({name: stack.stage.stageName, lightweight: true}, function(controller){
-					controller.pushScene('channel-chat', {name:stack.stage, "creationCB": function(scene){
-						stageManager.createStages(null, og);
-					}});
-		});
-	}
-	else
-	{
-		stageMakerActive = false;
-		if(og)
+		for (var s = 0; s < stageStack.length; s++)
 		{
-			og(null);
+			if (stageStack[s].stage == stage) return true;
 		}
 	}
+	return false;
 }
+stageManager.createStages = function()
+{
+	try
+	{
+		stageMakerActive = true
+		if (stageMakerTimer) clearTimeout(stageMakerTimer);
+		if (stageStack.length > 0)
+		{
+			var stack = stageStack.shift();
+			Mojo.Controller.appController.createStageWithCallback({name: stack.stage, lightweight: true}, function(c)
+			{
+				if (stack.callback) stack.callback(c);
+				Mojo.Event.listen(c.document, Mojo.Event.stageActivate, function(){ if (stageMakerActive) stageManager.createStages(); });
+			});
+			stageMakerTimer = setTimeout(function() { if (stageMakerActive) stageManager.createStages(); }, 3 * 1000);
+		}
+		else
+		{
+			stageMakerActive = false;
+		}
+	}
+	catch (e)
+	{
+		Mojo.Log.logException(e, "stageManager#createStages");
+		if (stageMakerActive) stageManager.createStages();
+	}
+}
+

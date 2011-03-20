@@ -202,7 +202,6 @@ AppAssistant.prototype.cleanup = function()
 	//this.controller.closeAllStages();
 }
 
-
 AppAssistant.prototype.getStages = function()
 {
 	var stages = [];

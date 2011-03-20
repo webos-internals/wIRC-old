@@ -96,7 +96,7 @@ ChannelListAssistant.prototype.setup = function()
 
 ChannelListAssistant.prototype.activate = function(event)
 {
-	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout, setSubtleLightbar: prefs.get().dimScreen});
+	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout});
 }
 
 ChannelListAssistant.prototype.loadChannels = function(channels)

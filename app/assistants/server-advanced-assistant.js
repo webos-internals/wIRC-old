@@ -292,6 +292,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 				enterSubmits: false,
 				modelProperty: 'value',
 				changeOnKeyPress: true,
+				textCase: Mojo.Widget.steModeLowerCase,
 			},
 			this.onConnectModel
 		);				
@@ -315,6 +316,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 				enterSubmits: false,
 				modelProperty: 'value',
 				changeOnKeyPress: true,
+				textCase: Mojo.Widget.steModeLowerCase,
 			},
 			this.favoriteChannelsModel
 		);

@@ -428,13 +428,16 @@ ircChannel.prototype.openStage = function()
 		}
 		else
 		{
-			if(Mojo.Environment.DeviceInfo.platformVersionMajor == 1)
+			if (Mojo.Environment.DeviceInfo.platformVersionMajor == 1)
 			{
 				Mojo.Controller.appController.createStageWithCallback({name: this.stageName, lightweight: true}, this.openStageCallback.bind(this));
 			}
 			else
 			{
-				stageManager.openStage(this, function(){});
+				if (!stageManager.stageInQueue(this.stageName))
+				{
+					stageManager.openStage(this.stageName, this.openStageCallback.bind(this));
+				}
 			}
 		}
 	}
