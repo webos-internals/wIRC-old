@@ -3,7 +3,7 @@
 	"id" : "org.webosinternals.wirc",
 	"version" : "0.3.8",
 	"vendor" : "webOS-Internals",
-	"vendor_email" : "support@webos-internals.org",
+	"vendor_email" : "wirc-support@webos-internals.org",
 	"vendor_url" : "http://www.webos-internals.org/wiki/Application:WIRC",
 	"type" : "web",
 	"plug-ins" : true,

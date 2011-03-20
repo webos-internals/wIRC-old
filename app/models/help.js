@@ -107,7 +107,7 @@ helpData.lookup =
 	'serverUser':			{ title: 'User',					data: 'Optional. Enter a username for your server if it supports or requires it.'},
 	'serverPassword':		{ title: 'Password',				data: 'Optional. Enter a password for your server if it supports or requires it.'},
 	'autoConnect':			{ title: 'Auto-Connect',			data: 'When enabled, wIRC will connect to this server automatically when you start the app.'},
-	//'proxyNetwork':			{ title: 'Proxy Network',			data: 'Optional. '},
+	'proxyNetwork':			{ title: 'Proxy Network',			data: 'Optional. This field is appended to the username:password string, only useful to BIP users.'},
 	'dontPartOnClose':		{ title: 'Don\'t Part on Close',	data: 'Enable this if you want wIRC to send a part command when you close a channel.'},
 	'autoOpenFavs':			{ title: 'Auto Open Favorites',		data: 'When enabled, only channels listed in the favorites list will be opened when reconnecting to an IRC bouncer like BIP.'},
 	//'autoIdentify':			{ title: '',						data: ''},

@@ -77,7 +77,7 @@ HelpAssistant.prototype.setup = function()
 	});
 	this.supportModel.items.push({
 		text:'Send Email',
-		address:'rmh3093+wirc@gmail.com',
+		address:'wirc-support@webos-internals.org',
 		subject:'wIRC Support',
 		Class:'img_email',
 		type:'email'
