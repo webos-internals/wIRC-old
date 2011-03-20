@@ -1,7 +1,7 @@
 function ircServers()
 {
 	
-	this.cmSubscription =	connectionmanager.watchStatus(this.cmHandler.bindAsEventListener(this));
+	this.cmSubscription =	connectionManager.watchStatus(this.cmHandler.bindAsEventListener(this));
 	
 	this.cookie =			new Mojo.Model.Cookie('servers');
 	this.cookieData =		false;

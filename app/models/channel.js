@@ -434,7 +434,7 @@ ircChannel.prototype.openStage = function()
 			}
 			else
 			{
-				connectionmanager.openStage(this,function(){})
+				stageManager.openStage(this,function(){})
 			}
 		}
 	}
