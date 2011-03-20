@@ -698,13 +698,22 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 		else if (servers.servers[id].state == servers.servers[id].STATE_CONNECTING)
 		{
 			if (servers.servers[id].nextNick < prefs.get().nicknames.length)
-			{
+			{	// first try nicks in the list
 				servers.servers[id].newMessage('debug', false, 'Trying next nick [' + servers.servers[id].nextNick + '] - ' + prefs.get().nicknames[servers.servers[id].nextNick]);
 				servers.servers[id].setNick.bind(servers.servers[id]).defer(prefs.get().nicknames[servers.servers[id].nextNick]);
 				servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
 			}
+			else if (servers.servers[id].nextNick < prefs.get().nicknames.length + 3)
+			{	// second, try adding _'s to the default nick
+				var tryNextNick = servers.servers[id].defaultNick ? servers.servers[id].defaultNick : prefs.get().nicknames[0];
+				if ((tryNextNick.length + ((servers.servers[id].nextNick + 1) - prefs.get().nicknames.length)) >= 16) tryNextNick = tryNextNick.substr(0, (16 - ((servers.servers[id].nextNick + 1) - prefs.get().nicknames.length)));
+				for (var n = 0; n <= (servers.servers[id].nextNick - prefs.get().nicknames.length); n++) tryNextNick += '_';
+				servers.servers[id].newMessage('debug', false, 'Trying generated nick [' + servers.servers[id].nextNick + '] - ' + tryNextNick);
+				servers.servers[id].setNick.bind(servers.servers[id]).defer(tryNextNick);
+				servers.servers[id].nextNick = servers.servers[id].nextNick + 1;
+			}
 			else
-			{
+			{	// third? give up!
 				servers.servers[id].newMessage('debug', false, 'No more nicks to try!');
 				servers.servers[id].disconnect.bind(servers.servers[id]).defer();
 			}

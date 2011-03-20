@@ -206,8 +206,20 @@ ServerInfoAssistant.prototype.updateDefaultNickChoices = function(skipUpdate)
 		this.nickSelectModel.choices.push({label: prefs.get().nicknames[n], value: prefs.get().nicknames[n]});
 		if (prefs.get().nicknames[n] == this.nickSelectModel.value) valFound = true;
 	}
+	if (!valFound) 
+	{
+		if (this.nickSelectModel.value == '_new')
+		{
+			this.nickSelectModel.value = prefs.get().nicknames[0];
+			this.server.defaultNick = this.nickSelectModel.value;
+		}
+		else
+		{
+			this.nickSelectModel.choices.unshift({label: this.nickSelectModel.value, value: this.nickSelectModel.value});
+		}
+	}
+	
 	this.nickSelectModel.choices.push({label: 'New...', value: '_new'});
-	if (!valFound) this.nickSelectModel.value = prefs.get().nicknames[0];
 	
 	if (!skipUpdate)
 	{
