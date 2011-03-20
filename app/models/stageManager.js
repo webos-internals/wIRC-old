@@ -18,7 +18,7 @@ stageManager.openStage = function(stage, callback)
 		})
 	}
 }
-stageManager.createStages=function(callback,og)
+stageManager.createStages = function(callback, og)
 {
 	stageMakerActive = true
 	if(stageStack.length > 0)

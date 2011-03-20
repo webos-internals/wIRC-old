@@ -18,7 +18,8 @@ function StartupAssistant(changelog)
 				'Added help toggle/overlay to preferences and server setup',
 				'Added a list of available commands to help scene',
 				'Fixed color codes in received messages on 2.x',
-				'Fixed bug with mentions and alert word highlighting'
+				'Fixed bug with mentions and alert word highlighting',
+				'Fixed previous/next command key commands in server-status'
 			]
 		},
 		{
