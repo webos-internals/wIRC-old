@@ -1,6 +1,20 @@
 function HelpDataAssistant(data)
 {
 	this.data = data;
+	
+	// setup menu
+	this.menuModel =
+	{
+		visible: true,
+		items:
+		[
+			Mojo.Menu.editItem,
+			{
+				label: "Help",
+				command: 'do-help'
+			}
+		]
+	};
 };
 
 HelpDataAssistant.prototype.setup = function()
@@ -15,7 +29,7 @@ HelpDataAssistant.prototype.setup = function()
 		this.controller.get('data').innerHTML = this.data.func();
 	}
 	
-	this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, {visible: false});
+	this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 	
 };
 HelpDataAssistant.prototype.activate = function(event)
