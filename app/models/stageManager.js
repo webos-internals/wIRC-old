@@ -32,6 +32,7 @@ stageManager.createStages = function(callback, og)
 	}
 	else
 	{
+		stageMakerActive = false;
 		if(og)
 		{
 			og(null);
