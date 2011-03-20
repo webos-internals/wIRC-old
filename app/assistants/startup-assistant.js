@@ -14,9 +14,9 @@ function StartupAssistant(changelog)
 			version: '0.3.8',
 			log:
 			[
-				'Channel cards stack together during auto-join on 2.x (Thanks to halfhalo)',
 				'Added help toggle/overlay to preferences and server setup',
 				'Added a list of available commands to help scene',
+				'Channel cards stack together during auto-join on 2.x (Thanks to halfhalo)',
 				'Fixed color codes in received messages on 2.x',
 				'Fixed bug with mentions and alert word highlighting',
 				'Fixed previous/next key commands in server-status'

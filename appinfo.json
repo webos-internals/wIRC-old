@@ -2,7 +2,7 @@
 	"title" : "wIRC",
 	"id" : "org.webosinternals.wirc",
 	"version" : "0.3.8",
-	"vendor" : "webOS-Internals",
+	"vendor" : "WebOS Internals",
 	"vendor_email" : "wirc-support@webos-internals.org",
 	"vendor_url" : "http://www.webos-internals.org/wiki/Application:WIRC",
 	"type" : "web",
