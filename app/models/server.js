@@ -396,7 +396,7 @@ ircServer.prototype.getStatusMessages = function(start)
 }
 
 ircServer.prototype.connect = function()
-{	
+{
 	try
 	{
 		var timeout = prefs.get().connectionTimeout;

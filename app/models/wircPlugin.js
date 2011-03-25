@@ -684,7 +684,17 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 				msg = params[2];
 			break;
 	}
-	if (msg) msgTarget.newMessage(msgType, nick, msg, dontUpdate);
+	if (msg) 
+	{
+		if (msgTarget)
+		{
+			msgTarget.newMessage(msgType, nick, msg, dontUpdate);
+		}
+		else
+		{
+			Mojo.Log.error('NUMERIC EVENT:', evt, ' - ', msg);
+		}
+	}
 	
 	if (evt == 433)
 	{
