@@ -129,6 +129,7 @@ void irc_destroy_session (irc_session_t * session)
 	free (session);
 }
 
+#ifdef USE_SSL
 /**
  * This info right now is getting dumped to syslog but might be something that
  * should get piped back into wIRC at some point.
@@ -160,6 +161,7 @@ void apps_ssl_info_callback(SSL *s, int where, int ret) {
 		}
 	}
 }
+#endif
 
 int irc_connect (irc_session_t * session,
 		const char * server,
@@ -241,6 +243,7 @@ int irc_connect (irc_session_t * session,
 		return 1;
 	}
 
+#ifdef USE_SSL
 	// do encryption shit here
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL || session->encryption == LIBIRC_ENCRYPTION_TLS) {
 		SSL_load_error_strings();
@@ -255,6 +258,7 @@ int irc_connect (irc_session_t * session,
 		SSL_set_fd(session->sslHandle, (int)session->sock);
 		if (SSL_connect(session->sslHandle) <= 0) return 1;
 	}
+#endif
 
 	socket_make_nonblocking (&session->sock);
 
@@ -817,10 +821,12 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 		case LIBIRC_ENCRYPTION_NONE:
 			length = socket_recv (&session->sock, session->incoming_buf + session->incoming_offset, amount);
 			break;
+#ifdef USE_SSL
 		case LIBIRC_ENCRYPTION_SSL:
 			length = ssl_socket_recv (session->sslHandle, session->incoming_buf + session->incoming_offset, amount);
 			break;
 		}
+#endif
 
 		if ( length <= 0 )
 		{
@@ -862,9 +868,11 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 		case LIBIRC_ENCRYPTION_NONE:
 			length = socket_send (&session->sock, session->outgoing_buf, session->outgoing_offset);
 			break;
+#ifdef USE_SSL
 		case LIBIRC_ENCRYPTION_SSL:
 			length = ssl_socket_send (session->sslHandle, session->outgoing_buf, session->outgoing_offset);
 			break;
+#endif
 		}
 
 		if ( length <= 0 )
@@ -1131,6 +1139,7 @@ void irc_disconnect (irc_session_t * session)
 	if ( session->sock >= 0 )
 		socket_close (&session->sock);
 
+#ifdef USE_SSL
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
 		if (session->sslHandle) {
 			SSL_shutdown (session->sslHandle);
@@ -1139,6 +1148,7 @@ void irc_disconnect (irc_session_t * session)
 		if (session->sslContext)
 			SSL_CTX_free(session->sslContext);
 	}
+#endif
 
 	session->sock = -1;
 	session->state = LIBIRC_STATE_INIT;

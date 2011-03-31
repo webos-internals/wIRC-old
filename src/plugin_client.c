@@ -387,6 +387,15 @@ PDL_bool client_get_external_ip(PDL_JSParameters *params) {
 
 }
 
+PDL_bool client_has_ssl(PDL_JSParameters *params) {
+#ifdef USE_SSL
+	PDL_JSReply(params, PDL_TRUE);
+#else
+	PDL_JSReply(params, PDL_FALSE);
+#endif
+	return PDL_TRUE;
+}
+
 PDL_bool client_list_directory(PDL_JSParameters *params) {
 
 	PDL_bool ret = PDL_TRUE;
@@ -477,6 +486,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("get_external_ip", client_get_external_ip);
 	ret += PDL_RegisterJSHandler("set_autoping_interval", client_set_autoping_interval);
 	ret += PDL_RegisterJSHandler("set_autoping", client_set_autoping);
+	ret += PDL_RegisterJSHandler("has_ssl", client_has_ssl);
 
 	return ret;
 

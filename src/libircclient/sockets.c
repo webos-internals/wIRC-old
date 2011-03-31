@@ -22,8 +22,10 @@
 #include <netinet/in.h>
 #include <fcntl.h>
 
+#ifdef USE_SSL
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#endif
 
 #include <syslog.h>
 
@@ -111,6 +113,7 @@ static int socket_recv (socket_t * sock, void * buf, size_t len)
 	return length;
 }
 
+#ifdef USE_SSL
 static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
 {
 	int length, err;
@@ -130,6 +133,7 @@ static int ssl_socket_recv (SSL * sslHandle, void * buf, size_t len)
 
 	return length;
 }
+#endif
 
 static int socket_send (socket_t * sock, const void *buf, size_t len)
 {
@@ -142,6 +146,7 @@ static int socket_send (socket_t * sock, const void *buf, size_t len)
 	return length;
 }
 
+#ifdef USE_SSL
 static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
 {
 	int length, err;
@@ -161,3 +166,4 @@ static int ssl_socket_send (SSL * sslHandle, const void *buf, size_t len)
 
 	return length;
 }
+#endif
