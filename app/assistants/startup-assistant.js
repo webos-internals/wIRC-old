@@ -11,6 +11,13 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.9',
+			log:
+			[
+				'Only use encryption if plugin say SSL is available',
+			]
+		},
+		{
 			version: '0.3.8',
 			log:
 			[
