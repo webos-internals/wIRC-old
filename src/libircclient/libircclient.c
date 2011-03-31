@@ -129,7 +129,7 @@ void irc_destroy_session (irc_session_t * session)
 	free (session);
 }
 
-#ifdef USE_SSL
+#if defined (USE_SSL)
 /**
  * This info right now is getting dumped to syslog but might be something that
  * should get piped back into wIRC at some point.
@@ -243,7 +243,7 @@ int irc_connect (irc_session_t * session,
 		return 1;
 	}
 
-#ifdef USE_SSL
+#if defined (USE_SSL)
 	// do encryption shit here
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL || session->encryption == LIBIRC_ENCRYPTION_TLS) {
 		SSL_load_error_strings();
@@ -821,7 +821,7 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 		case LIBIRC_ENCRYPTION_NONE:
 			length = socket_recv (&session->sock, session->incoming_buf + session->incoming_offset, amount);
 			break;
-#ifdef USE_SSL
+#if defined (USE_SSL)
 		case LIBIRC_ENCRYPTION_SSL:
 			length = ssl_socket_recv (session->sslHandle, session->incoming_buf + session->incoming_offset, amount);
 			break;
@@ -869,7 +869,7 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 		case LIBIRC_ENCRYPTION_NONE:
 			length = socket_send (&session->sock, session->outgoing_buf, session->outgoing_offset);
 			break;
-#ifdef USE_SSL
+#if defined (USE_SSL)
 		case LIBIRC_ENCRYPTION_SSL:
 			length = ssl_socket_send (session->sslHandle, session->outgoing_buf, session->outgoing_offset);
 			break;
@@ -1140,7 +1140,7 @@ void irc_disconnect (irc_session_t * session)
 	if ( session->sock >= 0 )
 		socket_close (&session->sock);
 
-#ifdef USE_SSL
+#if defined (USE_SSL)
 	if (session->encryption == LIBIRC_ENCRYPTION_SSL) {
 		if (session->sslHandle) {
 			SSL_shutdown (session->sslHandle);
