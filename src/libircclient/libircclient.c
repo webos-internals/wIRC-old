@@ -825,8 +825,9 @@ int irc_process_select_descriptors (irc_session_t * session, fd_set *in_set, fd_
 		case LIBIRC_ENCRYPTION_SSL:
 			length = ssl_socket_recv (session->sslHandle, session->incoming_buf + session->incoming_offset, amount);
 			break;
-		}
 #endif
+		}
+
 
 		if ( length <= 0 )
 		{
