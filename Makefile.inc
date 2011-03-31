@@ -12,6 +12,11 @@ PLUGIN_DIR		:= 	src
 
 APPINFO			:=	appinfo.json
 
+ifeq ($(SSL),1)
+	USESSL		:=	-DUSE_SSL
+	LIBSSL		:=	-lssl
+endif
+
 ifeq ($(DEVICE),pre)
 	MARCH_TUNE	:=	-march=armv7-a -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp
 	PARCH		:=	armv7

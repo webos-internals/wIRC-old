@@ -4,7 +4,7 @@ IRCLIB		:=	libircclient
 
 GITHASH		:=	"\"$(shell git log -1 --pretty=format:"%h")\""
 
-CFLAGS		:=	-g $(MARCH_TUNE) -DGITHASH=${GITHASH} -DUSE_SSL=${USE_SSL}
+CFLAGS		:=	-g $(MARCH_TUNE) -DGITHASH=${GITHASH} $(USESSL)
 
 INCLUDES	:=	-I${ROOT}/include \
 			-I${ROOT}${prefix}/include \
@@ -14,11 +14,7 @@ INCLUDES	:=	-I${ROOT}/include \
 								
 LIBDIRS		:=	-L. -Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined -Wl,-rpath,.
 
-ifneq (${USE_SSL},)	
-LIBS		:=  -lpdl -lpthread -lm -lssl
-else
-LIBS		:=  -lpdl -lpthread -lm
-endif
+LIBS		:=	-lpdl -lpthread -lm $(LIBSSL)
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 				ping.o plugin_client.o plugin_events.o plugin.o \
