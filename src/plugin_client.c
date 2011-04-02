@@ -389,9 +389,9 @@ PDL_bool client_get_external_ip(PDL_JSParameters *params) {
 
 PDL_bool client_has_ssl(PDL_JSParameters *params) {
 #ifdef USE_SSL
-	PDL_JSReply(params, 1);
+	PDL_JSReply(params, "1");
 #else
-	PDL_JSReply(params, 0);
+	PDL_JSReply(params, "0");
 #endif
 	return PDL_TRUE;
 }
