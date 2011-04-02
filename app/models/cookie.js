@@ -47,6 +47,7 @@ preferenceCookie.prototype.get = function(reload)
 				// Messages Group
 				messagesStyle:			'lefta',
 				messageSplit:			'25',
+				fontStyle:				'prelude',
 				fontSize:				'15',
 				timeStamp:				5,
 				timeStampStyle:			'default',

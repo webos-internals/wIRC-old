@@ -308,6 +308,20 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		);
 		this.controller.setupWidget
 		(
+			'fontStyle',
+			{
+				label: 'Font Style',
+				choices:
+				[
+					{label:'Prelude',	value:'prelude'},
+					{label:'Monospace',	value:'monospace'}
+				],
+				modelProperty: 'fontStyle'
+			},
+			this.prefs
+		);
+		this.controller.setupWidget
+		(
 			'fontSize',
 			{
 				minValue: 0,
@@ -375,11 +389,13 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		this.controller.listen('senderColoring',		Mojo.Event.propertyChange, this.senderColoringHandler);
 		this.senderColoringChanged();
 		
+		this.fontStyleChanged();
 		this.messageStyleChanged();
 		this.fontSizeChanged({value: this.sliderGetSlideValue(9, 22, this.prefs.fontSize)});
 		
 		this.controller.listen('messagesStyle',		Mojo.Event.propertyChange, this.messageStyleChanged.bindAsEventListener(this));
 		this.controller.listen('messageSplit',		Mojo.Event.propertyChange, this.listChangedHandler);
+		this.controller.listen('fontStyle',			Mojo.Event.propertyChange, this.fontStyleChanged.bindAsEventListener(this));
 		this.controller.listen('fontSize',			Mojo.Event.propertyChange, this.fontSizeChanged.bindAsEventListener(this));
 		this.controller.listen('timeStamp',			Mojo.Event.propertyChange, this.listChangedHandler);
 		this.controller.listen('timeStampStyle',	Mojo.Event.propertyChange, this.listChangedHandler);
@@ -689,6 +705,19 @@ PreferencesMessagesAssistant.prototype.messageStyleChanged = function(event)
 		this.controller.get('messageFixedSplit').style.display = '';
 	}
 }
+PreferencesMessagesAssistant.prototype.fontStyleChanged = function(event)
+{
+	if (event) 
+	{
+		this.listChanged();
+		var tmp = prefs.get(true);
+		
+		// set theme on all other open stages
+		Mojo.Controller.getAppController().assistant.updateTheme(prefs.get().theme);
+	}
+	this.controller.get('fontSizeTest').style.fontFamily = this.prefs['fontStyle'];
+	
+}
 PreferencesMessagesAssistant.prototype.highlightStyleChanged = function(event)
 {
 	if (event) 
@@ -722,6 +751,10 @@ PreferencesMessagesAssistant.prototype.fontSizeChanged = function(event)
 	
 	this.prefs['fontSize'] = value;
 	this.sliderChanged();
+	var tmp = prefs.get(true);
+		
+	// set theme on all other open stages
+	Mojo.Controller.getAppController().assistant.updateTheme(prefs.get().theme);
 }
 
 PreferencesMessagesAssistant.prototype.pageSwitch = function(page)
@@ -767,6 +800,9 @@ PreferencesMessagesAssistant.prototype.deactivate = function(event)
 {
 	// reload global storage of preferences when we get rid of this stage
 	var tmp = prefs.get(true);
+	
+	// set theme on all other open stages
+	Mojo.Controller.getAppController().assistant.updateTheme(prefs.get().theme);
 }
 
 PreferencesMessagesAssistant.prototype.cleanup = function(event)

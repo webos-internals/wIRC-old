@@ -148,7 +148,7 @@ ServerStatusAssistant.prototype.setup = function()
 
 ServerStatusAssistant.prototype.loadPrefs = function(initial)
 {
-	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
+	this.messageListElement.className = prefs.get().messagesStyle + ' ' + prefs.get().fontStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 ServerStatusAssistant.prototype.activate = function(event)
 {
@@ -663,6 +663,7 @@ ServerStatusAssistant.prototype.visibleWindow = function(event)
 	{
         this.isVisible = true;
     }
+	this.loadPrefs();
 	this.updateList();
     this.updateLagMeter();
 	this.updateAppMenu();

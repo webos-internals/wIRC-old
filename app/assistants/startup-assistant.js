@@ -11,6 +11,14 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.10',
+			log:
+			[
+				'Fix Plugin',
+				'Added Font Style preference'
+			]
+		},
+		{
 			version: '0.3.9',
 			log:
 			[

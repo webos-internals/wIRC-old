@@ -1091,6 +1091,10 @@ body.palm-dark .inputFooter .sendButton.selected {
 /*
  * Message Styles - Scene Inspecific
  */
+.monospace .message-row
+{
+	font-family: monospace;
+}
 .lefta .message-row
 {
 	min-height: 8px;

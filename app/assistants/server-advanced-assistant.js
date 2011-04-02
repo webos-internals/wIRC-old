@@ -77,6 +77,7 @@ ServerAdvancedAssistant.prototype.setup = function()
 		this.addressElement =			this.controller.get('address');
 		this.portElement =				this.controller.get('port');
 		this.encryptionElement =		this.controller.get('encryption');
+		this.encryptionContainer =		this.controller.get('encryptionContainer');
 		this.serverUserElement =		this.controller.get('serverUser');
 		this.networkElement =			this.controller.get('proxyNetwork');
 		this.serverPasswordElement =	this.controller.get('serverPassword');
@@ -139,21 +140,26 @@ ServerAdvancedAssistant.prototype.setup = function()
 			},
 			this.server
 		);
-		this.controller.setupWidget
-		(
-			'encryption',
-			{
-				label: 'Encryption',
-				choices:
-				[
-					{label:'None',	value:0},
-					{label:'SSL',	value:1},
-					{label:'TLS',	value:2}
-				],
-				modelProperty: 'encryption'
-			},
-			this.server
-		);
+		if (plugin.has_ssl() == '1')
+		{
+			this.encryptionContainer.show();
+			this.controller.setupWidget
+			(
+				'encryption',
+				{
+					label: 'Encryption',
+					choices:
+					[
+						{label:'None',	value:0},
+						{label:'SSL',	value:1},
+						{label:'TLS',	value:2}
+					],
+					modelProperty: 'encryption'
+				},
+				this.server
+			);
+			Mojo.Event.listen(this.encryptionElement,		Mojo.Event.propertyChange,	this.textChanged);
+		}
 		this.controller.setupWidget
 		(
 			'serverUser',
@@ -231,7 +237,6 @@ ServerAdvancedAssistant.prototype.setup = function()
 		Mojo.Event.listen(this.aliasElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.addressElement,			Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.portElement,				Mojo.Event.propertyChange,	this.textChanged);
-		Mojo.Event.listen(this.encryptionElement,		Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.serverUserElement,		Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.serverPasswordElement,	Mojo.Event.propertyChange,	this.textChanged);
 		Mojo.Event.listen(this.autoConnectElement,		Mojo.Event.propertyChange,	this.toggleChanged);

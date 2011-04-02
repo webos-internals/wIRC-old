@@ -134,7 +134,7 @@ QueryChatAssistant.prototype.loadPrefs = function(initial)
 	this.messageSplit = parseInt(prefs.get().messageSplit);
 	this.messagesStyle = prefs.get().messagesStyle;
 	this.fontSize = prefs.get().fontSize;
-	this.messageListElement.className = prefs.get().messagesStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
+	this.messageListElement.className = prefs.get().messagesStyle + ' ' + prefs.get().fontStyle + ' fixed-' + prefs.get().messageSplit + ' font-' + prefs.get().fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 QueryChatAssistant.prototype.activate = function(event)
 {
@@ -486,7 +486,7 @@ QueryChatAssistant.prototype.draggingHandler = function(event)
 	{
 		this.messageSplit = 50;
 	}
-	this.messageListElement.className = this.messagesStyle + ' fixed-' + this.messageSplit + ' font-' + this.fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
+	this.messageListElement.className = this.messagesStyle + ' ' + this.fontStyle + ' fixed-' + this.messageSplit + ' font-' + this.fontSize + (prefs.get().timeStamp == 0 ? ' hide-divider' : '');
 }
 QueryChatAssistant.prototype.visibleWindow = function(event)
 {
@@ -494,6 +494,7 @@ QueryChatAssistant.prototype.visibleWindow = function(event)
 	{
 		this.isVisible = true;
 	}
+	this.loadPrefs();
 	this.query.closeDash();
 	this.updateLagMeter();
 }

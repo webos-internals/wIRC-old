@@ -40,6 +40,7 @@ helpData.lookup =
 	'autoReplace':			{ title: 'Auto Correct',			data: 'When enabled, input fields will use the Auto Correct feature of webOS.'},
 	'messagesStyle':		{ title: 'Message Style',			data: 'This allows you to choose between a Left Aligned and Fixed Columns display options for messages.'},
 	'messageSplit':			{ title: 'Fixed Split',				data: 'The default split (of horizontal screen space.)<br /><br />You can also change this in-chat by dragging the split side to side in any chat scene.'},
+	'fontStyle':			{ title: 'Font Stype',				data: 'Changes what type of font to use for messages. Prelude is the default webOS font. Monospace is fixed-width.'},
 	'fontSize':				{ title: 'Font Size',				data: 'Select the message font size.'},
 	'senderColoring':		{ title: 'Sender Coloring',			data: 'Select weather or not nicknames in chat of others should be randomly colored, or a fixed color selected below.'},
 	'timeStamp':			{ title: 'Timestamp',				data: 'This set show frequently timestamps are inserted between chat messages.'},
