@@ -22,6 +22,8 @@ OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 
 .PHONY		:	clean clobber clobber-$(IRCLIB) install package.properties
 
+all: $(PLUGIN) package.properties
+
 $(PLUGIN): libpdl/libpdl.so $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) -o $(PLUGIN)
 
