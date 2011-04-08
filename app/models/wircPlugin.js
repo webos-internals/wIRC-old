@@ -53,7 +53,7 @@ wircPluginModel.prototype.createElement = function(document)
     
     var param1 = document.createElement("param");
     param1.name = "appid";
-    param1.value = "org.webosinternals.wirc";
+    param1.value = Mojo.Controller.appInfo.id;
     
     var param2 = document.createElement("param");
     param2.name = "exe";
