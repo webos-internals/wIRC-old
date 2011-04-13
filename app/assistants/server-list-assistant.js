@@ -9,6 +9,7 @@ function ServerListAssistant()
 		{weight:  8, text: 'Whistle while you wIRC'},
 		{weight:  8, text: 'Now you can IRC from the crapper'},
 		{weight:  8, text: 'Now you can IRC from the bar'},
+		{weight:  8, text: 'Damn you autocorrect!', title: 'Wire'},
 		{weight:  2, text: 'In Windows on Cygwin'},
 		{weight:  2, text: 'You can, but can\'t'},
 		{weight:  2, text: 'Random Taglines Are Awesome'}
@@ -79,6 +80,7 @@ ServerListAssistant.prototype.setup = function()
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
 		this.versionElement =		this.controller.get('version');
+		this.appTitleElement =		this.controller.get('appTitle');
 		this.subTitleElement =		this.controller.get('subTitle');
 		this.noServersElement =		this.controller.get('noServers');
 		this.serverListElement =	this.controller.get('serverList');
@@ -258,6 +260,7 @@ ServerListAssistant.prototype.getRandomSubTitle = function()
 	{
 		if (rand <= this.randomSub[r].weight)
 		{
+			if (this.randomSub[r].title) this.appTitleElement.innerHTML = this.randomSub[r].title;
 			return this.randomSub[r].text;
 		}
 		else
