@@ -468,7 +468,7 @@ wircPluginModel.prototype.event_ctcp_req_handler = function(id, event, origin, p
 		if (tmpReply.length>0) reply = 'VERSION ' + tmpReply;
 		break;
 	case 'SOURCE':		// Where to obtain a copy of a client.
-		reply = 'SOURCE http://git.webos-internals.org/trac/wIRC';
+		reply = 'SOURCE http://redmine.webos-internals.org/projects/wirc/repository';
 		break;
 	case 'USERINFO':	// A string set by the user (never the client coder)
 		tmpReply = replaceTokens(prefs.get().ctcpReplyUserinfo);
