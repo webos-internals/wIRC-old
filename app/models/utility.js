@@ -136,6 +136,8 @@ function formatMilliSeconds(milliseconds){
         toReturn += mins + 'm ';
     if (milliseconds > 0) 
         toReturn += seconds + '.' + milliseconds + 's ';
+    else if (seconds > 0) 
+        toReturn += seconds + 's ';
     
     if (toReturn == '') {
         toReturn = 'instant';
