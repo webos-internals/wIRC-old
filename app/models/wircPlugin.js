@@ -497,8 +497,19 @@ wircPluginModel.prototype.event_ctcp_rep_handler = function(id, event, origin, p
 	var params = wircPluginModel.jsonParse(params_s);
 	var tmpNick = servers.servers[id].getNick(origin);
 	var tmpMatch = twoValRegExp.exec(params[0]);
-	if (tmpMatch)
-		servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + tmpMatch[1] + ' reply from ' + tmpNick.name + ': ' + tmpMatch[2], false);
+	if (tmpMatch) {
+		switch (tmpMatch[1]) {
+		case 'PING':
+			var sent = servers.servers[id].pings[tmpNick.name].getTime();
+			var date = new Date();
+			var resp = date.getTime();
+			servers.servers[id].getVisibleScene().newMessage('type3.5', false, 'Ping reply from ' + tmpNick.name + ': ' + formatMilliSeconds(resp - sent) + (tmpMatch[2] ? '- ' + tmpMatch[2] : ''));
+			break;
+		default:
+			servers.servers[id].newMessage('type3.5', false, 'Received ' + event + ' ' + tmpMatch[1] + ' reply from ' + tmpNick.name + ': ' + tmpMatch[2], false);
+			break;
+		}
+	}
 }
 
 /*

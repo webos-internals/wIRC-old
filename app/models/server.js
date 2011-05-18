@@ -33,6 +33,7 @@ function ircServer(params)
 	this.isTemporary =			params.isTemporary;
 	
 	this.autoPing =				false;
+	this.pings =				{};
 
 	this.lagHistory = 			[];
 	this.lag =					'lag-0';
@@ -399,6 +400,7 @@ ircServer.prototype.connect = function()
 {
 	try
 	{
+		this.pings = {};
 		var timeout = prefs.get().connectionTimeout;
 		if (timeout)
 			this.connectionTimeout = setTimeout(this.abortConnection.bind(this), 1000*timeout);
@@ -509,10 +511,12 @@ ircServer.prototype.ping = function(val)
 	if (tmpMatch) {
 		var tmpNick = this.getNick(tmpMatch[1]);
 		if (tmpNick) {
-			if (tmpMatch[2])
+			this.pings[tmpNick.name] = new Date();
+			if (tmpMatch[2]) {
 				plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpNick.name, 'PING '+ tmpMatch[2]);
-			else
+			} else {
 				plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpNick.name, 'PING');
+			}
 		}	
 	}
 }
@@ -1060,6 +1064,20 @@ ircServer.prototype.getVisibleScene = function()
 			return this.queries[q];
 	}
 	return this;
+}
+ircServer.prototype.newMessageAllScenes = function(type, nick, message, dontUpdate)
+{
+	for (var c = 0; c < this.channels.length; c++)
+	{
+		if (this.channels[c].chatAssistant)
+			this.channels[c].newMessage(type, nick, message);
+	}
+	for (var q = 0; q < this.queries.length; c++)
+	{
+		if (this.queries[q].chatAssistant)
+			this.queries[q].newMessage(type, nick, message);
+	}
+	this.newMessage(type, nick, message, dontUpdate);
 }
 
 ircServer.prototype.getListObject = function()

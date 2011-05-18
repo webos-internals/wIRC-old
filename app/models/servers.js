@@ -30,7 +30,7 @@ ircServers.prototype.cmHandler = function(payload)
 		if (!connectionInfo.isInternetConnectionAvailable)
 		{
 			if (this.servers[s].isConnected())
-				this.servers[s].disrupt();	
+				this.servers[s].disrupt();
 		}
 		else
 		{

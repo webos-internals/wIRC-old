@@ -15,7 +15,8 @@ function StartupAssistant(changelog)
 			log:
 			[
 				'Fix command history, thanks dwc',
-				'Fix ctcp SOURCE response, thanks dwc'
+				'Fix ctcp SOURCE response, thanks dwc',
+				'ping response now displays the time it took to respond'
 			]
 		},
 		{

@@ -112,6 +112,37 @@ formatSeconds = function(seconds, longFormat){
     
     return toReturn;
 }
+function formatMilliSeconds(milliseconds){
+    var toReturn = '';
+    
+	var seconds = Math.floor(milliseconds / 1000);
+	milliseconds = "" + (milliseconds - (seconds * 1000));
+	while(milliseconds.length < 3) { milliseconds = '0' + milliseconds; }
+	var m = 2;
+	while(milliseconds.charAt(m) == "0") {
+		milliseconds = milliseconds.substr(0, m);
+		m--;
+	}
+	
+    var hours = Math.floor(seconds / 3600);
+    seconds -= (hours * 3600);
+    
+    var mins = Math.floor(seconds / 60);
+    seconds -= (mins * 60);
+    
+    if (hours > 0) 
+        toReturn += hours + 'h ';
+    if (mins > 0) 
+        toReturn += mins + 'm ';
+    if (milliseconds > 0) 
+        toReturn += seconds + '.' + milliseconds + 's ';
+    
+    if (toReturn == '') {
+        toReturn = 'instant';
+    }
+    
+    return toReturn;
+}
 
 colorize = function (message) {
 	var pageBack  = 'white';
