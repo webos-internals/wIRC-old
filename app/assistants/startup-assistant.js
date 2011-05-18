@@ -11,6 +11,14 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.13',
+			log:
+			[
+				'Fix command history, thanks dwc',
+				'Fix ctcp SOURCE response, thanks dwc'
+			]
+		},
+		{
 			version: '0.3.10',
 			log:
 			[

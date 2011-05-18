@@ -21,7 +21,7 @@ ircQuery.prototype.newCommand = function(message)
 		cmdHistoryIndex = 0;
 		cmdHistory.push(message);
 		if (cmdHistory.length>prefs.get().cmdHistoryMax)
-			cmdHistory.pop();
+			cmdHistory.shift();
 		
 		var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/);
 		var match = cmdRegExp.exec(message);
