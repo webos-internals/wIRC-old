@@ -4,7 +4,7 @@ IRCLIB		:=	libircclient
 
 GITHASH		:=	"\"$(shell git log -1 --pretty=format:"%h")\""
 
-CFLAGS		:=	-g $(MARCH_TUNE) -DGITHASH=${GITHASH} $(USESSL)
+CFLAGS		:=	$(MARCH_TUNE) -DGITHASH=${GITHASH} $(USESSL)
 
 INCLUDES	:=	-I${ROOT}/include \
 			-I${ROOT}${prefix}/include \
