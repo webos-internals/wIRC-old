@@ -5,6 +5,7 @@ function ServerListAssistant()
 	[
 		{weight: 30, text: 'The webOS IRC Client'},
 		{weight: 30, text: 'Mobile IRC Done Right'},
+		{weight: 10, text: 'Finally in the catalog!'},
 		{weight:  8, text: 'It\'s pronounced "werk"'},
 		{weight:  8, text: 'Whistle while you wIRC'},
 		{weight:  8, text: 'Now you can IRC from the crapper'},
