@@ -268,3 +268,14 @@ getColor = function(numeric)
 		default: return 'silver';
 	}
 }
+
+// set the body class for the current theme and device size
+setTheme = function(body)
+{
+	var deviceTheme = '';
+	if (Mojo.Environment.DeviceInfo.modelNameAscii == 'Pixi' ||
+		Mojo.Environment.DeviceInfo.modelNameAscii == 'Veer')
+		deviceTheme = ' small-device';
+	
+	body.className = prefs.get().theme + deviceTheme;
+}

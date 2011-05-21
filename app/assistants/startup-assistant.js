@@ -11,6 +11,13 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+			version: '0.3.14',
+			log:
+			[
+				'Positioning updates for Pixi/Veer resolution'
+			]
+		},
+		{
 			version: '0.3.13',
 			log:
 			[
@@ -270,7 +277,7 @@ function StartupAssistant(changelog)
 StartupAssistant.prototype.setup = function()
 {
 	// set theme
-	this.controller.document.body.className = prefs.get().theme;
+	setTheme(this.controller.document.body);
 	
     // get elements
     this.titleContainer = this.controller.get('title');

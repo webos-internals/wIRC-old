@@ -44,7 +44,7 @@ ServerStatusAssistant.prototype.setup = function()
 	try
 	{
 		// set theme
-		this.controller.document.body.className = prefs.get().theme;
+		setTheme(this.controller.document.body);
 		
 		this.updateAppMenu(true);
         this.controller.setupWidget(Mojo.Menu.appMenu, {

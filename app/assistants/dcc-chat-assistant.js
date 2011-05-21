@@ -50,7 +50,7 @@ DccChatAssistant.prototype.setup = function()
 	try
 	{
 		// set theme
-		this.controller.document.body.className = prefs.get().theme;
+		setTheme(this.controller.document.body);
 		
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		

@@ -36,7 +36,7 @@ function FilePickerAssistant(picker)
 FilePickerAssistant.prototype.setup = function()
 {
 	// set theme
-	this.controller.document.body.className = prefs.get().theme;
+	setTheme(this.controller.document.body);
 
 	this.picker.setAssistant(this);
 	

@@ -1,0 +1,21 @@
+/*
+ * Small Devices, Pixi/Veer
+ */
+
+
+body.small-device .server-list #noServers .icon,
+body.small-device .server-list #noPlugin .icon
+{
+	margin-top: 40px;
+}
+
+body.small-device .server-status #connectButton
+{
+	top: 150px;
+}
+
+body.small-device .channel-list #spinner
+{
+	margin-top: 70px;
+}
+
