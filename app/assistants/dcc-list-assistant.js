@@ -2,11 +2,6 @@ function DccListAssistant(server)
 {
 	this.server = server;
 	
-	if (this.server)
-		this.server.setDccListAssistant(this);
-	else
-		servers.setDccListAssistant(this);
-	
 	this.refreshTimer = false;
 	
 	this.listModel =
@@ -79,7 +74,8 @@ DccListAssistant.prototype.setup = function()
 
 DccListAssistant.prototype.refreshList = function()
 {
-	this.updateList();
+	if (this.controller)
+		this.updateList();
 	this.refreshTimer = setTimeout(this.refreshList.bind(this), 100);
 }
 
@@ -142,7 +138,16 @@ DccListAssistant.prototype.invisibleWindow = function(event){
 
 DccListAssistant.prototype.activate = function(event)
 {
-	this.updateList();
+    if (this.alreadyActivated) {
+		this.updateList();
+    }
+    else {
+		if (this.server)
+			this.server.setDccListAssistant(this);
+		else
+			servers.setDccListAssistant(this);
+    }
+    this.alreadyActivated = true;
 }
 
 DccListAssistant.prototype.handleCommand = function(event)
@@ -163,7 +168,7 @@ DccListAssistant.prototype.handleCommand = function(event)
 }
 DccListAssistant.prototype.cleanup = function(event) 
 {
-	Mojo.Event.stopListening(this.listNoRegionElement, Mojo.Event.listDelete, this.listTapHandler);
-	Mojo.Event.stopListening(this.listElement, Mojo.Event.listDelete, this.listTapHandler);
+	clearTimeout(this.refreshTimer);
+	Mojo.Event.stopListening(this.listElement, Mojo.Event.listTap, this.listTapHandler);
 }
 

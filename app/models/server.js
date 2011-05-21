@@ -1001,6 +1001,10 @@ ircServer.prototype.pickedDccSend = function(nick, value)
 
 ircServer.prototype.startDcc = function(params)
 {
+	Mojo.Log.error('=== START DCC ===');
+	Mojo.Log.error('nick:', params.nick.name);
+	Mojo.Log.error('address:', params.address);
+	
 	var newDcc = new ircDcc(params);
 	var idx = this.dccs.push(newDcc)-1;
 	this.dccs[idx].openRequest();
