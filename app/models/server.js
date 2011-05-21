@@ -177,7 +177,9 @@ ircServer.prototype.newCommand = function(message)
 									this.requestDccChat(tmpNick);
 								break;
 							case 'send':
-								var dcc_id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), tmpMatch[2]);
+								var tmpNick = this.getNick(tmpMatch[2]);
+								if (tmpNick)
+									this.pickDccSend(tmpNick);
 								break;
 							case 'list':
 								this.openDccList();
@@ -975,6 +977,26 @@ ircServer.prototype.requestDccChat = function(nick)
 	var newDcc = new ircDcc({'nick': nick, 'server': this});
 	var idx = this.dccs.push(newDcc)-1;
 	this.dccs[idx].id = plugin.dcc_chat(servers.getServerArrayKey(this.id), nick.name, prefs.get().useExternalIP, 0);
+}
+ircServer.prototype.pickDccSend = function(nick)
+{
+	var f = new filePicker({
+		type: 'file',
+		onSelect: this.pickedDccSend.bind(this, nick),
+		pop: false,
+		sceneTitle: 'Select A File to Send to ' + nick.name
+	});
+}
+ircServer.prototype.pickedDccSend = function(nick, value)
+{
+	if (nick && value)
+	{
+		//var newDcc = new ircDcc({'nick': nick, 'server': this});
+		//var idx = this.dccs.push(newDcc)-1;
+		//this.dccs[idx].id = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), nick.name, value);
+		var dccid = plugin.dcc_sendfile(servers.getServerArrayKey(this.id), nick.name, value);
+		Mojo.Log.error('dccid:', dccid);
+	}
 }
 
 ircServer.prototype.startDcc = function(params)

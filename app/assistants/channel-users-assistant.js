@@ -214,7 +214,7 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	popupList.push({label: event.item.name});
 	popupList.push({label: 'Private Message',	 command: 'pm'});
 	popupList.push({label: 'Whois',				 command: 'whois'});
-	popupList.push({label: 'Send File',			 command: 'dcc-send', disabled: true});
+	popupList.push({label: 'Send File',			 command: 'dcc-send'});
 	popupList.push({label: 'Invite',			 command: 'invite',   disabled: true});
 	
 	var operatorList = [];
@@ -303,6 +303,10 @@ ChannelUsersAssistant.prototype.listTapListHandler = function(choice, item, nick
 			break;
 		case 'ctcp-time':
 			this.channel.server.newCommand('/ctcp ' + item.name + ' TIME');
+			break;
+			
+		case 'dcc-send':
+			this.channel.server.newCommand('/dcc send ' + item.name);
 			break;
 	}
 }
