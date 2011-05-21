@@ -9,6 +9,7 @@
 	"plug-ins" : true,
 	"main" : "index.html",
 	"icon" : "icon.png",
+	"miniicon" : "icon-mini.png",
 	"noWindow" : true,
 	"noDeprecatedStyles" : true,
 	"keywords" : [ "IRC", "chat" ],

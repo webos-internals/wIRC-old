@@ -14,7 +14,8 @@ function StartupAssistant(changelog)
 			version: '0.3.14',
 			log:
 			[
-				'Positioning updates for Pixi/Veer resolution'
+				'Positioning updates for Pixi/Veer resolution',
+				'New colored notification tray icon'
 			]
 		},
 		{
