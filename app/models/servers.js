@@ -309,6 +309,11 @@ ircServers.prototype.deleteServer = function(id)
 		this.servers[key].disconnect();
 	}
 	this.servers[key] = false;
+	
+	if (this.listAssistant)
+	{
+		this.listAssistant.updateList();
+	}
 }
 ircServers.prototype.deleteTemporaryServer = function(id)
 {
