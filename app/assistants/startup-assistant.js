@@ -19,7 +19,9 @@ function StartupAssistant(changelog)
 				'Added amsg command',
 				'Added ame command',
 				'Added partall command',
-				'Fixed away command'
+				'Added invite command',
+				'Fixed away option in appmenu',
+				'Fixed kick option in user list'
 			]
 		},
 		{

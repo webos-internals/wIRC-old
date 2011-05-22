@@ -220,6 +220,18 @@ ircServer.prototype.newCommand = function(message)
 					this.ignore(val);
 					break;
 				
+				case 'invite':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch)
+					{
+						var tmpNick = this.getNick(tmpMatch[1]);
+						if (tmpNick && tmpMatch[2] == this.formatChannelName(tmpMatch[2]))
+						{
+							plugin.cmd_invite(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);	
+						}
+					}
+					break;
+				
 				case 'join':
 					var vals = val.split(" ");
 					this.joinChannel(vals[0],vals[1]);
@@ -878,7 +890,7 @@ ircServer.prototype.getNick = function(name)
 	try
 	{
 		if (name.substr(0, 1) == '#')
-			return false;	
+			return false;
 		var match = nickParser.exec(name);
 		if (match) 
 		{

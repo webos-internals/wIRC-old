@@ -280,6 +280,7 @@ aliasesModel.commands =
 	'getip',
 	'help',
 	'ignore',
+	'invite',
 	'join',
 	'kick',
 	'list',

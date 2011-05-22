@@ -215,7 +215,7 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	popupList.push({label: 'Private Message',	 command: 'pm'});
 	popupList.push({label: 'Whois',				 command: 'whois'});
 	popupList.push({label: 'Send File',			 command: 'dcc-send'});
-	popupList.push({label: 'Invite',			 command: 'invite',   disabled: true});
+	popupList.push({label: 'Invite',			 command: 'invite'});
 	
 	var operatorList = [];
 	operatorList.push({label: (nick.hasMode('o', this.channel)?'DeOp':'Op'),		 command: 'op'});
@@ -274,7 +274,7 @@ ChannelUsersAssistant.prototype.listTapListHandler = function(choice, item, nick
 		case 'kick':
 			SingleLineCommandDialog.pop
 			(
-				this.sceneAssistant,
+				this,
 				{
 					command:		'kick ' + item.name,
 					onSubmit:		this.channel.newCommand.bind(this.channel),
@@ -307,6 +307,21 @@ ChannelUsersAssistant.prototype.listTapListHandler = function(choice, item, nick
 			
 		case 'dcc-send':
 			this.channel.server.newCommand('/dcc send ' + item.name);
+			break;
+			
+		case 'invite':
+			SingleLineCommandDialog.pop
+			(
+				this,
+				{
+					command:		'invite ' + item.name,
+					onSubmit:		this.channel.newCommand.bind(this.channel),
+					dialogTitle:	'Invite ' + item.name,
+					textLabel:		'Channel',
+					textDefault:	'#',
+					okText:			'Invite'
+				}
+			);
 			break;
 	}
 }
