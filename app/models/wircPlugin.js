@@ -610,11 +610,11 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 			msg = false;
 			break;
 		case 322:
-			servers.servers[id].listAddChannel(params[1], params[2], params[3]);
+			servers.servers[id].listAddChannel.bind(servers.servers[id]).defer(params[1], params[2], params[3]);
 			msg = false;
 			break;
 		case 323:
-			servers.servers[id].listEnd();
+			servers.servers[id].listEnd.bind(servers.servers[id]).defer();
 			msg = false;
 			break;
 		
