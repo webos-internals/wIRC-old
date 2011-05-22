@@ -315,7 +315,7 @@ body.palm-dark .server-list .palm-list .palm-row-wrapper .button
 }
 .server-list .palm-list .palm-row-wrapper .button.list .icon
 {
-	/*background-image: url(../images/icon-prefs.png);*/
+	background-image: url(../images/icon-list.png);
 }
 .server-list .palm-list .palm-row-wrapper .button.prefs .icon
 {
