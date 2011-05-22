@@ -13,9 +13,9 @@ function ircNick(params)
 	this.mode =			'';
 	
 	
-	this.whoisStageName =		'whois-' + this.num;
-	this.whoisStageController =	false;
-	this.whois =				false;
+	this.whoisStageName =			'whois-' + this.num;
+	this.whoisStageController =		false;
+	this.whois =					false;
 }
 
 ircNick.prototype.setMode = function(mode)

@@ -21,6 +21,7 @@ function StartupAssistant(changelog)
 				'Added ame command',
 				'Added partall command',
 				'Added invite command',
+				'Added whowas command',
 				'Fixed away option in appmenu',
 				'Fixed kick option in user list'
 			]

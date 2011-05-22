@@ -367,6 +367,10 @@ ircServer.prototype.newCommand = function(message)
 					this.whois(val);
 					break;
 					
+				case 'whowas':
+					this.whowas(val);
+					break;
+					
 				default: // this could probably be left out later
 					this.newMessage('status', false, 'Unknown Command: ' + cmd);
 					break;
@@ -573,6 +577,10 @@ ircServer.prototype.whois = function(nick)
 		tmpNick.whois = false;
 	}
 	plugin.cmd_whois(servers.getServerArrayKey(this.id), nick);
+}
+ircServer.prototype.whowas = function(nick)
+{
+	plugin.send_raw(servers.getServerArrayKey(this.id), 'WHOWAS ' + nick);
 }
 
 ircServer.prototype.disconnect = function(reason)

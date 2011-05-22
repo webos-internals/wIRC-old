@@ -6,7 +6,7 @@ function PreferencesGeneralAssistant()
 	
 	// for secret group
 	this.secretString = '';
-	this.secretAnswer = 'iknowwhatimdoing';
+	this.secretAnswer = 'dontblameoil';
 	
 	this.interfaceWrapper =		false;
 	
@@ -260,6 +260,26 @@ PreferencesGeneralAssistant.prototype.setup = function()
 		this.controller.listen('useExternalIP',		Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		
+		// Secret Group
+		this.keyPressHandler = this.keyPress.bindAsEventListener(this)
+		Mojo.Event.listen(this.controller.sceneElement, Mojo.Event.keypress, this.keyPressHandler);
+		this.controller.setupWidget
+		(
+			'showNumericEvents',
+			{
+	  			trueLabel:  'Yes',
+	  			trueValue:	true,
+	 			falseLabel: 'No',
+	 			falseValue: false,
+	  			fieldName:  'showNumericEvents'
+			},
+			{
+				value : this.prefs.showNumericEvents,
+	 			disabled: false
+			}
+		);
+		this.controller.listen('showNumericEvents',		Mojo.Event.propertyChange, this.toggleChangeHandler);
+		
 		
 		// hide groups
 		this.controller.get('secretPreferences').style.display = 'none';
@@ -444,8 +464,8 @@ PreferencesGeneralAssistant.prototype.keyPress = function(event)
 	{
 		if (this.secretString === this.secretAnswer)
 		{
-			//this.controller.get('secretPreferences').style.display = '';
-			//this.controller.getSceneScroller().mojo.revealElement(this.controller.get('secretPreferences'));
+			this.controller.get('secretPreferences').style.display = '';
+			this.controller.getSceneScroller().mojo.revealElement(this.controller.get('secretPreferences'));
 			this.secretString = '';
 		}
 	}
@@ -480,5 +500,7 @@ PreferencesGeneralAssistant.prototype.cleanup = function(event)
 	
 	this.controller.stopListening('piface',					Mojo.Event.propertyChange, this.pifaceChangedHandler);
 	this.controller.stopListening('aiface',					Mojo.Event.propertyChange, this.listChangedHandler);
+	
+	Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyPressHandler);
 	
 }

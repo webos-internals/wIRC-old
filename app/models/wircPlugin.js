@@ -564,6 +564,7 @@ wircPluginModel.prototype.event_kick_handler = function(id, event, origin, param
  * There must be some sort of rule/heuristic we can follow to format them.
  * 
  * Doesn't look like there's much of a pattern: http://www.mirc.net/raws/
+ * There is also: http://www.alien.net.au/irc/irc2numerics.html
  */
 wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, params_s)
 {
@@ -592,9 +593,10 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 		case 305:	servers.servers[id].setAwayStatus(false);	break;
 		case 306:	servers.servers[id].setAwayStatus(true);	break;
 			
+		case 312:
+			msgTarget = servers.servers[id].getVisibleScene();
 		case 301:
 		case 311:
-		case 312:
 		case 313: 
 		case 317:
 		case 318:
@@ -603,6 +605,12 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 			var tmpNick = servers.servers[id].getNick(params[1]);
 			if (tmpNick)
 				tmpNick.whoisEvent(event, params_s);
+			break;
+			
+		case 314:
+		case 369:
+		case 406:
+			msgTarget = servers.servers[id].getVisibleScene();
 			break;
 			
 		case 321:
@@ -695,10 +703,11 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 				msg = params[2];
 			break;
 	}
-	if (msg) 
+	if (msg)
 	{
 		if (msgTarget)
 		{
+			if (prefs.get().showNumericEvents) msg = '['+evt+']' + msg;
 			msgTarget.newMessage(msgType, nick, msg, dontUpdate);
 		}
 		else
