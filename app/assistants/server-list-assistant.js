@@ -205,7 +205,11 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 		
 		popupList.push({label: 'Join Channel',		command: 'channel-join'});
 		popupList.push({label: 'Channel List',		command: 'channel-list'});
-		popupList.push({label: 'DCC List',			command: 'dcc-list'});
+		
+    	if (servers.servers[event.item.key].dccs && servers.servers[event.item.key].dccs.length > 0) {
+			popupList.push({label: 'DCC List',			command: 'dcc-list'});
+		}
+		
 		popupList.push({label: 'Settings',			command: 'settings',	secondaryIcon: 'menu-prefs-icon'});
 		
 		this.controller.popupSubmenu(

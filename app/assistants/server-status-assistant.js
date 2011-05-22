@@ -494,10 +494,12 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 			command: 'do-change-nick'
 		});
 		
-		serverItems.push({
-			label: "DCC List",
-			command: 'do-dcc-list'
-		});
+    	if (this.server.dccs && this.server.dccs.length > 0) {
+			serverItems.push({
+				label: "DCC List",
+				command: 'do-dcc-list'
+			});
+		}
 		
 		if (!this.server.isTemporary) {
 			serverItems.push({

@@ -528,10 +528,12 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
             command: 'do-away'
         });
     }
-	serverItems.push({
-		label: "DCC List",
-		command: 'do-dcc-list'
-	});
+    if (this.server.dccs && this.server.dccs.length > 0) {
+		serverItems.push({
+			label: "DCC List",
+			command: 'do-dcc-list'
+		});
+	}
 	if (!this.channel.server.isTemporary) {
 		serverItems.push({
 			label: "Settings",
