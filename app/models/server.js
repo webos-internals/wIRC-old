@@ -162,11 +162,9 @@ ircServer.prototype.newCommand = function(message)
 			
 			switch (cmd.toLowerCase())
 			{
-				case 'away':
-					this.away(val?val:null);
-					break;
-					
-				case 'broadcast':
+				case 'ame':
+					if (val) val = '/me ' + val;
+				case 'amsg':
 					if (val) {
 						if (this.channels.length > 0){
 							for (var c = 0; c < this.channels.length; c++) {
@@ -175,6 +173,10 @@ ircServer.prototype.newCommand = function(message)
 							}
 						}
 					}
+					break;
+					
+				case 'away':
+					this.away(val?val:null);
 					break;
 					
 				case 'ctcp':

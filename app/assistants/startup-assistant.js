@@ -16,8 +16,10 @@ function StartupAssistant(changelog)
 			[
 				'Positioning updates for Pixi/Veer resolution',
 				'New colored notification tray icon',
-				'Added /broadcast command',
-				'Added /partall command'
+				'Added amsg command',
+				'Added ame command',
+				'Added partall command',
+				'Fixed away command'
 			]
 		},
 		{
