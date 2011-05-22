@@ -439,6 +439,7 @@ wircPluginModel.prototype.event_channel_notice_handler = function(id, event, ori
 
 wircPluginModel.prototype.ctcp_rep = function(id, nick, reply)
 {
+	//Mojo.Log.error('CTCP_REP:', id, nick, reply);
 	plugin.ctcp_rep(id, nick, reply);
 }
 
@@ -468,7 +469,7 @@ wircPluginModel.prototype.event_ctcp_req_handler = function(id, event, origin, p
 		if (tmpReply.length>0) reply = 'VERSION ' + tmpReply;
 		break;
 	case 'SOURCE':		// Where to obtain a copy of a client.
-		reply = 'SOURCE http://redmine.webos-internals.org/projects/wirc/repository';
+		reply = 'SOURCE http://git.webos-internals.org/?p=applications/wIRC.git';
 		break;
 	case 'USERINFO':	// A string set by the user (never the client coder)
 		tmpReply = replaceTokens(prefs.get().ctcpReplyUserinfo);
@@ -485,8 +486,7 @@ wircPluginModel.prototype.event_ctcp_req_handler = function(id, event, origin, p
 	}
 	
 	if (reply) {
-		var ctcp_rep_func = this.ctcp_rep.bind(this, id, nick.name, reply);
-		setTimeout(ctcp_rep_func, 100);
+		this.ctcp_rep.defer(id, nick.name, reply);
 	} else {
 		servers.servers[id].debugPayload(event, origin, params_s, true);
 	}

@@ -381,6 +381,7 @@ body.palm-dark .server-list .palm-list .palm-row-wrapper .button
 {
 	display: inline;
 }
+.server-list .palm-list .palm-row-wrapper.temp .button.list,
 .server-list .palm-list .palm-row-wrapper.temp .button.prefs
 {
 	display: none;

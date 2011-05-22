@@ -33,6 +33,7 @@ helpData.lookup =
 	'autoPingInterval':		{ title: 'Auto Ping Interval',		data: 'Select how long wIRC should wait between pings to the server.'},
 	'piface':				{ title: 'Preferred Interface',		data: 'Which interface do you want wIRC to connect over? Wifi or Wan (your cellular connection.)'},
 	'aiface':				{ title: 'Use Fallback',			data: 'When enabled, depending on your Preferred Interface (Wifi or Wan,) wIRC will try the other interface if connecting fails over the preferred.<br /><br />When disabled, it will only try on the preferred interface.'},
+	'showNumericEvents':	{ title: 'Debug Numeric Events',	data: 'Numeric events will be prefixed with the number. This is for debugging purposes.'},
 
 	// MESSAGES
 	'tabSuffix':			{ title: 'Tab Complete',			data: 'Select the character that will be added to the end of a nickname when you type part of the users nick and then Hold Gesture + Press the Orange Key.'},
@@ -57,10 +58,10 @@ helpData.lookup =
 	'colorHighlightBG':		{ title: 'Highlight Background',	data: 'The background color of messages that have been highlighted'},
 	'colorCTCP':			{ title: 'CTCP Color',				data: 'Text color for CTCP messages.'},
 	'colorMarker':			{ title: 'Marker Line Color',		data: 'This is the color of the line that keeps track of the last message you saw in a specific chat scene.'},
-	'ctcpReplyVersion':		{ title: 'CTCP Version Reply',		data: 'This message is the response when someone sends you a version request.'},
-	'ctcpReplyTime':		{ title: 'CTCP Time Reply',			data: 'This message is the response when someone sends you a time request.'},
-	'ctcpReplyFinger':		{ title: 'CTCP Finger Reply',		data: 'This message is the response when someone sends you a finger request.'},
-	'ctcpReplyUserinfo':	{ title: 'CTCP Userinfo Reply',		data: 'This message is the response when someone sends you a userinfo request.'},
+	'ctcpReplyVersion':		{ title: 'CTCP Version Reply',		data: 'This message is the response when someone sends you a version request.<br><br>Valid Replacement Tokens:<br><ul><li>%WIRCVER%</li><li>%WEBOSVER%</li><li>%CARRIER%</li><li>%MODEL%</li><li>%DATETIME%</li><li>%REALNAME%</li></ul>'},
+	'ctcpReplyTime':		{ title: 'CTCP Time Reply',			data: 'This message is the response when someone sends you a time request.<br><br>Valid Replacement Tokens:<br><ul><li>%WIRCVER%</li><li>%WEBOSVER%</li><li>%CARRIER%</li><li>%MODEL%</li><li>%DATETIME%</li><li>%REALNAME%</li></ul>'},
+	'ctcpReplyFinger':		{ title: 'CTCP Finger Reply',		data: 'This message is the response when someone sends you a finger request.<br><br>Valid Replacement Tokens:<br><ul><li>%WIRCVER%</li><li>%WEBOSVER%</li><li>%CARRIER%</li><li>%MODEL%</li><li>%DATETIME%</li><li>%REALNAME%</li></ul>'},
+	'ctcpReplyUserinfo':	{ title: 'CTCP Userinfo Reply',		data: 'This message is the response when someone sends you a userinfo request.<br><br>Valid Replacement Tokens:<br><ul><li>%WIRCVER%</li><li>%WEBOSVER%</li><li>%CARRIER%</li><li>%MODEL%</li><li>%DATETIME%</li><li>%REALNAME%</li></ul>'},
 	
 	// EVENTS
 	'partReason':			{ title: 'Part Reason',				data: 'This is the text that is sent to the channel when you part/leave the channel.'},
