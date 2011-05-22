@@ -15,6 +15,7 @@ function SingleLineCommandDialog(sceneAssistant, params)
 	 * dialogTitle	- title of dialog - default: "Dialog"
 	 * textLabel	- label next to text field
 	 * textDefault	- default in text field
+	 * textBlank	- sent when text field is left blank
 	 * okText		- text on ok button - default: "Ok"
 	 * cancelText	- text on cancel button - defalt: "Cancel"
 	 * postCommand	- string to append to end of command dialog (after a space)
@@ -114,7 +115,9 @@ SingleLineCommandDialog.prototype.ok = function(event)
 	// we need the required parameters to actually send a command
 	if (this.params.onSubmit && this.params.command) 
 	{
-		this.params.onSubmit('/' + this.params.command + ' ' + this.textField.mojo.getValue() + (this.params.postCommand?' '+this.params.postCommand:''));
+		var value = this.textField.mojo.getValue();
+		if (value == '' && this.params.textBlank) value = this.params.textBlank;
+		this.params.onSubmit('/' + this.params.command + ' ' + value + (this.params.postCommand?' '+this.params.postCommand:''));
 	}
 	// close dialog
 	this.widget.mojo.close();

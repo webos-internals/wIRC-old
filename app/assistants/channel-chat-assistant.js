@@ -603,6 +603,7 @@ ChannelChatAssistant.prototype.handleCommand = function(event){
                             command: 'away',
                             onSubmit: this.channel.newCommand.bind(this.channel),
                             dialogTitle: 'Set Away Status',
+							textBlank: 'Away',
                             textLabel: 'Reason',
                             onActivate: this.stopAutoFocus.bind(this),
                             onDeactivate: this.startAutoFocus.bind(this)

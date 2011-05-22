@@ -383,7 +383,7 @@ ircServer.prototype.newCommand = function(message)
 
 ircServer.prototype.setAwayStatus = function(away)
 {
-	servers.servers[id].isAway = away;
+	this.isAway = away;
 	for (var c = 0; c < this.channels.length; c++)
 		this.channels[c].updateAppMenu();
 }
