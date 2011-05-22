@@ -528,7 +528,7 @@ ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
             command: 'do-away'
         });
     }
-    if (this.server.dccs && this.server.dccs.length > 0) {
+    if (this.channel.server.dccs && this.channel.server.dccs.length > 0) {
 		serverItems.push({
 			label: "DCC List",
 			command: 'do-dcc-list'
