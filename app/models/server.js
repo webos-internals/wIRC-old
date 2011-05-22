@@ -162,9 +162,21 @@ ircServer.prototype.newCommand = function(message)
 			
 			switch (cmd.toLowerCase())
 			{
+				case 'broadcast':
+					if (val) {
+						if (this.channels.length > 0){
+							for (var c = 0; c < this.channels.length; c++) {
+								if (this.channels[c].joined)
+									this.channels[c].newCommand(val);
+							}
+						}
+					}
+					break;
+					
 				case 'getip':
 					var ip = plugin.get_external_ip();
-					alert(ip);
+					this.getVisibleScene().newMessage('status', false, 'Your IP: ' + ip);
+					//alert(ip);
 					break;
 					
 				case 'dcc':
@@ -328,7 +340,7 @@ ircServer.prototype.newCommand = function(message)
 					break;
 				
 				case 'help':
-					this.getVisibleScene().newMessage('status', tmpNick, 'You can find help in the app menu.');
+					this.getVisibleScene().newMessage('status', false, 'You can find help in the app menu.');
 					break;
 					
 				default: // this could probably be left out later

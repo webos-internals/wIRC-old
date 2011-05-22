@@ -15,7 +15,8 @@ function StartupAssistant(changelog)
 			log:
 			[
 				'Positioning updates for Pixi/Veer resolution',
-				'New colored notification tray icon'
+				'New colored notification tray icon',
+				'Added /broadcast command'
 			]
 		},
 		{

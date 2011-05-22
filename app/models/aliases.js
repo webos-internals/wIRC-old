@@ -262,17 +262,33 @@ aliasesModel.defaultAliases =
 ];
 aliasesModel.commandHelp = function()
 {
-	var r = 'Commands are entered by typing a / then the command.<br /><br /><span style="text-transform: uppercase;">';
+	var r = 'Commands are entered by typing a / then the command.<br /><br />' +
+			'<table width="100%" cellpadding="0" cellspacing="0">';
 	for (var c = 0; c < aliasesModel.commands.length; c++)
 	{
-		r += '<div style="display: inline-block; width: 32%;">' + aliasesModel.commands[c] + '</div>';
+		var s = '';
+		if (c%3 == 0)
+		{
+			r += '<tr>'; 
+		}
+		if (c%3)
+		{
+			s = ' border-left: 1px solid #ccc; padding-left: 3px;';
+		}
+		r += '<td style="text-transform: uppercase;'+s+'">' + aliasesModel.commands[c] + '</td>';
+		if (c%3 == 2)
+		{
+			r += '</tr>'; 
+		}
+		
 	}
-	r += '</span><br /><br />This list doesn\'t include any of the aliases defined in the preferences.';
+	r += '</table><br />This list doesn\'t include any of the aliases defined in the preferences.';
 	return r;
 };
 aliasesModel.commands =
 [	// built-in commands that can't be an alias
 	'away',
+	'broadcast',
 	'ctcp',
 	'dcc',
 	'getip',
