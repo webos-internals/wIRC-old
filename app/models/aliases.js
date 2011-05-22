@@ -297,5 +297,6 @@ aliasesModel.commands =
 	'quote',
 	'topic',
 	'umode',
-	'whois'
+	'whois',
+	'whowas'
 ];
