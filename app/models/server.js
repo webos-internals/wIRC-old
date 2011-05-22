@@ -303,7 +303,7 @@ ircServer.prototype.newCommand = function(message)
 					this.setNick(val);
 					break;
 					
-				case 'notice': // not sure if work?
+				case 'notice':
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch[2].length>0)
 					{
@@ -316,7 +316,7 @@ ircServer.prototype.newCommand = function(message)
 						}
 						else if (tmpNick)
 						{
-							this.startQuery(tmpNick, true, 'type6', tmpMatch[2]);
+							this.startQuery(tmpNick, true, 'type6', tmpMatch[2]); // no!
 							plugin.cmd_notice(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);	
 						}
 					}
@@ -361,6 +361,10 @@ ircServer.prototype.newCommand = function(message)
 				case 'umode':
 					alert('/umode ' + val);
 					this.newCommand('/mode '+ this.nick.name + ' ' + val);
+					break;
+					
+				case 'who':
+					this.who(val);
 					break;
 					
 				case 'whois':
@@ -566,6 +570,11 @@ ircServer.prototype.topic = function(channel, topic)
 {
 	plugin.cmd_topic(servers.getServerArrayKey(this.id), channel, topic);
 }
+
+ircServer.prototype.who = function(val)
+{
+	plugin.send_raw(servers.getServerArrayKey(this.id), 'WHO ' + val);
+}
 ircServer.prototype.whois = function(nick)
 {
 	
@@ -578,9 +587,9 @@ ircServer.prototype.whois = function(nick)
 	}
 	plugin.cmd_whois(servers.getServerArrayKey(this.id), nick);
 }
-ircServer.prototype.whowas = function(nick)
+ircServer.prototype.whowas = function(val)
 {
-	plugin.send_raw(servers.getServerArrayKey(this.id), 'WHOWAS ' + nick);
+	plugin.send_raw(servers.getServerArrayKey(this.id), 'WHOWAS ' + val);
 }
 
 ircServer.prototype.disconnect = function(reason)

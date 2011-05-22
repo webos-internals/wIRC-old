@@ -593,7 +593,7 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 		case 305:	servers.servers[id].setAwayStatus(false);	break;
 		case 306:	servers.servers[id].setAwayStatus(true);	break;
 			
-		case 312:
+		case 312: // whois && whowas response
 			msgTarget = servers.servers[id].getVisibleScene();
 		case 301:
 		case 311:
@@ -607,9 +607,11 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 				tmpNick.whoisEvent(event, params_s);
 			break;
 			
-		case 314:
-		case 369:
-		case 406:
+		case 314: // whowas
+		case 315: // who
+		case 352: // who end
+		case 369: // whowas end
+		case 406: // whowas error
 			msgTarget = servers.servers[id].getVisibleScene();
 			break;
 			
