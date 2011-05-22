@@ -316,7 +316,7 @@ ircServer.prototype.newCommand = function(message)
 						}
 						else if (tmpNick)
 						{
-							this.startQuery(tmpNick, true, 'type6', tmpMatch[2]); // no!
+							this.getVisibleScene().newMessage('type6.2', this.nick, tmpMatch[2]);
 							plugin.cmd_notice(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);	
 						}
 					}
