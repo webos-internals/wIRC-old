@@ -275,7 +275,7 @@ AppAssistant.prototype.updateTheme = function(theme)
 			try
 			{
 				var a = this.controller.getStageController(stages[s]).activeScene().assistant;
-				a.controller.document.body.className = theme;
+				setTheme(a.controller.document.body);
 				if (a.loadPrefs) a.loadPrefs();
 			}
 			catch (e) {}
