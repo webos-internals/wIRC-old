@@ -262,27 +262,12 @@ aliasesModel.defaultAliases =
 ];
 aliasesModel.commandHelp = function()
 {
-	var r = 'Commands are entered by typing a / then the command.<br /><br />' +
-			'<table width="100%" cellpadding="0" cellspacing="0">';
+	var r = 'Commands are entered by typing a / then the command.<br /><br /><span style="text-transform: uppercase;">';
 	for (var c = 0; c < aliasesModel.commands.length; c++)
 	{
-		var s = '';
-		if (c%3 == 0)
-		{
-			r += '<tr>'; 
-		}
-		if (c%3)
-		{
-			s = ' border-left: 1px solid #ccc; padding-left: 3px;';
-		}
-		r += '<td style="text-transform: uppercase;'+s+'">' + aliasesModel.commands[c] + '</td>';
-		if (c%3 == 2)
-		{
-			r += '</tr>'; 
-		}
-		
+		r += '<div style="display: inline-block; width: 49%;">' + aliasesModel.commands[c] + '</div>';
 	}
-	r += '</table><br />This list doesn\'t include any of the aliases defined in the preferences.';
+	r += '</span><br /><br />This list doesn\'t include any of the aliases defined in the preferences.';
 	return r;
 };
 aliasesModel.commands =
@@ -303,6 +288,7 @@ aliasesModel.commands =
 	'nick',
 	'notice',
 	'part',
+	'partall',
 	'ping',
 	'query',
 	'quit',

@@ -308,6 +308,15 @@ ircServer.prototype.newCommand = function(message)
 					}
 					break;
 					
+				case 'partall':
+					if (this.channels.length > 0){
+						for (var c = 0; c < this.channels.length; c++) {
+							if (this.channels[c].joined)
+								this.channels[c].part(val);
+						}
+					}
+					break;
+					
 				case 'ping':
 					if (val) this.ping(val);
 					break;
