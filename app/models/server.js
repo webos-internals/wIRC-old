@@ -162,6 +162,10 @@ ircServer.prototype.newCommand = function(message)
 			
 			switch (cmd.toLowerCase())
 			{
+				case 'away':
+					this.away(val?val:null);
+					break;
+					
 				case 'broadcast':
 					if (val) {
 						if (this.channels.length > 0){
@@ -173,10 +177,10 @@ ircServer.prototype.newCommand = function(message)
 					}
 					break;
 					
-				case 'getip':
-					var ip = plugin.get_external_ip();
-					this.getVisibleScene().newMessage('status', false, 'Your IP: ' + ip);
-					//alert(ip);
+				case 'ctcp':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch)
+						plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);
 					break;
 					
 				case 'dcc':
@@ -198,22 +202,61 @@ ircServer.prototype.newCommand = function(message)
 								break;
 						}
 					}
+					break;
 					
-				case 'ctcp':
-					var tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch)
-						plugin.ctcp_cmd(servers.getServerArrayKey(this.id), tmpMatch[1], tmpMatch[2]);
+				case 'getip':
+					var ip = plugin.get_external_ip();
+					this.getVisibleScene().newMessage('status', false, 'Your IP: ' + ip);
+					//alert(ip);
 					break;
 				
-				case 'nick':
-					this.setNick(val);
+				case 'help':
+					this.getVisibleScene().newMessage('status', false, 'You can find help in the app menu.');
+					break;
+					
+				case 'ignore':
+					this.ignore(val);
 					break;
 				
 				case 'join':
 					var vals = val.split(" ");
 					this.joinChannel(vals[0],vals[1]);
 					break;
-				
+					
+				case 'kick':
+					var tmpMatch = threeValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						tmpChan = this.getChannel(tmpMatch[1]);
+						if (tmpChan)
+						{
+							tmpChan.kick(this.getNick(tmpMatch[2]).name, tmpMatch[3]);
+						}
+					}
+					break;
+					
+				case 'list':
+					this.list(val?val:null);
+					break;
+					
+				case 'mode':
+					var tmpMatch = twoValRegExp.exec(val);
+					if (tmpMatch) 
+					{
+						var tmpChan = this.getChannel(tmpMatch[1]);
+						if (tmpChan) {
+							alert('c /mode ' + tmpMatch[1] + ' ' + tmpMatch[2]);
+							tmpChan.setMode(tmpMatch[2]);
+						} else {
+							var tmpNick = this.getNick(tmpMatch[1]);
+							if (tmpNick) {
+								alert('n /mode ' + tmpMatch[1] + ' ' + tmpMatch[2]);
+								tmpNick.setMode(tmpMatch[2]);
+							}		
+						}
+					}
+					break;
+					
 				case 'msg':
 				case 'query':
 					var tmpMatch = twoValRegExp.exec(val);
@@ -241,59 +284,12 @@ ircServer.prototype.newCommand = function(message)
 						}
 					}
 					break;
-					
-				case 'kick':
-					var tmpMatch = threeValRegExp.exec(val);
-					if (tmpMatch) 
-					{
-						tmpChan = this.getChannel(tmpMatch[1]);
-						if (tmpChan)
-						{
-							tmpChan.kick(this.getNick(tmpMatch[2]).name, tmpMatch[3]);
-						}
-					}
+				
+				case 'nick':
+					this.setNick(val);
 					break;
 					
-				case 'ignore':
-					this.ignore(val);
-					break;
-					
-				case 'umode':
-					alert('/umode ' + val);
-					this.newCommand('/mode '+ this.nick.name + ' ' + val);
-					break;
-					
-				case 'mode':
-					var tmpMatch = twoValRegExp.exec(val);
-					if (tmpMatch) 
-					{
-						var tmpChan = this.getChannel(tmpMatch[1]);
-						if (tmpChan) {
-							alert('c /mode ' + tmpMatch[1] + ' ' + tmpMatch[2]);
-							tmpChan.setMode(tmpMatch[2]);
-						} else {
-							var tmpNick = this.getNick(tmpMatch[1]);
-							if (tmpNick) {
-								alert('n /mode ' + tmpMatch[1] + ' ' + tmpMatch[2]);
-								tmpNick.setMode(tmpMatch[2]);
-							}		
-						}
-					}
-					break;
-					
-				case 'list':
-					this.list(val?val:null);
-					break;
-					
-				case 'away':
-					this.away(val?val:null);
-					break;
-					
-				case 'ping':
-					if (val) this.ping(val);
-					break;
-					
-				case 'notice':
+				case 'notice': // not sure if work?
 					var tmpMatch = twoValRegExp.exec(val);
 					if (tmpMatch[2].length>0)
 					{
@@ -312,6 +308,18 @@ ircServer.prototype.newCommand = function(message)
 					}
 					break;
 					
+				case 'ping':
+					if (val) this.ping(val);
+					break;
+					
+				case 'quit':
+					this.disconnect(val);
+					break;
+					
+				case 'quote':
+					plugin.send_raw(servers.getServerArrayKey(this.id), val);
+					break;
+					
 				case 'topic':
 					if (val) 
 					{
@@ -325,22 +333,15 @@ ircServer.prototype.newCommand = function(message)
 							this.topic(val, null);
 						}
 					}
-					break;		
-					
-				case 'quit':
-					this.disconnect(val);
 					break;
 					
-				case 'quote':
-					plugin.send_raw(servers.getServerArrayKey(this.id), val);
+				case 'umode':
+					alert('/umode ' + val);
+					this.newCommand('/mode '+ this.nick.name + ' ' + val);
 					break;
 					
 				case 'whois':
 					this.whois(val);
-					break;
-				
-				case 'help':
-					this.getVisibleScene().newMessage('status', false, 'You can find help in the app menu.');
 					break;
 					
 				default: // this could probably be left out later

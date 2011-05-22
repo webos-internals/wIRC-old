@@ -292,6 +292,7 @@ aliasesModel.commands =
 	'ctcp',
 	'dcc',
 	'getip',
+	'help',
 	'ignore',
 	'join',
 	'kick',

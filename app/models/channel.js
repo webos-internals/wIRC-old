@@ -41,22 +41,17 @@ ircChannel.prototype.newCommand = function(message)
 			
 			switch(cmd.toLowerCase())
 			{
-				case 'part':
-					this.part(val);
+				case 'kick':
+					var tmpMatch = twoValRegExp.exec(val);
+					this.kick(tmpMatch[1], tmpMatch[2]);
 					break;
 					
 				case 'me':
 					this.me(val);
 					break;
 					
-				case 'join':
-					var vals = val.split(" ");
-					this.server.joinChannel(vals[0],vals[1]);
-					break;
-					
-				case 'kick':
-					var tmpMatch = twoValRegExp.exec(val);
-					this.kick(tmpMatch[1], tmpMatch[2]);
+				case 'part':
+					this.part(val);
 					break;
 				
 				case 'topic':
@@ -83,14 +78,6 @@ ircChannel.prototype.newCommand = function(message)
 					{
 						this.server.topic(this.name);
 					}
-					break;
-				
-				case 'away':
-					this.server.away(val?val:null);
-					break;
-					
-				case 'ping':
-					if (val) this.server.ping(val);
 					break;
 					
 				default:
