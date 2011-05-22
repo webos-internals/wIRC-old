@@ -190,6 +190,32 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	{
 		this.controller.stageController.pushScene('server-info', event.item.id);
 	}
+	else if (event.originalEvent.target.className.include('list'))
+	{
+		var popupList = [];
+		var favorites = [];
+    	if (servers.servers[event.item.key].favoriteChannels && servers.servers[event.item.key].favoriteChannels.length > 0) {
+        	for (var c = 0; c < servers.servers[event.item.key].favoriteChannels.length; c++) {
+	            favorites.push({label: ' ' + servers.servers[event.item.key].favoriteChannels[c],	command: 'join-' + servers.servers[event.item.key].favoriteChannels[c]});
+        	}
+    	}
+		if (favorites.length > 0) {
+	    	popupList.push({label: "Favorite Channels",	items: favorites});
+		}
+		
+		popupList.push({label: 'Join Channel',		command: 'channel-join'});
+		popupList.push({label: 'Channel List',		command: 'channel-list'});
+		popupList.push({label: 'DCC List',			command: 'dcc-list'});
+		popupList.push({label: 'Settings',			command: 'settings',	secondaryIcon: 'menu-prefs-icon'});
+		
+		this.controller.popupSubmenu(
+		{
+			onChoose: this.listTapListHandler.bindAsEventListener(this, event.item),
+			popupClass: 'group-popup',
+			placeNear: event.originalEvent.target,
+			items: popupList
+		});
+	}
 	else if (event.originalEvent.target.className.include('status'))
 	{		
 		//event.originalEvent.target.up('.palm-row-wrapper').addClassName('changing');
@@ -207,6 +233,48 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	else
 	{
 		servers.servers[event.item.key].showStatusScene(prefs.get().statusPop);
+	}
+}
+ServerListAssistant.prototype.listTapListHandler = function(choice, item)
+{
+	if (choice)
+	{
+		if (choice.substring(0,5) == 'join-')
+		{
+			servers.servers[item.key].joinChannel(choice.substring(5));
+		}
+		else
+		{
+			switch(choice)
+			{
+				case 'channel-join':
+					SingleLineCommandDialog.pop
+					(
+						this,
+						{
+							command:		'join',
+							onSubmit:		servers.servers[item.key].newCommand.bind(servers.servers[item.key]),
+							dialogTitle:	'Join Channel',
+							textLabel:		'Channel',
+							textDefault:	'#',
+							okText:			'Join'
+						}
+					);
+					break;
+					
+				case 'channel-list':
+					servers.servers[item.key].newCommand('/list');
+					break;
+					
+				case 'dcc-list':
+					servers.servers[item.key].openDccList();
+					break;
+					
+				case 'settings':
+					this.controller.stageController.pushScene('server-info', item.id);
+					break;
+			}
+		}
 	}
 }
 ServerListAssistant.prototype.listDeleteHandler = function(event)

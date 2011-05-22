@@ -14,6 +14,7 @@ function StartupAssistant(changelog)
 			version: '0.3.14',
 			log:
 			[
+				'Added popup list of common server commands to the server list when connected',
 				'Positioning updates for Pixi/Veer resolution',
 				'New colored notification tray icon',
 				'Added amsg command',
