@@ -193,6 +193,10 @@ ServerListAssistant.prototype.listTapHandler = function(event)
 	else if (event.originalEvent.target.className.include('list'))
 	{
 		var popupList = [];
+		
+		if (event.item.alias)	popupList.push({label: event.item.alias});
+		else					popupList.push({label: event.item.address});
+		
 		var favorites = [];
     	if (servers.servers[event.item.key].favoriteChannels && servers.servers[event.item.key].favoriteChannels.length > 0) {
         	for (var c = 0; c < servers.servers[event.item.key].favoriteChannels.length; c++) {

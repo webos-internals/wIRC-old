@@ -270,12 +270,15 @@ getColor = function(numeric)
 }
 
 // set the body class for the current theme and device size
-setTheme = function(body)
+setTheme = function(body, theme)
 {
 	var deviceTheme = '';
 	if (Mojo.Environment.DeviceInfo.modelNameAscii == 'Pixi' ||
 		Mojo.Environment.DeviceInfo.modelNameAscii == 'Veer')
 		deviceTheme = ' small-device';
 	
-	body.className = prefs.get().theme + deviceTheme;
+	if (theme)
+		body.className = theme + deviceTheme;
+	else
+		body.className = prefs.get().theme + deviceTheme;
 }
