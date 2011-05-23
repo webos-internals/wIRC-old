@@ -296,6 +296,7 @@ aliasesModel.commands =
 	'quit',
 	'quote',
 	'topic',
+	'trace',
 	'umode',
 	'who',
 	'whois',

@@ -607,10 +607,13 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 				tmpNick.whoisEvent(event, params_s);
 			break;
 			
+		case 205: // trace
+		case 262: // trace end
 		case 314: // whowas
 		case 315: // who
 		case 352: // who end
 		case 369: // whowas end
+		case 402: // trace error
 		case 406: // whowas error
 			msgTarget = servers.servers[id].getVisibleScene();
 			break;

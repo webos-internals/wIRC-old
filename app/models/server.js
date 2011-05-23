@@ -343,6 +343,10 @@ ircServer.prototype.newCommand = function(message)
 					plugin.send_raw(servers.getServerArrayKey(this.id), val);
 					break;
 					
+				case 'trace':
+					this.trace(val);
+					break;
+					
 				case 'topic':
 					if (val) 
 					{
@@ -571,6 +575,10 @@ ircServer.prototype.topic = function(channel, topic)
 	plugin.cmd_topic(servers.getServerArrayKey(this.id), channel, topic);
 }
 
+ircServer.prototype.trace = function(val)
+{
+	plugin.send_raw(servers.getServerArrayKey(this.id), 'TRACE ' + val);
+}
 ircServer.prototype.who = function(val)
 {
 	plugin.send_raw(servers.getServerArrayKey(this.id), 'WHO ' + val);
