@@ -112,7 +112,7 @@ formatSeconds = function(seconds, longFormat){
     
     return toReturn;
 }
-function formatMilliSeconds(milliseconds){
+formatMilliSeconds = function(milliseconds){
     var toReturn = '';
     
 	var seconds = Math.floor(milliseconds / 1000);
@@ -157,6 +157,16 @@ colorize = function (message) {
 	var underline = false;
 	var foreColor = '';
 	var backColor = '';
+	
+	if (message.indexOf(String.fromCharCode(2))  == -1 &&
+		message.indexOf(String.fromCharCode(3))  == -1 &&
+		message.indexOf(String.fromCharCode(15)) == -1 &&
+		message.indexOf(String.fromCharCode(22)) == -1 &&
+		message.indexOf(String.fromCharCode(31)) == -1)
+	{
+		return message;
+	}
+	
 	for (var i = 0 ; i < length ; i++) {
 		switch (message.charAt(i)) {
 			case String.fromCharCode(2):
