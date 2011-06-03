@@ -60,6 +60,7 @@ function ircServer(params)
 	this.queries =				[];
 	this.nick =					false;
 	this.nicks =				[];
+	this.nickHash =				$H();
 	this.statusMessages =		[];
 	
 	this.sessionToken =			false;
@@ -928,20 +929,24 @@ ircServer.prototype.getNick = function(name)
 		
 		if (this.nicks.length > 0)
 		{
-			for (var n = 0; n < this.nicks.length; n++)
+			if (this.nickHash.get(getNick.toLowerCase()) === 1)
 			{
-				// check lowercased
-				if (this.nicks[n].name.toLowerCase() == getNick.toLowerCase())
+				for (var n = 0; n < this.nicks.length; n++)
 				{
-					// set what we assume is correct case
-					this.nicks[n].name = getNick;
-					return this.nicks[n];
+					// check lowercased
+					if (this.nicks[n].name.toLowerCase() == getNick.toLowerCase())
+					{
+						// set what we assume is correct case
+						this.nicks[n].name = getNick;
+						return this.nicks[n];
+					}
 				}
 			}
 		}
 		
 		var tmpNick = new ircNick({name:getNick});
 		this.nicks.push(tmpNick);
+		this.nickHash.set(tmpNick.name.toLowerCase(), 1);
 		return tmpNick;
 	}
 	catch (e)
@@ -961,6 +966,7 @@ ircServer.prototype.removeNick = function(nick)
 
 		// Remove nick from server list
 		this.nicks = this.nicks.without(nick);
+		this.nickHash.unset(nick.name.toLowerCase());
 	}
 }
 
