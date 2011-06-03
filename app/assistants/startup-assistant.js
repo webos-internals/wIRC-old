@@ -25,7 +25,8 @@ function StartupAssistant(changelog)
 				'Added who command',
 				'Added whowas command',
 				'Fixed away option in appmenu',
-				'Fixed kick option in user list'
+				'Fixed kick option in user list',
+				'Fixed GUI lockups in 2.x caused by channel list and nick list'
 			]
 		},
 		{
