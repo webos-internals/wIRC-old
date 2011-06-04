@@ -41,11 +41,11 @@ body.flat-default #palm-device-menu.palm-popup-container .palm-row.selected
 body.flat-default #palm-app-menu.palm-popup-container .palm-row.selected .title,
 body.flat-default #palm-device-menu.palm-popup-container .palm-row.selected .title
 {
-	color: #000;
+	color: #000 !important;
 }
 body.flat-default #palm-app-menu .palm-row .label
 {
-	color: #000;
+	color: #000 !important;
 	text-shadow: none;
 	background: url(../images/flat/app-menu-icon-meta.png) left center no-repeat;
 }
@@ -81,7 +81,7 @@ body.flat-default .palm-popup-container .palm-row
 {
 	background: none;
 }
-body.flat-default .palm-popup-container .palm-row .title
+body.flat-default #palm-app-menu.palm-popup-container .palm-row .title
 {
 	color: #000;
 }
