@@ -10,7 +10,7 @@
 	"main" : "index.html",
 	"icon" : "icon.png",
 	"miniicon" : "icon-mini.png",
-	"splashicon": "images/no-servers.png",
+	"splashicon": "images/palm-default/no-servers.png",
 	"noWindow" : true,
 	"noDeprecatedStyles" : true,
 	"keywords" : [ "IRC", "chat" ],

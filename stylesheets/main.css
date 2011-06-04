@@ -213,7 +213,7 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 	width: 320px;
 	height: 128px;
 	margin-top: 60px;
-	background: url(../images/no-servers.png) center center no-repeat;
+	background: url(../images/palm-default/no-servers.png) center center no-repeat;
 }
 .server-list #noServers .message
 {
@@ -228,7 +228,7 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 	width: 320px;
 	height: 128px;
 	margin-top: 60px;
-	background: url(../images/no-servers.png) center center no-repeat;
+	background: url(../images/palm-default/no-servers.png) center center no-repeat;
 }
 .server-list #noPlugin .message
 {
@@ -311,39 +311,39 @@ body.palm-dark .server-list .palm-list .palm-row-wrapper .button
 {
 	margin-top: 2px;
 	width: 28px;
-	background: url(../images/icon-prefs.png) center center no-repeat;
+	background: url(../images/palm-default/icon-prefs.png) center center no-repeat;
 }
 .server-list .palm-list .palm-row-wrapper .button.list .icon
 {
-	background-image: url(../images/icon-list.png);
+	background-image: url(../images/palm-default/icon-list.png);
 }
 .server-list .palm-list .palm-row-wrapper .button.prefs .icon
 {
-	background-image: url(../images/icon-prefs.png);
+	background-image: url(../images/palm-default/icon-prefs.png);
 }
 .server-list .palm-list .palm-row-wrapper.connected .button.status  .icon
 {
-	background-image: url(../images/icon-connected.png);
+	background-image: url(../images/palm-default/icon-connected.png);
 }
 .server-list .palm-list .palm-row-wrapper.disconnected .button.status .icon
 {
-	background-image: url(../images/icon-disconnected.png);
+	background-image: url(../images/palm-default/icon-disconnected.png);
 }
 .server-list .palm-list .palm-row-wrapper.warning .button.status .icon
 {
-	background-image: url(../images/icon-warning.png);
+	background-image: url(../images/palm-default/icon-warning.png);
 }
 .server-list .palm-list .palm-row-wrapper.error .button.status .icon
 {
-	background-image: url(../images/icon-error.png);
+	background-image: url(../images/palm-default/icon-error.png);
 }
 .server-list .palm-list .palm-row-wrapper.error2 .button.status .icon
 {
-	background-image: url(../images/icon-error2.png);
+	background-image: url(../images/palm-default/icon-error2.png);
 }
 .server-list .palm-list .palm-row-wrapper.unknown .button.status .icon
 {
-	background-image: url(../images/icon-unknown.png);
+	background-image: url(../images/palm-default/icon-unknown.png);
 }
 .server-list .palm-list .palm-row-wrapper .button.list
 {
@@ -578,12 +578,12 @@ body.palm-dark .form .textfield-group .hint-text
 	width: 38px;
 	border-width: 0px 16px 0px 16px;
 	-webkit-box-sizing: border-box;
-	-webkit-border-image: url(../images/header-button-press.png);
-	-webkit-border-image: url(../images/header-button.png) 0 16 0 16 stretch stretch;
+	-webkit-border-image: url(../images/palm-default/header-button-press.png);
+	-webkit-border-image: url(../images/palm-default/header-button.png) 0 16 0 16 stretch stretch;
 }
 .server-status #popButton.selected
 {
-	-webkit-border-image: url(../images/header-button-press.png) 0 16 0 16 stretch stretch;
+	-webkit-border-image: url(../images/palm-default/header-button-press.png) 0 16 0 16 stretch stretch;
 }
 .server-status #popButton .icon
 {
@@ -593,7 +593,7 @@ body.palm-dark .form .textfield-group .hint-text
 	margin-left: -8px;
 	width: 21px;
 	height: 23px;
-	background: url(../images/pop-icon.png) center center no-repeat;
+	background: url(../images/palm-default/pop-icon.png) center center no-repeat;
 }
 .server-status #connectButton
 {
@@ -719,11 +719,11 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 }
 .icon-filter-alpha
 {
-	background:url(../images/icon_alpha.png) top center no-repeat;
+	background:url(../images/palm-default/icon_alpha.png) top center no-repeat;
 }
 .icon-filter-users
 {
-	background:url(../images/icon_users.png) top center no-repeat;
+	background:url(../images/palm-default/icon_users.png) top center no-repeat;
 }
 
 
@@ -763,12 +763,12 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 	height: 35px;
 	border-width: 0px 16px 0px 16px;
 	-webkit-box-sizing: border-box;
-	-webkit-border-image: url(../images/header-button-press.png);
-	-webkit-border-image: url(../images/header-button.png) 0 16 0 16 stretch stretch;
+	-webkit-border-image: url(../images/palm-default/header-button-press.png);
+	-webkit-border-image: url(../images/palm-default/header-button.png) 0 16 0 16 stretch stretch;
 }
 .channel-chat #userButton.selected
 {
-	-webkit-border-image: url(../images/header-button-press.png) 0 16 0 16 stretch stretch;
+	-webkit-border-image: url(../images/palm-default/header-button-press.png) 0 16 0 16 stretch stretch;
 }
 .channel-chat #userButton .icon
 {
@@ -779,7 +779,7 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 	margin-left: -5px;
 	width: 21px;
 	height: 23px;
-	background: url(../images/user-icon.png) left center no-repeat;
+	background: url(../images/palm-default/user-icon.png) left center no-repeat;
 }
 .channel-chat #userButton .userCount
 {
@@ -927,7 +927,7 @@ body.palm-dark .channel-users #searchText
 	width: 340px;
 	height: 100%;
 	right: -20px;
-	background-image: url(../images/dcc-progress.png);
+	background-image: url(../images/palm-default/dcc-progress.png);
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 }
@@ -1253,12 +1253,12 @@ table.date-row tr td.label
 table.date-row.palm-divider.labeled tr td.left
 {
 	width: 100%;
-	background: url(../images/date-stamp-line.png) right center no-repeat;
+	background: url(../images/palm-default/date-stamp-line.png) right center no-repeat;
 }
 table.date-row.palm-divider.labeled tr td.right
 {
 	width: 10px;
-	background: url(../images/date-stamp-line.png) left center no-repeat;
+	background: url(../images/palm-default/date-stamp-line.png) left center no-repeat;
 }
 
 
@@ -1315,7 +1315,7 @@ body.palm-dark .folder-picker #list .palm-row.open > .palm-row-wrapper > .icon
 	margin-top: 2px;
 	margin-right: 8px;
 	margin-left: -10px;
-	background: url(../images/checkmark-green.png) center center no-repeat;
+	background: url(../images/palm-default/checkmark-green.png) center center no-repeat;
 }
 .folder-picker #list .palm-row .palm-row-wrapper .title
 {
@@ -1331,7 +1331,7 @@ body.palm-dark .folder-picker #list .palm-row.open > .palm-row-wrapper > .icon
 	width: 321px;
 	height: 100%;
 	border-width: 38px 26px 13px 25px;
-	-webkit-border-image: url(../images/file-picker-background.png) 38 26 13 25;
+	-webkit-border-image: url(../images/palm-default/file-picker-background.png) 38 26 13 25;
 	-webkit-box-sizing: border-box;
 }
 .file-picker .folder .palm-page-header
@@ -1397,7 +1397,7 @@ body.palm-dark .file-picker .folder .palm-page-header .palm-page-header-wrapper 
 	margin-top: 2px;
 	margin-right: 8px;
 	margin-left: -10px;
-	background: url(../images/checkmark-green.png) center center no-repeat;
+	background: url(../images/palm-default/checkmark-green.png) center center no-repeat;
 }
 .file-picker #folderHolder .fileIcon,
 .file-picker #folderHolder .folderIcon
@@ -1533,7 +1533,7 @@ body.palm-dark .file-picker #folderHolder .palm-row .folderIcon
 	height: 18px;
 	margin-left: 13px;
 	margin-right: 2px;
-	background-image: url(../images/network-lag.png);
+	background-image: url(../images/palm-default/network-lag.png);
 	background-repeat: no-repeat;
 }
 .palm-header .network
