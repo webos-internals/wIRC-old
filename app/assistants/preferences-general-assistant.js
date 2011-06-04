@@ -79,13 +79,26 @@ PreferencesGeneralAssistant.prototype.setup = function()
 				choices:
 				[
 					{label:'Palm Default',	value:'palm-default'},
-					{label:'Palm Dark',		value:'palm-dark'}
+					{label:'Palm Dark',		value:'palm-dark'},
+					{label:'Flat Default',	value:'palm-default flat-default'}
 				],
 				modelProperty: 'theme'
 			},
 			this.prefs
 		);
-		
+		this.controller.setupWidget
+		(
+			'colorFlatHeader',
+			{
+				label: 'Header Color',
+				choices: listColorChoices,
+				modelProperty: 'colorFlatHeader'
+			},
+			this.prefs
+		);
+		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
+		this.controller.listen('colorFlatHeader',	Mojo.Event.propertyChange, this.colorFlatHeaderChanged.bindAsEventListener(this));
+		this.themeChanged();
 
 
 		this.controller.setupWidget
@@ -125,7 +138,6 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			}
 		);
 		
-		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 		this.controller.listen('blockScreenTimeout', Mojo.Event.propertyChange, this.toggleChangeHandler);
 		
 		// Server Status Group
@@ -343,13 +355,36 @@ PreferencesGeneralAssistant.prototype.listChanged = function(event)
 
 PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 {
-	// set the theme right away with the body class
-	this.controller.document.body.className = event.value;
+	if (event) 
+	{
+		// set the theme right away with the body class
+		this.controller.document.body.className = event.value;
+		this.listChanged();
+		this.cookie.put(this.prefs);
+	
+		// set theme on all other open stages
+		Mojo.Controller.getAppController().assistant.updateTheme(event.value);
+	}
+	
+	if (this.prefs['theme'] == 'palm-default flat-default')
+	{
+		this.controller.get('colorHeaderRow').style.display = '';
+	}
+	else
+	{
+		this.controller.get('colorHeaderRow').style.display = 'none';
+	}
+}
+PreferencesGeneralAssistant.prototype.colorFlatHeaderChanged = function(event)
+{
 	this.listChanged();
-	this.cookie.put(this.prefs);
+	var tmp = prefs.get(true);
+	
+	var headCSS = getCSSRule(this.controller.document, 'body.flat-default div.palm-header, body.flat-default div.palm-page-header.multi-line');
+	if (headCSS) headCSS.style.backgroundColor = event.value;
 	
 	// set theme on all other open stages
-	Mojo.Controller.getAppController().assistant.updateTheme(event.value);
+	Mojo.Controller.getAppController().assistant.updateTheme();
 }
 
 PreferencesGeneralAssistant.prototype.autoPingIntervalChanged = function(event)

@@ -1,0 +1,761 @@
+body.flat-default
+{
+	background: #fff !important;
+}
+
+body.flat-default .palm-menu-icon.new				{ background-image: url(../images/flat/menu-icon-new.png);		}
+body.flat-default .icon-filter-alpha
+{
+	background:url(../images/flat/icon_alpha.png) top center no-repeat;
+}
+body.flat-default .icon-filter-users
+{
+	background:url(../images/flat/icon_users.png) top center no-repeat;
+}
+
+body.flat-default .palm-activity-indicator-small
+{
+	background: url(../images/flat/activity-indicator-32x32.png) center top no-repeat;
+}
+body.flat-default .palm-activity-indicator-large
+{
+	background: url(../images/flat/activity-indicator-128x128.png) center top no-repeat;
+}
+
+body.flat-default #palm-app-menu.palm-popup-container,
+body.flat-default #palm-device-menu.palm-popup-container
+{
+	-webkit-border-image: url(../images/flat/system-menu-background.png) 30 28 35 28 stretch stretch;
+}
+body.flat-default #palm-app-menu.palm-popup-container .palm-row,
+body.flat-default #palm-device-menu.palm-popup-container .palm-row
+{
+	background: none;
+}
+body.flat-default #palm-app-menu.palm-popup-container .palm-row.selected,
+body.flat-default #palm-device-menu.palm-popup-container .palm-row.selected
+{
+	background: #bbb;
+	color: #000;
+}
+body.flat-default #palm-app-menu.palm-popup-container .palm-row.selected .title,
+body.flat-default #palm-device-menu.palm-popup-container .palm-row.selected .title
+{
+	color: #000;
+}
+body.flat-default #palm-app-menu .palm-row .label
+{
+	color: #000;
+	text-shadow: none;
+	background: url(../images/flat/app-menu-icon-meta.png) left center no-repeat;
+}
+
+body.flat-default .palm-scrim
+{
+	background: rgba(255, 255, 255, 0.5);
+}
+
+body.flat-default .palm-list .palm-row.palm-section-divider,
+body.flat-default #palm-app-menu .palm-row.submenu-group,
+body.flat-default #palm-device-menu .palm-row.submenu-group,
+body.flat-default #palm-app-menu .palm-drawer-container,
+body.flat-default #palm-device-menu .palm-drawer-container
+body.flat-default #palm-app-menu .palm-row,
+body.flat-default #palm-device-menu .palm-row,
+body.flat-default #palm-app-menu .palm-drawer-contents,
+body.flat-default #palm-device-menu .palm-drawer-contents
+{
+	background: none;
+}
+
+body.flat-default .palm-drawer-container
+{
+	-webkit-border-image: url(../images/flat/drawer-background.png) 20 1 20 1 repeat repeat;
+}
+
+body.flat-default .palm-popup-container
+{
+	-webkit-border-image: url(../images/flat/popup-background.png) 24 24 24 24 stretch stretch;
+}
+body.flat-default .palm-popup-container .palm-row
+{
+	background: none;
+}
+body.flat-default .palm-popup-container .palm-row .title
+{
+	color: #000;
+}
+body.flat-default .palm-popup-container .palm-row.selected .title
+{
+	color: #000 !important;
+}
+body.flat-default .palm-popup-container .palm-row.selected
+{
+	background: #bbb;
+}
+body.flat-default .palm-popup-container table.palm-divider
+{
+	margin: 8px 0;
+}
+body.flat-default .palm-popup-content .popup-item-checkmark,
+body.flat-default .palm-popup-content .chosen .popup-item-checkmark
+{
+	background: url(../images/flat/checkmark.png) center center no-repeat;
+}
+body.flat-default .palm-submenu-drawer-handle
+{
+ 	background: url(../images/flat/system-menu-drawer-arrows.png) 0px 0px no-repeat;
+}
+body.flat-default .palm-submenu-group-opened .palm-submenu-drawer-handle
+{
+	background-position: 0px -24px;
+}
+body.flat-default .palm-row
+{
+	background: url(../images/flat/list-separator.png) bottom left repeat-x;
+}
+body.flat-default .palm-row.no-divider,
+body.flat-default .palm-row.no-separator,
+body.flat-default .palm-row.single,
+body.flat-default .palm-row.last
+{
+	background: none;
+}
+body.flat-default .palm-row.selected
+{
+	border-width: 0px;
+	-webkit-border-image: none;
+	background: #e8e8e8;
+}
+body.flat-default .palm-row.palm-swipe-delete
+{
+	border-width: 0px;
+	-webkit-border-image: none;
+	background: #d1d1d1;
+}
+body.flat-default .palm-group .palm-swipe-delete,
+body.flat-default .palm-group .first .palm-swipe-delete,
+body.flat-default .palm-group .last .palm-swipe-delete,
+body.flat-default .palm-group .single .palm-swipe-delete
+{
+	border-width: 0px;
+	-webkit-border-image: none;
+}
+body.flat-default .palm-row.palm-delete-element
+{
+	background: rgba(255, 255, 255, 0.8);
+	border-width: 0;
+	-webkit-border-image: none;
+}
+body.flat-default .palm-row.selected > .palm-row-wrapper,
+body.flat-default .palm-row.palm-delete-element > .palm-row-wrapper,
+body.flat-default .palm-row.palm-reorder-element > .palm-row-wrapper,
+body.flat-default .palm-row.palm-swipe-delete > .palm-row-wrapper
+{
+	margin: 0px;
+}
+body.flat-default .palm-swipe-delete-button
+{
+	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
+	-webkit-border-image: url(../images/flat/swipe-delete-button-up.png) 0 14 0 14 repeat repeat;
+	color: #f33;
+}
+
+body.flat-default .palm-swipe-delete-button.selected
+{
+	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
+	color: #fff;
+}
+
+body.flat-default .palm-swipe-undo-button
+{
+	-webkit-border-image: url(../images/flat/swipe-undo-button-down.png) 0 14 0 14 repeat repeat;
+	-webkit-border-image: url(../images/flat/swipe-undo-button-up.png) 0 14 0 14 repeat repeat;
+	color: #ccc;
+}
+
+body.flat-default .palm-swipe-undo-button.selected
+{
+	-webkit-border-image: url(../images/flat/swipe-undo-button-down.png) 0 14 0 14 repeat repeat;
+	color: #fff;
+}
+
+body.flat-default .palm-row.selected .title
+{
+	color: #000 !important;
+}
+
+body.flat-default .palm-popup-fade-top,
+body.flat-default .palm-popup-fade-bottom
+{
+	display: none;
+}
+
+body.flat-default .scene-fade-top
+{
+	background: url(../images/flat/fade-top.png) top center repeat-x;
+}
+body.flat-default .scene-fade-bottom
+{
+	background: url(../images/flat/fade-bottom.png) bottom center repeat-x;
+}
+
+body.flat-default div.startup .scene-fade-top
+{
+	border-top: 46px solid #fff;
+	z-index: 9000;
+}
+body.flat-default div.startup div.palm-header
+{
+	z-index: 10000;
+}
+body.flat-default div.startup div.palm-header
+{
+	font-size: 20px;
+}
+
+body.flat-default .palm-header .network
+{
+	float: left;
+	margin: 0px;
+	margin-left: -12px;
+	margin-top: 7px;
+	margin-right: 6px;
+	width: 33px;
+	height: 33px;
+	background: url(../images/flat/header-button.png) center center no-repeat;
+}
+body.flat-default .palm-header .network div.img
+{
+	margin-top: 7px;
+	margin-left: 6px;
+	width: 21px;
+	height: 18px;
+}
+
+body.flat-default div.palm-header,
+body.flat-default div.palm-page-header.multi-line
+{
+	-webkit-border-image: none;
+	margin-top: -2px;
+	padding: 2px 20px 0 20px;
+	background: url(../images/flat/header.png) top left repeat;
+}
+body.flat-default div.palm-page-header.multi-line .title
+{
+	color: #fff;
+}
+body.flat-default div.palm-page-header.multi-line
+{
+	padding: 35px 20px 10px 24px;
+}
+body.flat-default .sliding-toggle
+{
+	-webkit-border-image: url(../images/flat/toggle-background.png) 9 29 9 29 repeat repeat;
+}
+body.flat-default .palm-group .palm-row.first .textfield-group.focused,
+body.flat-default .palm-group .palm-row.last .textfield-group.focused,
+body.flat-default .palm-group .palm-row.single .textfield-group.focused,
+body.flat-default .textfield-group.focused
+{
+	-webkit-border-image: url(../images/flat/textfield-shadow.png) 15 15 15 15 stretch stretch;
+}
+body.flat-default .palm-list textarea
+{
+	margin: -15px -10px 10px 0px;
+	padding: 2px 5px 0 3px;
+	-webkit-border-image: url(../images/flat/textfield-shadow.png) 10 10 10 10 stretch stretch;
+}
+body.flat-default textarea
+{
+	margin: 0 -10px 25px 0px;
+	padding: 4px 0 0 0;
+	-webkit-border-image: url(../images/flat/textfield-shadow.png) 10 10 10 10 stretch stretch;
+}
+body.flat-default .multiline-text
+{
+	margin: 0 0 -2px 0;
+}
+
+body.flat-default .inputFooter textarea
+{
+	margin: 0 -8px 15px 2px;
+	padding-left: 2px;
+}
+body.flat-default .inputFooter #inputWidget div.multiline-text
+{
+	margin-top: 2px;
+	margin-bottom: 0px;
+	margin-left: 1px;
+}
+
+body.flat-default .toggle-text
+{
+	color: #000;
+}
+body.flat-default .toggle-button.true
+{
+	background: url(../images/flat/toggle-on.png);
+}
+body.flat-default .toggle-button.false
+{
+	background: url(../images/flat/toggle-off.png);
+}
+body.flat-default .palm-list .palm-row .label
+{
+	color: #666;
+}
+body.flat-default div.palm-group
+{                            
+	-webkit-border-image: url(../images/flat/group.png) 40 18 18 18 repeat repeat;
+}
+body.flat-default .palm-group.unlabeled
+{
+	-webkit-border-image: url(../images/flat/group-unlabeled.png) 18 18 18 18 repeat repeat;
+}
+
+body.flat-default .palm-menu-button {
+  -webkit-border-image: url(../images/flat/menu-button.png) 0 25 200 25 repeat repeat;
+  color: #000;
+}
+body.flat-default .palm-menu-button.selected {
+  -webkit-border-image: url(../images/flat/menu-button.png) 50 25 150 25 repeat repeat;
+  color: #fff;
+}
+body.flat-default .palm-menu-text,
+body.flat-default .palm-menu-label {
+  -webkit-border-image: url(../images/flat/menu-button.png) 0 25 200 25 repeat repeat;
+  color: #000;
+}
+body.flat-default .palm-menu-text.selected {
+  -webkit-border-image: url(../images/flat/menu-button.png) 50 25 150 25 repeat repeat;
+  color: #fff;
+}
+body.flat-default .palm-menu-group .palm-menu-button,
+body.flat-default .palm-menu-group .palm-menu-label,
+body.flat-default .palm-menu-group .palm-menu-text {
+  -webkit-border-image: url(../images/flat/menu-segment-middle.png) 0 25 200 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-button:first-child,
+body.flat-default .palm-menu-group .palm-menu-label:first-child,
+body.flat-default .palm-menu-group .palm-menu-text:first-child {
+  -webkit-border-image: url(../images/flat/menu-segment-first.png) 0 25 200 25 repeat repeat;
+}
+
+body.flat-default .palm-menu-group .palm-menu-button:last-child,
+body.flat-default .palm-menu-group .palm-menu-label:last-child,
+body.flat-default .palm-menu-group .palm-menu-text:last-child {
+  -webkit-border-image: url(../images/flat/menu-segment-last.png) 0 25 200 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-button:only-child,
+body.flat-default .palm-menu-group .palm-menu-label:only-child,
+body.flat-default .palm-menu-group .palm-menu-text:only-child {
+  -webkit-border-image: url(../images/flat/menu-button.png) 0 25 200 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-button.selected,
+body.flat-default .palm-menu-group .palm-menu-label.selected,
+body.flat-default .palm-menu-group .palm-menu-text.selected {
+  -webkit-border-image: url(../images/flat/menu-segment-middle.png) 50 25 150 25 repeat repeat;
+  color: #fff;
+}
+body.flat-default .palm-menu-group .palm-menu-button.selected:first-child,
+body.flat-default .palm-menu-group .palm-menu-label.selected:first-child,
+body.flat-default .palm-menu-group .palm-menu-text.selected:first-child {
+  -webkit-border-image: url(../images/flat/menu-segment-first.png) 50 25 150 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-button.selected:last-child,
+body.flat-default .palm-menu-group .palm-menu-label.selected:last-child,
+body.flat-default .palm-menu-group .palm-menu-text.selected:last-child {
+  -webkit-border-image: url(../images/flat/menu-segment-last.png) 50 25 150 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-button.selected:only-child,
+body.flat-default .palm-menu-group .palm-menu-label.selected:only-child,
+body.flat-default .palm-menu-group .palm-menu-text.selected:only-child {
+  -webkit-border-image: url(../images/flat/menu-button.png) 50 25 150 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-depressed,
+body.flat-default .palm-menu-group .palm-menu-label.palm-depressed,
+body.flat-default .palm-menu-group .palm-menu-button.palm-depressed {
+  -webkit-border-image: url(../images/flat/menu-segment-middle.png) 100 25 100 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-depressed:first-child,
+body.flat-default .palm-menu-group .palm-menu-label.palm-depressed:first-child,
+body.flat-default .palm-menu-group .palm-menu-button.palm-depressed:first-child {
+  -webkit-border-image: url(../images/flat/menu-segment-first.png) 100 25 100 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-depressed:last-child,
+body.flat-default .palm-menu-group .palm-menu-label.palm-depressed:last-child,
+body.flat-default .palm-menu-group .palm-menu-button.palm-depressed:last-child {
+  -webkit-border-image: url(../images/flat/menu-segment-last.png) 100 25 100 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-depressed:only-child,
+body.flat-default .palm-menu-group .palm-menu-label.palm-depressed:only-child,
+body.flat-default .palm-menu-group .palm-menu-button.palm-depressed:only-child {
+  -webkit-border-image: url(../images/flat/menu-button.png) 100 25 100 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.selected.palm-depressed,
+body.flat-default .palm-menu-group .palm-menu-label.selected.palm-depressed,
+body.flat-default .palm-menu-group .palm-menu-button.selected.palm-depressed {
+  -webkit-border-image: url(../images/flat/menu-segment-middle.png) 150 25 50 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.selected.palm-depressed:first-child,
+body.flat-default .palm-menu-group .palm-menu-label.selected.palm-depressed:first-child,
+body.flat-default .palm-menu-group .palm-menu-button.selected.palm-depressed:first-child {
+  -webkit-border-image: url(../images/flat/menu-segment-first.png) 150 25 50 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.selected.palm-depressed:last-child,
+body.flat-default .palm-menu-group .palm-menu-label.selected.palm-depressed:last-child,
+body.flat-default .palm-menu-group .palm-menu-button.selected.palm-depressed:last-child {
+  -webkit-border-image: url(../images/flat/menu-segment-last.png) 150 25 50 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.selected.palm-depressed:only-child,
+body.flat-default .palm-menu-group .palm-menu-label.selected.palm-depressed:only-child,
+body.flat-default .palm-menu-group .palm-menu-button.selected.palm-depressed:only-child {
+  -webkit-border-image: url(../images/flat/menu-button.png) 150 25 50 25 repeat repeat;
+}
+body.flat-default .palm-menu-button.palm-disabled,
+body.flat-default .palm-menu-button.selected.palm-disabled,
+body.flat-default .palm-menu-text.palm-disabled,
+body.flat-default .palm-menu-text.selected.palm-disabled,
+body.flat-default .palm-menu-label.palm-disabled,
+body.flat-default .palm-menu-label.selected.palm-disabled {
+  -webkit-border-image: url(../images/flat/menu-button.png) 200 25 0 25 repeat repeat;
+  color: #000;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-disabled,
+body.flat-default .palm-menu-group .palm-menu-label.palm-disabled,
+body.flat-default .palm-menu-group .palm-menu-button.palm-disabled {
+  -webkit-border-image: url(../images/flat/menu-segment-middle.png) 200 25 0 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-disabled:first-child,
+body.flat-default .palm-menu-group .palm-menu-label.palm-disabled:first-child,
+body.flat-default .palm-menu-group .palm-menu-button.palm-disabled:first-child {
+  -webkit-border-image: url(../images/flat/menu-segment-first.png) 200 25 0 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-disabled:last-child,
+body.flat-default .palm-menu-group .palm-menu-label.palm-disabled:last-child,
+body.flat-default .palm-menu-group .palm-menu-button.palm-disabled:last-child {
+  -webkit-border-image: url(../images/flat/menu-segment-last.png) 200 25 0 25 repeat repeat;
+}
+body.flat-default .palm-menu-group .palm-menu-text.palm-disabled:only-child,
+body.flat-default .palm-menu-group .palm-menu-label.palm-disabled:only-child,
+body.flat-default .palm-menu-group .palm-menu-button.palm-disabled:only-child {
+  -webkit-border-image: url(../images/flat/menu-button.png) 200 25 0 25 repeat repeat;
+}
+
+
+body.flat-default .palm-row .list-selector-triangle
+{
+	width: 32px;
+	height: 32px;
+	margin: -5px -5px -3px 8px;
+	background: url(../images/flat/list-selector-triangle.png) top no-repeat;
+}
+body.flat-default .palm-row.selected .list-selector-triangle
+{
+	background: url(../images/flat/list-selector-triangle.png) bottom no-repeat;
+}
+
+body.flat-default .palm-button,
+body.flat-default #palm-dialog-box .palm-button
+{
+	color: #666;
+	-webkit-border-image: url(../images/flat/button-medium.png) 0 17 104 17 repeat repeat;
+}
+body.flat-default .palm-button.selected.primary,
+body.flat-default .palm-button.selected,
+body.flat-default #palm-dialog-box .palm-button.selected.primary,
+body.flat-default #palm-dialog-box .palm-button.selected
+{
+	color: #fff;
+	-webkit-border-image: url(../images/flat/button-medium.png) 52 17 52 17 repeat repeat;
+}
+body.flat-default .palm-button.disabled.primary,
+body.flat-default .palm-button.disabled,
+body.flat-default #palm-dialog-box .palm-button.disabled.primary,
+body.flat-default #palm-dialog-box .palm-button.disabled
+{
+	color: #666;
+	-webkit-border-image: url(../images/flat/button-medium.png) 104 17 0 17 repeat repeat;
+}
+body.flat-default .palm-button.affirmative,
+body.flat-default #palm-dialog-box .palm-button.affirmative
+{
+	color: #090;
+	-webkit-border-image: url(../images/flat/button-affirmative.png) 0 17 104 17 repeat repeat;
+}
+body.flat-default .palm-button.affirmative.selected,
+body.flat-default #palm-dialog-box .palm-button.affirmative.selected
+{
+	color: #fff;
+	-webkit-border-image: url(../images/flat/button-affirmative.png) 52 17 52 17 repeat repeat;
+}
+body.flat-default .palm-button.affirmative.disabled,
+body.flat-default #palm-dialog-box .palm-button.affirmative.disabled
+{
+	color: #090;
+	-webkit-border-image: url(../images/flat/button-affirmative.png) 104 17 0 17 repeat repeat;
+}
+body.flat-default .palm-button.negative,
+body.flat-default #palm-dialog-box .palm-button.negative
+{
+	color: #f33;
+	-webkit-border-image: url(../images/flat/button-negative.png) 0 17 104 17 repeat repeat;
+}
+body.flat-default .palm-button.negative.selected,
+body.flat-default #palm-dialog-box .palm-button.negative.selected
+{
+	color: #fff;
+	-webkit-border-image: url(../images/flat/button-negative.png) 52 17 52 17 repeat repeat;
+}
+body.flat-default .palm-button.negative.disabled,
+body.flat-default #palm-dialog-box .palm-button.negative.disabled
+{
+	color: #f33;
+	-webkit-border-image: url(../images/flat/button-negative.png) 104 17 0 17 repeat repeat;
+}
+body.flat-default .palm-button.secondary,
+body.flat-default .palm-button.dismiss,
+body.flat-default #palm-dialog-box .palm-button.secondary,
+body.flat-default #palm-dialog-box .palm-button.dismiss
+{
+	color: #999;
+	-webkit-border-image: url(../images/flat/button-light.png) 0 17 104 17 repeat repeat;
+}
+body.flat-default .palm-button.secondary.selected,
+body.flat-default .palm-button.dismiss.selected,
+body.flat-default #palm-dialog-box .palm-button.secondary.selected,
+body.flat-default #palm-dialog-box .palm-button.dismiss.selected
+{
+	color: #fff;
+	-webkit-border-image: url(../images/flat/button-light.png) 52 17 52 17 repeat repeat;
+}
+body.flat-default .palm-button.secondary.disabled,
+body.flat-default .palm-button.dismiss.disabled,
+body.flat-default #palm-dialog-box .palm-button.secondary.disabled,
+body.flat-default #palm-dialog-box .palm-button.dismiss.disabled
+{
+	color: #999;
+	-webkit-border-image: url(../images/flat/button-light.png) 104 17 0 17 repeat repeat;
+}
+
+
+body.flat-default .palm-dialog-box
+{
+	-webkit-border-image: url(../images/flat/dialog-background.png) 32 24 32 24 stretch stretch;
+}
+body.flat-default .palm-dialog-separator
+{
+	background: url(../images/flat/list-separator.png) bottom left repeat-x;
+}
+
+body.flat-default table.palm-divider,
+body.flat-default table.palm-divider td
+{
+	height: 24px;
+}
+body.flat-default table.palm-divider td.label
+{
+	text-transform: none;
+	font-weight: normal;
+	color: #000;
+	line-height: 24px;
+	height: 24px;
+}
+
+
+body.flat-default table.date-row
+{
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+body.flat-default table.date-row.palm-divider.labeled tr td.label
+{
+	background: #ccc;
+}
+body.flat-default table.date-row.palm-divider.labeled tr td.left
+{
+	width: 100%;
+	background: #ccc;
+}
+body.flat-default table.date-row.palm-divider.labeled tr td.right
+{
+	width: 10px;
+	background: #ccc;
+}
+
+body.flat-default table.palm-divider  td.label,
+body.flat-default table.palm-divider  td.left,
+body.flat-default table.palm-divider  td.right
+{
+	color: #fff;
+	background: #999;
+}
+
+
+body.flat-default .palm-page-header .icon
+{
+	background: url(../images/flat/header-icon-prefs.png) center center no-repeat;
+}
+
+body.flat-default .form .help-toggle
+{
+	background-image: url(../images/flat/help-toggle.png);
+}
+
+body.flat-default .form .palm-row .palm-row-wrapper .help-overlay,
+body.flat-default .form .palm-row.first .palm-row-wrapper .help-overlay
+{
+	background-image: url(../images/flat/helprow-1.png);
+}
+body.flat-default .form .palm-row.single .palm-row-wrapper .help-overlay,
+body.flat-default .form .palm-row.last .palm-row-wrapper .help-overlay
+{
+	background-image: url(../images/flat/helprow-2.png);
+}
+body.flat-default .form .palm-row .palm-row-wrapper .help-overlay.more div,
+body.flat-default .form .palm-row.first .palm-row-wrapper .help-overlay.more div
+{
+	-webkit-border-image: url(../images/flat/helprow-1.png) 23 23 23 23 stretch stretch;
+}
+body.flat-default .form .palm-row.single .palm-row-wrapper .help-overlay.more div,
+body.flat-default .form .palm-row.last .palm-row-wrapper .help-overlay.more div
+{
+	-webkit-border-image: url(../images/flat/helprow-2.png) 23 23 23 23 stretch stretch;
+}
+
+body.flat-default .file-picker #folderHolder .palm-row.check > .palm-row-wrapper > .check
+{
+	background: url(../images/flat/checkmark-green.png) center center no-repeat;
+}
+
+body.flat-default .folder-picker #list .palm-row.check > .palm-row-wrapper > .check
+{
+	background: url(../images/flat/checkmark-green.png) center center no-repeat;
+}
+
+body.flat-default .server-list .palm-list .palm-row-wrapper .button
+{
+	background-image: url(../images/flat/list-button-blank.png);
+}
+
+body.flat-default .inputFooter .sendButton
+{
+	background: url(../images/flat/send-airplane.png) top left no-repeat;
+}
+body.flat-default .inputFooter .sendButton.selected
+{
+	background: url(../images/flat/send-airplane-press.png) top left no-repeat;	
+}
+
+body.flat-default .server-status #popButton,
+body.flat-default .channel-chat #userButton
+{
+	right: 10px;
+	-webkit-border-image: url(../images/flat/header-button-press.png);
+	-webkit-border-image: url(../images/flat/header-button.png) 0 16 0 16 stretch stretch;
+}
+body.flat-default .server-status #popButton.selected,
+body.flat-default .channel-chat #userButton.selected
+{
+	-webkit-border-image: url(../images/flat/header-button-press.png) 0 16 0 16 stretch stretch;
+}
+
+body.flat-default .prefs .page-selector
+{
+	-webkit-border-image:url(../images/flat/header-selector.png) 0 22 0 16 stretch stretch;
+	color: #000;
+}
+
+body.flat-default .menu-prefs-icon
+{
+	background: url(../images/flat/icon-prefs-menu.png) center center no-repeat;
+}
+
+body.flat-default .server-list .palm-page-header-wrapper .title .version
+{
+	color: rgba(255, 255, 255, 0.8);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper .button.list .icon
+{
+	background-image: url(../images/flat/icon-list.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper .button.selected.list .icon
+{
+	background-image: url(../images/flat/icon-list-pressed.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper .button.prefs .icon
+{
+	background-image: url(../images/flat/icon-prefs.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper .button.selected.prefs .icon
+{
+	background-image: url(../images/flat/icon-prefs-pressed.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper.connected .button.status  .icon
+{
+	background-image: url(../images/flat/icon-connected.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper.disconnected .button.status .icon
+{
+	background-image: url(../images/flat/icon-disconnected.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper.warning .button.status .icon
+{
+	background-image: url(../images/palm-default/icon-warning.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper.error .button.status .icon
+{
+	background-image: url(../images/palm-default/icon-error.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper.error2 .button.status .icon
+{
+	background-image: url(../images/palm-default/icon-error2.png);
+}
+body.flat-default .server-list .palm-list .palm-row-wrapper.unknown .button.status .icon
+{
+	background-image: url(../images/palm-default/icon-unknown.png);
+}
+
+body.flat-default .channel-list #searchText,
+body.flat-default .channel-users #searchText
+{
+	-webkit-border-image: url(../images/flat/search-box.png) 10 25 10 25 stretch stretch;
+}
+
+body.flat-default .channel-chat #topicContainer
+{
+	position: fixed;
+	z-index: 10000;
+	top: -5000px;
+	left: 0px;
+	width: 320px;
+	background: rgba(255, 255, 255, 0.9) !important;
+	border-bottom: 2px solid #000;
+}
+body.flat-default .channel-chat #userButton .icon
+{
+	background: url(../images/flat/user-icon.png) left center no-repeat;
+}
+body.flat-default .channel-chat #userButton.selected .icon
+{
+	background: url(../images/flat/user-icon-pressed.png) left center no-repeat;
+}
+body.flat-default .channel-chat #userButton .userCount
+{
+	color: #000;
+}
+body.flat-default .channel-chat #userButton.selected .userCount
+{
+	color: #fff;
+}
+body.flat-default .server-status #popButton .icon
+{
+	background: url(../images/flat/pop-icon.png) center center no-repeat;
+}
+body.flat-default .server-status #popButton.selected .icon
+{
+	background: url(../images/flat/pop-icon-pressed.png) center center no-repeat;
+}
+
+

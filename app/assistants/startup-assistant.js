@@ -289,7 +289,7 @@ function StartupAssistant(changelog)
 StartupAssistant.prototype.setup = function()
 {
 	// set theme
-	setTheme(this.controller.document.body);
+	setTheme(this.controller.document);
 	
     // get elements
     this.titleContainer = this.controller.get('title');

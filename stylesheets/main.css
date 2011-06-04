@@ -183,7 +183,7 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 {
 	width: 76px;
 	height: 75px;
-	background: url(../icon.png) center center no-repeat;
+	background: url(../icon.png) center center no-repeat !important;
 }
 .server-list .palm-page-header-wrapper .title
 {
@@ -1533,6 +1533,11 @@ body.palm-dark .file-picker #folderHolder .palm-row .folderIcon
 	height: 18px;
 	margin-left: 13px;
 	margin-right: 2px;
+}
+.network div.img
+{
+	width: 21px;
+	height: 18px;
 	background-image: url(../images/palm-default/network-lag.png);
 	background-repeat: no-repeat;
 }
@@ -1544,58 +1549,58 @@ body.palm-dark .file-picker #folderHolder .palm-row .folderIcon
 	margin-top: 15px;
 	margin-right: 5px; 
 }
-.network.1x.lag-0						{ background-position:    0px    0px; }
-.network.1x.lag-1						{ background-position:    0px  -18px; }
-.network.1x.lag-2						{ background-position:    0px  -36px; }
-.network.1x.lag-3						{ background-position:    0px  -54px; }
-.network.1x.lag-4						{ background-position:    0px  -72px; }
-.network.1x.lag-5						{ background-position:    0px  -90px; }
-.network.3g.lag-0						{ background-position:  -21px    0px; }
-.network.3g.lag-1						{ background-position:  -21px  -18px; }
-.network.3g.lag-2						{ background-position:  -21px  -36px; }
-.network.3g.lag-3						{ background-position:  -21px  -54px; }
-.network.3g.lag-4						{ background-position:  -21px  -72px; }
-.network.3g.lag-5						{ background-position:  -21px  -90px; }
-.network.edge.lag-0						{ background-position:  -42px    0px; }
-.network.edge.lag-1						{ background-position:  -42px  -18px; }
-.network.edge.lag-2						{ background-position:  -42px  -36px; }
-.network.edge.lag-3						{ background-position:  -42px  -54px; }
-.network.edge.lag-4						{ background-position:  -42px  -72px; }
-.network.edge.lag-5						{ background-position:  -42px  -90px; }
-.network.evdo.lag-0						{ background-position:  -63px    0px; }
-.network.evdo.lag-1						{ background-position:  -63px  -18px; }
-.network.evdo.lag-2						{ background-position:  -63px  -36px; }
-.network.evdo.lag-3						{ background-position:  -63px  -54px; }
-.network.evdo.lag-4						{ background-position:  -63px  -72px; }
-.network.evdo.lag-5						{ background-position:  -63px  -90px; }
-.network.gprs.lag-0						{ background-position:  -84px    0px; }
-.network.gprs.lag-1						{ background-position:  -84px  -18px; }
-.network.gprs.lag-2						{ background-position:  -84px  -36px; }
-.network.gprs.lag-3						{ background-position:  -84px  -54px; }
-.network.gprs.lag-4						{ background-position:  -84px  -72px; }
-.network.gprs.lag-5						{ background-position:  -84px  -90px; }
-.network.hsdpa.lag-0					{ background-position: -105px    0px; }
-.network.hsdpa.lag-1					{ background-position: -105px  -18px; }
-.network.hsdpa.lag-2					{ background-position: -105px  -36px; }
-.network.hsdpa.lag-3					{ background-position: -105px  -54px; }
-.network.hsdpa.lag-4					{ background-position: -105px  -72px; }
-.network.hsdpa.lag-5					{ background-position: -105px  -90px; }
-.network.roaming.lag-0					{ background-position: -126px    0px; }
-.network.roaming.lag-1					{ background-position: -126px  -18px; }
-.network.roaming.lag-2					{ background-position: -126px  -36px; }
-.network.roaming.lag-3					{ background-position: -126px  -54px; }
-.network.roaming.lag-4					{ background-position: -126px  -72px; }
-.network.roaming.lag-5					{ background-position: -126px  -90px; }
-.network.umts.lag-0						{ background-position: -147px    0px; }
-.network.umts.lag-1						{ background-position: -147px  -18px; }
-.network.umts.lag-2						{ background-position: -147px  -36px; }
-.network.umts.lag-3						{ background-position: -147px  -54px; }
-.network.umts.lag-4						{ background-position: -147px  -72px; }
-.network.umts.lag-5						{ background-position: -147px  -90px; }
-.network.wifi.lag-0						{ background-position: -168px    0px; }
-.network.wifi.lag-1						{ background-position: -168px  -18px; }
-.network.wifi.lag-2						{ background-position: -168px  -36px; }
-.network.wifi.lag-3						{ background-position: -168px  -54px; }
-.network.wifi.lag-4						{ background-position: -168px  -72px; }
-.network.wifi.lag-5						{ background-position: -168px  -90px; }
+.network.1x.lag-0 div.img				{ background-position:    0px    0px; }
+.network.1x.lag-1 div.img				{ background-position:    0px  -18px; }
+.network.1x.lag-2 div.img				{ background-position:    0px  -36px; }
+.network.1x.lag-3 div.img				{ background-position:    0px  -54px; }
+.network.1x.lag-4 div.img				{ background-position:    0px  -72px; }
+.network.1x.lag-5 div.img				{ background-position:    0px  -90px; }
+.network.3g.lag-0 div.img				{ background-position:  -21px    0px; }
+.network.3g.lag-1 div.img				{ background-position:  -21px  -18px; }
+.network.3g.lag-2 div.img				{ background-position:  -21px  -36px; }
+.network.3g.lag-3 div.img				{ background-position:  -21px  -54px; }
+.network.3g.lag-4 div.img				{ background-position:  -21px  -72px; }
+.network.3g.lag-5 div.img				{ background-position:  -21px  -90px; }
+.network.edge.lag-0 div.img				{ background-position:  -42px    0px; }
+.network.edge.lag-1 div.img				{ background-position:  -42px  -18px; }
+.network.edge.lag-2 div.img				{ background-position:  -42px  -36px; }
+.network.edge.lag-3 div.img				{ background-position:  -42px  -54px; }
+.network.edge.lag-4 div.img				{ background-position:  -42px  -72px; }
+.network.edge.lag-5 div.img				{ background-position:  -42px  -90px; }
+.network.evdo.lag-0 div.img				{ background-position:  -63px    0px; }
+.network.evdo.lag-1 div.img				{ background-position:  -63px  -18px; }
+.network.evdo.lag-2 div.img				{ background-position:  -63px  -36px; }
+.network.evdo.lag-3 div.img				{ background-position:  -63px  -54px; }
+.network.evdo.lag-4 div.img				{ background-position:  -63px  -72px; }
+.network.evdo.lag-5 div.img				{ background-position:  -63px  -90px; }
+.network.gprs.lag-0 div.img				{ background-position:  -84px    0px; }
+.network.gprs.lag-1 div.img				{ background-position:  -84px  -18px; }
+.network.gprs.lag-2 div.img				{ background-position:  -84px  -36px; }
+.network.gprs.lag-3 div.img				{ background-position:  -84px  -54px; }
+.network.gprs.lag-4 div.img				{ background-position:  -84px  -72px; }
+.network.gprs.lag-5 div.img				{ background-position:  -84px  -90px; }
+.network.hsdpa.lag-0 div.img			{ background-position: -105px    0px; }
+.network.hsdpa.lag-1 div.img			{ background-position: -105px  -18px; }
+.network.hsdpa.lag-2 div.img			{ background-position: -105px  -36px; }
+.network.hsdpa.lag-3 div.img			{ background-position: -105px  -54px; }
+.network.hsdpa.lag-4 div.img			{ background-position: -105px  -72px; }
+.network.hsdpa.lag-5 div.img			{ background-position: -105px  -90px; }
+.network.roaming.lag-0 div.img			{ background-position: -126px    0px; }
+.network.roaming.lag-1 div.img			{ background-position: -126px  -18px; }
+.network.roaming.lag-2 div.img			{ background-position: -126px  -36px; }
+.network.roaming.lag-3 div.img			{ background-position: -126px  -54px; }
+.network.roaming.lag-4 div.img			{ background-position: -126px  -72px; }
+.network.roaming.lag-5 div.img			{ background-position: -126px  -90px; }
+.network.umts.lag-0 div.img				{ background-position: -147px    0px; }
+.network.umts.lag-1 div.img				{ background-position: -147px  -18px; }
+.network.umts.lag-2 div.img				{ background-position: -147px  -36px; }
+.network.umts.lag-3 div.img				{ background-position: -147px  -54px; }
+.network.umts.lag-4 div.img				{ background-position: -147px  -72px; }
+.network.umts.lag-5 div.img				{ background-position: -147px  -90px; }
+.network.wifi.lag-0 div.img				{ background-position: -168px    0px; }
+.network.wifi.lag-1 div.img				{ background-position: -168px  -18px; }
+.network.wifi.lag-2 div.img				{ background-position: -168px  -36px; }
+.network.wifi.lag-3 div.img				{ background-position: -168px  -54px; }
+.network.wifi.lag-4 div.img				{ background-position: -168px  -72px; }
+.network.wifi.lag-5 div.img				{ background-position: -168px  -90px; }
 

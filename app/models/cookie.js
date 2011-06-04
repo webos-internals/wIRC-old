@@ -15,6 +15,7 @@ preferenceCookie.prototype.get = function(reload)
 			{
 				// Global Group
 				theme:					'palm-default',
+				colorFlatHeader:		'lightseagreen',
 				piface:					'',
 				aiface:					false,
 				lagMeter:				false,

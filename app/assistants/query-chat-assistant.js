@@ -48,7 +48,7 @@ QueryChatAssistant.prototype.setup = function()
 	try
 	{
 		// set theme
-		setTheme(this.controller.document.body);
+		setTheme(this.controller.document);
 		
 		this.controller.setupWidget(Mojo.Menu.appMenu, { omitDefaultItems: true }, this.menuModel);
 		
