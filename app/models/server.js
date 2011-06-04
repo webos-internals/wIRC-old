@@ -929,24 +929,17 @@ ircServer.prototype.getNick = function(name)
 		
 		if (this.nicks.length > 0)
 		{
-			if (this.nickHash.get(getNick.toLowerCase()) === 1)
+			var nickNum = this.nickHash.get(getNick.toLowerCase());
+			if (nickNum != undefined)
 			{
-				for (var n = 0; n < this.nicks.length; n++)
-				{
-					// check lowercased
-					if (this.nicks[n].name.toLowerCase() == getNick.toLowerCase())
-					{
-						// set what we assume is correct case
-						this.nicks[n].name = getNick;
-						return this.nicks[n];
-					}
-				}
+				this.nicks[nickNum-1].name = getNick;
+				return this.nicks[nickNum-1];
 			}
 		}
 		
 		var tmpNick = new ircNick({name:getNick});
 		this.nicks.push(tmpNick);
-		this.nickHash.set(tmpNick.name.toLowerCase(), 1);
+		this.nickHash.set(getNick.toLowerCase(), this.nicks.length);
 		return tmpNick;
 	}
 	catch (e)
@@ -964,9 +957,16 @@ ircServer.prototype.removeNick = function(nick)
 			this.channels[i].removeNick(nick);
 		}
 
-		// Remove nick from server list
+		// Remove nick from server list and rebuild lookup hash
 		this.nicks = this.nicks.without(nick);
-		this.nickHash.unset(nick.name.toLowerCase());
+		this.nickHash = $H();
+		if (this.nicks.length > 0)
+		{
+			for (var n = 0; n < this.nicks.length; n++)
+			{
+				this.nickHash.set(this.nicks[n].name.toLowerCase(), n+1);
+			}
+		}
 	}
 }
 
