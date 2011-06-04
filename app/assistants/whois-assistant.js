@@ -61,8 +61,8 @@ WhoisAssistant.prototype.updateData = function()
 	if (this.nick.whois.signon)			data += Mojo.View.render({object: {title: 'Signed On At', data: formatDate(this.nick.whois.signon)}, template: rowTemplate});
 	if (this.nick.whois.signon)			data += Mojo.View.render({object: {title: 'Signed On For', data: formatSeconds(Math.round(new Date().getTime()/1000.0)-this.nick.whois.signon)}, template: rowTemplate});
 	
-	if (this.nick.whois.serverUrl)		data += Mojo.View.render({object: {title: 'Server', data: '<a href="'+this.nick.whois.serverUrl+'">' + this.nick.whois.server + '</a>', rowClass: 'last'}, template: rowTemplate});
-	else if (this.nick.whois.server)	data += Mojo.View.render({object: {title: 'Server', data: this.nick.whois.server, rowClass: 'last'}, template: rowTemplate});
+	if (this.nick.whois.server)			data += Mojo.View.render({object: {title: 'Server Address', data: this.nick.whois.server, rowClass: (this.nick.whois.server ? 'last' : '')}, template: rowTemplate});
+	if (this.nick.whois.serverInfo)		data += Mojo.View.render({object: {title: 'Server Info', data: formatLinks(this.nick.whois.serverInfo), rowClass: 'last'}, template: rowTemplate});
 	
 	// channel elements
 	if (this.nick.whois.channels.length > 0)

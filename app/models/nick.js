@@ -133,11 +133,10 @@ ircNick.prototype.getRandomColor = function()
 	return '#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6);
 }
 
-ircNick.prototype.whoisEvent = function(event, params_s)
+ircNick.prototype.whoisEvent = function(event, params)
 {
-	var params = JSON.parse(params_s);
-	//alert('--- ' + event + ' ---');
-	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+	//Mojo.Log.error('--- ' + event + ' ---');
+	//for (var p = 2; p < params.length; p++)	Mojo.Log.error('  ' + p + ': ' + params[p]);
 	
 	// if no whois object, lets create it
 	if (this.whois === false)
@@ -149,7 +148,7 @@ ircNick.prototype.whoisEvent = function(event, params_s)
 			realname:	false,
 			away:		false,
 			server:		false,
-			serverUrl:	false,
+			serverInfo:	false,
 			idle:		0,
 			signon:		0,
 			channels:	[], // {mode, name},
@@ -170,7 +169,7 @@ ircNick.prototype.whoisEvent = function(event, params_s)
 			
 		case '312': // WHOISSERVER
 			this.whois.server = params[2];
-			this.whois.serverUrl = params[3];
+			this.whois.serverInfo = params[3];
 			break;
 			
 		case '313': // WHOISOPERATOR
