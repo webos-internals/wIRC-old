@@ -31,73 +31,73 @@ aliasesModel.prototype.parse = function(message, objectType, object)
 					if (this.aliases[a].command.include('%c'))
 					{
 						if (objectType == 'channel')
-							parsed = parsed.replace('%c', object.name);
+							parsed = parsed.replace(/%c/g, object.name);
 						else
-							parsed = parsed.replace('%c', '');
+							parsed = parsed.replace(/%c/g, '');
 					}
 					
 					// %e - current network name
 					if (this.aliases[a].command.include('%e'))
 					{
 						if (objectType == 'channel')
-							parsed = parsed.replace('%e', (object.server.alias?object.server.alias:object.server.address));
+							parsed = parsed.replace(/%e/g, (object.server.alias?object.server.alias:object.server.address));
 						else if (objectType == 'server')
-							parsed = parsed.replace('%e', (object.alias?object.alias:object.address));
+							parsed = parsed.replace(/%e/g, (object.alias?object.alias:object.address));
 						else
-							parsed = parsed.replace('%e', '');
+							parsed = parsed.replace(/%e/g, '');
 					}
 					
 					// %n - users nick
 					if (this.aliases[a].command.include('%n'))
 					{
 						if (objectType == 'channel')
-							parsed = parsed.replace('%n', (object.server.nick?object.server.nick.name:''));
+							parsed = parsed.replace(/%n/g, (object.server.nick?object.server.nick.name:''));
 						else if (objectType == 'server')
-							parsed = parsed.replace('%n', (object.nick?object.nick.name:''));
+							parsed = parsed.replace(/%n/g, (object.nick?object.nick.name:''));
 						else
-							parsed = parsed.replace('%n', '');
+							parsed = parsed.replace(/%n/g, '');
 					}
 					
 					// %t - time/date
 					if (this.aliases[a].command.include('%t'))
 					{
-						parsed = parsed.replace('%t', Mojo.Format.formatDate(new Date(), {time: 'default', date: 'default'}));
+						parsed = parsed.replace(/%t/g, Mojo.Format.formatDate(new Date(), {time: 'default', date: 'default'}));
 					}
 					
 					// %2 - word 2
 					if (this.aliases[a].command.include('%2'))
 					{
 						if (pTwo && pTwo[1])
-							parsed = parsed.replace('%2', pTwo[1]);
+							parsed = parsed.replace(/%2/g, pTwo[1]);
 						else
-							parsed = parsed.replace('%2', '');
+							parsed = parsed.replace(/%2/g, '');
 					}
 					
 					// %3 - word 3
 					if (this.aliases[a].command.include('%3'))
 					{
 						if (pThree && pThree[2])
-							parsed = parsed.replace('%3', pThree[2]);
+							parsed = parsed.replace(/%3/g, pThree[2]);
 						else
-							parsed = parsed.replace('%3', '');
+							parsed = parsed.replace(/%3/g, '');
 					}
 					
 					// &2 - word 2 to end
 					if (this.aliases[a].command.include('&2'))
 					{
 						if (val)
-							parsed = parsed.replace('&2', val);
+							parsed = parsed.replace(/&2/g, val);
 						else
-							parsed = parsed.replace('&2', '');
+							parsed = parsed.replace(/&2/g, '');
 					}
 					
 					// &3 - word 3 to end
 					if (this.aliases[a].command.include('&3'))
 					{
 						if (pTwo && pTwo[2])
-							parsed = parsed.replace('&3', pTwo[1]);
+							parsed = parsed.replace(/&3/g, pTwo[1]);
 						else
-							parsed = parsed.replace('&3', '');
+							parsed = parsed.replace(/&3/g, '');
 					}
 					
 					/*

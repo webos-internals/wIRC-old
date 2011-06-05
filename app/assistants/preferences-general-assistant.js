@@ -376,11 +376,14 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	}
 	
 	if (this.prefs['theme'] == 'palm-default flat-default')
+<<<<<<< HEAD
 	{
 		this.colorHeaderAttr.choices = this.tmpListColorChoices;
 		this.controller.get('colorHeaderRow').style.display = '';
 	}
 	else if (this.prefs['theme'] == 'palm-default flat-default tango')
+=======
+>>>>>>> a556902c4e48151572a64867a5578c9cd8f16e26
 	{
 		this.colorHeaderAttr.choices = this.tmpListTangoColorChoices;
 		this.controller.get('colorHeaderRow').style.display = '';
