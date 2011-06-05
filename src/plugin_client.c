@@ -253,6 +253,7 @@ PDL_bool client_disconnect(PDL_JSParameters *params) {
 
 PDL_bool client_send_raw(PDL_JSParameters *params) {
 	return irc_send_raw(servers[PDL_GetJSParamInt(params, 0)].session,
+			"%s",
 			PDL_GetJSParamString(params, 1));
 }
 
