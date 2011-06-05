@@ -604,7 +604,7 @@ wircPluginModel.prototype.event_numeric_handler = function(id, event, origin, pa
 		case 320:
 			var tmpNick = servers.servers[id].getNick(params[1]);
 			if (tmpNick)
-				tmpNick.whoisEvent(event, params_s);
+				tmpNick.whoisEvent(event, params);
 			break;
 			
 		case 205: // trace

@@ -24,6 +24,7 @@ helpData.lookup =
 	
 	// GENERAL
 	'theme':				{ title: 'Theme',					data: 'This changes the entire look of the app. The options themselves should be self-explanatory.' },
+	'colorFlatHeader':		{ title: 'Header Color',			data: 'The "Flat" theme lets you pick the color of the headers in all scenes.<br><br>The random option uses the random nick coloring on the headers, every scene will have a different color.' },
 	'cmdHistoryMax':		{ title: 'Max Command History',		data: 'This is the number of commands wIRC will remember.<br /><br />You can access them with Hold Gesture + Q (to go back,) and Hold Gesture + A (to go forward.)'},
 	'blockScreenTimeout':	{ title: 'Block Screen Timeout',	data: 'When set to Yes, the screen won\'t dim while the chat window is active. If No, it will turn off after so much use.'},
 	'statusPop':			{ title: 'Default in New Card',		data: 'When set to Yes, the server status scene will pop out into its own card when you tap on that server.'},

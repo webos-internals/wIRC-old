@@ -214,7 +214,7 @@ ChannelUsersAssistant.prototype.listTap = function(event)
 	popupList.push({label: event.item.name});
 	popupList.push({label: 'Private Message',	 command: 'pm'});
 	popupList.push({label: 'Whois',				 command: 'whois'});
-	popupList.push({label: 'Send File',			 command: 'dcc-send'});
+	//popupList.push({label: 'Send File',			 command: 'dcc-send'});
 	popupList.push({label: 'Invite',			 command: 'invite'});
 	
 	var operatorList = [];

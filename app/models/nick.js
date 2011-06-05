@@ -5,7 +5,7 @@ function ircNick(params)
 	this.num =			ircNick.num;
 	this.name =			params.name;
 	this.server =		false; // set when whois is called, its the only time its needed
-	this.colorHex =		this.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
+	this.colorHex =		ircNick.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
 	this.channels =		[];
 	this.channelModes =	[];
 	this.me =			false;
@@ -115,29 +115,11 @@ ircNick.prototype.getListObject = function(channel)
 	return obj;
 }
 
-ircNick.prototype.getRandomColor3 = function(lightTheme)
-{
-	var hue = Math.ceil(Math.random()*360);
-	var saturation = 100;
-	var value = 100;
-	if (lightTheme)
-		value = Math.ceil(Math.random()*20)+70;
-	else
-		saturation = Math.ceil(Math.random()*40)+50;
-	var rgb = ColorConverter.toRGB(new HSV(hue,saturation,value));
-	return "rgb(" + rgb.r + "," + rgb.b + "," + rgb.g + ")";
-}
 
-ircNick.prototype.getRandomColor = function()
+ircNick.prototype.whoisEvent = function(event, params)
 {
-	return '#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6);
-}
-
-ircNick.prototype.whoisEvent = function(event, params_s)
-{
-	var params = JSON.parse(params_s);
-	//alert('--- ' + event + ' ---');
-	//for (var p = 2; p < params.length; p++)	alert('  ' + p + ': ' + params[p]);
+	//Mojo.Log.error('--- ' + event + ' ---');
+	//for (var p = 2; p < params.length; p++)	Mojo.Log.error('  ' + p + ': ' + params[p]);
 	
 	// if no whois object, lets create it
 	if (this.whois === false)
@@ -149,7 +131,7 @@ ircNick.prototype.whoisEvent = function(event, params_s)
 			realname:	false,
 			away:		false,
 			server:		false,
-			serverUrl:	false,
+			serverInfo:	false,
 			idle:		0,
 			signon:		0,
 			channels:	[], // {mode, name},
@@ -170,7 +152,7 @@ ircNick.prototype.whoisEvent = function(event, params_s)
 			
 		case '312': // WHOISSERVER
 			this.whois.server = params[2];
-			this.whois.serverUrl = params[3];
+			this.whois.serverInfo = params[3];
 			break;
 			
 		case '313': // WHOISOPERATOR
@@ -254,6 +236,25 @@ ircNick.prototype.openWhoisStageCallback = function(controller)
 
 
 ircNick.num = 0;
+
+
+ircNick.getRandomColor3 = function(lightTheme)
+{
+	var hue = Math.ceil(Math.random()*360);
+	var saturation = 100;
+	var value = 100;
+	if (lightTheme)
+		value = Math.ceil(Math.random()*20)+70;
+	else
+		saturation = Math.ceil(Math.random()*40)+50;
+	var rgb = ColorConverter.toRGB(new HSV(hue,saturation,value));
+	return "rgb(" + rgb.r + "," + rgb.b + "," + rgb.g + ")";
+}
+
+ircNick.getRandomColor = function()
+{
+	return '#'+('00000'+(Math.random()*0xFFFFFF+1<<0).toString(16)).substr(-6);
+}
 
 ircNick.hasPrefix = function(nick)
 {

@@ -5,7 +5,7 @@ function StartupAssistant(changelog)
     // on first start, this message is displayed, along with the current version message from below
     this.firstMessage = $L("Internet Relay Chat (IRC) is a form of real-time Internet text messaging (chat) or synchronous conferencing. It is mainly designed for group communication in discussion forums, called channels, but also allows one-to-one communication via private message.");
 	
-    this.secondMessage = $L("wIRC - THE webOS IRC Client");
+    this.secondMessage = $L("<b>Hey, You've installed an update!</b><br>Check out what's changed:");
 	
     // on new version start
     this.newMessages =
@@ -289,7 +289,7 @@ function StartupAssistant(changelog)
 StartupAssistant.prototype.setup = function()
 {
 	// set theme
-	setTheme(this.controller.document.body);
+	setTheme(this.controller.document);
 	
     // get elements
     this.titleContainer = this.controller.get('title');
@@ -301,56 +301,40 @@ StartupAssistant.prototype.setup = function()
 		this.titleContainer.innerHTML = $L('Changelog');
 	}
 	else
-		{
-	    if (vers.isFirst || !vers.isFirst) 
+	{
+	    if (vers.isFirst) 
 		{
 		    this.titleContainer.innerHTML = $L("Welcome To wIRC");
 		}
 	    else if (vers.isNew) 
 		{
-		    this.titleContainer.innerHTML = $L("wIRC Changelog");
+		    this.titleContainer.innerHTML = $L("wIRC Updated");
 		}
 	}
 	
 	
     // build data
     var html = '';
-	if (this.justChangelog)
-	{
-		for (var m = 0; m < this.newMessages.length; m++) 
-		{
-		    html += Mojo.View.render({object: {title: 'v' + this.newMessages[m].version}, template: 'startup/changeLog'});
-		    html += '<ul>';
-		    for (var l = 0; l < this.newMessages[m].log.length; l++)
-			{
-				html += '<li>' + this.newMessages[m].log[l] + '</li>';
-		    }
-		    html += '</ul>';
-		}
-	}
-	else
+	if (!this.justChangelog)
 	{
 		if (vers.isFirst)
 		{
 			html += '<div class="text">' + this.firstMessage + '</div>';
 		}
-	    if (vers.isNew)
+	    else if (vers.isNew)
 		{
-			if (!this.justChangelog)
-			{
-				html += '<div class="text">' + this.secondMessage + '</div>';
-			}
-			for (var m = 0; m < this.newMessages.length; m++) 
-			{
-			    html += Mojo.View.render({object: {title: 'v' + this.newMessages[m].version}, template: 'startup/changeLog'});
-			    html += '<ul>';
-			    for (var l = 0; l < this.newMessages[m].log.length; l++)
-				{
-					html += '<li>' + this.newMessages[m].log[l] + '</li>';
-			    }
-			    html += '</ul>';
-			}
+			html += '<div class="text">' + this.secondMessage + '</div>';
+		}
+    }
+	for (var m = 0; m < this.newMessages.length; m++) 
+	{
+	    html += Mojo.View.render({object: {title: 'v' + this.newMessages[m].version}, template: 'startup/changeLog'});
+	    html += '<ul>';
+	    for (var l = 0; l < this.newMessages[m].log.length; l++)
+		{
+			html += '<li>' + this.newMessages[m].log[l] + '</li>';
 	    }
+	    html += '</ul>';
 	}
 	
     // set data

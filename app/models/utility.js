@@ -280,7 +280,7 @@ getColor = function(numeric)
 }
 
 // set the body class for the current theme and device size
-setTheme = function(body, theme)
+setTheme = function(doc, theme)
 {
 	var deviceTheme = '';
 	if (Mojo.Environment.DeviceInfo.modelNameAscii == 'Pixi' ||
@@ -288,7 +288,207 @@ setTheme = function(body, theme)
 		deviceTheme = ' small-device';
 	
 	if (theme)
-		body.className = theme + deviceTheme;
+		doc.body.className = theme + deviceTheme;
 	else
-		body.className = prefs.get().theme + deviceTheme;
+		doc.body.className = prefs.get().theme + deviceTheme;
+	
+	var headCSS = getCSSRule(doc, 'body.flat-default div.palm-header, body.flat-default div.palm-page-header.multi-line');
+	if (headCSS)
+	{
+		if (prefs.get().colorFlatHeader == 'random')
+			headCSS.style.backgroundColor = ircNick.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
+		else
+			headCSS.style.backgroundColor = prefs.get().colorFlatHeader;
+	}
+	
 }
+
+// this function comes from http://www.hunlock.com/blogs/Totally_Pwn_CSS_with_Javascript
+// modified to accept a document variable
+getCSSRule = function(doc, ruleName, deleteFlag)
+{
+	ruleName = ruleName.toLowerCase();
+	if (doc.styleSheets)
+	{
+		for (var i = 0; i < doc.styleSheets.length; i++)
+		{
+			var styleSheet = doc.styleSheets[i];
+			var ii = 0;
+			var cssRule = false;
+			do
+			{
+				if (styleSheet.cssRules)
+					cssRule = styleSheet.cssRules[ii];
+				else
+					cssRule = styleSheet.rules[ii]; 
+				if (cssRule)
+				{
+					if (cssRule.selectorText &&
+						cssRule.selectorText.toLowerCase() == ruleName)
+					{
+						if (deleteFlag == 'delete')
+						{
+							if (styleSheet.cssRules)
+								styleSheet.deleteRule(ii);
+							else
+								styleSheet.removeRule(ii);
+							return true;
+						}
+						else
+						{
+							return cssRule;
+						}
+					}
+				}
+				ii++;
+			} while (cssRule)
+		}
+	}
+	return false;
+}
+
+
+
+	
+var listColorChoices = [
+	{label:'', value:''},
+	{label:'aliceblue', value:'aliceblue'},
+	{label:'antiquewhite', value:'antiquewhite'},
+	{label:'aqua', value:'aqua'},
+	{label:'aquamarine', value:'aquamarine'},
+	{label:'azure', value:'azure'},
+	{label:'beige', value:'beige'},
+	{label:'bisque', value:'bisque'},
+	{label:'black', value:'black'},
+	{label:'blanchedalmond', value:'blanchedalmond'},
+	{label:'blue', value:'blue'},
+	{label:'blueviolet', value:'blueviolet'},
+	{label:'brown', value:'brown'},
+	{label:'burlywood', value:'burlywood'},
+	{label:'cadetblue', value:'cadetblue'},
+	{label:'chartreuse', value:'chartreuse'},
+	{label:'chocolate', value:'chocolate'},
+	{label:'coral', value:'coral'},
+	{label:'cornflowerblue', value:'cornflowerblue'},
+	{label:'cornsilk', value:'cornsilk'},
+	{label:'crimson', value:'crimson'},
+	{label:'cyan', value:'cyan'},
+	{label:'darkblue', value:'darkblue'},
+	{label:'darkcyan', value:'darkcyan'},
+	{label:'darkgoldenrod', value:'darkgoldenrod'},
+	{label:'darkgray', value:'darkgray'},
+	{label:'darkgreen', value:'darkgreen'},
+	{label:'darkkhaki', value:'darkkhaki'},
+	{label:'darkmagenta', value:'darkmagenta'},
+	{label:'darkolivegreen', value:'darkolivegreen'},
+	{label:'darkorange', value:'darkorange'},
+	{label:'darkorchid', value:'darkorchid'},
+	{label:'darkred', value:'darkred'},
+	{label:'darksalmon', value:'darksalmon'},
+	{label:'darkseagreen', value:'darkseagreen'},
+	{label:'darkslateblue', value:'darkslateblue'},
+	{label:'darkslategray', value:'darkslategray'},
+	{label:'darkturquoise', value:'darkturquoise'},
+	{label:'darkviolet', value:'darkviolet'},
+	{label:'deeppink', value:'deeppink'},
+	{label:'deepskyblue', value:'deepskyblue'},
+	{label:'dimgray', value:'dimgray'},
+	{label:'dodgerblue', value:'dodgerblue'},
+	{label:'firebrick', value:'firebrick'},
+	{label:'floralwhite', value:'floralwhite'},
+	{label:'forestgreen', value:'forestgreen'},
+	{label:'fuchsia', value:'fuchsia'},
+	{label:'gainsboro', value:'gainsboro'},
+	{label:'ghostwhite', value:'ghostwhite'},
+	{label:'gold', value:'gold'},
+	{label:'goldenrod', value:'goldenrod'},
+	{label:'gray', value:'gray'},
+	{label:'green', value:'green'},
+	{label:'greenyellow', value:'greenyellow'},
+	{label:'honeydew', value:'honeydew'},
+	{label:'hotpink', value:'hotpink'},
+	{label:'indianred', value:'indianred'},
+	{label:'indigo', value:'indigo'},
+	{label:'ivory', value:'ivory'},
+	{label:'khaki', value:'khaki'},
+	{label:'lavender', value:'lavender'},
+	{label:'lavenderblush', value:'lavenderblush'},
+	{label:'lawngreen', value:'lawngreen'},
+	{label:'lemonchiffon', value:'lemonchiffon'},
+	{label:'lightblue', value:'lightblue'},
+	{label:'lightcoral', value:'lightcoral'},
+	{label:'lightcyan', value:'lightcyan'},
+	{label:'lightgoldenrodyellow', value:'lightgoldenrodyellow'},
+	{label:'lightgreen', value:'lightgreen'},
+	{label:'lightpink', value:'lightpink'},
+	{label:'lightsalmon', value:'lightsalmon'},
+	{label:'lightseagreen', value:'lightseagreen'},
+	{label:'lightskyblue', value:'lightskyblue'},
+	{label:'lightslategray', value:'lightslategray'},
+	{label:'lightsteelblue', value:'lightsteelblue'},
+	{label:'lightyellow', value:'lightyellow'},
+	{label:'lime', value:'lime'},
+	{label:'limegreen', value:'limegreen'},
+	{label:'linen', value:'linen'},
+	{label:'magenta', value:'magenta'},
+	{label:'maroon', value:'maroon'},
+	{label:'mediumaquamarine', value:'mediumaquamarine'},
+	{label:'mediumblue', value:'mediumblue'},
+	{label:'mediumorchid', value:'mediumorchid'},
+	{label:'mediumpurple', value:'mediumpurple'},
+	{label:'mediumseagreen', value:'mediumseagreen'},
+	{label:'mediumslateblue', value:'mediumslateblue'},
+	{label:'mediumspringgreen', value:'mediumspringgreen'},
+	{label:'mediumturquoise', value:'mediumturquoise'},
+	{label:'mediumvioletred', value:'mediumvioletred'},
+	{label:'midnightblue', value:'midnightblue'},
+	{label:'mintcream', value:'mintcream'},
+	{label:'mistyrose', value:'mistyrose'},
+	{label:'moccasin', value:'moccasin'},
+	{label:'navajowhite', value:'navajowhite'},
+	{label:'navy', value:'navy'},
+	{label:'oldlace', value:'oldlace'},
+	{label:'olive', value:'olive'},
+	{label:'olivedrab', value:'olivedrab'},
+	{label:'orange', value:'orange'},
+	{label:'orangered', value:'orangered'},
+	{label:'orchid', value:'orchid'},
+	{label:'palegoldenrod', value:'palegoldenrod'},
+	{label:'palegreen', value:'palegreen'},
+	{label:'paleturquoise', value:'paleturquoise'},
+	{label:'palevioletred', value:'palevioletred'},
+	{label:'papayawhip', value:'papayawhip'},
+	{label:'peachpuff', value:'peachpuff'},
+	{label:'peru', value:'peru'},
+	{label:'pink', value:'pink'},
+	{label:'plum', value:'plum'},
+	{label:'powderblue', value:'powderblue'},
+	{label:'purple', value:'purple'},
+	{label:'red', value:'red'},
+	{label:'rosybrown', value:'rosybrown'},
+	{label:'royalblue', value:'royalblue'},
+	{label:'saddlebrown', value:'saddlebrown'},
+	{label:'salmon', value:'salmon'},
+	{label:'sandybrown', value:'sandybrown'},
+	{label:'seagreen', value:'seagreen'},
+	{label:'seashell', value:'seashell'},
+	{label:'sienna', value:'sienna'},
+	{label:'silver', value:'silver'},
+	{label:'skyblue', value:'skyblue'},
+	{label:'slateblue', value:'slateblue'},
+	{label:'slategray', value:'slategray'},
+	{label:'snow', value:'snow'},
+	{label:'springgreen', value:'springgreen'},
+	{label:'steelblue', value:'steelblue'},
+	{label:'tan', value:'tan'},
+	{label:'teal', value:'teal'},
+	{label:'thistle', value:'thistle'},
+	{label:'tomato', value:'tomato'},
+	{label:'turquoise', value:'turquoise'},
+	{label:'violet', value:'violet'},
+	{label:'wheat', value:'wheat'},
+	{label:'white', value:'white'},
+	{label:'whitesmoke', value:'whitesmoke'},
+	{label:'yellow', value:'yellow'},
+	{label:'yellowgreen', value:'yellowgreen'}
+];
