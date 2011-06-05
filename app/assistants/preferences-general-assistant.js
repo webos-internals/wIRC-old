@@ -87,7 +87,7 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
-		var tmpListColorChoices = listColorChoices;
+		var tmpListColorChoices = listTangoColorChoices;
 		tmpListColorChoices[0] = {label:'Random', value:'random'};
 		this.controller.setupWidget
 		(
@@ -369,7 +369,8 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 		Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 	}
 	
-	if (this.prefs['theme'] == 'palm-default flat-default')
+	if (this.prefs['theme'] == 'palm-default flat-default' || 
+		this.prefs['theme'] == 'palm-default flat-tango')
 	{
 		this.controller.get('colorHeaderRow').style.display = '';
 	}
