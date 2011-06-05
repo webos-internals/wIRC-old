@@ -15,13 +15,6 @@ function StartupAssistant(changelog)
 			log:
 			[
 				'New Flat Theme',
-				'Alias parsing fix, thanks dwc'
-			]
-		},
-		{
-			version: '0.3.14',
-			log:
-			[
 				'Added popup list of common server commands to the server list when connected',
 				'Positioning updates for Pixi/Veer resolution',
 				'New colored notification tray icon',
@@ -34,7 +27,8 @@ function StartupAssistant(changelog)
 				'Added whowas command',
 				'Fixed away option in appmenu',
 				'Fixed kick option in user list',
-				'Fixed GUI lockups in 2.x caused by channel list and nick list'
+				'Fixed GUI lockups in 2.x caused by channel list and nick list',
+				'Alias parsing fix, thanks dwc'
 			]
 		},
 		{
