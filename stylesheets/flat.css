@@ -517,6 +517,12 @@ body.flat-default .palm-group .single .palm-swipe-delete
 	border-width: 0px;
 	-webkit-border-image: none;
 }
+body.flat-default .palm-row.palm-reorder-element
+{  
+	background: rgba(255, 255, 255, 0.8); 
+	border-width: 0;
+	-webkit-border-image: none;
+}
 body.flat-default .palm-row.palm-delete-element
 {
 	background: rgba(255, 255, 255, 0.8);
