@@ -619,6 +619,10 @@ body.flat-default .palm-page-header .icon
 {
 	background: url(../images/flat/header-icon-prefs.png) center center no-repeat;
 }
+body.flat-default .server-list .palm-page-header-wrapper .icon
+{
+	background: url(../images/flat/icon.png) center center no-repeat !important;
+}
 
 body.flat-default .form .help-toggle
 {
@@ -731,6 +735,12 @@ body.flat-default .server-list .palm-list .palm-row-wrapper.error2 .button.statu
 body.flat-default .server-list .palm-list .palm-row-wrapper.unknown .button.status .icon
 {
 	background-image: url(../images/flat/icon-unknown.png);
+}
+
+body.flat-default .server-list #noServers .icon,
+body.flat-default .server-list #noPlugin .icon
+{
+	background: url(../images/flat/no-servers.png) center center no-repeat;
 }
 
 body.flat-default .channel-list #searchText,
