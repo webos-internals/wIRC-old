@@ -373,7 +373,6 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 	
 	if (this.prefs['theme'] == 'palm-default flat-default')
 	{
-		this.colorHeaderAttr.choices = this.tmpListColorChoices;
 		this.controller.get('colorHeaderRow').style.display = '';
 	}
 	else
