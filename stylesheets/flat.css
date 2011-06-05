@@ -718,19 +718,19 @@ body.flat-default .server-list .palm-list .palm-row-wrapper.disconnected .button
 }
 body.flat-default .server-list .palm-list .palm-row-wrapper.warning .button.status .icon
 {
-	background-image: url(../images/palm-default/icon-warning.png);
+	background-image: url(../images/flat/icon-warning.png);
 }
 body.flat-default .server-list .palm-list .palm-row-wrapper.error .button.status .icon
 {
-	background-image: url(../images/palm-default/icon-error.png);
+	background-image: url(../images/flat/icon-error.png);
 }
 body.flat-default .server-list .palm-list .palm-row-wrapper.error2 .button.status .icon
 {
-	background-image: url(../images/palm-default/icon-error2.png);
+	background-image: url(../images/flat/icon-error2.png);
 }
 body.flat-default .server-list .palm-list .palm-row-wrapper.unknown .button.status .icon
 {
-	background-image: url(../images/palm-default/icon-unknown.png);
+	background-image: url(../images/flat/icon-unknown.png);
 }
 
 body.flat-default .channel-list #searchText,
@@ -774,4 +774,8 @@ body.flat-default .server-status #popButton.selected .icon
 	background: url(../images/flat/pop-icon-pressed.png) center center no-repeat;
 }
 
+body.flat-default .dcc-list #dccList .palm-row-wrapper.send .bar div
+{
+	background-image: url(../images/flat/dcc-progress.png);
+}
 
