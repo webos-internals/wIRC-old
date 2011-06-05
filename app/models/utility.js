@@ -293,7 +293,13 @@ setTheme = function(doc, theme)
 		doc.body.className = prefs.get().theme + deviceTheme;
 	
 	var headCSS = getCSSRule(doc, 'body.flat-default div.palm-header, body.flat-default div.palm-page-header.multi-line');
-	if (headCSS) headCSS.style.backgroundColor = prefs.get().colorFlatHeader;
+	if (headCSS)
+	{
+		if (prefs.get().colorFlatHeader == 'random')
+			headCSS.style.backgroundColor = ircNick.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
+		else
+			headCSS.style.backgroundColor = prefs.get().colorFlatHeader;
+	}
 	
 }
 
@@ -301,51 +307,44 @@ setTheme = function(doc, theme)
 // modified to accept a document variable
 getCSSRule = function(doc, ruleName, deleteFlag)
 {
-	try
+	ruleName = ruleName.toLowerCase();
+	if (doc.styleSheets)
 	{
-		ruleName = ruleName.toLowerCase();
-		if (doc.styleSheets)
+		for (var i = 0; i < doc.styleSheets.length; i++)
 		{
-			for (var i = 0; i < doc.styleSheets.length; i++)
+			var styleSheet = doc.styleSheets[i];
+			var ii = 0;
+			var cssRule = false;
+			do
 			{
-				var styleSheet = doc.styleSheets[i];
-				var ii = 0;
-				var cssRule = false;
-				do
+				if (styleSheet.cssRules)
+					cssRule = styleSheet.cssRules[ii];
+				else
+					cssRule = styleSheet.rules[ii]; 
+				if (cssRule)
 				{
-					if (styleSheet.cssRules)
-						cssRule = styleSheet.cssRules[ii];
-					else
-						cssRule = styleSheet.rules[ii]; 
-					if (cssRule)
+					if (cssRule.selectorText &&
+						cssRule.selectorText.toLowerCase() == ruleName)
 					{
-						if (cssRule.selectorText &&
-							cssRule.selectorText.toLowerCase() == ruleName)
+						if (deleteFlag == 'delete')
 						{
-							if (deleteFlag == 'delete')
-							{
-								if (styleSheet.cssRules)
-									styleSheet.deleteRule(ii);
-								else
-									styleSheet.removeRule(ii);
-								return true;
-							}
+							if (styleSheet.cssRules)
+								styleSheet.deleteRule(ii);
 							else
-							{
-								return cssRule;
-							}
+								styleSheet.removeRule(ii);
+							return true;
+						}
+						else
+						{
+							return cssRule;
 						}
 					}
-					ii++;
-				} while (cssRule)
-			}
+				}
+				ii++;
+			} while (cssRule)
 		}
-		return false;
 	}
-	catch (e)
-	{
-		Mojo.Log.logException(e, 'utility#getCSSRule');
-	}
+	return false;
 }
 
 

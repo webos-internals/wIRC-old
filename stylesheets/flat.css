@@ -127,58 +127,7 @@ body.flat-default .palm-row.selected
 	-webkit-border-image: none;
 	background: #e8e8e8;
 }
-body.flat-default .palm-row.palm-swipe-delete
-{
-	border-width: 0px;
-	-webkit-border-image: none;
-	background: #d1d1d1;
-}
-body.flat-default .palm-group .palm-swipe-delete,
-body.flat-default .palm-group .first .palm-swipe-delete,
-body.flat-default .palm-group .last .palm-swipe-delete,
-body.flat-default .palm-group .single .palm-swipe-delete
-{
-	border-width: 0px;
-	-webkit-border-image: none;
-}
-body.flat-default .palm-row.palm-delete-element
-{
-	background: rgba(255, 255, 255, 0.8);
-	border-width: 0;
-	-webkit-border-image: none;
-}
-body.flat-default .palm-row.selected > .palm-row-wrapper,
-body.flat-default .palm-row.palm-delete-element > .palm-row-wrapper,
-body.flat-default .palm-row.palm-reorder-element > .palm-row-wrapper,
-body.flat-default .palm-row.palm-swipe-delete > .palm-row-wrapper
-{
-	margin: 0px;
-}
-body.flat-default .palm-swipe-delete-button
-{
-	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
-	-webkit-border-image: url(../images/flat/swipe-delete-button-up.png) 0 14 0 14 repeat repeat;
-	color: #f33;
-}
 
-body.flat-default .palm-swipe-delete-button.selected
-{
-	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
-	color: #fff;
-}
-
-body.flat-default .palm-swipe-undo-button
-{
-	-webkit-border-image: url(../images/flat/swipe-undo-button-down.png) 0 14 0 14 repeat repeat;
-	-webkit-border-image: url(../images/flat/swipe-undo-button-up.png) 0 14 0 14 repeat repeat;
-	color: #ccc;
-}
-
-body.flat-default .palm-swipe-undo-button.selected
-{
-	-webkit-border-image: url(../images/flat/swipe-undo-button-down.png) 0 14 0 14 repeat repeat;
-	color: #fff;
-}
 
 body.flat-default .palm-row.selected .title
 {
@@ -539,6 +488,73 @@ body.flat-default #palm-dialog-box .palm-button.dismiss.disabled
 	-webkit-border-image: url(../images/flat/button-light.png) 104 17 0 17 repeat repeat;
 }
 
+body.flat-default .palm-slider-button
+{
+	background: url(../images/flat/slider-button-press.png);
+	background: url(../images/flat/slider-button.png) center center no-repeat;
+}
+body.flat-default .palm-slider-button.selected
+{
+	background: url(../images/flat/slider-button-press.png) center center no-repeat;
+}
+
+body.flat-default .palm-slider-background
+{
+	-webkit-border-image: url(../images/flat/slider-background-3tile.png) 0 4 0 4 repeat repeat;
+}
+
+body.flat-default .palm-row.palm-swipe-delete
+{
+	border-width: 0px;
+	-webkit-border-image: none;
+	background: #d1d1d1;
+}
+body.flat-default .palm-group .palm-swipe-delete,
+body.flat-default .palm-group .first .palm-swipe-delete,
+body.flat-default .palm-group .last .palm-swipe-delete,
+body.flat-default .palm-group .single .palm-swipe-delete
+{
+	border-width: 0px;
+	-webkit-border-image: none;
+}
+body.flat-default .palm-row.palm-delete-element
+{
+	background: rgba(255, 255, 255, 0.8);
+	border-width: 0;
+	-webkit-border-image: none;
+}
+body.flat-default .palm-row.selected > .palm-row-wrapper,
+body.flat-default .palm-row.palm-delete-element > .palm-row-wrapper,
+body.flat-default .palm-row.palm-reorder-element > .palm-row-wrapper,
+body.flat-default .palm-row.palm-swipe-delete > .palm-row-wrapper
+{
+	margin: 0px;
+}
+body.flat-default .palm-swipe-delete-button
+{
+	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
+	-webkit-border-image: url(../images/flat/swipe-delete-button-up.png) 0 14 0 14 repeat repeat;
+	color: #f33;
+}
+
+body.flat-default .palm-swipe-delete-button.selected
+{
+	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
+	color: #fff;
+}
+
+body.flat-default .palm-swipe-undo-button
+{
+	-webkit-border-image: url(../images/flat/swipe-undo-button-down.png) 0 14 0 14 repeat repeat;
+	-webkit-border-image: url(../images/flat/swipe-undo-button-up.png) 0 14 0 14 repeat repeat;
+	color: #ccc;
+}
+
+body.flat-default .palm-swipe-undo-button.selected
+{
+	-webkit-border-image: url(../images/flat/swipe-undo-button-down.png) 0 14 0 14 repeat repeat;
+	color: #fff;
+}
 
 body.flat-default .palm-dialog-box
 {
@@ -603,26 +619,20 @@ body.flat-default .form .help-toggle
 	background-image: url(../images/flat/help-toggle.png);
 }
 
+
+
 body.flat-default .form .palm-row .palm-row-wrapper .help-overlay,
 body.flat-default .form .palm-row.first .palm-row-wrapper .help-overlay
 {
-	background-image: url(../images/flat/helprow-1.png);
+	-webkit-border-image: url(../images/flat/helprow-1.png) 20 20 20 20 stretch stretch;
 }
+body.flat-default .form .palm-row.last .palm-row-wrapper .help-overlay,
 body.flat-default .form .palm-row.single .palm-row-wrapper .help-overlay,
-body.flat-default .form .palm-row.last .palm-row-wrapper .help-overlay
+body.flat-default .form .palm-group > .help-overlay
 {
-	background-image: url(../images/flat/helprow-2.png);
+	-webkit-border-image: url(../images/flat/helprow-2.png) 20 20 20 20 stretch stretch;
 }
-body.flat-default .form .palm-row .palm-row-wrapper .help-overlay.more div,
-body.flat-default .form .palm-row.first .palm-row-wrapper .help-overlay.more div
-{
-	-webkit-border-image: url(../images/flat/helprow-1.png) 23 23 23 23 stretch stretch;
-}
-body.flat-default .form .palm-row.single .palm-row-wrapper .help-overlay.more div,
-body.flat-default .form .palm-row.last .palm-row-wrapper .help-overlay.more div
-{
-	-webkit-border-image: url(../images/flat/helprow-2.png) 23 23 23 23 stretch stretch;
-}
+
 
 body.flat-default .file-picker #folderHolder .palm-row.check > .palm-row-wrapper > .check
 {

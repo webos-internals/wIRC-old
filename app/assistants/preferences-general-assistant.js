@@ -86,12 +86,14 @@ PreferencesGeneralAssistant.prototype.setup = function()
 			},
 			this.prefs
 		);
+		var tmpListColorChoices = listColorChoices;
+		tmpListColorChoices[0] = {label:'Random', value:'random'};
 		this.controller.setupWidget
 		(
 			'colorFlatHeader',
 			{
 				label: 'Header Color',
-				choices: listColorChoices,
+				choices: tmpListColorChoices,
 				modelProperty: 'colorFlatHeader'
 			},
 			this.prefs
@@ -381,7 +383,13 @@ PreferencesGeneralAssistant.prototype.colorFlatHeaderChanged = function(event)
 	var tmp = prefs.get(true);
 	
 	var headCSS = getCSSRule(this.controller.document, 'body.flat-default div.palm-header, body.flat-default div.palm-page-header.multi-line');
-	if (headCSS) headCSS.style.backgroundColor = event.value;
+	if (headCSS)
+	{
+		if (event.value == 'random')
+			headCSS.style.backgroundColor = ircNick.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
+		else
+			headCSS.style.backgroundColor = event.value;
+	}
 	
 	// set theme on all other open stages
 	Mojo.Controller.getAppController().assistant.updateTheme();
