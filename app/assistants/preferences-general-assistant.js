@@ -81,24 +81,30 @@ PreferencesGeneralAssistant.prototype.setup = function()
 					{label:'Palm Default',	value:'palm-default'},
 					{label:'Palm Dark',		value:'palm-dark'},
 					{label:'Flat Default',	value:'palm-default flat-default'},
-					{label:'Flat Tango',	value:'palm-default flat-tango'}
+					{label:'Flat Tango',	value:'palm-default flat-default tango'}
 				],
 				modelProperty: 'theme'
 			},
 			this.prefs
 		);
-		var tmpListColorChoices = listTangoColorChoices;
-		tmpListColorChoices[0] = {label:'Random', value:'random'};
-		this.controller.setupWidget
-		(
+		
+		this.tmpListColorChoices = listColorChoices;
+		this.tmpListTangoColorChoices = listTangoColorChoices;
+		this.tmpListColorChoices[0] = {label:'Random', value:'random'};
+		this.tmpListTangoColorChoices[0] = {label:'Random', value:'random'};
+		
+		this.colorHeaderAttr = {
+			label: 'Header Color',
+			choices: this.tmpListColorChoices,
+			modelProperty: 'colorFlatHeader'
+		}
+		
+		this.controller.setupWidget(
 			'colorFlatHeader',
-			{
-				label: 'Header Color',
-				choices: tmpListColorChoices,
-				modelProperty: 'colorFlatHeader'
-			},
+			this.colorHeaderAttr,
 			this.prefs
 		);
+		
 		this.controller.listen('theme',	Mojo.Event.propertyChange, this.themeChanged.bindAsEventListener(this));
 		this.controller.listen('colorFlatHeader',	Mojo.Event.propertyChange, this.colorFlatHeaderChanged.bindAsEventListener(this));
 		this.themeChanged();
@@ -369,9 +375,14 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 		Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 	}
 	
-	if (this.prefs['theme'] == 'palm-default flat-default' || 
-		this.prefs['theme'] == 'palm-default flat-tango')
+	if (this.prefs['theme'] == 'palm-default flat-default')
 	{
+		this.colorHeaderAttr.choices = this.tmpListColorChoices;
+		this.controller.get('colorHeaderRow').style.display = '';
+	}
+	else if (this.prefs['theme'] == 'palm-default flat-default tango')
+	{
+		this.colorHeaderAttr.choices = this.tmpListTangoColorChoices;
 		this.controller.get('colorHeaderRow').style.display = '';
 	}
 	else
