@@ -1,0 +1,15 @@
+body.flat-default.tango div.palm-page-header.multi-line .title
+{
+	color: #eeeeec;
+}
+
+body.flat-default.tango .palm-list .palm-row .label
+{
+	color: #888a85;
+}
+
+body.flat-default.tango #palm-device-menu.palm-popup-container .palm-row.selected
+{
+	background: #888a85;
+	color: #2e3436;
+}
