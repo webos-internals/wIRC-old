@@ -1,3 +1,7 @@
+String.prototype.startsWith = function(str){
+    return (this.indexOf(str) === 0);
+}
+
 // replace tokens in a string with values
 replaceTokens = function(string) {
 	string = string.replace("%WIRCVER%", Mojo.Controller.appInfo.version + '-' + githash);
