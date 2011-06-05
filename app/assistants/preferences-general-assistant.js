@@ -80,14 +80,13 @@ PreferencesGeneralAssistant.prototype.setup = function()
 				[
 					{label:'Palm Default',	value:'palm-default'},
 					{label:'Palm Dark',		value:'palm-dark'},
-					{label:'Flat Default',	value:'palm-default flat-default'},
-					{label:'Flat Tango',	value:'palm-default flat-tango'}
+					{label:'Flat Default',	value:'palm-default flat-default'}
 				],
 				modelProperty: 'theme'
 			},
 			this.prefs
 		);
-		var tmpListColorChoices = listTangoColorChoices;
+		var tmpListColorChoices = listColorChoices;
 		tmpListColorChoices[0] = {label:'Random', value:'random'};
 		this.controller.setupWidget
 		(
@@ -369,8 +368,7 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 		Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 	}
 	
-	if (this.prefs['theme'] == 'palm-default flat-default' || 
-		this.prefs['theme'] == 'palm-default flat-tango')
+	if (this.prefs['theme'] == 'palm-default flat-default')
 	{
 		this.controller.get('colorHeaderRow').style.display = '';
 	}

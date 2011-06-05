@@ -346,38 +346,6 @@ getCSSRule = function(doc, ruleName, deleteFlag)
 	}
 	return false;
 }
-
-
-var listTangoColorChoices = [
-	{label:'',value:''},
-	{label:'Butter 1',value:'#fce94f'},
-	{label:'Butter 2',value:'#edd400'},
-	{label:'Butter 3',value:'#c4a000'},
-	{label:'Orange 1',value:'#fcaf3e'},
-	{label:'Orange 2',value:'#f57900'},
-	{label:'Orange 3',value:'#ce5c00'},
-	{label:'Chocolate 1',value:'#e9b96e'},
-	{label:'Chocolate 2',value:'#c17d11'},
-	{label:'Chocolate 3',value:'#8f5902'},
-	{label:'Chameleon 1',value:'#8ae234'},
-	{label:'Chameleon 2',value:'#73d216'},
-	{label:'Chameleon 3',value:'#4e9a06'},
-	{label:'Sky Blue 1',value:'#729fcf'},
-	{label:'Sky Blue 2',value:'#3465a4'},
-	{label:'Sky Blue 3',value:'#204a87'},
-	{label:'Plum 1',value:'#ad7fa8'},
-	{label:'Plum 2',value:'#75507b'},
-	{label:'Plum 3',value:'#5c3566'},
-	{label:'Scarlet Red 1',value:'#ef2929'},
-	{label:'Scarlet Red 2',value:'#cc0000'},
-	{label:'Scarlet Red 3',value:'#a40000'},
-	{label:'Aluminium 1',value:'#eeeeec'},	
-	{label:'Aluminium 2',value:'#d3d7cf'},
-	{label:'Aluminium 3',value:'#babdb6'},
-	{label:'Aluminium 4',value:'#888a85'},
-	{label:'Aluminium 5',value:'#555753'},
-	{label:'Aluminium 6',value:'#2e3436'},
-];
 	
 var listColorChoices = [
 	{label:'', value:''},
