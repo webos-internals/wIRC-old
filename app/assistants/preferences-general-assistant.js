@@ -80,8 +80,7 @@ PreferencesGeneralAssistant.prototype.setup = function()
 				[
 					{label:'Palm Default',	value:'palm-default'},
 					{label:'Palm Dark',		value:'palm-dark'},
-					{label:'Flat Default',	value:'palm-default flat-default'},
-					{label:'Flat Tango',	value:'palm-default flat-default tango'}
+					{label:'Flat Default',	value:'palm-default flat-default'}
 				],
 				modelProperty: 'theme'
 			},
