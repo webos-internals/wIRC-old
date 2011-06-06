@@ -6,6 +6,11 @@
 body.small-device .server-list #noServers .icon,
 body.small-device .server-list #noPlugin .icon
 {
+	margin-top: 39px;
+}
+body.small-device.flat-default .server-list #noServers .icon,
+body.small-device.flat-default .server-list #noPlugin .icon
+{
 	margin-top: 44px;
 }
 

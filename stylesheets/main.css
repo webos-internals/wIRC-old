@@ -212,7 +212,7 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 {
 	width: 320px;
 	height: 128px;
-	margin-top: 92px;
+	margin-top: 88px;
 	background: url(../images/palm-default/no-servers.png) center center no-repeat;
 }
 .server-list #noServers .message
@@ -227,7 +227,7 @@ body.palm-dark .prefs .palm-group .palm-row .palm-row-wrapper.alias .title.alias
 {
 	width: 320px;
 	height: 128px;
-	margin-top: 92px;
+	margin-top: 88px;
 	background: url(../images/palm-default/no-servers.png) center center no-repeat;
 }
 .server-list #noPlugin .message

@@ -740,6 +740,7 @@ body.flat-default .server-list .palm-list .palm-row-wrapper.unknown .button.stat
 body.flat-default .server-list #noServers .icon,
 body.flat-default .server-list #noPlugin .icon
 {
+	margin-top: 92px;
 	background: url(../images/flat/no-servers.png) center center no-repeat;
 }
 
