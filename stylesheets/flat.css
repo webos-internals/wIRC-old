@@ -408,7 +408,7 @@ body.flat-default .palm-row.selected .list-selector-triangle
 body.flat-default .palm-button,
 body.flat-default #palm-dialog-box .palm-button
 {
-	color: #666;
+	color: #555753;
 	-webkit-border-image: url(../images/flat/button-medium.png) 0 17 104 17 repeat repeat;
 }
 body.flat-default .palm-button.selected.primary,
@@ -424,13 +424,13 @@ body.flat-default .palm-button.disabled,
 body.flat-default #palm-dialog-box .palm-button.disabled.primary,
 body.flat-default #palm-dialog-box .palm-button.disabled
 {
-	color: #666;
+	color: #555753;
 	-webkit-border-image: url(../images/flat/button-medium.png) 104 17 0 17 repeat repeat;
 }
 body.flat-default .palm-button.affirmative,
 body.flat-default #palm-dialog-box .palm-button.affirmative
 {
-	color: #090;
+	color: #73d216;
 	-webkit-border-image: url(../images/flat/button-affirmative.png) 0 17 104 17 repeat repeat;
 }
 body.flat-default .palm-button.affirmative.selected,
@@ -442,13 +442,13 @@ body.flat-default #palm-dialog-box .palm-button.affirmative.selected
 body.flat-default .palm-button.affirmative.disabled,
 body.flat-default #palm-dialog-box .palm-button.affirmative.disabled
 {
-	color: #090;
+	color: #73d216;
 	-webkit-border-image: url(../images/flat/button-affirmative.png) 104 17 0 17 repeat repeat;
 }
 body.flat-default .palm-button.negative,
 body.flat-default #palm-dialog-box .palm-button.negative
 {
-	color: #f33;
+	color: #ef2929;
 	-webkit-border-image: url(../images/flat/button-negative.png) 0 17 104 17 repeat repeat;
 }
 body.flat-default .palm-button.negative.selected,
@@ -460,7 +460,7 @@ body.flat-default #palm-dialog-box .palm-button.negative.selected
 body.flat-default .palm-button.negative.disabled,
 body.flat-default #palm-dialog-box .palm-button.negative.disabled
 {
-	color: #f33;
+	color: #ef2929;
 	-webkit-border-image: url(../images/flat/button-negative.png) 104 17 0 17 repeat repeat;
 }
 body.flat-default .palm-button.secondary,
@@ -468,7 +468,7 @@ body.flat-default .palm-button.dismiss,
 body.flat-default #palm-dialog-box .palm-button.secondary,
 body.flat-default #palm-dialog-box .palm-button.dismiss
 {
-	color: #999;
+	color: #888a85;
 	-webkit-border-image: url(../images/flat/button-light.png) 0 17 104 17 repeat repeat;
 }
 body.flat-default .palm-button.secondary.selected,
@@ -484,7 +484,7 @@ body.flat-default .palm-button.dismiss.disabled,
 body.flat-default #palm-dialog-box .palm-button.secondary.disabled,
 body.flat-default #palm-dialog-box .palm-button.dismiss.disabled
 {
-	color: #999;
+	color: #888a85;
 	-webkit-border-image: url(../images/flat/button-light.png) 104 17 0 17 repeat repeat;
 }
 
@@ -540,7 +540,7 @@ body.flat-default .palm-swipe-delete-button
 {
 	-webkit-border-image: url(../images/flat/swipe-delete-button-down.png) 0 14 0 14 repeat repeat;
 	-webkit-border-image: url(../images/flat/swipe-delete-button-up.png) 0 14 0 14 repeat repeat;
-	color: #f33;
+	color: #ef2929;
 }
 
 body.flat-default .palm-swipe-delete-button.selected
