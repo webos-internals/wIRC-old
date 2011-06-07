@@ -11,7 +11,7 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
-			version: '0.4.1',
+			version: '0.4.2',
 			log:
 			[
 				'A couple of bugfixes and theme tweaks'
