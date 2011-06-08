@@ -293,7 +293,7 @@ PreferencesMessagesAssistant.prototype.setup = function()
 		
 		// Color stuff
 		var themeIndex = 0;
-		if (this.prefs.theme == 'palm-dark') themeIndex = 1;
+		if (isDarkTheme()) themeIndex = 1;
 		
 		this.controller.setupWidget
 		(
@@ -526,7 +526,7 @@ PreferencesMessagesAssistant.prototype.listChanged = function(event)
 PreferencesMessagesAssistant.prototype.colorChanged = function(event)
 {
 	var themeIndex = 0;
-	if (this.prefs.theme == 'palm-dark') themeIndex = 1;
+	if (isDarkTheme()) themeIndex = 1;
 	this.prefs[event.property][themeIndex] = event.value;
 	this.cookie.put(this.prefs);
 	alert(this.prefs[event.property]);

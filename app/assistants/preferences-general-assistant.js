@@ -80,7 +80,7 @@ PreferencesGeneralAssistant.prototype.setup = function()
 				[
 					{label:'Palm Default',	value:'palm-default'},
 					{label:'Palm Dark',		value:'palm-dark'},
-					{label:'Flat Default',	value:'palm-default flat-default'}
+					{label:'Flat Default',	value:'palm-default flat flat-default'}
 				],
 				modelProperty: 'theme'
 			},
@@ -370,7 +370,8 @@ PreferencesGeneralAssistant.prototype.themeChanged = function(event)
 		Mojo.Controller.getAppController().assistant.updateTheme(event.value);
 	}
 	
-	if (this.prefs['theme'] == 'palm-default flat-default')
+	if (this.prefs['theme'] == 'palm-default flat flat-default' ||
+		this.prefs['theme'] == 'palm-default flat flat-dark')
 	{
 		this.controller.get('colorHeaderRow').style.display = '';
 	}
@@ -384,11 +385,11 @@ PreferencesGeneralAssistant.prototype.colorFlatHeaderChanged = function(event)
 	this.listChanged();
 	var tmp = prefs.get(true);
 	
-	var headCSS = getCSSRule(this.controller.document, 'body.flat-default div.palm-header, body.flat-default div.palm-page-header.multi-line');
+	var headCSS = getCSSRule(this.controller.document, 'body.flat div.palm-header, body.flat div.palm-page-header.multi-line');
 	if (headCSS)
 	{
 		if (event.value == 'random')
-			headCSS.style.backgroundColor = ircNick.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
+			headCSS.style.backgroundColor = ircNick.getRandomColor3(isLightTheme());
 		else
 			headCSS.style.backgroundColor = event.value;
 	}

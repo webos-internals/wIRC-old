@@ -283,6 +283,15 @@ getColor = function(numeric)
 	}
 }
 
+isLightTheme = function()
+{
+	if (prefs.get().theme == 'palm-default' || prefs.get().theme == 'palm-default flat flat-default')
+		return true;
+	else
+		return false;
+}
+isDarkTheme = function() { return !isLightTheme(); }
+
 // set the body class for the current theme and device size
 setTheme = function(doc, theme)
 {
@@ -296,7 +305,7 @@ setTheme = function(doc, theme)
 	else
 		doc.body.className = prefs.get().theme + deviceTheme;
 	
-	var headCSS = getCSSRule(doc, 'body.flat-default div.palm-header, body.flat-default div.palm-page-header.multi-line');
+	var headCSS = getCSSRule(doc, 'body.flat div.palm-header, body.flat div.palm-page-header.multi-line');
 	if (headCSS)
 	{
 		if (prefs.get().colorFlatHeader == 'random')

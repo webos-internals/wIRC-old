@@ -5,7 +5,7 @@ function ircNick(params)
 	this.num =			ircNick.num;
 	this.name =			params.name;
 	this.server =		false; // set when whois is called, its the only time its needed
-	this.colorHex =		ircNick.getRandomColor3((prefs.get().theme == 'palm-dark' ? false : true));
+	this.colorHex =		ircNick.getRandomColor3(isLightTheme());
 	this.channels =		[];
 	this.channelModes =	[];
 	this.me =			false;

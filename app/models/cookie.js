@@ -107,6 +107,7 @@ preferenceCookie.prototype.get = function(reload)
 				for (i in cookieData) 
 				{
 					/* begin old version cookie fixes */
+					// color array fix
 					if ((i == 'colorNotice' ||
 						i == 'colorAction' ||
 						i == 'colorStatus' ||
@@ -122,6 +123,14 @@ preferenceCookie.prototype.get = function(reload)
 						this.prefs[i] = [cookieData[i], cookieData[i]];
 						continue;
 					}
+					
+					// flat theme fix
+					if ((i == 'theme') && (cookieData[i] == 'palm-default flat-default'))
+					{
+						this.prefs[i] = 'palm-default flat flat-default';
+						continue;
+					}
+					
 					/* end cookie fixes */
 					
 					

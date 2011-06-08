@@ -52,10 +52,7 @@ function ircMessage(params)
 	this.nickStyle =	'';
 	
 	this.theme = 		0;
-	switch (prefs.get().theme) {
-		case 'palm-dark':
-			this.theme = 1;
-	}
+	if (isDarkTheme()) this.theme = 1;
 	
 	if (params.message.constructor == Array) 
 	{	// params.message isn't a "message" if its an array it becomes "messages",
