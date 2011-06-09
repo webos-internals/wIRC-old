@@ -183,7 +183,7 @@ ChannelChatAssistant.prototype.updateList = function(initial){
                     this.lastFocusMarker = false;
                 }
                 this.lastFocusMessage.addClassName('lostFocus');
-                this.lastFocusMessage.style.borderBottomColor = prefs.get().colorMarker[(prefs.get().theme == 'palm-default'?0:1)];
+                this.lastFocusMessage.style.borderBottomColor = prefs.get().colorMarker[(isLightTheme()?0:1)];
             }
             
             var start = this.messageListElement.mojo.getLength();

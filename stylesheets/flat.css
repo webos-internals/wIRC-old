@@ -2,6 +2,10 @@ body.flat
 {
 	background: #fff !important;
 }
+body.flat-dark
+{
+	background: #000 !important;
+}
 
 body.flat .palm-menu-icon.new				{ background-image: url(../images/flat-default/menu-icon-new.png);		}
 body.flat .icon-filter-alpha
