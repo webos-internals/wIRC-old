@@ -11,6 +11,13 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+		version: '0.4.3',
+			log:
+			[
+				'Fix possible race condition in plugin'
+			]
+		},
+		{
 			version: '0.4.2',
 			log:
 			[

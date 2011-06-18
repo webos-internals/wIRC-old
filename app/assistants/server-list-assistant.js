@@ -73,7 +73,8 @@ ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
-		this.tryPlugin();
+		//this.tryPlugin();
+		plugin.ready = this.tryPlugin.bind(this);
 		
 		// set theme
 		setTheme(this.controller.document);

@@ -35,7 +35,8 @@ PDL_Err plugin_initialize() {
 		return -1;
 	}
 
-	return PDL_JSRegistrationComplete();
+	PDL_JSRegistrationComplete();
+	return PDL_CallJS("ready", NULL, 0);
 }
 
 void plugin_start() {
