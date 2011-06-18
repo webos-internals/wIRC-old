@@ -12,7 +12,7 @@ INCLUDES	:=	-I${ROOT}/include \
 			-I$(ROOT)${prefix}/include/pdl \
 			-I$(IRCLIB)/include \
 								
-LIBDIRS		:=	-L. -Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined -Wl,-rpath,.
+LIBDIRS		:=	-L. -Larm -Li686 -Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined -Wl,-rpath,.
 
 LIBS		:=	-lpdl -lpthread -lm $(LIBSSL)
 
