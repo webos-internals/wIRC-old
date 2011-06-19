@@ -1,9 +1,14 @@
 {
-	"id": "org.webosinternals.enyo.wirc",
-  	"version": "2.0.0",
-  	"vendor": "WebOS Internals",
-  	"type": "web",
-  	"main": "index.html",
-  	"title": "wIRC",
-  	"uiRevision": "2"
+	"title" : "wIRC",
+	"id" : "org.webosinternals.wirc",
+	"version" : "2.0.0",
+	"vendor" : "WebOS Internals",
+	"type" : "web",
+	"plug-ins" : true,
+	"noDeprecatedStyles" : true,
+  	"main" : "index.html",
+  	"icon" : "icon.png",
+  	"uiRevision" : 2,
+  	"keywords" : [ "IRC", "chat" ],
+	"section" : "net"
 }

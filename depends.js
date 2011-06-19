@@ -1,4 +1,4 @@
 enyo.depends(
-	"source/main.js",
-  	"css/wIRC.css"
+	"enyo/main.js",
+  	"css/main.css"
 )
