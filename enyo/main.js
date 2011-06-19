@@ -5,6 +5,7 @@ enyo.kind({
   	_nicks: [],
   	_msgs: [],
   	_nickname: 'wircer_enyo_'+Math.floor(Math.random()*10000),
+  	_channel: '#wirc',
   	
   	components: [
   		{
@@ -94,7 +95,7 @@ enyo.kind({
   	
   	inputChange: function() {
   		var msg = this.$.messageInput.getValue()
-  		this.$.pluginObject.callPluginMethod('cmd_msg', 0, '#wirc', msg)
+  		this.$.pluginObject.callPluginMethod('cmd_msg', 0, this._channel, msg)
   		this._msgs.push([this._nickname,msg])
   		this.$.messages.refresh()
   		this.$.messageInput.setValue('')
@@ -158,7 +159,7 @@ enyo.kind({
 		)
   	},
   	join: function() {
-  		this.$.pluginObject.callPluginMethod('cmd_join', 0, '#wirc')
+  		this.$.pluginObject.callPluginMethod('cmd_join', 0, this._channel)
   	},
   	
   	retry_connection: function() {
