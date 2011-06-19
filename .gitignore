@@ -1,0 +1,4 @@
+*.ipk
+*.o
+*~
+plugin/wirc
