@@ -27,7 +27,7 @@ OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 
 all: $(PLUGIN) package.properties
 
-$(PLUGIN): $(OBJECTS)
+$(PLUGIN): $(OBJECTS) $(PDLLIB)/$(PDLLIB).so
 	$(CC) $(CFLAGS) $(LIBDIRS) $(LIBS) $(OBJECTS) -o $(PLUGIN)
 
 .PHONY: $(IRCLIB)/$(IRCLIB).o

@@ -82,12 +82,20 @@ enyo.kind({
   			onPluginConnected: 'pluginConnected',
   			onPluginDisconnected: 'pluginDisconnected'
 		},
+		{
+			kind: "Scrim",
+			layoutKind: "VFlexLayout",
+			align: "center", pack: "center",
+			components: [
+				{kind: "SpinnerLarge", name: 'spinner'}
+			]
+		}
   	],
   	
   	inputChange: function() {
   		var msg = this.$.messageInput.getValue()
   		this.$.pluginObject.callPluginMethod('cmd_msg', 0, '#wirc', msg)
-  		this._msgs.push('<' + this._nickname + '> ' + msg)
+  		this._msgs.push([this._nickname,msg])
   		this.$.messages.refresh()
   		this.$.messageInput.setValue('')
   	},
@@ -101,13 +109,17 @@ enyo.kind({
   	
   	setupRow: function(inSender, inIndex) {
 		if (this._msgs.length > 0 && inIndex >= 0 && inIndex < this._msgs.length) {
-			this.$.caption.setContent(this._msgs[inIndex]);
+			this.$.caption.setContent('<'+this._msgs[inIndex][0]+'> '+this._msgs[inIndex][1]);
+			if (this._msgs[inIndex][0] == this._nickname)
+				this.$.caption.setStyle('color: blue;')
 			return true;
 		}
 	},
 
   	rendered: function() {
 		this.inherited(arguments)
+		this.$.scrim.show()
+		this.$.spinner.show();
 	},
 	
   	pluginReady: function(inSender, inResponse, inRequest) {
@@ -153,7 +165,6 @@ enyo.kind({
   		enyo.job('retry_connection', enyo.bind(this, 'connect'), 0)
   	},
   	event_connect: function(id, event, origin, params_s, ip) {
-  		//this.$.logger.setContent($L(id+' '+event+' '+origin+' '+params_s+' '+ip));
   		enyo.job('join', enyo.bind(this, 'join'), 0)
   	},
   	
@@ -167,7 +178,7 @@ enyo.kind({
   	event_kick: function() {},
   	event_channel: function(id, event, origin, params_s) {
   		var params = enyo.json.parse(params_s)
-  		this._msgs.push('<' + origin.split('!')[0] + '> ' + params[1])
+  		this._msgs.push([origin.split('!')[0],params[1]])
   		this.$.messages.refresh()
   	},
   	event_privmsg: function(id, event, origin, params_s) {
@@ -188,8 +199,10 @@ enyo.kind({
   				this.$.topic.setContent(params[2])
   				break;
 			case 353:
-				this._nicks = params[3].split(" ")
+				this._nicks = params[3].split(" ").sort()
 				this.$.nickList.refresh()
+				this.$.spinner.hide();
+				this.$.scrim.hide()
 				break;	
   		}  		
   	},
