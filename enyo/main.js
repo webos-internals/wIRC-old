@@ -13,66 +13,112 @@ enyo.kind({
   			flex: 1,
   			components: [
   				{
-  					name: "nicks",
-  					width: "175px",
+  					name: "buffers",
+  					minWidth: "175px",
   					components: [
   						{
-  							kind: "VirtualList",
-  							name: 'nickList',
+  							kind: 'DividerDrawer',
   							flex: 1,
-							onSetupRow: "setupNickList",
-							components: [
-								{
-									kind: "Item",
-									layoutKind: "HFlexLayout",
-									onclick: "itemClick",
-									components: [
-										{
-											name: "nick",
-											flex: 1
-										},
-					              	]
-								}
-							]
-						},
+  							caption: 'Freenode',
+  							components: [
+  								{
+  									kind: 'Item',
+  									content: '#wirc'
+  								}
+  							]
+  						}
   					]
-  				},
-  				{
-  					name: "chat",
+				},
+				{
+  					name: "chans",
   					flex: 1,
   					components: [
-  						{
-  							kind: 'PageHeader',
-  							name: 'topic'
-  						},
-  						{
-  							kind: "VirtualList",
-  							name: 'messages',
-  							flex: 1,
-							onSetupRow: "setupRow",
-							components: [
-								{
-									kind: "Item",
-									layoutKind: "HFlexLayout",
-									onclick: "itemClick",
-									components: [
-										{
-											name: "caption",
-											flex: 1
-										},
-					              	]
-								}
-							]
+				  		{
+							kind: 'PageHeader',
+							name: 'topic',
+							style: 'color: #888; font-size: 80%;'
 						},
-  						{
-  							name: 'messageInput',
-  							kind: "Input",
-  							onchange: "inputChange",
-  							alwaysLooksFocused: true
-						}
-  					]
-  				}
-  			]
+				  		{
+				  			kind: "SlidingPane",
+				  			flex: 1,
+				  			components: [  				
+				  				{
+				  					name: "nicks",
+				  					minWidth: "175px",
+				  					components: [
+				  						{
+				  							kind: "VirtualList",
+				  							name: 'nickList',
+				  							flex: 1,
+											onSetupRow: "setupNickList",
+											components: [
+												{
+													kind: "Item",
+													layoutKind: "HFlexLayout",
+													onclick: "itemClick",
+													components: [
+														{
+															name: "nick",
+															flex: 1
+														},
+									              	]
+												}
+											]
+										},
+										{
+											kind: 'Toolbar',
+											className: 'enyo-toolbar-light',
+											pack: 'left',
+											style: 'padding-left: 48px;',
+											components: [
+												{
+													kind: 'GrabButton'
+												}
+											]
+										}
+				  					]
+				  				},
+				  				{
+				  					name: "chat",
+				  					flex: 1,
+				  					components: [
+				  						{
+				  							kind: "VirtualList",
+				  							name: 'messages',
+				  							pack: 'end',
+				  							flex: 1,
+											onSetupRow: "setupRow",
+											components: [
+												{
+													name: "caption",
+												}
+											]
+										},
+										{
+											kind: 'Toolbar',
+											className: 'enyo-toolbar-light',
+											pack: 'left',
+											style: 'padding-left: 48px;',
+											components: [
+												{
+													kind: 'GrabButton'
+												},
+						  						{
+						  							name: 'messageInput',
+						  							kind: 'Input',
+						  							onchange: "inputChange",
+						  							alwaysLooksFocused: true,
+						  							style: 'width: 100%;',
+												}
+											]
+										}
+				  					]
+				  				}
+				  			]
+				  		}
+			  		]
+		  		}
+	  		]
   		},
   		{
   			name: 'pluginObject',
@@ -84,14 +130,42 @@ enyo.kind({
   			onPluginDisconnected: 'pluginDisconnected'
 		},
 		{
-			kind: "Scrim",
-			layoutKind: "VFlexLayout",
-			align: "center", pack: "center",
+			kind: 'Scrim',
+			layoutKind: 'VFlexLayout',
+			align: 'center',
+			pack: 'center',
 			components: [
-				{kind: "SpinnerLarge", name: 'spinner'}
+				{kind: 'SpinnerLarge', name: 'spinner'}
 			]
 		}
   	],
+  	  	
+  	sortNicks: function(a, b) {
+  		var score1 = -2
+  		if (a[0] == '!') score1 = -64
+  		else if (a[0] == '.') score1 = -32
+  		else if (a[0] == '@') score1 = -16
+  		else if (a[0] == '%') score1 = -8
+  		else if (a[0] == '+') score1 = -4
+  		var score2 = -2
+  		if (b[0] == '!') score2 = -64
+  		else if (b[0] == '.') score2 = -32
+  		else if (b[0] == '@') score2 = -16
+  		else if (b[0] == '%') score2 = -8
+  		else if (b[0] == '+') score2 = -4
+  		var x = a.toLowerCase()
+  		var y = b.toLowerCase()
+  		var comp = ((x < y) ? -1 : ((x > y) ? 1 : 0))
+  		if (comp > 0)
+  			score1 = score1 + 1
+		if (comp < 0)
+			score2 = score2 + 1
+		if (score1 > score2)
+        	return 1
+    	if (score1 < score2)
+        	return -1;
+    	return 0
+	},
   	
   	inputChange: function() {
   		var msg = this.$.messageInput.getValue()
@@ -109,11 +183,18 @@ enyo.kind({
 	},
   	
   	setupRow: function(inSender, inIndex) {
-		if (this._msgs.length > 0 && inIndex >= 0 && inIndex < this._msgs.length) {
-			this.$.caption.setContent('<'+this._msgs[inIndex][0]+'> '+this._msgs[inIndex][1]);
-			if (this._msgs[inIndex][0] == this._nickname)
-				this.$.caption.setStyle('color: blue;')
-			return true;
+		if (this._msgs.length > 0) {
+			if (inIndex >= 0 && inIndex < this._msgs.length) {
+				this.$.caption.setContent('<'+this._msgs[inIndex][0]+'> '+this._msgs[inIndex][1]);
+				var style = 'font-size: 80%;'
+				if (this._msgs[inIndex][0] == this._nickname)
+					style = style + ' color: blue;'
+				this.$.caption.setStyle(style)
+				return true
+			}/* else if (inIndex == -1) {
+				this.$.caption.setStyle('height: 500px;')
+				return true
+			}*/
 		}
 	},
 
@@ -200,9 +281,9 @@ enyo.kind({
   				this.$.topic.setContent(params[2])
   				break;
 			case 353:
-				this._nicks = params[3].split(" ").sort()
+				this._nicks = this._nicks.concat(params[3].split(" ")).sort(this.sortNicks)
 				this.$.nickList.refresh()
-				this.$.spinner.hide();
+				this.$.spinner.hide()
 				this.$.scrim.hide()
 				break;	
   		}  		
