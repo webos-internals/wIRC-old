@@ -76,9 +76,6 @@ int main(int argc, char *argv[]) {
 
 	start_autoping();
 
-	max_retries = DEFAULT_MAX_RETRIES;
-	pre_run_usleep = DEFAULT_PRE_RUN_USLEEP;
-
 	int ret = plugin_initialize();
 	if (ret == PDL_NOERROR) {
 		syslog(LOG_NOTICE, "JS handler registration complete");

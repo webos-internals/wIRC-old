@@ -127,6 +127,7 @@ wircPluginModel.prototype.getErrorMsg = function(error)
 
 wircPluginModel.prototype.registerHandlers = function() {
 	
+	plugin.retry_connection = this.retry_connection_handler.bind(this);
     plugin.event_connect = this.event_connect_handler.bind(this);
     plugin.event_nick = this.event_nick_handler.bind(this);
     plugin.event_quit = this.event_quit_handler.bind(this);
@@ -156,6 +157,11 @@ wircPluginModel.prototype.registerHandlers = function() {
 	// here we should also init any autoconnect servers!
 	servers.initAutoConnectServers();
 	
+}
+
+wircPluginModel.prototype.retry_connection_handler = function(id) {
+	var id = parseInt(id);
+	this.timerID = setTimeout(servers.servers[id].connect(), 1);
 }
 
 wircPluginModel.prototype.dcc_callback_handler = function(id, dcc_id, status, length, data){

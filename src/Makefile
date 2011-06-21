@@ -52,11 +52,14 @@ main.o: %.o: %.c
 
 push: 
 
-clobber: clobber-$(IRCLIB)
+clobber: clobber-$(IRCLIB) clobber-libpdl
 	rm -rf *.o $(PLUGIN) ../$(PLUGIN) ../package.properties
 
 clobber-$(IRCLIB):
 	cd $(IRCLIB); $(MAKE) clean
+	
+clobber-libpdl:
+	cd libpdl; $(MAKE) clean
 
 clean: clobber
 

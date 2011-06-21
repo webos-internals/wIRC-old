@@ -94,33 +94,28 @@ void *client_run(void *ptr) {
 
 	wIRCd_client_t *server = &servers[*(int*) ptr];
 
-	int retry = 0;
+	server->session = irc_create_session(&callbacks, server->interface);
+	if (!server->session)
+		return;
 
-	while (retry <= max_retries) {
+	irc_set_ctx(server->session, server);
 
-		server->session = irc_create_session(&callbacks, server->interface);
-		if (!server->session)
-			return;
+	int c = irc_connect(server->session, server->server, server->port, server->encryption,
+			server->server_password, server->nick, server->username,
+			server->realname);
 
-		irc_set_ctx(server->session, server);
+	irc_run(server->session);
 
-		int c = irc_connect(server->session, server->server, server->port, server->encryption,
-				server->server_password, server->nick, server->username,
-				server->realname);
-		usleep(pre_run_usleep);
+	irc_destroy_session(server->session);
+	memset(server, -1, sizeof(server));
 
-		irc_run(server->session);
-
-		irc_destroy_session(server->session);
-		memset(server, -1, sizeof(server));
-
-		if (server->estabilshed) {
-			return;
-		} else {
-			retry++;
-			syslog(LOG_INFO, "Retry %d", retry);
-		}
-
+	if (!server->estabilshed) {
+		char *id = 0;
+		asprintf(&id, "%d", server->id);
+		const char *payload[1];
+		payload[0] = id;
+		PDL_CallJS("retry_connection", payload, 1);
+		free(id);
 	}
 
 }

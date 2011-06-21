@@ -51,11 +51,6 @@ typedef pthread_mutex_t port_mutex_t;
 #include "libpdl/PDL.h"
 #include <libircclient.h>
 
-#define DEFAULT_MAX_RETRIES 10
-#define DEFAULT_PRE_RUN_USLEEP 0
-
-int max_retries;
-int pre_run_usleep;
 int max_connections;
 
 void cleanup(int sig);
