@@ -54,28 +54,10 @@ function ServerListAssistant()
 	}
 }
 
-ServerListAssistant.prototype.tryPlugin = function()
-{
-	try
-	{
-		githash = plugin.get_githash();
-		wircPlugin.isReady = true;
-		this.checkPlugin();
-	}
-	catch (e)
-	{
-		//Mojo.Log.logException(e, 'server-list#tryPlugin');
-		this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
-	}
-}
-
 ServerListAssistant.prototype.setup = function()
 {
 	try
 	{
-		//this.tryPlugin();
-		plugin.ready = this.tryPlugin.bind(this);
-		
 		// set theme
 		setTheme(this.controller.document);
 		
@@ -107,6 +89,8 @@ ServerListAssistant.prototype.setup = function()
 		
 		this.updateCommandMenu(false);
 		this.controller.setupWidget(Mojo.Menu.commandMenu, { menuClass: 'no-fade' }, this.cmdMenuModel);
+		
+		this.tryPlugin();
 	} 
 	catch (e) 
 	{
@@ -114,26 +98,35 @@ ServerListAssistant.prototype.setup = function()
 	}
 }
 
-ServerListAssistant.prototype.checkPlugin = function()
+ServerListAssistant.prototype.tryPlugin = function()
 {
-	if (wircPlugin.isReady)
+	try
 	{
-		this.controller.get('noPlugin').style.display = 'none';
-		this.controller.get('yesPlugin').style.display = '';
-		wircPlugin.registerHandlers();
+		if (wircPlugin.isReady)
+		{
+			githash = plugin.get_githash();
+			wircPlugin.registerHandlers();
+			this.controller.get('noPlugin').style.display = 'none';
+			this.controller.get('yesPlugin').style.display = '';
+		}
+		else
+		{
+			this.controller.get('noPlugin').style.display = '';
+			this.controller.get('yesPlugin').style.display = 'none';
+			this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
+		}
+		this.updateCommandMenu(false);
 	}
-	else
+	catch (e)
 	{
-		this.controller.get('noPlugin').style.display = '';
-		this.controller.get('yesPlugin').style.display = 'none';
+		//Mojo.Log.logException(e, 'server-list#tryPlugin');
+		this.timerID = setTimeout(this.tryPlugin.bind(this), 100);
 	}
-	this.updateCommandMenu(false);
 }
 
 ServerListAssistant.prototype.activate = function(event)
 {
 	this.controller.stageController.setWindowProperties({blockScreenTimeout: prefs.get().blockScreenTimeout});
-	//this.checkPlugin(); // is this necessary?
 	this.updateCommandMenu(false);
 	
 	if (this.alreadyActivated)

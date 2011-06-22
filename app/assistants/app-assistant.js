@@ -52,6 +52,7 @@ AppAssistant.prototype.handleLaunch = function(params)
 					
 					wircPlugin.createElement(controller.window.document);
 					plugin = controller.get('wircPlugin');
+					plugin.ready = wircPlugin.ready.bind(wircPlugin);
 					
 					if (vers.showStartupScene())
 						controller.pushScene('startup');

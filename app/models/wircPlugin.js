@@ -41,6 +41,11 @@ wircPluginModel.jsonParse = function(string)
 	return false;
 }
 
+wircPluginModel.prototype.ready = function ()
+{
+	this.isReady = true;
+}
+
 wircPluginModel.prototype.createElement = function(document)
 {
     var pluginObj = document.createElement("object");
