@@ -11,6 +11,14 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+		version: '0.4.4',
+			log:
+			[
+				'Moved connection retries to javascript',
+				'Fix plugin ready on start'
+			]
+		},
+		{
 		version: '0.4.3',
 			log:
 			[
