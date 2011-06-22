@@ -95,7 +95,7 @@ typedef struct {
 	const char *realname;
 	const char *interface;
 	const char *realServer;
-	int estabilshed;
+	int established;
 	int port;
 	int encryption;
 	struct timeb ping;

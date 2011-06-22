@@ -1,5 +1,5 @@
 /*=============================================================================
- Copyright (C) 2009-2010 Ryan Hope <rmh3093@gmail.com>
+ Copyright (C) 2009-2011 Ryan Hope <rmh3093@gmail.com>
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -23,7 +23,6 @@ void cleanup(int sig) {
 	autoPing = 0;
 	pthread_cancel(autoPingThread);
 	if (servers) {
-		plugin_cleanup();
 		free(servers);
 	}
 	closelog();
@@ -75,7 +74,7 @@ int main(int argc, char *argv[]) {
 	servers = malloc(sizeof(wIRCd_client_t) * max_connections);
 
 	start_autoping();
-
+	
 	int ret = plugin_initialize();
 	if (ret == PDL_NOERROR) {
 		syslog(LOG_NOTICE, "JS handler registration complete");

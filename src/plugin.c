@@ -20,22 +20,20 @@
 
 PDL_Err plugin_initialize() {
 
-	int i = 0;
-	for (;i<max_connections;i++) {
-		servers[i].id = -1;
-	}
+	syslog(LOG_ALERT, "Initializing Plugin");
 
 	SDL_Init(SDL_INIT_VIDEO);
 	PDL_Init(0);
-
+	
 	setup_event_callbacks();
 
 	if (plugin_client_init() > 0) {
 		syslog(LOG_ERR, "JS handler registration failed");
 		return -1;
 	}
-
+	
 	PDL_JSRegistrationComplete();
+			
 	return PDL_CallJS("ready", NULL, 0);
 }
 
@@ -45,14 +43,4 @@ void plugin_start() {
 	do {
 		SDL_WaitEvent(&Event);
 	} while (Event.type != SDL_QUIT);
-}
-
-void plugin_cleanup() {
-	int i = 0;
-	for (;i<max_connections;i++) {
-		if (servers[i].session) {
-			syslog(LOG_INFO, "Disconnect Server ID: %d", servers[i].id);
-			irc_cmd_quit(servers[i].session, "wIRC closed");
-		}
-	}
 }

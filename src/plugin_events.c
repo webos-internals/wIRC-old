@@ -24,7 +24,9 @@ void process_event(irc_session_t * session, const char * event,
 
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
-	client->estabilshed = 1;
+	client->established = 1;
+	
+	pthread_mutex_unlock(&client->mutex);
 
 	char buf[512];
 	int cnt;
