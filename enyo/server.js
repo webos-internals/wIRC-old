@@ -36,7 +36,7 @@ enyo.kind({
 	},
 	
 	updateBufferList: function(inSender, inIndex) {
-		enyo.log("update buffer list")
+		this.log("update buffer list")
   		if (this.buffers.length > 0 && inIndex >= 0 && inIndex < this.buffers.length) {
       		this.$.bufferListItem.setContent(this.buffers[inIndex])
 	      	return true;

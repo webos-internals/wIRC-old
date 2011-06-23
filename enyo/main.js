@@ -144,7 +144,7 @@ enyo.kind({
   	},
   	
   	event_connect: function(inSender, id, event, origin, params_s, ip) {
-  		enyo.log('~~~~~ Connected to ' + this.servers[id].address + ' on port ' + this.servers[id].port + ' ~~~~~')
+  		this.log('~~~~~ Connected to ' + this.servers[id].address + ' on port ' + this.servers[id].port + ' ~~~~~')
   		//this.servers[id].connected = true
   		this.pushDebugLog(['event_connect', id, event, origin, params_s, ip])
   	},
