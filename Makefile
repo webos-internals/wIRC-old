@@ -15,7 +15,7 @@ clean-plugin:
 	cd plugin; ${MAKE} clean
 
 install: build-package
-	palm-install -r ${APPID}
+	- palm-install -r ${APPID}
 	palm-install ${APPID}_*.ipk
 	
 test: install

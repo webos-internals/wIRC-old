@@ -22,11 +22,6 @@ PDL_Err plugin_initialize() {
 
 	syslog(LOG_ALERT, "Initializing Plugin");
 
-	int i = 0;
-	for (;i<max_connections;i++) {
-		servers[i].id = -1;
-	}
-
 	SDL_Init(SDL_INIT_VIDEO);
 	PDL_Init(0);
 	

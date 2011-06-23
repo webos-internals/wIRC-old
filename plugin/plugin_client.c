@@ -99,6 +99,8 @@ void *client_run(void *ptr) {
 		return;
 
 	irc_set_ctx(server->session, server);
+	
+	syslog(LOG_ALERT, "Connecting to server: %d,%d,%s,%s", server->id, server->port, server->server, server->username);
 
 	int c = irc_connect(server->session, server->server, server->port, server->encryption,
 			server->server_password, server->nick, server->username,
@@ -108,9 +110,17 @@ void *client_run(void *ptr) {
 
 	irc_destroy_session(server->session);
 	memset(server, -1, sizeof(server));
+	
+	if (!server->established) {
+		char *id = 0;
+		asprintf(&id, "%d", *(int*) ptr);
+		const char *payload[1];
+		payload[0] = id;
+		PDL_CallJS("retry_connection", payload, 1);
+		free(id);
+	}
 
-	if (!server->estabilshed)
-		PDL_CallJS("retry_connection", NULL, 0);
+	pthread_mutex_unlock(&server->mutex);
 
 }
 
@@ -119,28 +129,29 @@ PDL_bool client_connect(PDL_JSParameters *params) {
 	PDL_bool retVal = PDL_TRUE;
 
 	int id = PDL_GetJSParamInt(params, 0);
-
-	if (servers[id].id != -1)
-		return PDL_FALSE;
-
-	servers[id].id = id;
-	servers[id].server = PDL_GetJSParamString(params, 1);
-	servers[id].port = PDL_GetJSParamInt(params, 2);
-	servers[id].encryption = PDL_GetJSParamInt(params, 3);
-	servers[id].username = PDL_GetJSParamString(params, 4);
-	servers[id].server_password = PDL_GetJSParamString(params, 5);
-	servers[id].nick = PDL_GetJSParamString(params, 6);
-	servers[id].realname = PDL_GetJSParamString(params, 7);
-	servers[id].interface = PDL_GetJSParamString(params, 8);
 	
-	syslog(LOG_ALERT, "Connecting to server: %d,%s,%s", id, servers[id].server, servers[id].username);
+	wIRCd_client_t *server = &servers[id];
+	memset(server, 0, sizeof(wIRCd_client_t));
 
-	if (pthread_create(&servers[id].worker_thread, NULL, client_run,
-			(void*) &id)) {
+	server->id = PDL_GetJSParamInt(params, 0);
+	server->server = PDL_GetJSParamString(params, 1);
+	server->port = PDL_GetJSParamInt(params, 2);
+	server->encryption = PDL_GetJSParamInt(params, 3);
+	server->username = PDL_GetJSParamString(params, 4);
+	server->server_password = PDL_GetJSParamString(params, 5);
+	server->nick = PDL_GetJSParamString(params, 6);
+	server->realname = PDL_GetJSParamString(params, 7);
+	server->interface = PDL_GetJSParamString(params, 8);
+	server->established = 0;
+
+	pthread_mutex_lock(&server->mutex);
+	if (pthread_create(&server->worker_thread, NULL, client_run, (void*)&id)) {
 		PDL_JSReply(params,
 				"{\"returnValue\":-1,\"errorText\":\"Failed to create thread\"}");
 		retVal = PDL_FALSE;
 	}
+	pthread_mutex_lock(&server->mutex);
+	
 	PDL_JSReply(params, "{\"returnValue\":0}");
 
 	return retVal;
