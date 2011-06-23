@@ -3,7 +3,9 @@ enyo.kind({
 	name: 'wIRC.ServerListItem',
 	kind: enyo.Control,
 	
-	buffers: [],
+	published: {
+		buffers: []
+	},
 	
 	components: [
 		{
