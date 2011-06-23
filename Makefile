@@ -24,6 +24,9 @@ clean: clean-plugin clean-package
 
 pre: clean
 	${MAKE} DEVICE="pre" build-package
-	
+
 pixi: clean
 	${MAKE} DEVICE="pixi" build-package
+
+emu: clean
+	${MAKE} DEVICE="emu" build-package
