@@ -130,15 +130,10 @@ enyo.kind({
   	},
   	
   	connect: function(id) {
-  		try {
-  			var nick = 'wircer_enyo_'+Math.floor(Math.random()*10000)
-	  		var ret = this.$.plugin.connect(
-				this.servers[id].id, this.servers[id].address, this.servers[id].port, 0, nick, null, nick, 'wIRC User', ''
-			)
-			enyo.log('(*&#*&$(*&#&#($&(&#$    '+ret+'    '+id)
-		} catch (e) {
-			enyo.error(e)
-		}
+		var nick = 'wircer_enyo_'+Math.floor(Math.random()*10000)
+  		this.$.plugin.connect(
+			this.servers[id].id, this.servers[id].address, this.servers[id].port, 0, nick, null, nick, 'wIRC User', ''
+		)
   	},
 	
 	retry_connection: function(inSender, id) {
@@ -149,6 +144,7 @@ enyo.kind({
   	},
   	
   	event_connect: function(inSender, id, event, origin, params_s, ip) {
+  		enyo.log('~~~~~ Connected to ' + this.servers[id].address + ' on port ' + this.servers[id].port + ' ~~~~~')
   		//this.servers[id].connected = true
   		this.pushDebugLog(['event_connect', id, event, origin, params_s, ip])
   	},
