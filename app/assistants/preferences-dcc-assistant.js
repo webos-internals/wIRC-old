@@ -49,6 +49,11 @@ PreferencesDccAssistant.prototype.setup = function()
 		
 		this.pageNameElement.update(this.currentPage);
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('icon');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 		// listener for help toggle
 		this.helpTap = this.helpRowTapped.bindAsEventListener(this);
 		this.controller.listen(this.controller.get('help-toggle'), Mojo.Event.tap, this.helpButtonTapped.bindAsEventListener(this));
@@ -272,6 +277,13 @@ PreferencesDccAssistant.prototype.pageTap = function(event)
 	});
 }
 
+PreferencesDccAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 PreferencesDccAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -301,5 +313,6 @@ PreferencesDccAssistant.prototype.deactivate = function(event)
 
 PreferencesDccAssistant.prototype.cleanup = function(event)
 {
+	this.controller.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
 	this.controller.stopListening(this.pageSelectorElement, Mojo.Event.tap,			   this.pageTapHandler);
 }

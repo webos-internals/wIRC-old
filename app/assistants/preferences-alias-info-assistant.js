@@ -44,6 +44,11 @@ PreferencesAliasInfoAssistant.prototype.setup = function()
 		this.commandElement =		this.controller.get('command');
 		this.saveButtonElement =	this.controller.get('saveButton');
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('icon');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 		// listener for help toggle
 		this.helpTap = this.helpRowTapped.bindAsEventListener(this);
 		this.controller.listen(this.controller.get('help-toggle'), Mojo.Event.tap, this.helpButtonTapped.bindAsEventListener(this));
@@ -187,6 +192,13 @@ PreferencesAliasInfoAssistant.prototype.doneSaving = function()
 	this.controller.stageController.popScene();
 }
 
+PreferencesAliasInfoAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 PreferencesAliasInfoAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -221,6 +233,8 @@ PreferencesAliasInfoAssistant.prototype.deactivate = function(event)
 
 PreferencesAliasInfoAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 	if (this.serverKey === false)
 	{
 		Mojo.Event.stopListening(this.aliasElement, Mojo.Event.propertyChange, this.textChanged);

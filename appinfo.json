@@ -12,6 +12,7 @@
 	"miniicon" : "icon-mini.png",
 	"splashicon": "images/palm-default/no-servers.png",
 	"noWindow" : true,
+	"uiRevision": 2,
 	"noDeprecatedStyles" : true,
 	"keywords" : [ "IRC", "chat" ],
 	"section" : "net"

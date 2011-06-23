@@ -91,6 +91,11 @@ ServerAdvancedAssistant.prototype.setup = function()
 		this.dontPartOnCloseElement =	this.controller.get('dontPartOnClose');
 		this.autoOpenFavsElement =		this.controller.get('autoOpenFavs');
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('icon');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 		// listener for help toggle
 		this.helpTap = this.helpRowTapped.bindAsEventListener(this);
 		this.controller.listen(this.controller.get('help-toggle'), Mojo.Event.tap, this.helpButtonTapped.bindAsEventListener(this));
@@ -659,6 +664,13 @@ ServerAdvancedAssistant.prototype.validationError = function(error)
 	alert('Error: ' +  error);
 }
 
+ServerAdvancedAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 ServerAdvancedAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -702,4 +714,6 @@ ServerAdvancedAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.propertyChanged,	this.favoriteChannelsChange.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.listReorder,		this.favoriteChannelsReorder.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.favoriteChannelsList,		Mojo.Event.listDelete,		this.favoriteChannelsDelete.bindAsEventListener(this));
+
+	Mojo.Event.stopListening(this.backElement,			Mojo.Event.tap,			this.backTapHandler);
 }

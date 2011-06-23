@@ -52,6 +52,11 @@ ChannelUsersAssistant.prototype.setup = function()
 		
 		this.titleElement.innerHTML = this.channel.name + ': Users';
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('title');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 		this.updateList(true);
 		this.controller.setupWidget
 		(
@@ -326,6 +331,13 @@ ChannelUsersAssistant.prototype.listTapListHandler = function(choice, item, nick
 	}
 }
 
+ChannelUsersAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 ChannelUsersAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -357,6 +369,7 @@ ChannelUsersAssistant.prototype.activate = function(event)
 
 ChannelUsersAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
 	Mojo.Event.stopListening(this.userListElement, Mojo.Event.listTap, this.listTapHandler);
 	Mojo.Event.stopListening(this.searchElement, Mojo.Event.propertyChange, this.filterDelayHandler);
 	Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);

@@ -64,6 +64,11 @@ ServerInfoAssistant.prototype.setup = function()
 		this.advancedButtonElement =	this.controller.get('advancedButton');
 		this.defaultNick = 				this.controller.get('defaultNick');
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('icon');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 		// listener for help toggle
 		this.helpTap = this.helpRowTapped.bindAsEventListener(this);
 		this.controller.listen(this.controller.get('help-toggle'), Mojo.Event.tap, this.helpButtonTapped.bindAsEventListener(this));
@@ -338,6 +343,13 @@ ServerInfoAssistant.prototype.doneSaving = function()
 	this.controller.stageController.popScenesTo('server-list');
 }
 
+ServerInfoAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 ServerInfoAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -364,6 +376,8 @@ ServerInfoAssistant.prototype.cleanup = function(event)
 	Mojo.Event.stopListening(this.addressElement, 'keyup', this.textChanged);
 	Mojo.Event.stopListening(this.defaultNick, Mojo.Event.propertyChange, this.nickDefaultChanged.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.advancedButtonElement, Mojo.Event.tap, this.advancedButtonPressed);
+
+	Mojo.Event.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
 
 	if (this.serverKey === false)
 	{

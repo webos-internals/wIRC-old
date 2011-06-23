@@ -72,6 +72,11 @@ ServerStatusAssistant.prototype.setup = function()
 		this.messageTapHandler = 		this.messageTap.bindAsEventListener(this);
 		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('title');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
    		this.isVisible = true;
@@ -543,6 +548,13 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 	
 }
 
+ServerStatusAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 ServerStatusAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -677,6 +689,7 @@ ServerStatusAssistant.prototype.invisibleWindow = function(event)
 
 ServerStatusAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
 	Mojo.Event.stopListening(this.sceneScroller,		Mojo.Event.scrollStarting,	this.scrollHandler);
     Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
     Mojo.Event.stopListening(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);

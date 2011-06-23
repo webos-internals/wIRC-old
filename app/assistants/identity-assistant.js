@@ -63,6 +63,11 @@ IdentityAssistant.prototype.setup = function()
 		this.nickList	= this.controller.get('nickList');
 		this.identDone	= this.controller.get('identDone');
 		
+		// Add back button functionality for the TouchPad
+		this.backElement = this.controller.get('icon');
+		this.backTapHandler = this.backTap.bindAsEventListener(this);
+		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+
 		if (!this.showButton)
 			this.identDone.hide();
 		
@@ -346,6 +351,13 @@ IdentityAssistant.prototype.nickListSave = function()
 	this.validateIdentity();
 }
 
+IdentityAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+	this.controller.stageController.popScene();
+    }
+};
+
 IdentityAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -372,6 +384,7 @@ IdentityAssistant.prototype.deactivate = function(event)
 }
 IdentityAssistant.prototype.cleanup = function(event)
 {
+	Mojo.Event.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
 	Mojo.Event.stopListening(this.realName, Mojo.Event.propertyChange,	this.textChanged.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.listAdd,			this.nickListAdd.bindAsEventListener(this));
 	Mojo.Event.stopListening(this.nickList, Mojo.Event.propertyChanged,	this.nickListChange.bindAsEventListener(this));
