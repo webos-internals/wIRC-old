@@ -37,7 +37,7 @@ enyo.kind({
 		
   	pluginReady: function(inSender, inResponse, inRequest) {
   		
-  		enyo.log('~~~~~ wIRC Plugin Ready ~~~~~')
+  		this.log('~~~~~ wIRC Plugin Ready ~~~~~')
   		this.$.plugin.addCallback('retry_connection', enyo.bind(this, 'retry_connection'))
   		this.$.plugin.addCallback('event_connect', enyo.bind(this, 'event_connect'))
   		this.$.plugin.addCallback('event_nick', enyo.bind(this, 'event_nick'))
@@ -67,10 +67,10 @@ enyo.kind({
   		
   	},
   	pluginConnected: function(inSender, inResponse, inRequest) {
-  		enyo.log('~~~~~ wIRC Plugin Connected ~~~~~')
+  		this.log('~~~~~ wIRC Plugin Connected ~~~~~')
   	},
   	pluginDisconnected: function(inSender, inResponse, inRequest) {
-  		enyo.log('~~~~~ wIRC Plugin Disconnected ~~~~~')
+  		this.log('~~~~~ wIRC Plugin Disconnected ~~~~~')
   	},
   	
   	connect: function(id, address, port, encryption, username, password, nick, realname) {

@@ -3,8 +3,6 @@ enyo.kind({
   	name: "wIRC.Main",
   	kind: enyo.HFlexBox,
   	
-  	servers: [],
-  	
   	components: [
 	  	{
 	  		kind: "SlidingPane",
@@ -15,9 +13,10 @@ enyo.kind({
 					width: "200px",
 					components: [
 				  		{
-							kind: "VirtualList",
+							kind: 'wIRC.BufferList',
 							name: 'serverList',
 							flex: 1,
+							data: [],
 							onSetupRow: 'updateServerList',
 							components: [
 								{
@@ -104,11 +103,8 @@ enyo.kind({
   		this.$.debugLogItem.setContent(inMessage);
 	},
 	
-	updateServerList: function(inSender, inIndex) {
-  		if (this.servers.length > 0 && inIndex >= 0 && inIndex < this.servers.length) {
-      		this.$.serverListItem.update(this.servers[inIndex].address,this.servers[inIndex].buffers)
-	      	return true;
-		}
+	updateServerList: function(inSender, inMessage, inIndex) {
+  		this.$.serverListItem.update(inMessage.address)
 	},
 	
 	pushDebugLog: function(message) {
@@ -118,33 +114,37 @@ enyo.kind({
   	
   	testConnections: function() {
   		
-		this.servers[0] = new Server('0', 'chat.freenode.net', '6666')
-		this.servers[1] = new Server('1', 'irc.morphism.net', '6667')
-		this.servers[2] = new Server('2', 'irc.dal.net', '6668')
-		
-		for (i in this.servers) {
-			this.$.serverList.refresh()
+		this.$.serverList.data.push(new Server('chat.freenode.net', 6666))
+		this.$.serverList.data.push(new Server('irc.morphism.net', 6667))
+		this.$.serverList.data.push(new Server('irc.dal.net', 6668))
+				
+		this.$.serverList.refresh()
+				
+		for (i in this.$.serverList.data)
 			this.connect(i)
-		}
 		
   	},
   	
   	connect: function(id) {
+  		this.log('~~~~~ Connection attempt to ' + this.$.serverList.data[id].address + ' on port ' + this.$.serverList.data[id].port + ' ~~~~~')
 		var nick = 'wircer_enyo_'+Math.floor(Math.random()*10000)
   		this.$.plugin.connect(
-			this.servers[id].id, this.servers[id].address, this.servers[id].port, 0, nick, null, nick, 'wIRC User', ''
+			id, 
+			this.$.serverList.data[id].address, 
+			this.$.serverList.data[id].port,
+			0, nick, null, nick, 'wIRC User', ''
 		)
   	},
 	
 	retry_connection: function(inSender, id) {
   		var i = parseInt(id)
-  		enyo.error('(&^&^&^&^&^^ RETRY    '+i)
+  		this.error('(&^&^&^&^&^^ RETRY    '+i)
   		this.pushDebugLog(['retry_connection', i])
   		enyo.asyncMethod(this, 'connect', i)
   	},
   	
   	event_connect: function(inSender, id, event, origin, params_s, ip) {
-  		this.log('~~~~~ Connected to ' + this.servers[id].address + ' on port ' + this.servers[id].port + ' ~~~~~')
+  		this.log('~~~~~ Connected to ' + this.$.serverList.data[id].address + ' on port ' + this.$.serverList.data[id].port + ' ~~~~~')
   		//this.servers[id].connected = true
   		this.pushDebugLog(['event_connect', id, event, origin, params_s, ip])
   	},
