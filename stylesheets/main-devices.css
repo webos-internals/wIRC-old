@@ -116,10 +116,29 @@ body.no-gesture .inputFooter
 {
 	width: 100%;
 }
-
+body.no-gesture .server-status #connectButton
+{
+	left: 20%;
+	right: 20%;
+	width: 60%;
+}
 body.no-gesture .channel-chat #topicContainer
 {
 	width: 100% !important;
+}
+body.no-gesture .form .palm-row-wrapper .slider
+{
+	float: right;
+	margin-right: 10px;
+}
+body.no-gesture .form .font-fix
+{
+	display: block;
+	clear: both;
+}
+body.no-gesture .prefs .page-name
+{
+	max-width: none;
 }
 
 

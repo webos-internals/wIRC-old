@@ -47,10 +47,10 @@ HelpDataAssistant.prototype.backTap = function(event)
 
 HelpDataAssistant.prototype.activate = function(event)
 {
-	if (this.controller.stageController.setWindowOrientation)
+	/*if (this.controller.stageController.setWindowOrientation)
 	{
     	this.controller.stageController.setWindowOrientation("up");
-	}
+	}*/
 };
 HelpDataAssistant.prototype.deactivate = function(event) {};
 HelpDataAssistant.prototype.cleanup = function(event) {
