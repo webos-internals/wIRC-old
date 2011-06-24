@@ -117,6 +117,10 @@ body.no-gesture .inputFooter
 	width: 100%;
 }
 
+body.no-gesture .channel-chat #topicContainer
+{
+	width: 100% !important;
+}
 
 
 body.no-gesture .fixed.fixed-15 .message-row .nick { width: 15%; }
