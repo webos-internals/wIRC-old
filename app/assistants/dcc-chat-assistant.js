@@ -403,6 +403,20 @@ DccChatAssistant.prototype.inputFocus = function(event)
 	}
 }
 
+DccChatAssistant.prototype.startAutoFocus = function(){
+	if (Mojo.Environment.DeviceInfo.modelNameAscii != 'TouchPad')
+	{
+    	Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+    	this.inputWidgetElement.mojo.focus();
+	}
+}
+DccChatAssistant.prototype.stopAutoFocus = function(){
+	if (Mojo.Environment.DeviceInfo.modelNameAscii != 'TouchPad')
+	{
+    	Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+	}
+}
+
 DccChatAssistant.prototype.updateStats = function(bitsIn, bitsOut) {
     this.bitsInElement.update('In: '+bitsIn+'b');
 	this.bitsOutElement.update('Out: '+bitsOut+'b');

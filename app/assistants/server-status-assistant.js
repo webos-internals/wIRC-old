@@ -251,12 +251,18 @@ ServerStatusAssistant.prototype.getDivider = function(item)
 
 ServerStatusAssistant.prototype.startAutoFocus = function()
 {
-	Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
-	this.inputWidgetElement.mojo.focus();
+	if (Mojo.Environment.DeviceInfo.modelNameAscii != 'TouchPad')
+	{
+		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+		this.inputWidgetElement.mojo.focus();
+	}
 }
 ServerStatusAssistant.prototype.stopAutoFocus = function()
 {
-	Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+	if (Mojo.Environment.DeviceInfo.modelNameAscii != 'TouchPad')
+	{
+		Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+	}
 }
 
 ServerStatusAssistant.prototype.onScrollStarted = function(event)

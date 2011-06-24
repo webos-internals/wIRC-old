@@ -486,11 +486,17 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 }
 
 ChannelChatAssistant.prototype.startAutoFocus = function(){
-    Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
-    this.inputWidgetElement.mojo.focus();
+	if (Mojo.Environment.DeviceInfo.modelNameAscii != 'TouchPad')
+	{
+    	Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+    	this.inputWidgetElement.mojo.focus();
+	}
 }
 ChannelChatAssistant.prototype.stopAutoFocus = function(){
-    Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+	if (Mojo.Environment.DeviceInfo.modelNameAscii != 'TouchPad')
+	{
+    	Mojo.Event.stopListening(this.inputElement, 'blur', this.inputElementLoseFocus);
+	}
 }
 
 ChannelChatAssistant.prototype.updateAppMenu = function(skipUpdate){
