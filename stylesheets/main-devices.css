@@ -97,6 +97,15 @@ body.no-gesture.palm-dark .searchPill
 }
 
 
+body.no-gesture .server-list #noServers .icon,
+body.no-gesture .server-list #noPlugin .icon
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 150px;
+}
+
+
 body.no-gesture table.date-row.palm-divider.labeled tr td.left
 {
 	width: 100%;
@@ -118,14 +127,14 @@ body.no-gesture .fixed.fixed-35 .message-row .nick { width: 35%; }
 body.no-gesture .fixed.fixed-40 .message-row .nick { width: 40%; }
 body.no-gesture .fixed.fixed-45 .message-row .nick { width: 45%; }
 body.no-gesture .fixed.fixed-50 .message-row .nick { width: 50%; }
-body.no-gesture .fixed.fixed-15 .message-row .message { width: 84%; }
-body.no-gesture .fixed.fixed-20 .message-row .message { width: 79%; }
-body.no-gesture .fixed.fixed-25 .message-row .message { width: 74%; }
-body.no-gesture .fixed.fixed-30 .message-row .message { width: 69%; }
-body.no-gesture .fixed.fixed-35 .message-row .message { width: 64%; }
-body.no-gesture .fixed.fixed-40 .message-row .message { width: 49%; }
-body.no-gesture .fixed.fixed-45 .message-row .message { width: 54%; }
-body.no-gesture .fixed.fixed-50 .message-row .message { width: 49%; }
+body.no-gesture .fixed.fixed-15 .message-row .message { width: 83%; }
+body.no-gesture .fixed.fixed-20 .message-row .message { width: 78%; }
+body.no-gesture .fixed.fixed-25 .message-row .message { width: 73%; }
+body.no-gesture .fixed.fixed-30 .message-row .message { width: 68%; }
+body.no-gesture .fixed.fixed-35 .message-row .message { width: 63%; }
+body.no-gesture .fixed.fixed-40 .message-row .message { width: 48%; }
+body.no-gesture .fixed.fixed-45 .message-row .message { width: 53%; }
+body.no-gesture .fixed.fixed-50 .message-row .message { width: 48%; }
 
 
 

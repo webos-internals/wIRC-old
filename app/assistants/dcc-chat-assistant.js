@@ -156,7 +156,7 @@ DccChatAssistant.prototype.activate = function(event)
 	{
 		this.dcc.setChatAssistant(this);
 		this.inputElement = this.inputWidgetElement.querySelector('[name=inputElement]');
-		Mojo.Event.listen(this.inputElement, 'blur', this.inputElementLoseFocus);
+		this.startAutoFocus();
 	}
 	this.alreadyActivated = true;
 	this.revealBottom();
