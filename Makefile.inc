@@ -20,13 +20,22 @@ endif
 ifeq ($(DEVICE),pre)
 	MARCH_TUNE	:=	-march=armv7-a -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp
 	PARCH		:=	armv7
+ifeq ($(shell uname -s),Darwin)
+export	CC		=	/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc
+endif
 else
 ifeq ($(DEVICE),pixi)
 	MARCH_TUNE	:=	-march=armv6j -mcpu=arm1136jf-s -mfpu=vfp -mfloat-abi=softfp
 	PARCH		:=	armv6
+ifeq ($(shell uname -s),Darwin)
+export	CC		=	/opt/PalmPDK/arm-gcc/bin/arm-none-linux-gnueabi-gcc
+endif
 else
 ifeq ($(DEVICE),emu)
 	PARCH		:=	i686
+ifeq ($(shell uname -s),Darwin)
+export	CC		=	/opt/PalmPDK/i686-gcc/bin/i686-nptl-linux-gnu-gcc --sysroot=/opt/PalmPDK/i686-gcc/sys-root
+endif
 endif
 endif
 endif
