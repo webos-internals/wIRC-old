@@ -11,6 +11,14 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+		version: '0.4.5',
+			log:
+			[
+				'Fixed nick highlight bug',
+				'Formated to work at TouchPad resolution'
+			]
+		},
+		{
 		version: '0.4.4',
 			log:
 			[
