@@ -407,5 +407,5 @@ ircMessage.num = 0;
 
 ircMessage.stringTest = function(string, lookup)
 {
-	return new RegExp("\\b" + lookup + "\\b", "gi").test(string);
+	return new RegExp("\\b" + lookup.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + "\\b", "gi").test(string);
 }
