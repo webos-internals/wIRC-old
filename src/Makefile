@@ -11,7 +11,7 @@ INCLUDES	:=	-I${ROOT}/include \
 			-I$(ROOT)${prefix}/include/SDL \
 			-I$(ROOT)${prefix}/include/pdl \
 			-I$(IRCLIB)/include \
-								
+
 LIBDIRS		:=	-L. -Larm -Li686 -Llibpdl -L$(ROOT)${prefix}/lib -Wl,-rpath-link,$(ROOT)${prefix}/lib -Wl,--allow-shlib-undefined -Wl,-rpath,.
 
 LIBS		:=	-lpdl -lpthread -lm $(LIBSSL)
@@ -34,10 +34,10 @@ libpdl/libpdl.so:
 .PHONY: $(IRCLIB)/$(IRCLIB).o
 $(IRCLIB)/$(IRCLIB).o:
 	cd $(IRCLIB); $(MAKE)
-		
+
 ping.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-		
+
 plugin_client.o: %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
@@ -57,7 +57,7 @@ clobber: clobber-$(IRCLIB) clobber-libpdl
 
 clobber-$(IRCLIB):
 	cd $(IRCLIB); $(MAKE) clean
-	
+
 clobber-libpdl:
 	cd libpdl; $(MAKE) clean
 

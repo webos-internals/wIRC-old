@@ -30,3 +30,14 @@ pixi: clean
 
 emu: clean
 	${MAKE} DEVICE="emu" build-package
+
+test:
+	palm-install ${ID}_*.ipk
+	palm-launch ${ID}
+
+device:
+	${MAKE} DEVICE="pre" build-package
+
+clobber: clean
+	find . -name '*~' -delete
+	rm -f ipkgtmp*.tar.gz ${ID}_*.ipk

@@ -1,7 +1,9 @@
+include ../../Makefile.inc
+
 INCLUDES	=	-I.
-					
+
 CFLAGS		=	-Os
-				
+
 LIBRARY		= 	libpdl.so
 
 OBJECTS		= 	libpdl.o
@@ -18,9 +20,9 @@ $(LIBRARY): $(OBJECTS)
 
 $(OBJECTS): %.o: %.c
 	$(CC) $(CFLAGS) -fPIC -c $<  -o $@ -I. $(INCLUDES) $(LIBS)
-	
+
 clean-objects:
 	rm -rf $(OBJECTS)
-	
+
 clean: clean-objects
 	rm -rf $(LIBRARY)
