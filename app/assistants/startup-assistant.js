@@ -15,7 +15,7 @@ function StartupAssistant(changelog)
 			log:
 			[
 				'Fixed nick highlight bug',
-				'Formated to work at TouchPad resolution'
+				'Formatted to work at TouchPad resolution including back buttons where necessary'
 			]
 		},
 		{
