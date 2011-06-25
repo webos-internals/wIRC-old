@@ -76,6 +76,7 @@ ServerStatusAssistant.prototype.setup = function()
 		this.backElement = this.controller.get('back');
 		this.backTapHandler = this.backTap.bindAsEventListener(this);
 		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+		this.controller.listen(this.controller.stageController.window, 'resize', this.revealBottom.bind(this));
 		if (this.popped) this.backElement.hide();
 
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);

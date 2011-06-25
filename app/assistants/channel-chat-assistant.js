@@ -85,6 +85,7 @@ ChannelChatAssistant.prototype.setup = function()
         this.inputElementLoseFocus = this.inputFocus.bind(this);
         this.sendButtonPressed = this.sendButtonPressed.bindAsEventListener(this);
         
+		this.controller.listen(this.controller.stageController.window, 'resize', this.revealBottom.bind(this));
         Mojo.Event.listen(this.sceneScroller, Mojo.Event.scrollStarting, this.scrollHandler);
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
@@ -443,7 +444,26 @@ ChannelChatAssistant.prototype.keyHandler = function(event)
 	var isCmdUp = (event.keyCode === Mojo.Char.q);
 	var isCmdDown = (event.keyCode === Mojo.Char.a);
 	
-	if (event.metaKey) {
+	if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad' && event.keyCode == 9) {
+		if (event.type === 'keyup') {
+			if (!this.tabText) {
+				var tmpText = event.target.value.match(/^(.*)[\s]{1}(.*)$/);
+				this.tabText = event.target.value;
+				if (tmpText) {
+					this.text = tmpText[1];
+					this.tabText = tmpText[2];
+				}
+			}
+			this.nick = this.channel.tabNick(this.tabText, this.nick);
+			if (this.nick) {
+				if (this.text) 
+					event.target.mojo.setText(this.text + " " + this.nick.name + " ");
+				else 
+					event.target.mojo.setText(this.nick.name + prefs.get().tabSuffix + " ");
+			}
+		}
+	}
+	else if (event.metaKey) {
 		if (event.type === 'keyup') {
 			if (isCmdDown || isCmdUp) {
 				if (isCmdUp && cmdHistoryIndex<cmdHistory.length) 

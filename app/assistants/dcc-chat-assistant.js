@@ -79,6 +79,7 @@ DccChatAssistant.prototype.setup = function()
 		this.messageTapHandler = 		this.messageTap.bindAsEventListener(this);
 		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
 		
+		this.controller.listen(this.controller.stageController.window, 'resize', this.revealBottom.bind(this));
 		Mojo.Event.listen(this.sceneScroller,	Mojo.Event.scrollStarting,	this.scrollHandler);
 		Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate,   this.visibleWindowHandler);
 		Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
