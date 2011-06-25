@@ -32,6 +32,9 @@ function FilePickerAssistant(picker)
 	this.selectedFile = false;
 	this.selected = false;
 	this.folderTree = [];
+	
+	this.screenWidth = Mojo.Environment.DeviceInfo.screenWidth;
+	if (this.screenWidth > 800) this.animationDuration = .1;
 }
 FilePickerAssistant.prototype.setup = function()
 {
@@ -95,7 +98,7 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 	var tpl = 'file-picker/folder-container';
 	var folderId = filePicker.parseFileStringForId(folder);
 	
-	var html = Mojo.View.render({object: {folder: folderId, left: (initial?0:321), location: filePicker.parseFileString(folder)}, template: tpl});
+	var html = Mojo.View.render({object: {folder: folderId, left: (initial?0:(this.screenWidth+1)), location: filePicker.parseFileString(folder)}, template: tpl});
 	parent.insert({bottom: html});
 	this.folderTree.push(folder);
 	
@@ -119,13 +122,13 @@ FilePickerAssistant.prototype.addFolder = function(folder, parent, initial)
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
 		    'linear',
-			{from: 0, to: -321, duration: this.animationDuration}
+			{from: 0, to: (0-(this.screenWidth+1)), duration: this.animationDuration}
 		);
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + folderId),
 		    'left',
 		    'linear',
-			{from: 321, to: 0, duration: this.animationDuration, currentValue: 321}
+			{from: (this.screenWidth+1), to: 0, duration: this.animationDuration, currentValue: (this.screenWidth+1)}
 		);
 	}
 }
@@ -162,14 +165,14 @@ FilePickerAssistant.prototype.back = function()
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-1])),
 		    'left',
 		    'linear',
-			{from: 0, to: 321, duration: this.animationDuration,
+			{from: 0, to: (this.screenWidth+1), duration: this.animationDuration,
 			onComplete: this.delFolder.bind(this)}
 		);
 		Mojo.Animation.animateStyle(
 		    this.controller.get('folder' + filePicker.parseFileStringForId(this.folderTree[this.folderTree.length-2])),
 		    'left',
 		    'linear',
-			{from: -321, to: 0, duration: this.animationDuration}
+			{from: (0-(this.screenWidth+1)), to: 0, duration: this.animationDuration}
 		);
 	}
 }
