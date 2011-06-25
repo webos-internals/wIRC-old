@@ -46,9 +46,11 @@ ChannelListAssistant.prototype.setup = function()
 	this.spinnerElement =		this.controller.get('spinner');
 	this.loadedCountElement =	this.controller.get('loadedCount');
 	this.listElement =			this.controller.get('channelList');
+	this.searchButtonElement =	this.controller.get('searchButton');
 	
 	this.listTapHandler =		this.listTapHandler.bindAsEventListener(this);
 	this.filterDelayHandler =	this.filterDelay.bindAsEventListener(this);
+	this.searchButtonHandler =	this.searchButtonPressed.bindAsEventListener(this);
 	this.keyHandler =			this.keyTest.bindAsEventListener(this);
 	this.searchFunction =		this.filter.bind(this);
 	
@@ -92,6 +94,7 @@ ChannelListAssistant.prototype.setup = function()
 	
 	Mojo.Event.listen(this.searchElement, Mojo.Event.propertyChange, this.filterDelayHandler);
 	Mojo.Event.listen(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
+	this.controller.listen(this.searchButtonElement, Mojo.Event.tap, this.searchButtonHandler);
 }
 
 ChannelListAssistant.prototype.activate = function(event)
@@ -133,6 +136,16 @@ ChannelListAssistant.prototype.updateList = function(skipUpdate)
 	
 	this.filter(skipUpdate);
 }
+
+ChannelListAssistant.prototype.searchButtonPressed = function(event)
+{
+	event.stop();
+	// display and focus search field
+	Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
+	this.headerElement.style.display = 'none';
+	this.searchElement.style.display = 'inline';
+	this.searchElement.mojo.focus();
+};
 
 ChannelListAssistant.prototype.keyTest = function(event)
 {

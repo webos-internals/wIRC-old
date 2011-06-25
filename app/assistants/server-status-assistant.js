@@ -73,9 +73,10 @@ ServerStatusAssistant.prototype.setup = function()
 		this.keyHandler = 				this.keyHandler.bindAsEventListener(this);
 		
 		// Add back button functionality for the TouchPad
-		this.backElement = this.controller.get('title');
+		this.backElement = this.controller.get('back');
 		this.backTapHandler = this.backTap.bindAsEventListener(this);
 		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+		if (this.popped) this.backElement.hide();
 
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageActivate, this.visibleWindowHandler);
         Mojo.Event.listen(this.documentElement, Mojo.Event.stageDeactivate, this.invisibleWindowHandler);
@@ -557,7 +558,7 @@ ServerStatusAssistant.prototype.updateAppMenu = function(skipUpdate){
 ServerStatusAssistant.prototype.backTap = function(event)
 {
     if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
-	this.controller.stageController.popScene();
+		this.controller.stageController.popScene();
     }
 };
 

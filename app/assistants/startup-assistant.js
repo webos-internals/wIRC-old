@@ -327,6 +327,11 @@ StartupAssistant.prototype.setup = function()
     this.titleContainer = this.controller.get('title');
     this.dataContainer =  this.controller.get('data');
 	
+	// Add back button functionality for the TouchPad
+	this.backElement = this.controller.get('back');
+	this.backTapHandler = this.backTap.bindAsEventListener(this);
+	this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+	
     // set title
 	if (this.justChangelog)
 	{
@@ -334,6 +339,7 @@ StartupAssistant.prototype.setup = function()
 	}
 	else
 	{
+		this.backElement.hide();
 	    if (vers.isFirst) 
 		{
 		    this.titleContainer.innerHTML = $L("Welcome To wIRC");
@@ -414,6 +420,13 @@ StartupAssistant.prototype.getRandomContinueMessage = function()
 	// if no random title was found (for whatever reason, wtf?) return first and best subtitle
 	return this.randomContinue[0].text;
 }
+
+StartupAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+		this.controller.stageController.popScene();
+    }
+};
 
 StartupAssistant.prototype.activate = function(event)
 {

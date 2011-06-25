@@ -70,6 +70,10 @@ body.no-gesture #searchText
 {
 	padding-left: 33px;
 }
+body.no-gesture .channel-list #searchText
+{
+	padding-left: 1px;
+}
 body.no-gesture .searchBack
 {
 	display: none;
@@ -116,6 +120,12 @@ body.no-gesture .inputFooter
 {
 	width: 100%;
 }
+body.no-gesture .server-status .palm-header .backPill
+{
+	position: relative;
+	float: left;
+	margin-right: -4px;
+}
 body.no-gesture .server-status #connectButton
 {
 	left: 20%;
@@ -125,6 +135,10 @@ body.no-gesture .server-status #connectButton
 body.no-gesture .channel-chat #topicContainer
 {
 	width: 100% !important;
+}
+body.no-gesture .channel-users .palm-header
+{
+	padding-left: 30px;
 }
 body.no-gesture .form .palm-row-wrapper .slider
 {

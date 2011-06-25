@@ -39,6 +39,11 @@ PreconfiguredNetworkAssistant.prototype.setup = function()
 	this.listElement =			this.controller.get('serverList');
 	this.listTapHandler =		this.listTapHandler.bindAsEventListener(this);
 	
+	// Add back button functionality for the TouchPad
+	this.backElement = this.controller.get('back');
+	this.backTapHandler = this.backTap.bindAsEventListener(this);
+	this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+	
 	this.networkElement.update(this.network);
 	
 	if (preconfigured.length > 0)
@@ -109,6 +114,13 @@ PreconfiguredNetworkAssistant.prototype.listTapHandler = function(event)
 	this.controller.stageController.pushScene('server-info', event.item.param);
 }
 
+PreconfiguredNetworkAssistant.prototype.backTap = function(event)
+{
+    if (Mojo.Environment.DeviceInfo.modelNameAscii == 'TouchPad') {
+		this.controller.stageController.popScene();
+    }
+};
+
 PreconfiguredNetworkAssistant.prototype.handleCommand = function(event)
 {
 	if (event.type == Mojo.Event.command)
@@ -128,6 +140,7 @@ PreconfiguredNetworkAssistant.prototype.handleCommand = function(event)
 
 PreconfiguredNetworkAssistant.prototype.cleanup = function(event) 
 {
+	Mojo.Event.stopListening(this.backElement, Mojo.Event.tap, this.backTapHandler);
 	Mojo.Event.stopListening(this.listNoRegionElement, Mojo.Event.listDelete, this.listTapHandler);
 	Mojo.Event.stopListening(this.listElement, Mojo.Event.listDelete, this.listTapHandler);
 }

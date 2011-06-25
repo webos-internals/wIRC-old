@@ -44,18 +44,22 @@ ChannelUsersAssistant.prototype.setup = function()
 		this.searchSpinnerElement =	this.controller.get('searchSpinner');
 		this.titleElement =			this.controller.get('title');
 		this.userListElement =		this.controller.get('userList');
+		this.searchButtonElement =	this.controller.get('searchButton');
 		
 		this.listTapHandler =		this.listTap.bindAsEventListener(this);
 		this.filterDelayHandler =	this.filterDelay.bindAsEventListener(this);
+		this.searchButtonHandler =	this.searchButtonPressed.bindAsEventListener(this);
 		this.keyHandler =			this.keyTest.bindAsEventListener(this);
 		this.searchFunction =		this.filter.bind(this);
 		
 		this.titleElement.innerHTML = this.channel.name + ': Users';
 		
 		// Add back button functionality for the TouchPad
-		this.backElement = this.controller.get('title');
+		this.backElement = this.controller.get('back');
+		this.searchBackElement = this.controller.get('searchBack');
 		this.backTapHandler = this.backTap.bindAsEventListener(this);
 		this.controller.listen(this.backElement, Mojo.Event.tap, this.backTapHandler);
+		this.controller.listen(this.searchBackElement, Mojo.Event.tap, this.backTapHandler);
 
 		this.updateList(true);
 		this.controller.setupWidget
@@ -90,6 +94,7 @@ ChannelUsersAssistant.prototype.setup = function()
 		
 		Mojo.Event.listen(this.searchElement, Mojo.Event.propertyChange, this.filterDelayHandler);
 		Mojo.Event.listen(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
+		this.controller.listen(this.searchButtonElement, Mojo.Event.tap, this.searchButtonHandler);
 	} 
 	catch (e) 
 	{
@@ -128,6 +133,17 @@ ChannelUsersAssistant.prototype.updateList = function(skipUpdate)
 	}
 }
 
+ChannelUsersAssistant.prototype.searchButtonPressed = function(event)
+{
+	event.stop();
+	// display and focus search field
+	Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
+	this.headerElement.style.display = 'none';
+	this.searchElement.style.display = 'inline';
+	this.searchBackElement.style.display = 'inline';
+	this.searchElement.mojo.focus();
+};
+
 ChannelUsersAssistant.prototype.keyTest = function(event)
 {
 	if (Mojo.Char.isValidWrittenChar(event.originalEvent.charCode)) 
@@ -135,6 +151,7 @@ ChannelUsersAssistant.prototype.keyTest = function(event)
 		Mojo.Event.stopListening(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
 		this.headerElement.style.display = 'none';
 		this.searchElement.style.display = 'inline';
+		this.searchBackElement.style.display = 'inline';
 		this.searchElement.mojo.focus();
 	}
 }
@@ -151,6 +168,7 @@ ChannelUsersAssistant.prototype.filterDelay = function(event)
 		this.searchElement.mojo.blur();
 		this.searchElement.style.display = 'none';
 		this.headerElement.style.display = 'inline';
+		this.searchBackElement.style.display = 'none';
 		Mojo.Event.listen(this.controller.sceneElement, Mojo.Event.keypress, this.keyHandler);
 		this.searchFunction();
 	}

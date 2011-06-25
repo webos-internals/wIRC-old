@@ -616,7 +616,7 @@ body.palm-dark .form .textfield-group .hint-text
 /*
  * Channel List Scene Styles
  */
-.channel-list .palm-header
+.channel-list .palm-header .title
 {
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -804,7 +804,7 @@ body.palm-dark .channel-list .palm-list .palm-row-wrapper .sub .highlight
 /*
  * Channel Users Scene Styles
  */
-.channel-users .palm-header
+.channel-users .palm-header .title
 {
 	white-space: nowrap;
 	text-overflow: ellipsis;
