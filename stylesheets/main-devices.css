@@ -65,6 +65,13 @@ body.no-gesture.palm-dark .palm-header .backPill
 {
 	background-image: url(../images/ui-revision-2/back-pill-dark.png);
 }
+body.no-gesture.flat .palm-header .backPill
+{
+	position: relative;
+	float: left;
+	margin-right: 0;
+	background-image: url(../images/ui-revision-2/back-flat-flat.png);
+}
 
 body.no-gesture #searchText
 {
@@ -82,8 +89,12 @@ body.no-gesture .searchBack
 	left: 9px;
 	width: 40px;
 	height: 40px;
-	z-index: 200000;
+	z-index: 20001;
 	background: url(../images/ui-revision-2/search-list.png) center center no-repeat;
+}
+body.no-gesture.flat .searchBack
+{
+	background-image: url(../images/ui-revision-2/back-flat-flat.png);
 }
 body.no-gesture .searchPill
 {
@@ -98,6 +109,11 @@ body.no-gesture .searchPill
 body.no-gesture.palm-dark .searchPill
 {
 	background-image: url(../images/ui-revision-2/search-pill-dark.png);
+}
+body.no-gesture.flat .searchPill
+{
+	margin-right: -8px;
+	background-image: url(../images/ui-revision-2/search-pill-flat.png);
 }
 
 
