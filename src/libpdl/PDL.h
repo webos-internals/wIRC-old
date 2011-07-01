@@ -1,12 +1,12 @@
 /*=============================================================================
  Copyright (C) 2010 WebOS Internals <http://www.webos-internals.org/>
- Copyright (C) 2010 Ryan Hope <rmh3093@gmail.com>
+ Copyright (C) 2010-2011 Ryan Hope <rmh3093@gmail.com>
  Copyright (C) 2010 mdklein <???>
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
+ of the License, or (fat your option) any later version.
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,9 +33,20 @@ typedef enum {
 
 #define CALLBACK_PAYLOAD_MAX 1024
 
+#define HARDWARE_UNKNOWN	-1
+#define HARDWARE_PRE		101
+#define HARDWARE_PRE_PLUS	102
+#define HARDWARE_PIXI		201
+#define HARDWARE_VEER		301
+#define HARDWARE_PRE_2		401
+#define HARDWARE_PRE_3		501
+#define HARDWARE_TOUCHPAD	601
+
 #define PDL_GPS_UPDATE 0xE100  
 
-#define PDL_GPS_FAILURE 0xE101  
+#define PDL_GPS_FAILURE 0xE101 
+
+#define PDL_VERSION_STR_SIZE 256
 
 typedef enum
 {
@@ -57,6 +68,12 @@ typedef enum
         PDL_ORIENTATION_180,
         PDL_ORIENTATION_270,
 } PDL_Orientation;
+
+typedef enum
+{
+        PDL_AGGRESSION_LESSTOUCHES = 0,
+        PDL_AGGRESSION_MORETOUCHES
+} PDL_TouchAggression;
 
 enum
 {
@@ -87,6 +104,30 @@ typedef struct
         double velocity;
 } PDL_Location;
 
+typedef struct
+{
+	int confidence;
+	double magneticBearing;
+	double trueBearing;
+} PDL_Compass;
+
+typedef struct
+{
+	int horizontalPixels;
+	int verticalPixels;
+	int horizontalDPI;
+	int verticalDPI;
+	double aspectRatio;
+} PDL_ScreenMetrics;
+
+typedef struct
+{
+	int majorVersion;
+	int minorVersion;
+	int revision;
+	char* versionStr;
+} PDL_OSVersion;
+
 typedef struct PDL_ServiceParameters PDL_ServiceParameters;
 typedef struct PDL_JSParameters PDL_JSParameters;
 typedef PDL_bool (*PDL_ServiceCallbackFunc) (PDL_ServiceParameters *params, void *user);
@@ -107,7 +148,7 @@ PDL_Err PDL_ProviderReply(PDL_ServiceParameters *parms, const char *reply);
 PDL_Err PDL_RegisterJSHandler(const char *functionName, PDL_JSHandlerFunc function);
 
 PDL_Err PDL_JSRegistrationComplete();
-int PDL_GetNumMojoParams(PDL_JSParameters *parms);
+int PDL_GetNumJSParams(PDL_JSParameters *parms);
 const char *PDL_GetJSParamString(PDL_JSParameters *parms, int paramNum);
 int PDL_GetJSParamInt(PDL_JSParameters *parms, int paramNum);
 double PDL_GetJSParamDouble(PDL_JSParameters *parms, int paramNum);
@@ -142,5 +183,21 @@ PDL_bool PDL_IsPlugin(void);
 void    PDL_Quit();
 
 PDL_Err PDL_CallJS(const char *functionName, const char **params, int numParams);
+const char *PDL_GetHardware(void);
+int PDL_GetHardwareID(void);
+int PDL_GetPDKVersion(void);
+PDL_Err PDL_GetRegionCountryCode(char *buffer, int bufferLen);
+PDL_Err PDL_GetRegionCountryName(char *buffer, int bufferLen);
+PDL_Err PDL_GetScreenMetrics(PDL_ScreenMetrics *outMetrics);
+PDL_Err PDL_GetOSVersion(PDL_OSVersion *version);
+const char *PDL_GetParamJson(PDL_ServiceParameters *parms);
+int PDL_isAppLicensedForDevice(const char *appid);
+PDL_Err PDL_Minimize(void);
+PDL_Err PDL_SetTouchAggression(PDL_TouchAggression aggression);
+PDL_Err PDL_Vibrate(int periodMS, int durationMS);
+
+PDL_Err PDL_EnableCompass(PDL_bool activate);
+PDL_Err PDL_GetCompass(PDL_Compass *compass);
+PDL_Err PDL_SetKeyboardState(PDL_bool bVisible);
 
 #endif /* LIBPDL_H_ */

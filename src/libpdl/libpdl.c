@@ -1,6 +1,6 @@
 /*=============================================================================
  Copyright (C) 2010 WebOS Internals <http://www.webos-internals.org/>
- Copyright (C) 2010 Ryan Hope <rmh3093@gmail.com>
+ Copyright (C) 2010-2011 Ryan Hope <rmh3093@gmail.com>
  Copyright (C) 2010 mdklein <???>
 
  This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ double      PDL_GetParamDouble(PDL_ServiceParameters *parms, const char *name){r
 PDL_Err PDL_ProviderReply(PDL_ServiceParameters *parms, const char *reply){return 0;}
 PDL_Err PDL_RegisterJSHandler(const char *functionName, PDL_JSHandlerFunc function){return 0;}
 PDL_Err PDL_JSRegistrationComplete(){return 0;}
-int PDL_GetNumMojoParams(PDL_JSParameters *parms){return 0;}
+int PDL_GetNumJSParams(PDL_JSParameters *parms){return 0;}
 const char *PDL_GetJSParamString(PDL_JSParameters *parms, int paramNum){return 0;}
 int PDL_GetJSParamInt(PDL_JSParameters *parms, int paramNum){return 0;}
 double PDL_GetJSParamDouble(PDL_JSParameters *parms, int paramNum){return 0;}
@@ -63,6 +63,22 @@ PDL_Err PDL_GetLocation(PDL_Location *location){return 0;}
 PDL_bool PDL_IsPlugin(void){return 0;}
 void    PDL_Quit(){return;}
 PDL_Err PDL_CallJS(const char *functionName, const char **params, int numParams){return 0;}
+const char *PDL_GetHardware(void){return 0;}
+int PDL_GetHardwareID(void){return 0;}
+int PDL_GetPDKVersion(void){return 0;}
+PDL_Err PDL_GetRegionCountryCode(char *buffer, int bufferLen){return 0;}
+PDL_Err PDL_GetRegionCountryName(char *buffer, int bufferLen){return 0;}
+PDL_Err PDL_GetScreenMetrics(PDL_ScreenMetrics *outMetrics){return 0;}
+PDL_Err PDL_GetOSVersion(PDL_OSVersion *version){return 0;}
+const char *PDL_GetParamJson(PDL_ServiceParameters *parms){return 0;}
+int PDL_isAppLicensedForDevice(const char *appid){return 0;}
+PDL_Err PDL_Minimize(void){return 0;}
+PDL_Err PDL_SetTouchAggression(PDL_TouchAggression aggression){return 0;}
+PDL_Err PDL_Vibrate(int periodMS, int durationMS){return 0;}
+
+PDL_Err PDL_EnableCompass(PDL_bool activate){return 0;}
+PDL_Err PDL_GetCompass(PDL_Compass *compass){return 0;}
+PDL_Err PDL_SetKeyboardState(PDL_bool bVisible){return 0;}
 
 int SDL_WaitEvent(SDL_Event *event) {return 0;}
 int SDL_Init(Uint32 flags) {return 0;}
