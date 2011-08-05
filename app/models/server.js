@@ -108,6 +108,7 @@ ircServer.prototype.setState = function(state)
 
 ircServer.prototype.abortConnection = function()
 {
+	clearTimeout(this.connectionTimeout)
 	this.setState(this.STATE_TIMEOUT);
 	//plugin.disconnect(servers.getServerArrayKey(this.id));
 }
@@ -452,6 +453,7 @@ ircServer.prototype.connect = function()
 	try
 	{
 		this.pings = {};
+		clearTimeout(this.connectionTimeout)
 		var timeout = prefs.get().connectionTimeout;
 		if (timeout)
 			this.connectionTimeout = setTimeout(this.abortConnection.bind(this), 1000*timeout);

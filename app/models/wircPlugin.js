@@ -207,7 +207,7 @@ wircPluginModel.prototype.event_dcc_chat_req_handler = function(id, nick, addres
 		filename: false,
 		size: false,
 		dcc_id: dcc_id
-	};;
+	};
 	servers.servers[id].startDcc(params);
 }
 
@@ -216,11 +216,7 @@ wircPluginModel.prototype.event_connect_handler = function(id, event, origin, pa
 	var id = parseInt(id);
 	var params = wircPluginModel.jsonParse(params_s);
 	
-	if (event=='MAXRETRIES')
-	{
-		servers.servers[id].setState(servers.servers[id].STATE_MAX_RETRIES);
-		return;	
-	}
+	clearTimeout(servers.servers[id].connectionTimeout)
 
 	servers.servers[id].realServer = origin;
 	
