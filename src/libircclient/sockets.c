@@ -19,6 +19,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <net/if.h>
+#include <ifaddrs.h>
 #include <netinet/in.h>
 #include <fcntl.h>
 
@@ -46,10 +47,45 @@ static int socket_error()
 static int socket_create (int domain, int type, socket_t * sock, const char * interface)
 {
 	*sock = socket (domain, type, 0);
-    if((int)sock != -1 && interface != NULL) {
-    	struct ifreq iface;
-    	strncpy(iface.ifr_ifrn.ifrn_name, interface, IFNAMSIZ);
-		setsockopt(*sock, SOL_SOCKET, SO_BINDTODEVICE, (char *)&iface, sizeof(iface));
+    if((int)sock != -1 && interface != NULL && strlen(interface) != 0) {
+        struct ifaddrs *ifaddrlist, *ifaddr;
+        if (getifaddrs(&ifaddrlist) == -1) {
+		    syslog(LOG_WARNING, "** (%s:%d) Unable to enumerate interface addresses.", __FILE__, __LINE__);
+        }
+        //find the name match in our list
+        for (ifaddr = ifaddrlist; ifaddr != NULL; ifaddr = ifaddr->ifa_next) {
+            int family, s;
+            char addrstring[INET6_ADDRSTRLEN];
+            if (ifaddr->ifa_addr == NULL) {
+                continue;
+            }
+
+            if (strcmp(ifaddr->ifa_name, interface) == 0) {
+                family = ifaddr->ifa_addr->sa_family;
+                if (family == AF_INET || family == AF_INET6) {
+                    // <purely for debugging>
+                    if (family == AF_INET) {
+                        //have: sockaddr. need it as _in or _in6
+                        inet_ntop(family, &((struct sockaddr_in*) ifaddr->ifa_addr)->sin_addr, addrstring, INET6_ADDRSTRLEN);
+                    } else if (family == AF_INET6) {
+                        inet_ntop(family, &((struct sockaddr_in6*) ifaddr->ifa_addr)->sin6_addr, addrstring, INET6_ADDRSTRLEN);
+                    }
+                    syslog(LOG_DEBUG,"%s  address family: %d %s  address: <%s>",
+                            ifaddr->ifa_name, family,
+                            (family == AF_PACKET) ? "(AF_PACKET)" :
+                            (family == AF_INET) ?   "(AF_INET)" :
+                            (family == AF_INET6) ?  "(AF_INET6)" : "",
+                            addrstring);
+                    // </purely for debugging>
+                    if (bind(*sock, ifaddr->ifa_addr, sizeof(*ifaddr->ifa_addr)) != 0) {
+                        syslog(LOG_WARNING, "** (%s:%d) Unable to bind errno=%d.", __FILE__, __LINE__, errno);
+                        //syslog(LOG_DEBUG, "** (%s:%d) address=%u", __FILE__, __LINE__, ((struct sockaddr_in*) ifaddr->ifa_addr)->sin_addr);
+                        //syslog(LOG_DEBUG, "** (%s:%d) port=%d", __FILE__, __LINE__, htons(((struct sockaddr_in*) ifaddr->ifa_addr)->sin_port));
+                    }
+                }
+            }
+        }
+        freeifaddrs(ifaddr);
     }
 	return IS_SOCKET_ERROR(*sock) ? 1 : 0;
 }
