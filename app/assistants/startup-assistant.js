@@ -11,6 +11,14 @@ function StartupAssistant(changelog)
     this.newMessages =
 	[
 		{
+		version: '0.4.6',
+			log:
+			[
+				'Prefered interface works again',
+				'Possibly fix a double connection / connected but cant type bug'
+			]
+		},
+		{
 		version: '0.4.5',
 			log:
 			[
