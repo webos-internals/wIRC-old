@@ -2,13 +2,27 @@ enyo.depends(
 	
 	"$enyo/palm/list2/",
 	
-	"enyo/models/server.js",
+	"enyo/wi/depends.js",
 	
-	"enyo/buffer-list.js",
-	
-	"enyo/plugin.js",
+	"enyo/misc.js",
 	"enyo/server.js",
-	"enyo/main.js",
+	"enyo/servers.js",
+	"enyo/serverStatusPanel.js",
+	"enyo/serverPreferencesPanel.js",
 	
-  	"css/main.css"
+	"enyo/channel.js",
+	"enyo/channelChatPanel.js",
+	
+	"enyo/events.js",
+	"enyo/manager.js",
+	"enyo/plugin.js",
+	
+	"enyo/messages.js",
+	
+	"enyo/main.js",
+	"enyo/mainPanel.js",
+	"enyo/mainServerItem.js",
+	"enyo/mainChannelItem.js",
+  	"enyo/css/main.css"
+	
 )

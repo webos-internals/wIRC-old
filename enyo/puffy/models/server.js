@@ -5,8 +5,6 @@ function Server(id, address, port) {
 	this.port = port
 	this.connected = false
 	
-	this.data = []
-	
 	this.buffers = ['Server Log']
 	
 }

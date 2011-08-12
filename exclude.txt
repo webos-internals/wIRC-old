@@ -1,8 +1,0 @@
-*.c
-*.o
-*.h
-*~
-Makefile*
-plugin/arm
-plugin/i686
-plugin/lib*

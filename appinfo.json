@@ -1,7 +1,7 @@
 {
 	"title" : "wIRC",
-	"id" : "org.webosinternals.wirc",
-	"version" : "1.99.2",
+	"id" : "org.webosinternals.wirc-enyo",
+	"version" : "0.0.1",
 	"vendor" : "WebOS Internals",
 	"type" : "web",
 	"plug-ins" : true,

@@ -1,0 +1,163 @@
+body {
+	background: #666;
+}
+
+.header-shadow,
+.toolbar-shadow {
+	position: relative; 
+	z-index: 100;
+	height: 3px;
+	width: 100%;
+	pointer-events: none;
+}
+.header-shadow {
+	top: 0;
+	margin-bottom: -3px;
+	background: transparent url('../images/header-shadow.png') bottom repeat-x;
+}
+.toolbar-shadow {
+	bottom: 0;
+	margin-top: -3px;
+	background: transparent url('../images/toolbar-shadow.png') top repeat-x;
+}
+
+
+.main-list {
+	background: #ccc;
+}
+
+.main-row {
+	position: relative;
+	min-height: 45px;
+	padding: 0;
+	background: #d8d8d8;
+	border-left: 1px solid rgba(255, 255, 255, 0.5);
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+	margin-left: -1px;
+	margin-right: -1px;
+}
+.main-row .title {
+	margin: 1px 0 0 8px;
+	font-weight: bold;
+}
+.main-row .subtitle {
+	margin: -2px 0 0 8px;
+	font-size: 0.7em;
+	color: rgba(51, 51, 51, 0.8);
+}
+.main-row .buttons {
+	position: absolute;
+	/*background: #0f0;*/
+	height: 36px;
+	top: 5px;
+	right: 0px;
+}
+.main-row .button {
+	float: left;
+	width: 28px;
+	height: 28px;
+	margin: 0 5px 0 0;
+	padding: 0px;
+}
+.main-row .button.enyo-button-down {
+}
+.main-row .button .icon {
+	/*background: rgba(0, 0, 0, 0.3);*/
+	width: 36px;
+	height: 36px;
+	margin: -4px 0 0 -4px;
+	padding: 0px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	pointer-events: none;
+}
+.main-row .button .spinner {
+	margin: -2px 0 0 -2px;
+	display: none;
+}
+
+.main-row .button.prefs .icon {
+	background-image: url(../images/button-prefs.png);
+}
+.main-row .button.menu .icon {
+	background-image: url(../images/button-menu.png);
+}
+.main-row .button.connect .icon {
+	background-image: url(../images/button-disconnected.png);
+}
+.main-row .button.connecting .icon {
+	display: none;
+}
+.main-row .button.connecting .spinner {
+	display: block;
+}
+.main-row .button.disconnect .icon {
+	background-image: url(../images/button-connected.png);
+}
+
+.server-children {
+}
+.server-children:not(:last-child) {
+	border-bottom: 2px solid #ccc;
+}
+.server-children .main-row {
+	margin-left: 10px;
+	border-left: 1px solid rgba(255, 255, 255, 0.5);
+	background: #d8d8d8;
+}
+
+
+.messages-panel .enyo-bg {
+	background: #f5f5f5;
+}
+
+.messages-panel .messages {
+}
+
+.messages-panel .message-row {
+	border: 0;
+	padding: 1px 10px 3px 10px;
+	font-size: 0.7em;
+}
+
+.messages-panel .message-row.notice {
+	color: orangered;
+}
+.messages-panel .message-row.status {
+	color: mediumpurple;
+}
+.messages-panel .message-row.action {
+	color: firebrick;
+}
+
+
+.main-panel .enyo-sliding-view-shadow {
+	left: 320px;
+	background-image: url(../images/sliding-blank-shadow.png);
+}
+.blank-slider .enyo-sliding-view-shadow {
+	left: 0;
+	background-image: url(../images/sliding-blank-shadow.png);
+}
+.blank-slider .enyo-vflexbox {
+	background: #666;
+}
+.blank-slider .enyo-vflexbox .text {
+	font-size: 0.7em;
+	color: #999;
+}
+
+
+.enyo-button-negative.close {
+	margin: -10px 0px;
+}
+
+.message-toolbar {
+	max-height: 192px;
+}
+.message-toolbar .enyo-grabbutton {
+	bottom: 0px;
+}
+.message-toolbar .enyo-input {
+	margin: 1px 0 2px 50px;
+}
