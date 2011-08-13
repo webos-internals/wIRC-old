@@ -11,12 +11,16 @@ enyo.kind({
 	
 	components: [
 	
-		{name: 'header', layoutKind: 'VFlexLayout', kind: 'Header', components: [{name: 'headerText', content: ''}]},
+		{name: 'header', layoutKind: 'VFlexLayout', kind: 'Header', style: 'margin-bottom: -1px;', components: [{name: 'headerText', content: ''}]},
+		{name: 'tabs', kind: 'TabGroup', onChange: 'tabToggle', value: 'general', components: [
+			{content: 'General', value: 'general'},
+			{content: 'Advanced', value: 'advanced'},
+		]},
 		{kind: 'HeaderShadow'},
 		
     	{name: 'scroller', kind: 'Scroller', className: 'scroller', flex: 1, autoVertical: true, components: [
 			
-			{kind: 'Control', layoutKind: 'VFlexLayout', align: 'center', components: [
+			{name: 'generalTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 			
 				{kind: 'RowGroup', width: '400px', caption: 'Server Information', components: [
 					{name: 'alias', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Alias'}]},
@@ -38,6 +42,12 @@ enyo.kind({
 			
 			]},
 			
+			{name: 'advancedTab', layoutKind: 'VFlexLayout', align: 'center', components: [
+				{kind: 'RowGroup', width: '400px', caption: 'foo', components: [
+					{kind: 'Item', content: 'bar'}
+				]},
+			]},
+			
 		]},
 		
 		{kind: 'ToolbarShadow'},
@@ -53,6 +63,8 @@ enyo.kind({
 	
 	create: function() {
 	    this.inherited(arguments);
+		
+		this.tabToggle();
 		
 		if (!this.setup) {
 			this.setup = enyo.clone(wirc.Server.defaultSetup);
@@ -75,6 +87,12 @@ enyo.kind({
 		this.$.password.setValue(this.setup.password);
 		this.$.realname.setValue(this.setup.realname);
 		this.$.ssl.setState(this.setup.ssl);
+	},
+	
+	tabToggle: function(inSender, inValue) {
+		this.$.generalTab.hide();
+		this.$.advancedTab.hide();
+		this.$[this.$.tabs.getValue() + 'Tab'].show();
 	},
 	
 	requiredTest: function(inSender, inEvent, inValue) {
