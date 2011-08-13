@@ -28,8 +28,8 @@ enyo.kind({
 		
 		{kind: 'ToolbarShadow'},
 		{name: 'toolbar', kind: 'Toolbar', className: 'enyo-toolbar-light', components: [
-			{kind: 'Button', content: 'Add Server', onclick: 'addServerButton'},
-			{kind: 'Button', components: [{kind: 'Image', src: 'enyo/images/button-prefs.png', style: 'margin: -10px;'}], onclick: 'preferencesButton'}
+			{icon: 'enyo/images/server_add.png', className: 'wirc-tool-button', onclick: 'addServerButton'},
+			{icon: 'enyo/images/prefs.png', className: 'wirc-tool-button', onclick: 'preferencesButton'}
 		]}
 		
 	],

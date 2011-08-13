@@ -168,3 +168,8 @@ body {
 .message-toolbar .enyo-input {
 	margin: 1px 0 2px 50px;
 }
+
+.wirc-tool-button {
+	cursor: pointer;
+	padding: 0px 10px;
+}
