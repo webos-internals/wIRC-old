@@ -16,9 +16,7 @@ enyo.kind({
 			alias:		'',
 			address:	'',
 			port:		'',
-			nick1:		'',
-			nick2:		'',
-			nick3:		'',
+			nicks:		[],
 			user:		'',
 			password:	'',
 			realname:   '',
@@ -202,7 +200,7 @@ enyo.kind({
   			false,
   			this.setup.user||'wircer',
   			this.setup.password,
-  			this.setup.nick,
+  			this.setup.nicks[0],
   			this.setup.realname||'wIRCer on HP Touchpad'
 		);
 	},
