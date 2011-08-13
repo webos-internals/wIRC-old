@@ -3,6 +3,7 @@ enyo.kind({
 	kind: 'SlidingView',
 	
 	width: '320px',
+	fixedWidth: true,
 	
 	components: [
 		

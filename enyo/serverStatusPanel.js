@@ -4,6 +4,7 @@ enyo.kind({
 	
 	/*peekWidth: 64,*/
 	dragAnywhere: false,
+	dismissible: true,
 	
 	published: {
 		server: false,
@@ -18,7 +19,7 @@ enyo.kind({
 		{name: 'header', kind: 'Header', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
-			{kind: 'Button', caption: 'X', onclick: 'closeButton', className: 'enyo-button-negative close'},
+			{kind: 'Button', caption: 'X', onclick: 'setShowing', className: 'enyo-button-negative close'},
 		]},
 		{kind: 'HeaderShadow'},
 		
@@ -56,7 +57,8 @@ enyo.kind({
 		enyo.job('refreshMessages', enyo.bind(this, 'refreshMessages'), 5);
 	},
 	refreshMessages: function() {
-		this.$.messages.refresh();
+		if (this.$.messages.showing)
+			this.$.messages.refresh();
 	},
 	
 	resizeHandler: function() { // application resize (orientation change/keyboard pop)
@@ -91,8 +93,8 @@ enyo.kind({
 			this.$.input.setValue('');
 		}
 	},
-	
-	closeButton: function() {
+
+	setShowing: function() {
 		this.owner.destroySecondary(true);
 	},
 	
