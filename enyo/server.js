@@ -15,8 +15,14 @@ enyo.kind({
 			id:			false,
 			alias:		'',
 			address:	'',
-			port:		6667,
-			nick:		''
+			port:		'',
+			nick1:		'',
+			nick2:		'',
+			nick3:		'',
+			user:		'',
+			password:	'',
+			realname:   '',
+			ssl:		false,
 		},
 		
 		//stateServiceUnavailable:	-3,
@@ -117,8 +123,7 @@ enyo.kind({
 	},
 	
 	
-	getNick: function(string)
-	{
+	getNick: function(string) {
 		var nickParser = new RegExp(/^([^\s]*)!(.*)$/);
 		
 		if (string.substr(0, 1) == '#')
@@ -189,7 +194,17 @@ enyo.kind({
 	
 	connect: function() {
 		this.setState(wirc.Server.stateConnecting);
-  		return enyo.application.p.call('connect', this.setup.id, this.setup.address, this.setup.port, false, 'wircer', '', this.setup.nick, 'wircer');
+  		return enyo.application.p.call(
+  			'connect',
+  			this.setup.id,
+  			this.setup.address,
+  			this.setup.port||6667,
+  			false,
+  			this.setup.user||'wircer',
+  			this.setup.password,
+  			this.setup.nick,
+  			this.setup.realname||'wIRCer on HP Touchpad'
+		);
 	},
 	connected: function() {
 		this.setState(wirc.Server.stateConnected);

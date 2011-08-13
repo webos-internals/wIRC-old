@@ -79,8 +79,12 @@ enyo.kind({
   		this.plugin.addCallback('handle_dcc_callback',		enyo.bind(this, 'handleDccCallback'));
   		this.plugin.addCallback('handle_dcc_send_callback',	enyo.bind(this, 'handleDccSendCallback'));
 	},
-	
+
   	retryConnection: function(id) {
+  		/* This gets called if a connection was not made, should probably
+  		retry a few times before giving up. For now just setting state to 
+  		disconencted. */
+  		enyo.application.s.getFromId(id).setState(wirc.Server.stateDisconnected);
 		if (this.dumpLog) this.log(id);
   	},
   	

@@ -1,4 +1,4 @@
-APPID = org.webosinternals.wirc
+APPID = org.webosinternals.wirc-enyo
 
 .PHONY: clean clean-plugin clean-package install build-package build-plugin
 	
@@ -15,7 +15,6 @@ clean-plugin:
 	cd plugin; ${MAKE} clean
 
 install: build-package
-	- palm-install -r ${APPID}
 	palm-install ${APPID}_*.ipk
 	
 test: install
