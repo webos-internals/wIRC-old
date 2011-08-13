@@ -10,6 +10,8 @@ enyo.kind({
 	
 	channels: '',
 	
+	unread: 0,
+	
 	statics: {
 		defaultSetup: {
 			id:			false,

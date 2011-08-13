@@ -43,6 +43,12 @@ body {
 	margin: 1px 0 0 8px;
 	font-weight: bold;
 }
+.main-row .title.unread {
+	color: #CD2626; /* firebrick3 */
+}
+.main-row .title.mentioned {
+	color: #4876FF; /* royalblue1 */
+}
 .main-row .subtitle {
 	margin: -2px 0 0 8px;
 	font-size: 0.7em;

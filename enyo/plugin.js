@@ -148,6 +148,10 @@ enyo.kind({
 			var nick = server.getNick(origin);
 			//tmpNick.addChannel(tmpChan);
 			chan.newMessage('privmsg', nick, params[1]);
+			if (enyo.application.m.controller.secondary != 'channel-chat-' + chan.getNameSimple()) {
+				chan.unread = chan.unread + 1
+				enyo.application.e.dispatch('main-crud'); // refresh main list
+			}
 		}
   	},
   	eventPrivmsg: function(id, event, origin, params_s) {

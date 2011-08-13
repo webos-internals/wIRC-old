@@ -11,6 +11,9 @@ enyo.kind({
 	messages: '',
 	commands: '',
 	
+	unread: 0,
+	mentions: 0,
+	
 	statics: {
 	},
 	

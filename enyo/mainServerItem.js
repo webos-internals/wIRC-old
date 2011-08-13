@@ -5,6 +5,14 @@ enyo.kind({
 	tapHighlight: true,
 	defaultButtonClass: 'enyo-button button',
 	
+	statics: {
+		titleClass: {
+			normal: 'title',
+			unread: 'title unread',
+			mentioned: 'title mentioned'
+		}
+	},
+	
 	events: {
 		onButtonClick: '',
 	},
@@ -33,7 +41,7 @@ enyo.kind({
 		this.statusListener = enyo.bind(this, 'update');
 		enyo.application.e.listen('server-status' + this.server.setup.id, this.statusListener);
 	},
-	
+
 	destroy: function() {
 		enyo.application.e.stopListening('server-status' + this.server.setup.id, this.statusListener);
 		return this.inherited(arguments);
@@ -79,6 +87,11 @@ enyo.kind({
 			this.$.title.setContent(this.server.setup.address);
 			this.$.subtitle.setContent('');
 		}
+		
+		if (this.server.unread>0) 
+			this.$.title.setClassName('title unread')
+		else
+			this.$.title.setClassName('title')
 		
 		this.$.button2.setClassName(this.defaultButtonClass + ' prefs');
 		

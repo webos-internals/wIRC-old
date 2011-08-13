@@ -43,8 +43,11 @@ enyo.kind({
 	
 	doClick: function(inEvent) {
 		// row click
-		if (this.channel != undefined)
+		if (this.channel != undefined) {
 			enyo.application.m.createPanel({name: 'channel-chat-' + this.channel.getNameSimple(), kind: 'wirc.ChannelChatPanel', channel: this.channel});
+			this.channel.unread = 0;
+			enyo.application.e.dispatch('main-crud'); // refresh main list
+		}
 	},
 	
 	clickButton: function(inSender, inEvent) {
@@ -66,6 +69,13 @@ enyo.kind({
 	update: function() {
 		
 		this.$.title.setContent(this.channel.setup.name);
+		
+		if (this.channel.mentions>0) 
+			this.$.title.setClassName('title mentioned')
+		else if (this.channel.unread>0) 
+			this.$.title.setClassName('title unread')
+		else
+			this.$.title.setClassName('title')
 		
 		this.$.button.setClassName(this.defaultButtonClass + ' menu');
 		
