@@ -65,7 +65,7 @@ enyo.kind({
 	getBlankPanel: function() {
 		return {name: 'blank', kind: 'SlidingView', flex: 1, peekWidth: 320, className: 'blank-slider', dragAnywhere: false, components: [
 			{kind: enyo.VFlexBox, align: 'center', pack: 'center', width: '100%', height: '100%', components: [
-				{name: 'updateText', className: 'text', allowHtml: true, content: 'x'}
+				//{name: 'updateText', className: 'text', allowHtml: true, content: 'x'}
 			]},
 		]};
 	},
