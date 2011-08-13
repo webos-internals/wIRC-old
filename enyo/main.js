@@ -41,6 +41,8 @@ enyo.kind({
 	
 	createPanel: function(component) {
 		if (component.name) {
+			if (this.secondary == component.name)
+				return
 			this.destroyBlankPanel();
 			this.destroySecondary(false);
 			this.secondary = component.name;
