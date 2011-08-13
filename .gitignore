@@ -1,3 +1,5 @@
 *.ipk
 *.o
 *~
+plugin/libpdl/libpdl.so
+plugin/wirc
