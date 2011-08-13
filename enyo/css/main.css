@@ -36,6 +36,9 @@ body {
 	margin-left: -1px;
 	margin-right: -1px;
 }
+.main-row .enyo-confirmprompt {
+	margin: -1px 0 -1px 0;
+}
 .main-row .title {
 	margin: 1px 0 0 8px;
 	font-weight: bold;
@@ -105,6 +108,10 @@ body {
 	border-left: 1px solid rgba(255, 255, 255, 0.5);
 	background: #d8d8d8;
 }
+.server-children .main-row .enyo-confirmprompt {
+	padding-left: 10px;
+	margin: -1px 0 -1px -11px;
+}
 
 
 .messages-panel .enyo-bg {
@@ -140,7 +147,7 @@ body {
 	background-image: url(../images/sliding-blank-shadow.png);
 }
 .blank-slider .enyo-vflexbox {
-	background: #666;
+	background: #666 url(../images/blank-icon.png) center center no-repeat;
 }
 .blank-slider .enyo-vflexbox .text {
 	font-size: 0.7em;
