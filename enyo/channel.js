@@ -6,6 +6,7 @@ enyo.kind({
 	server: false,
 	
 	joined: false,
+	display: false,
 	
 	messages: '',
 	commands: '',
@@ -25,6 +26,9 @@ enyo.kind({
 	getSetup: function() {
 		return this.setup;
 	},
+	getNameSimple: function() {
+		return this.setup.name.substr(1, this.setup.name.length);
+	},
 	
 	newMessage: function(type, nick, text) {
 		var m = new wirc.Message({
@@ -34,11 +38,11 @@ enyo.kind({
 		});
 		this.messages.unshift(m); // for bottomUp flyweight
 		//this.messages.push(m); // for generating rows
-		enyo.application.e.dispatch('channel-message' + this.setup.name);
+		enyo.application.e.dispatch('channel-message' + this.getNameSimple());
 	},
 	
 	newCommand: function(command) {
-		if (this.state = wirc.Server.stateConnected || true) { // or true so we can test commands from chrome
+		if (this.server.state = wirc.Server.stateConnected) { // || true) { // or true so we can test commands from chrome
 			
 			this.commands.push(command);
 			
@@ -55,6 +59,10 @@ enyo.kind({
 					
 					case 'me':
 						this.me(val);
+						break;
+						
+					case 'part':
+						this.part(val);
 						break;
 						
 					default:
@@ -95,7 +103,19 @@ enyo.kind({
 	
 	join: function() {
 		enyo.application.p.call('cmd_join', this.server.setup.id, this.setup.name, (this.setup.key ? this.setup.key: null));
-		enyo.application.p.call('cmd_channel_mode', this.server.setup.id, this.setup.name,  null);
+		enyo.application.p.call('cmd_channel_mode', this.server.setup.id, this.setup.name, null);
 		this.joined = true;
-	}
+		this.display = true;
+		enyo.application.e.dispatch('main-crud'); // refresh main list
+	},
+	
+	part: function(reason) {
+		if (!reason) reason = 'woo';
+		enyo.application.p.call('cmd_part', this.server.setup.id, this.setup.name, reason);
+		this.joined = false;
+		this.display = false;
+		enyo.application.e.dispatch('main-crud'); // refresh main list
+	},
+	
+	
 });

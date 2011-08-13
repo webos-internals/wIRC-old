@@ -26,25 +26,25 @@ enyo.kind({
 	    this.inherited(arguments);
 		this.addClass('main-row');
 		this.update();
-		//this.statusListener = enyo.bind(this, 'update');
-		//enyo.application.e.listen('server-status' + this.server.setup.id, this.statusListener);
+		this.statusListener = enyo.bind(this, 'update');
+		enyo.application.e.listen('channel-status' + this.channel.getNameSimple(), this.statusListener);
 	},
 	
 	destroy: function() {
-		//enyo.application.e.stopListening('server-status' + this.server.setup.id, this.statusListener);
+		enyo.application.e.stopListening('channel-status' + this.channel.getNameSimple(), this.statusListener);
 		return this.inherited(arguments);
 	},
 	
 	doConfirm: function() {
 		// swiped away
-		//if (this.server != undefined)
-		//	enyo.application.s.remove(this.server.setup.id);
+		if (this.channel != undefined)
+			this.channel.part('Swipe-to-Part');
 	},
 	
 	doClick: function(inEvent) {
 		// row click
 		if (this.channel != undefined)
-			enyo.application.m.createPanel({name: 'channel-chat-' + this.channel.setup.name, kind: 'wirc.ChannelChatPanel', channel: this.channel});
+			enyo.application.m.createPanel({name: 'channel-chat-' + this.channel.getNameSimple(), kind: 'wirc.ChannelChatPanel', channel: this.channel});
 	},
 	
 	clickButton: function(inSender, inEvent) {

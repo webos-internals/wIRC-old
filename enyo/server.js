@@ -75,7 +75,7 @@ enyo.kind({
 	},
 	
 	newCommand: function(command) {
-		if (this.state = wirc.Server.stateConnected || true) { // or true so we can test commands from chrome
+		if (this.state = wirc.Server.stateConnected) { // || true) { // or true so we can test commands from chrome
 			
 			this.commands.push(command);
 			

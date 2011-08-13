@@ -100,7 +100,7 @@ enyo.kind({
 					for (var cc = 0; cc < channelControls.length; cc++) {
 						var channelMatch = false;
 						for (var c = 0; c < channels.length; c++) {
-							if (channelControls[cc].channel == channels[c]) channelMatch = true;
+							if (channels[c].display && channelControls[cc].channel == channels[c]) channelMatch = true;
 						}
 						if (!channelMatch) {
 							channelControls[cc].destroy();
@@ -110,14 +110,16 @@ enyo.kind({
 					
 					// check for new channel rows to create for this server
 					for (var c = 0; c < channels.length; c++) {
-						var channelMatch = false;
-						for (var cc = 0; cc < channelControls.length; cc++) {
-							if (channelControls[cc].channel && channelControls[cc].channel == channels[c]) channelMatch = true;
-						}
-						if (!channelMatch) {
-							this.$['server-children-' + servers[s].setup.id].createComponents([
-								{name: 'channel-row-' + channels[c].setup.name, kind: 'wirc.MainChannelItem', channel: channels[c]},
-							], {owner: this});
+						if (channels[c].display) {
+							var channelMatch = false;
+							for (var cc = 0; cc < channelControls.length; cc++) {
+								if (channelControls[cc].channel && channelControls[cc].channel == channels[c]) channelMatch = true;
+							}
+							if (!channelMatch) {
+								this.$['server-children-' + servers[s].setup.id].createComponents([
+									{name: 'channel-row-' + channels[c].getNameSimple(), kind: 'wirc.MainChannelItem', channel: channels[c]},
+								], {owner: this});
+							}
 						}
 					}
 					

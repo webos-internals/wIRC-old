@@ -38,11 +38,11 @@ enyo.kind({
 	    this.inherited(arguments);
 		this.addClass('messages-panel');
 		this.messageListener = enyo.bind(this, 'queueRefresh');
-		enyo.application.e.listen('channel-message' + this.channel.setup.name, this.messageListener);
+		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
 	},
 	
 	destroy: function() {
-		enyo.application.e.stopListening('channel-message' + this.channel.setup.name, this.messageListener);
+		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		return this.inherited(arguments);
 	},
 	

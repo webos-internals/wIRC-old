@@ -4,8 +4,8 @@ main-crud: called when the main list needs updating
 
 server-status{id}: called when the server info changes like status/setup/etc
 server-message{id}: called to update server messages display
-server-message-count{id}: called when there is no server-message# listeners, called with some argument
 
+channel-status{name}: called to update the channel item in the main list
 channel-message{name}: called to update chat messages display
 
 */
