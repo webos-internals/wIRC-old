@@ -106,6 +106,14 @@ enyo.kind({
   	
 	eventJoin: function(id, event, origin, params_s) {
   		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		
+  		var id = parseInt(id);
+		var server = enyo.application.s.getFromId(id);
+		var params = this.parseJson(params_s);
+		
+		var nick = server.getNick(origin);
+		if (nick == server.setup.nicks[0])
+  			enyo.nextTick(function() {server.joinChannel(params[0])});
   	},
   	eventPart: function(id, event, origin, params_s) {
   		if (this.dumpLog) this.log(id, event, origin, params_s);

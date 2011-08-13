@@ -101,8 +101,10 @@ enyo.kind({
 		}
 	},
 	
-	join: function() {
-		enyo.application.pm.call('cmd_join', this.server.setup.id, this.setup.name, (this.setup.key ? this.setup.key: null));
+	join: function(join) {
+		/* This would only need to be called if joining a previously parted
+		channel that still shows up in the list. */ 
+		//enyo.application.pm.call('cmd_join', this.server.setup.id, this.setup.name, this.setup.key||null);
 		enyo.application.pm.call('cmd_channel_mode', this.server.setup.id, this.setup.name, null);
 		this.joined = true;
 		this.display = true;
@@ -110,8 +112,7 @@ enyo.kind({
 	},
 	
 	part: function(reason) {
-		if (!reason) reason = 'woo';
-		enyo.application.pm.call('cmd_part', this.server.setup.id, this.setup.name, reason);
+		enyo.application.pm.call('cmd_part', this.server.setup.id, this.setup.name, reason||'woo');
 		this.joined = false;
 		this.display = false;
 		enyo.application.e.dispatch('main-crud'); // refresh main list

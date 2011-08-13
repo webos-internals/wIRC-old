@@ -98,7 +98,7 @@ enyo.kind({
 					
 					case 'join': case 'j':
 						var vals = val.split(" ");
-						this.joinChannel(vals[0], vals[1]);
+						enyo.application.pm.call('cmd_join', this.setup.id, vals[0], vals[1]||null);
 						break;
 						
 					case 'nick':
