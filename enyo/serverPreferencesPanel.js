@@ -64,9 +64,9 @@ enyo.kind({
 		
 		this.$.alias.setValue(this.setup.alias);
 		this.$.address.setValue(this.setup.address);
-		this.$.nick1.setValue(this.setup.nick1);
-		this.$.nick2.setValue(this.setup.nick2);
-		this.$.nick3.setValue(this.setup.nick3);
+		if (this.setup.nicks && this.setup.nicks[0]) this.$.nick1.setValue(this.setup.nicks[0]);
+		if (this.setup.nicks && this.setup.nicks[1]) this.$.nick2.setValue(this.setup.nicks[1]);
+		if (this.setup.nicks && this.setup.nicks[2]) this.$.nick3.setValue(this.setup.nicks[2]);
 		this.$.port.setValue(this.setup.port);
 		this.$.user.setValue(this.setup.user);
 		this.$.password.setValue(this.setup.password);
@@ -80,9 +80,7 @@ enyo.kind({
 	saveButton: function() {
 		this.setup.alias = this.$.alias.getValue();
 		this.setup.address = this.$.address.getValue();
-		this.setup.nick1 = this.$.nick1.getValue();
-		this.setup.nick2 = this.$.nick2.getValue();
-		this.setup.nick3 = this.$.nick3.getValue();
+		this.setup.nicks = [this.$.nick1.getValue(), this.$.nick2.getValue(), this.$.nick3.getValue()];
 		this.setup.port = this.$.port.getValue();
 		this.setup.user = this.$.user.getValue();
 		this.setup.password = this.$.password.getValue();
