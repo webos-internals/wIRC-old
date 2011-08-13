@@ -93,8 +93,10 @@ enyo.kind({
 		}
 	},
 	
-	setShowing: function() {
-		this.owner.destroySecondary(true);
+	setShowing: function(showing) {
+		this.inherited(arguments);
+		if (!showing)
+			this.owner.destroySecondary(true);
 	},
 	
 });
