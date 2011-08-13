@@ -90,8 +90,10 @@ enyo.kind({
 	},
 	
 	tabToggle: function(inSender, inValue) {
-		this.$.generalTab.hide();
-		this.$.advancedTab.hide();
+		var controls = this.$.tabs.getControls();
+		for (var c = 0; c < controls.length; c++) {
+			this.$[controls[c].value + 'Tab'].hide();
+		}
 		this.$[this.$.tabs.getValue() + 'Tab'].show();
 	},
 	

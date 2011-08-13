@@ -82,7 +82,7 @@ enyo.kind({
 	},
 	
 	me: function(message) {
-		enyo.application.p.call('cmd_me', this.server.setup.id, this.setup.name, message);
+		enyo.application.pm.call('cmd_me', this.server.setup.id, this.setup.name, message);
 		this.newMessage('action', this.server.setup.nick, message);
 	},
 	
@@ -96,14 +96,14 @@ enyo.kind({
 			else {
 				msg = message.substring(i * 255);
 			}
-			enyo.application.p.call('cmd_msg', this.server.setup.id, this.setup.name, msg);
+			enyo.application.pm.call('cmd_msg', this.server.setup.id, this.setup.name, msg);
 			this.newMessage('privmsg', this.server.setup.nick, msg);
 		}
 	},
 	
 	join: function() {
-		enyo.application.p.call('cmd_join', this.server.setup.id, this.setup.name, (this.setup.key ? this.setup.key: null));
-		enyo.application.p.call('cmd_channel_mode', this.server.setup.id, this.setup.name, null);
+		enyo.application.pm.call('cmd_join', this.server.setup.id, this.setup.name, (this.setup.key ? this.setup.key: null));
+		enyo.application.pm.call('cmd_channel_mode', this.server.setup.id, this.setup.name, null);
 		this.joined = true;
 		this.display = true;
 		enyo.application.e.dispatch('main-crud'); // refresh main list
@@ -111,7 +111,7 @@ enyo.kind({
 	
 	part: function(reason) {
 		if (!reason) reason = 'woo';
-		enyo.application.p.call('cmd_part', this.server.setup.id, this.setup.name, reason);
+		enyo.application.pm.call('cmd_part', this.server.setup.id, this.setup.name, reason);
 		this.joined = false;
 		this.display = false;
 		enyo.application.e.dispatch('main-crud'); // refresh main list

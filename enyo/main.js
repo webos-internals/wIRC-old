@@ -13,7 +13,7 @@ enyo.kind({
 		
 		{kind: 'AppMenu', components: [
 			{kind: 'EditMenu'},
-			//{caption: 'Preferences', onclick: 'menuPrefs'},
+			{caption: 'Preferences', onclick: 'menuPrefs'},
 			//{caption: 'Debug', onclick: 'menuDebug'},
 		]},
 		
@@ -76,7 +76,7 @@ enyo.kind({
 	},
 	
 	menuPrefs: function() {
-		//this.$.prefs.pop();
+		this.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
 	},
 	
 });

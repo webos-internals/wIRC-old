@@ -195,7 +195,7 @@ enyo.kind({
 	connect: function() {
 		this.setState(wirc.Server.stateConnecting);
 		try {
-	  		return enyo.application.p.call(
+	  		return enyo.application.pm.call(
 	  			'connect',
 	  			this.setup.id,
 	  			this.setup.address,
@@ -217,7 +217,7 @@ enyo.kind({
 	disconnect: function() {
 		var reason = "BECAUSE I'M TESTING!";
 		this.setState(wirc.Server.stateDisconnecting);
-		enyo.application.p.call('cmd_quit', this.setup.id, reason);
+		enyo.application.pm.call('cmd_quit', this.setup.id, reason);
 		this.setState(wirc.Server.stateDisconnected);
 	},
 	

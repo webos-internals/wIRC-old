@@ -1,3 +1,48 @@
+enyo.kind({
+	name: 'wi.Preferences',
+	kind: enyo.Control,
+	
+	prefs: {},
+	
+	published: {
+		defaults: {
+			// name: value,
+		}
+	},
+	
+	lsvar: enyo.fetchAppInfo().id + '_prefs', // variable to use for localStorage
+	
+	constructor: function() {
+	    this.inherited(arguments);
+		this.load();
+	},
+	
+	load: function() {
+		if (localStorage && localStorage[this.lsvar])
+			this.prefs = enyo.mixin(this.defaults, enyo.json.parse(localStorage[this.lsvar]));
+		else if (localStorage) {
+			this.prefs = this.defaults;
+			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
+		}
+		else this.error('no localStorage?');
+	},
+	save: function(prefs) {
+		this.prefs = prefs;
+		if (localStorage) localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
+		else this.error('no localStorage?');
+	},
+	
+	get: function(item) {
+		if (this.prefs[item]) return this.prefs[item];
+		else return false;
+	}
+	
+});
+
+enyo.application.p = new wi.Preferences();
+
+
+/* this is stuff started in lumbo, but wirc has non-popup prefs
 enyo.application.prefs = {};
 
 enyo.kind({
@@ -100,3 +145,4 @@ enyo.kind({
 		this.doCancel();
 	},
 });
+*/

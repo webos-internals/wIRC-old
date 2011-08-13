@@ -29,7 +29,7 @@ enyo.kind({
 		{kind: 'ToolbarShadow'},
 		{name: 'toolbar', kind: 'Toolbar', className: 'enyo-toolbar-light', components: [
 			{kind: 'Button', content: 'Add Server', onclick: 'addServerButton'},
-			//{kind: 'Button', content: 'Join Channel', disabled: true}
+			{kind: 'Button', components: [{kind: 'Image', src: 'enyo/images/button-prefs.png', style: 'margin: -10px;'}], onclick: 'preferencesButton'}
 		]}
 		
 	],
@@ -43,6 +43,9 @@ enyo.kind({
 	
 	addServerButton: function() {
 		this.owner.createPanel({name: 'server-add', kind: 'wirc.ServerPreferencesPanel'});
+	},
+	preferencesButton: function() {
+		this.owner.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
 	},
 	
 	buildList: function() {

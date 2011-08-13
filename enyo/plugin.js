@@ -28,7 +28,7 @@ enyo.kind({
 	
   	pluginReady: function(inSender, inResponse, inRequest) {
   		this.log('~~~~~ wIRC Plugin Ready ~~~~~');
-		enyo.application.p.setup(this.$.plugin);
+		enyo.application.pm.setup(this.$.plugin);
   	},
   	pluginConnected: function(inSender, inResponse, inRequest) {
   		this.log('~~~~~ wIRC Plugin Connected ~~~~~');
@@ -275,4 +275,4 @@ enyo.kind({
 	
 });
 
-enyo.application.p = new wirc.PluginManager();
+enyo.application.pm = new wirc.PluginManager();

@@ -5,6 +5,7 @@ enyo.depends(
 	"enyo/wi/depends.js",
 	
 	"enyo/misc.js",
+	"enyo/preferencesPanel.js",
 	"enyo/server.js",
 	"enyo/servers.js",
 	"enyo/serverStatusPanel.js",
@@ -24,5 +25,6 @@ enyo.depends(
 	"enyo/mainServerItem.js",
 	"enyo/mainChannelItem.js",
   	"enyo/css/main.css"
+	
 	
 )
