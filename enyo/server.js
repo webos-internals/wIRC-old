@@ -33,6 +33,7 @@ enyo.kind({
 		stateConnected:				3,
 		stateDisconnecting:			4,
 		stateDisrupted:				5,
+		stateError:					6,
 	},
 	
 	constructor: function(setup) {
@@ -47,7 +48,7 @@ enyo.kind({
 		this.channels = [];
 	},
 	
-	setState: function(state) {
+	setState: function(state, e) {
 		this.state = state;
 		var message = '';
 		switch (state) {
@@ -58,6 +59,7 @@ enyo.kind({
 			case wirc.Server.stateConnecting:			message = "Connecting...";							break;
 			case wirc.Server.stateConnected:			message = "Connected!";								break;
 			case wirc.Server.stateTimeout:				message = "Connection timed out!";					break;
+			case wirc.Server.stateError:				message = "Connection failed (" + e + ")";			break;
 		}
 		if (message) this.newMessage('status', false, message);
 		enyo.application.e.dispatch('server-status' + this.setup.id);
@@ -192,17 +194,22 @@ enyo.kind({
 	
 	connect: function() {
 		this.setState(wirc.Server.stateConnecting);
-  		return enyo.application.p.call(
-  			'connect',
-  			this.setup.id,
-  			this.setup.address,
-  			this.setup.port||6667,
-  			false,
-  			this.setup.user||'wircer',
-  			this.setup.password,
-  			this.setup.nicks[0],
-  			this.setup.realname||'wIRCer on HP Touchpad'
-		);
+		try {
+	  		return enyo.application.p.call(
+	  			'connect',
+	  			this.setup.id,
+	  			this.setup.address,
+	  			this.setup.port||6667,
+	  			false,
+	  			this.setup.user||'wircer',
+	  			this.setup.password,
+	  			this.setup.nicks[0],
+	  			this.setup.realname||'wIRCer on HP Touchpad'
+			);
+		} catch (e) {
+			this.setState(wirc.Server.stateError, e);
+			return false;
+		}
 	},
 	connected: function() {
 		this.setState(wirc.Server.stateConnected);

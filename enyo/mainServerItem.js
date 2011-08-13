@@ -84,6 +84,7 @@ enyo.kind({
 		
 		switch(this.server.state) {
 			case wirc.Server.stateDisconnected:
+			case wirc.Server.stateError:
 				this.$.button1.setClassName(this.defaultButtonClass + ' connect');
 				break;
 				
