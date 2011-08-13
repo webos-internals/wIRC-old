@@ -30,6 +30,7 @@ enyo.kind({
 					{name: 'user', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'User'}]},
 					{name: 'password', hint: 'Optional', kind: 'PasswordInput', autoCapitalize: 'lowercase', components: [{content: 'Password'}]},
 					{name: 'ssl', kind: 'ToggleButton', disabled: true, components: [{flex: 1}, {content: 'SSL'}]},
+					{name: 'autoconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Connect'}]},
 				]},
 				
 				{kind: 'RowGroup', width: '400px', caption: 'User Information', components: [
@@ -87,6 +88,7 @@ enyo.kind({
 		this.$.password.setValue(this.setup.password);
 		this.$.realname.setValue(this.setup.realname);
 		this.$.ssl.setState(this.setup.ssl);
+		this.$.autoconnect.setState(this.setup.autoconnect);
 	},
 	
 	tabToggle: function(inSender, inValue) {
@@ -120,6 +122,7 @@ enyo.kind({
 		this.setup.password = this.$.password.getValue();
 		this.setup.realname = this.$.realname.getValue();
 		this.setup.ssl = this.$.ssl.getState();
+		this.setup.autoconnect = this.$.autoconnect.getState();
 		
 		if (this.setup.id === false) {
 			var saved = enyo.application.s.add(this.setup);

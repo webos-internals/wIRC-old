@@ -29,6 +29,9 @@ enyo.kind({
   	pluginReady: function(inSender, inResponse, inRequest) {
   		this.log('~~~~~ wIRC Plugin Ready ~~~~~');
 		enyo.application.pm.setup(this.$.plugin);
+		for (i in enyo.application.s.list)
+			if (enyo.application.s.list[i].setup.autoconnect)
+				enyo.application.s.list[i].connect();
   	},
   	pluginConnected: function(inSender, inResponse, inRequest) {
   		this.log('~~~~~ wIRC Plugin Connected ~~~~~');
@@ -78,6 +81,7 @@ enyo.kind({
   		this.plugin.addCallback('event_dcc_chat_req',		enyo.bind(this, 'eventDccChatReq'));
   		this.plugin.addCallback('handle_dcc_callback',		enyo.bind(this, 'handleDccCallback'));
   		this.plugin.addCallback('handle_dcc_send_callback',	enyo.bind(this, 'handleDccSendCallback'));
+  		
 	},
 
   	retryConnection: function(id) {

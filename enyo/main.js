@@ -30,6 +30,7 @@ enyo.kind({
 	    this.inherited(arguments);
 		this.createBlankPanel();
 		enyo.application.m.setController(this);
+		enyo.setFullScreen(enyo.application.p.get('fullscreen'));
 	},
 	
 	wakeup: function() {

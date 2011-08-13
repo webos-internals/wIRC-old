@@ -28,8 +28,13 @@ enyo.kind({
 	},
 	save: function(prefs) {
 		this.prefs = prefs;
-		if (localStorage) localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
-		else this.error('no localStorage?');
+		if (localStorage) {
+			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
+			return true;
+		} else {
+			this.error('no localStorage?');
+			return false;
+		}
 	},
 	
 	get: function(item) {

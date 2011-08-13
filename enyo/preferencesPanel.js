@@ -5,7 +5,9 @@ enyo.kind({
 	/*peekWidth: 64,*/
 	dragAnywhere: false,
 	
-	prefs: {},
+	prefs: {
+		fullscreen: false,
+	},
 	
 	components: [
 	
@@ -27,9 +29,9 @@ enyo.kind({
     	{name: 'scroller', kind: 'Scroller', className: 'scroller', flex: 1, autoVertical: true, components: [
 			
 			{name: 'generalTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-				{kind: 'RowGroup', width: '400px', caption: 'row heading', components: [
+				{kind: 'RowGroup', width: '400px', caption: 'Appearance', components: [
 				
-					{kind: 'Item', content: 'general'}
+					{name: 'fullscreen', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Full Screen'}]},
 					
 				]},
 			]},
@@ -109,7 +111,7 @@ enyo.kind({
 		this.prefs = enyo.application.p.prefs;
 		
 		// do the loading
-		//this.$.name.setValue(this.prefs.name);
+		this.$.fullscreen.setState(this.prefs.fullscreen);
 	},
 	
 	tabToggle: function(inSender, inValue) {
@@ -136,7 +138,8 @@ enyo.kind({
 	},
 	saveButton: function() {
 		// do the saving
-		//this.prefs.name = this.$.name.getValue();
+		this.prefs.fullscreen = this.$.fullscreen.getState();
+		enyo.setFullScreen(this.prefs.fullscreen);
 		
 		var saved = enyo.application.p.save(this.prefs);
 		if (saved) {

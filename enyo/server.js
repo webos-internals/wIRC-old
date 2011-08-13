@@ -14,15 +14,16 @@ enyo.kind({
 	
 	statics: {
 		defaultSetup: {
-			id:			false,
-			alias:		'',
-			address:	'',
-			port:		'',
-			nicks:		[],
-			user:		'',
-			password:	'',
-			realname:   '',
-			ssl:		false,
+			id:				false,
+			alias:			'',
+			address:		'',
+			port:			'',
+			nicks:			[],
+			user:			'',
+			password:		'',
+			realname:   	'',
+			ssl:			false,
+			autoconnect:	false,
 		},
 		
 		//stateServiceUnavailable:	-3,
