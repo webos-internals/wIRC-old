@@ -19,7 +19,7 @@ enyo.kind({
 		{name: 'header', kind: 'Header', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
-			{kind: 'Button', caption: 'X', onclick: 'setShowing', className: 'enyo-button-negative close'},
+			{kind: 'Button', caption: 'X', onclick: 'closeButton', className: 'enyo-button-negative close'},
 		]},
 		{kind: 'HeaderShadow'},
 		
@@ -91,6 +91,10 @@ enyo.kind({
 			if (text) this.channel.newCommand(text);
 			this.$.input.setValue('');
 		}
+	},
+	
+	closeButton: function() {
+		this.setShowing(false)
 	},
 	
 	setShowing: function(showing) {
