@@ -55,6 +55,7 @@ enyo.kind({
 	},
 	destroySecondary: function(createBlank) {
 		if (this.$[this.secondary]) this.$[this.secondary].destroy();
+		this.secondary = '';
 		if (createBlank) {
 			this.createBlankPanel();
 			this.$.sp.render();
