@@ -21,7 +21,7 @@ enyo.kind({
 		]},
 		{kind: 'HeaderShadow'},
 		
-		{name: 'scroller', kind: 'Scroller', flex: 1, autoVertical: true, components: [
+		{name: 'scroller', kind: 'Scroller', flex: 1, autoVertical: true, horizontal: false, autoHorizontal: false, components: [
 			{name: 'list', className: 'main-list'},
 		]},
 		
