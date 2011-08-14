@@ -8,6 +8,8 @@ enyo.depends(
 	
 	"enyo/wi/awesomeList.js",
 	
+	"enyo/wi/input.js",
+	
 	"enyo/wi/preferences.js",
 	
 	"enyo/wi/sql.js",
