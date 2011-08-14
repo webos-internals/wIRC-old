@@ -17,7 +17,10 @@ enyo.kind({
 		item.$.nick.setContent('');
 		item.$.text.setContent('');
 		
-		item.setClassName('enyo-item message-row ' + this.setup.type);
+		if (this.setup.self)
+			item.setClassName('enyo-item message-row self');
+		else
+			item.setClassName('enyo-item message-row ' + this.setup.type);
 		if (!this.setup.nick) {
 			item.$.nick.hide();
 			item.$.seperator.hide();

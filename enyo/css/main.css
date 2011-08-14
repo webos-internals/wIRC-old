@@ -47,7 +47,7 @@ body {
 	color: #CD2626; /* firebrick3 */
 }
 .main-row .title.mentioned {
-	color: #4876FF; /* royalblue1 */
+	color: blue; /* royalblue1 */
 }
 .main-row .subtitle {
 	margin: -2px 0 0 8px;
@@ -141,6 +141,9 @@ body {
 }
 .messages-panel .message-row.action {
 	color: firebrick;
+}
+.messages-panel .message-row.self {
+	color: blue;
 }
 
 
