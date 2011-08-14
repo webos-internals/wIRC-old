@@ -50,7 +50,7 @@ enyo.kind({
 	rendered: function() {
 	    this.inherited(arguments);
 		this.$.headerText.setContent((this.server.setup.alias ? this.server.setup.alias : this.server.setup.address) + ': Server Messages');
-		this.$.input.forceFocus();
+		if (enyo.application.p.get('focusInput')) this.$.input.forceFocus();
 	},
 	
 	

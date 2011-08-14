@@ -50,7 +50,7 @@ enyo.kind({
 	rendered: function() {
 	    this.inherited(arguments);
 		this.$.headerText.setContent(this.channel.setup.name);
-		this.$.input.forceFocus();
+		if (enyo.application.p.get('focusInput')) this.$.input.forceFocus();
 	},
 	
 	

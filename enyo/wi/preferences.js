@@ -6,8 +6,11 @@ enyo.kind({
 	
 	published: {
 		defaults: {
-			// name: value,
+			// general
 			fullscreen: false,
+			
+			// messages
+			focusInput: false,
 		}
 	},
 	
