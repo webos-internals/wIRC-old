@@ -7,6 +7,7 @@ enyo.kind({
 	published: {
 		defaults: {
 			// name: value,
+			fullscreen: false,
 		}
 	},
 	
