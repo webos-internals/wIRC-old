@@ -130,7 +130,7 @@ enyo.kind({
 		if (this.recording) {
 			this.currentValue = this.getValueFromEvent(inEvent);
 			this.updateDisplay(this.currentValue);
-			//enyo.application.k.logEvent(inEvent);
+			enyo.application.k.logEvent(inEvent);
 		}
 	},
 	
@@ -160,12 +160,14 @@ enyo.kind({
 		if (value.shiftKey)	mods++;
 		if (value.metaKey)	mods++;
 		if (mods > 0 &&
-			value.keyCode && // this list probably needs more
-			value.keyCode != 8 && // backspace
-			value.keyCode != 13 && // enter
-			value.keyCode != 16 && // shift
-			value.keyCode != 17) // ctrl
+			value.keyCode &&		// this list probably needs more
+			value.keyCode != 8 &&	// backspace
+			value.keyCode != 17 &&	// ctrl
+			value.keyCode != 129 &&	// alt
+			value.keyCode != 16 &&	// shift
+			value.keyCode != 13) {	// enter
 			return true;
+		}
 		else return false;
 	},
 	
@@ -175,11 +177,12 @@ enyo.kind({
 		if (value.altKey)	used.push('Alt');
 		if (value.shiftKey)	used.push('Shft');
 		if (value.metaKey)	used.push('Meta');
-		if (value.keyCode && // this list probably needs more
-			value.keyCode != 8 && // backspace
-			value.keyCode != 13 && // enter
-			value.keyCode != 16 && // shift
-			value.keyCode != 17) { // ctrl
+		if (value.keyCode &&		// this list probably needs more
+			value.keyCode != 8 &&	// backspace
+			value.keyCode != 17 &&	// ctrl
+			value.keyCode != 129 &&	// alt
+			value.keyCode != 16 &&	// shift
+			value.keyCode != 13) {	// enter
 			if (value.keyCode == 9) used.push('Tab');
 			else if (value.keyCode >= 37 && value.keyCode <= 40) used.push(value.keyIdentifier);
 			else used.push(String.fromCharCode(value.keyCode));
