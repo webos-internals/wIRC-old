@@ -37,9 +37,9 @@ enyo.kind({
 			]},
 			
 			{name: 'messagesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-				{kind: 'RowGroup', width: '400px', caption: 'row heading', components: [
+				{kind: 'RowGroup', width: '400px', caption: 'Input', components: [
 				
-					{kind: 'Item', content: 'messages'}
+					{name: 'focusInput', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto-Focus Input'}]},
 					
 				]},
 			]},
@@ -69,9 +69,10 @@ enyo.kind({
 			]},
 			
 			{name: 'keybindsTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-				{kind: 'RowGroup', width: '400px', caption: 'row heading', components: [
+				{kind: 'RowGroup', width: '400px', caption: 'General', components: [
 				
-					{kind: 'Item', content: 'keybinds'}
+					{name: 'mainListUp', kind: 'wi.KeyInput', caption: 'Main List Up'},
+					{name: 'mainListDown', kind: 'wi.KeyInput', caption: 'Main List Down'},
 					
 				]},
 			]},
@@ -111,7 +112,15 @@ enyo.kind({
 		this.prefs = enyo.application.p.prefs;
 		
 		// do the loading
+		// general
 		this.$.fullscreen.setState(this.prefs.fullscreen);
+		
+		// messages
+		this.$.focusInput.setState(this.prefs.focusInput);
+		
+		// keybinds
+		this.$.mainListUp.setValue(this.prefs.mainListUp);
+		this.$.mainListDown.setValue(this.prefs.mainListDown);
 	},
 	
 	tabToggle: function(inSender, inValue) {
@@ -131,16 +140,35 @@ enyo.kind({
 		var controls = this.$.tabs2.getControls();
 		for (var c = 0; c < controls.length; c++) this.$[controls[c].value + 'Tab'].hide();
 		this.$[show].show();
+		
+		// stop keycapture on keybinds tab
+		if (show == 'keybindsTab') enyo.application.k.stopCapture();
+		else enyo.application.k.startCapture();
+	},
+	
+	destroy: function() {
+		enyo.application.k.startCapture(); // this may have not been called if they're still on the key tab
+		return this.inherited(arguments);
 	},
 	
 	cancelButton: function() {
 		this.owner.destroySecondary(true);
 	},
 	saveButton: function() {
-		// do the saving
+		// setup prefs variable
+		// general
 		this.prefs.fullscreen = this.$.fullscreen.getState();
 		enyo.setFullScreen(this.prefs.fullscreen);
 		
+		// messages
+		this.prefs.focusInput = this.$.focusInput.getState();
+		
+		// keybinds
+		this.prefs.mainListUp = this.$.mainListUp.getValue();
+		this.prefs.mainListDown = this.$.mainListDown.getValue();
+		
+		
+		// actually save
 		var saved = enyo.application.p.save(this.prefs);
 		if (saved) {
 			this.owner.destroySecondary(true);

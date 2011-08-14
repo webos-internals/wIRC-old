@@ -41,6 +41,8 @@ enyo.kind({
 		this.addClass('main-panel');
 		this.buildList();
 		enyo.application.e.listen('main-crud', enyo.bind(this, 'updateList'));
+		enyo.application.e.listen('main-list-up', enyo.bind(this, 'listUpEvent'));
+		enyo.application.e.listen('main-list-down', enyo.bind(this, 'listDownEvent'));
 	},
 	
 	addServerButton: function() {
@@ -48,7 +50,6 @@ enyo.kind({
 	},
 	preferencesButton: function() {
 		this.owner.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
-		this.log(enyo.keyboard.isManualMode());
 	},
 	
 	buildList: function() {
@@ -58,7 +59,7 @@ enyo.kind({
 			var servers = enyo.application.s.getAll();
 			for (var s = 0; s < servers.length; s++) {
 				//this.log('new-create-channels', 'server:', servers[s].setup.alias, 'channels:', servers[s].channels.length);
-				this.list.push(servers[s]);
+				this.list.push('server-row-' + servers[s].setup.id);
 				this.$.list.createComponents([
 					{name: 'server-row-' + servers[s].setup.id, kind: 'wirc.MainServerItem', server: servers[s]},
 					{name: 'server-children-' + servers[s].setup.id, serverId: servers[s].setup.id, className: 'server-children'},
@@ -66,6 +67,45 @@ enyo.kind({
 			}
 		}
 		this.$.list.render();
+	},
+	
+	getSelected: function() {
+		return this.owner.secondary;
+	},
+	
+	listUpEvent: function() {
+		if (this.list && this.list.length > 0) {
+			//this.log('up');
+			var cur = this.listIndexSelected();
+			if (cur !== false) {
+				var prev = cur - 1;
+				if (prev < 0) prev = this.list.length - 1;
+				this.$[this.list[prev]].doClick();
+			}
+		}
+	},
+	listDownEvent: function() {
+		if (this.list && this.list.length > 0) {
+			//this.log('down');
+			var cur = this.listIndexSelected();
+			if (cur !== false) {
+				var next = cur + 1;
+				if (next >= this.list.length) next = 0;
+				this.$[this.list[next]].doClick();
+			}
+		}
+	},
+	listIndexSelected: function() {
+		if (this.list && this.list.length > 0) {
+			for (var r = 0; r < this.list.length; r++) {
+				if (this.$[this.list[r]].hasClass('enyo-item-selected')) {
+					return r;
+				}
+			}
+			return -1;
+		} else {
+			return false;
+		}
 	},
 	
 	updateList: function() {
@@ -91,7 +131,7 @@ enyo.kind({
 			}
 			
 			for (var s = 0; s < servers.length; s++) {
-				this.list.push(servers[s]);
+				this.list.push('server-row-' + servers[s].setup.id);
 				
 				// check for new server rows to create
 				var serverMatch = false;
@@ -123,7 +163,7 @@ enyo.kind({
 					// check for new channel rows to create for this server
 					for (var c = 0; c < channels.length; c++) {
 						if (channels[c].display) {
-							this.list.push(channels[c]);
+							this.list.push('channel-row-' + channels[c].getNameSimple());
 							var channelMatch = false;
 							for (var cc = 0; cc < channelControls.length; cc++) {
 								if (channelControls[cc].channel && channelControls[cc].channel == channels[c]) channelMatch = true;
@@ -141,6 +181,7 @@ enyo.kind({
 			}
 		}
 		this.$.list.render();
+		//this.log(this.list);
 		// rebuild
 		//this.$.list.destroyControls();
 		//this.buildList();

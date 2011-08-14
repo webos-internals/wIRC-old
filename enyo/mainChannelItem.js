@@ -28,10 +28,12 @@ enyo.kind({
 		this.update();
 		this.statusListener = enyo.bind(this, 'update');
 		enyo.application.e.listen('channel-status' + this.channel.getNameSimple(), this.statusListener);
+		enyo.application.e.listen('secondary-panel', this.statusListener);
 	},
 	
 	destroy: function() {
 		enyo.application.e.stopListening('channel-status' + this.channel.getNameSimple(), this.statusListener);
+		enyo.application.e.stopListening('secondary-panel', this.statusListener);
 		return this.inherited(arguments);
 	},
 	
@@ -67,6 +69,8 @@ enyo.kind({
 	},
 	
 	update: function() {
+		
+		this.addRemoveClass('enyo-item-selected', (this.owner.getSelected() == 'channel-chat-' + this.channel.getNameSimple()));
 		
 		this.$.title.setContent(this.channel.setup.name);
 		
