@@ -198,13 +198,14 @@ enyo.kind({
 	
 	connect: function() {
 		this.setState(wirc.Server.stateConnecting);
+		this.error(this.setup.ssl)
 		try {
 	  		return enyo.application.pm.call(
 	  			'connect',
 	  			this.setup.id,
 	  			this.setup.address,
 	  			this.setup.port||6667,
-	  			this.setup.ssl,
+	  			this.setup.ssl ? 1 : 0,
 	  			this.setup.user||'wircer',
 	  			this.setup.password,
 	  			this.setup.nicks[0],
