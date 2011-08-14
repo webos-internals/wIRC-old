@@ -5,6 +5,8 @@ enyo.kind({
 	width: '320px',
 	fixedWidth: true,
 	
+	list: [],
+	
 	components: [
 		
 		{kind: wi.Header, version: 'enyo-v' + enyo.fetchAppInfo().version, random: [
@@ -46,14 +48,17 @@ enyo.kind({
 	},
 	preferencesButton: function() {
 		this.owner.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
+		this.log(enyo.keyboard.isManualMode());
 	},
 	
 	buildList: function() {
 		//this.log();
+		this.list = [];
 		if (enyo.application.s && enyo.application.s.list) {
 			var servers = enyo.application.s.getAll();
 			for (var s = 0; s < servers.length; s++) {
 				//this.log('new-create-channels', 'server:', servers[s].setup.alias, 'channels:', servers[s].channels.length);
+				this.list.push(servers[s]);
 				this.$.list.createComponents([
 					{name: 'server-row-' + servers[s].setup.id, kind: 'wirc.MainServerItem', server: servers[s]},
 					{name: 'server-children-' + servers[s].setup.id, serverId: servers[s].setup.id, className: 'server-children'},
@@ -65,6 +70,7 @@ enyo.kind({
 	
 	updateList: function() {
 		//this.log();
+		this.list = [];
 		if (enyo.application.s && enyo.application.s.list) {
 			var servers = enyo.application.s.getAll();
 			var serverControls = this.$.list.getControls();
@@ -85,6 +91,8 @@ enyo.kind({
 			}
 			
 			for (var s = 0; s < servers.length; s++) {
+				this.list.push(servers[s]);
+				
 				// check for new server rows to create
 				var serverMatch = false;
 				for (var sc = 0; sc < serverControls.length; sc++) {
@@ -115,6 +123,7 @@ enyo.kind({
 					// check for new channel rows to create for this server
 					for (var c = 0; c < channels.length; c++) {
 						if (channels[c].display) {
+							this.list.push(channels[c]);
 							var channelMatch = false;
 							for (var cc = 0; cc < channelControls.length; cc++) {
 								if (channelControls[cc].channel && channelControls[cc].channel == channels[c]) channelMatch = true;

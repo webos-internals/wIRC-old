@@ -17,6 +17,7 @@ enyo.depends(
 	"enyo/events.js",
 	"enyo/manager.js",
 	"enyo/plugin.js",
+	"enyo/keys.js",
 	
 	"enyo/messages.js",
 	

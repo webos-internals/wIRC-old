@@ -30,7 +30,7 @@ body {
 	position: relative;
 	min-height: 45px;
 	padding: 0;
-	background: #d8d8d8;
+	background-color: #d8d8d8;
 	border-left: 1px solid rgba(255, 255, 255, 0.5);
 	border-right: 1px solid rgba(0, 0, 0, 0.2);
 	margin-left: -1px;
@@ -112,7 +112,7 @@ body {
 .server-children .main-row {
 	margin-left: 10px;
 	border-left: 1px solid rgba(255, 255, 255, 0.5);
-	background: #d8d8d8;
+	background-color: #d8d8d8;
 }
 .server-children .main-row .enyo-confirmprompt {
 	padding-left: 10px;
