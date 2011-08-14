@@ -79,7 +79,7 @@ enyo.kind({
 	
 	setupMessage: function(inSender, inIndex) {
 		if (this.server.messages[inIndex]) {
-			this.server.messages[inIndex].setupItem(this.$.message);
+			this.server.messages[inIndex].setupItem(this.$.message, inIndex);
 			return true;
 		}
 		return false;
