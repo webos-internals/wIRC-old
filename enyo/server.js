@@ -204,7 +204,7 @@ enyo.kind({
 	  			this.setup.id,
 	  			this.setup.address,
 	  			this.setup.port||6667,
-	  			false,
+	  			this.setup.ssl,
 	  			this.setup.user||'wircer',
 	  			this.setup.password,
 	  			this.setup.nicks[0],

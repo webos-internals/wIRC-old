@@ -29,7 +29,7 @@ enyo.kind({
 					{name: 'port', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Port'}]},
 					{name: 'user', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'User'}]},
 					{name: 'password', hint: 'Optional', kind: 'PasswordInput', autoCapitalize: 'lowercase', components: [{content: 'Password'}]},
-					{name: 'ssl', kind: 'ToggleButton', disabled: true, components: [{flex: 1}, {content: 'SSL'}]},
+					{name: 'ssl', kind: 'ToggleButton', components: [{flex: 1}, {content: 'SSL'}]},
 					{name: 'autoconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Connect'}]},
 				]},
 				
