@@ -47,6 +47,7 @@ enyo.kind({
 			this.destroyBlankPanel();
 			this.destroySecondary(false);
 			this.secondary = component.name;
+			enyo.application.e.dispatch('secondary-panel');
 			this.$.sp.createComponent(component, {owner: this});
 			this.$.sp.render();
 		}
@@ -57,6 +58,7 @@ enyo.kind({
 	destroySecondary: function(createBlank) {
 		if (this.$[this.secondary]) this.$[this.secondary].destroy();
 		this.secondary = '';
+		enyo.application.e.dispatch('secondary-panel');
 		if (createBlank) {
 			this.createBlankPanel();
 			this.$.sp.render();

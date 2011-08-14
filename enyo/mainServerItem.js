@@ -40,10 +40,12 @@ enyo.kind({
 		this.update();
 		this.statusListener = enyo.bind(this, 'update');
 		enyo.application.e.listen('server-status' + this.server.setup.id, this.statusListener);
+		enyo.application.e.listen('secondary-panel', this.statusListener);
 	},
 
 	destroy: function() {
 		enyo.application.e.stopListening('server-status' + this.server.setup.id, this.statusListener);
+		enyo.application.e.stopListening('secondary-panel', this.statusListener);
 		return this.inherited(arguments);
 	},
 	
@@ -76,6 +78,9 @@ enyo.kind({
 	},
 	
 	update: function() {
+		
+		this.addRemoveClass('enyo-item-selected', (this.owner.getSelected() == 'server-status-' + this.server.setup.id ||
+												   this.owner.getSelected() == 'server-edit-' + this.server.setup.id));
 		
 		this.$.button1spin.hide();
 		
