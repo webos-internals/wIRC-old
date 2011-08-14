@@ -23,12 +23,12 @@ enyo.kind({
 			item.setClassName('enyo-item message-row ' + this.setup.type);
 		if (!this.setup.nick) {
 			item.$.nick.hide();
-			item.$.seperator.hide();
+			//item.$.seperator.hide();
 		}
 		switch(this.setup.type) {
 			case 'action':
 				item.$.nick.setContent('*');
-				item.$.seperator.hide();
+				//item.$.seperator.hide();
 				item.$.text.setContent(this.setup.nick + ' ' + this.setup.text);
 				break;
 				
@@ -56,8 +56,8 @@ enyo.kind({
 	},*/
 	
 	components: [
-        {name: 'nick', className: 'nick'},
-		{name: 'seperator', className: 'seperator', content: ':&nbsp;'},
+        {name: 'nick', className: 'nick', width: '100px', fixedWidth: true},
+		{name: 'seperator', className: 'seperator'},
         {name: 'text', className: 'text', flex: 1},
 	],
 	
