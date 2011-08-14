@@ -100,7 +100,7 @@ enyo.kind({
 				msg = message.substring(i * 255);
 			}
 			enyo.application.pm.call('cmd_msg', this.server.setup.id, this.setup.name, msg);
-			this.newMessage('privmsg', this.server.setup.nick, msg);
+			this.newMessage('privmsg', this.server.setup.nicks[0], msg);
 		}
 	},
 	
