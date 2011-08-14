@@ -1,3 +1,8 @@
+ifeq ($(SSL),1)
+	USESSL		:=	-DUSE_SSL
+	LIBSSL		:=	-Wl,--allow-shlib-undefined -lssl
+endif
+
 ifdef DEVICE
 	CC=/srv/preware/build/toolchain/cs07q3armel/build/arm-2007q3/bin/arm-none-linux-gnueabi-gcc
 	ROOT=/srv/preware/build/staging/armv7/usr
