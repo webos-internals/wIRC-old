@@ -50,6 +50,7 @@ enyo.kind({
 	rendered: function() {
 	    this.inherited(arguments);
 		this.$.headerText.setContent(this.channel.setup.name);
+		this.$.input.forceFocus();
 	},
 	
 	
@@ -85,11 +86,13 @@ enyo.kind({
 	},
 	
 	keyDown: function(inSender, inEvent) {
-		if (inEvent.keyCode === 13) {
-			inEvent.preventDefault();
-			var text = this.$.input.getValue();
-			if (text) this.channel.newCommand(text);
-			this.$.input.setValue('');
+		if (!enyo.application.k.keyDown(inSender, inEvent)) {
+			if (inEvent.keyCode === 13) {
+				inEvent.preventDefault();
+				var text = this.$.input.getValue();
+				if (text) this.channel.newCommand(text);
+				this.$.input.setValue('');
+			}
 		}
 	},
 	

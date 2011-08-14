@@ -11,10 +11,13 @@ enyo.kind({
 		this.logEvent(inEvent);
 		if (inEvent.keyIdentifier == 'Up' && inEvent.ctrlKey) {
 			enyo.application.e.dispatch('main-list-up');
+			return true;
 		}
 		if (inEvent.keyIdentifier == 'Down' && inEvent.ctrlKey) {
 			enyo.application.e.dispatch('main-list-down');
+			return true;
 		}
+		return false;
 	},
 	
 	keyPress: function(inSender, inEvent) {
