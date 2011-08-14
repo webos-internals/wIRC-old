@@ -23,22 +23,22 @@ enyo.kind({
 			{name: 'generalTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 			
 				{kind: 'RowGroup', width: '400px', caption: 'Server Information', components: [
-					{name: 'alias', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Alias'}]},
-					{name: 'address', hint: 'Required', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Address'}],
+					{name: 'alias', hint: 'Optional', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Alias'}]},
+					{name: 'address', hint: 'Required', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Address'}],
 						changeOnInput: true, onchange: 'requiredTest'},
-					{name: 'port', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Port'}]},
-					{name: 'user', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'User'}]},
-					{name: 'password', hint: 'Optional', kind: 'PasswordInput', autoCapitalize: 'lowercase', components: [{content: 'Password'}]},
+					{name: 'port', hint: 'Optional', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Port'}]},
+					{name: 'user', hint: 'Optional', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'User'}]},
+					{name: 'password', hint: 'Optional', kind: 'PasswordInput', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Password'}]},
 					{name: 'ssl', kind: 'ToggleButton', components: [{flex: 1}, {content: 'SSL'}]},
 					{name: 'autoconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Connect'}]},
 				]},
 				
 				{kind: 'RowGroup', width: '400px', caption: 'User Information', components: [
-					{name: 'realname', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Real Name'}]},
-					{name: 'nick1', hint: 'Required', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Primary Nick Name'}],
+					{name: 'realname', hint: 'Optional', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Real Name'}]},
+					{name: 'nick1', hint: 'Required', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Primary Nick Name'}],
 						changeOnInput: true, onchange: 'requiredTest'},
-					{name: 'nick2', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Secondary Nick Name'}]},
-					{name: 'nick3', hint: 'Optional', kind: 'Input', autoCapitalize: 'lowercase', components: [{content: 'Tertiary Nick Nname'}]},
+					{name: 'nick2', hint: 'Optional', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Secondary Nick Name'}]},
+					{name: 'nick3', hint: 'Optional', kind: 'Input', onfocus: 'showKeyboard', autoCapitalize: 'lowercase', components: [{content: 'Tertiary Nick Nname'}]},
 				]},
 			
 			]},
@@ -137,6 +137,10 @@ enyo.kind({
 		else {
 			this.log('Not Saved!?');
 		}
+	},
+	
+	showKeyboard: function() {
+		enyo.keyboard.show(0);
 	},
 	
 });

@@ -39,7 +39,7 @@ enyo.kind({
 			{name: 'messagesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 				{kind: 'RowGroup', width: '400px', caption: 'Input', components: [
 				
-					{name: 'focusInput', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto-Focus Input'}]},
+					{kind: 'Item', content: 'messages'},
 					
 				]},
 			]},
@@ -115,9 +115,6 @@ enyo.kind({
 		// general
 		this.$.fullscreen.setState(this.prefs.fullscreen);
 		
-		// messages
-		this.$.focusInput.setState(this.prefs.focusInput);
-		
 		// keybinds
 		this.$.mainListUp.setValue(this.prefs.mainListUp);
 		this.$.mainListDown.setValue(this.prefs.mainListDown);
@@ -159,10 +156,7 @@ enyo.kind({
 		// general
 		this.prefs.fullscreen = this.$.fullscreen.getState();
 		enyo.setFullScreen(this.prefs.fullscreen);
-		
-		// messages
-		this.prefs.focusInput = this.$.focusInput.getState();
-		
+				
 		// keybinds
 		this.prefs.mainListUp = this.$.mainListUp.getValue();
 		this.prefs.mainListDown = this.$.mainListDown.getValue();
