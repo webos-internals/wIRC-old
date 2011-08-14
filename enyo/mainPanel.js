@@ -2,7 +2,7 @@ enyo.kind({
 	name: 'wirc.MainPanel',
 	kind: 'SlidingView',
 	
-	width: '280px',
+	width: '300px',
 	fixedWidth: true,
 	
 	list: [],

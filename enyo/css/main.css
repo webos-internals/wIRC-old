@@ -148,7 +148,7 @@ body {
 
 
 .main-panel .enyo-sliding-view-shadow {
-	left: 320px;
+	left: 300px;
 	background-image: url(../images/sliding-blank-shadow.png);
 }
 .blank-slider .enyo-sliding-view-shadow {
