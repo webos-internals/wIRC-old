@@ -50,7 +50,6 @@ enyo.kind({
 	},
 	preferencesButton: function() {
 		this.owner.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
-		this.log(enyo.keyboard.isManualMode());
 	},
 	
 	buildList: function() {
