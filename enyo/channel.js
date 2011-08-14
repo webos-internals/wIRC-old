@@ -38,7 +38,8 @@ enyo.kind({
 			type: type,
 			nick: nick,
 			text: text,
-			self: (nick == this.server.setup.nicks[0])
+			self: (nick == this.server.setup.nicks[0]),
+			num: this.messages.length
 		});
 		this.messages.unshift(m); // for bottomUp flyweight
 		//this.messages.push(m); // for generating rows

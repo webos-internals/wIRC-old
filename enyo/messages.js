@@ -10,7 +10,7 @@ enyo.kind({
 		this.setup = setup;
 	},
 	
-	setupItem: function(item, inIndex) {
+	setupItem: function(item) {
 		
 		// reset?
 		item.$.seperator.show();
@@ -38,8 +38,10 @@ enyo.kind({
 				break;
 		}
 		
-		if (inIndex%2==1)
-			item.applyStyle('background','#EBEBEB');		
+		if (this.setup.num%2==0)
+			item.applyStyle('background','#EBEBEB');
+		else
+			item.applyStyle('background','#f5f5f5');
 	},
 	
 });

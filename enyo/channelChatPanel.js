@@ -78,7 +78,7 @@ enyo.kind({
 	
 	setupMessage: function(inSender, inIndex) {
 		if (this.channel.messages[inIndex]) {
-			this.channel.messages[inIndex].setupItem(this.$.message, inIndex);
+			this.channel.messages[inIndex].setupItem(this.$.message);
 			return true;
 		}
 		return false;
