@@ -130,7 +130,7 @@ enyo.kind({
 		if (this.recording) {
 			this.currentValue = this.getValueFromEvent(inEvent);
 			this.updateDisplay(this.currentValue);
-			enyo.application.k.logEvent(inEvent);
+			//enyo.application.k.logEvent(inEvent);
 		}
 	},
 	
