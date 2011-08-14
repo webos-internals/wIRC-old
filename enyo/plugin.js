@@ -146,7 +146,7 @@ enyo.kind({
 		var server = enyo.application.s.getFromId(id);
 		var params = this.parseJson(params_s);
 		
-		var chan = server.getChannel(params[0]);
+		var chan = server.getOrCreateChannel(params[0]);
 		if (chan)
 		{
 			var nick = server.getNick(origin);
