@@ -39,7 +39,7 @@ enyo.kind({
 			{name: 'messagesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 				{kind: 'RowGroup', width: '400px', caption: 'Input', components: [
 				
-					{kind: 'Item', content: 'messages'},
+					{name: 'colorTest', kind: 'wi.ColorSelector', caption: 'This Color Selector Isn\'t Finished'},
 					
 				]},
 			]},
@@ -115,6 +115,9 @@ enyo.kind({
 		// general
 		this.$.fullscreen.setState(this.prefs.fullscreen);
 		
+		// messages
+		this.$.colorTest.setValue('#ff0000');
+		
 		// keybinds
 		this.$.mainListUp.setValue(this.prefs.mainListUp);
 		this.$.mainListDown.setValue(this.prefs.mainListDown);
@@ -173,3 +176,4 @@ enyo.kind({
 	},
 	
 });
+
