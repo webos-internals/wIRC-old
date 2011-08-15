@@ -25,4 +25,4 @@ clean: clean-plugin clean-package
 clobber: clean
 
 device:
-	${MAKE} DEVICE="pre" build-package
+	${MAKE} DEVICE=1 SSL=1 build-package
