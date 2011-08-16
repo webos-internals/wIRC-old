@@ -8,7 +8,15 @@ enyo.kind({
 		defaults: {
 			// general
 			fullscreen: false,
-						
+			
+			// messages
+			colorNotice: '#FF4500',
+			colorAction: '#B22222',
+			colorStatus: '#9370DB',
+			colorText: '#000000',
+			colorOwnNick: '#000000',
+			colorOtherNicks: '#008000',
+			
 			// keybinds
 			mainListUp: {keyCode: 38, keyIdentifier: 'Up', ctrlKey: true, altKey: false, shiftKey: false, metaKey: false},
 			mainListDown: {keyCode: 40, keyIdentifier: 'Down', ctrlKey: true, altKey: false, shiftKey: false, metaKey: false},

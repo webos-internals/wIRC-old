@@ -37,9 +37,14 @@ enyo.kind({
 			]},
 			
 			{name: 'messagesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-				{kind: 'RowGroup', width: '400px', caption: 'Input', components: [
+				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
-					{name: 'colorTest', kind: 'wi.ColorSelector', caption: 'This Color Selector Isn\'t Finished'},
+					{name: 'colorNotice', kind: 'wi.ColorSelector', caption: 'Notice'},
+					{name: 'colorAction', kind: 'wi.ColorSelector', caption: 'Action'},
+					{name: 'colorStatus', kind: 'wi.ColorSelector', caption: 'Status'},
+					{name: 'colorText', kind: 'wi.ColorSelector', caption: 'Text'},
+					{name: 'colorOwnNick', kind: 'wi.ColorSelector', caption: 'Own Nick'},
+					{name: 'colorOtherNicks', kind: 'wi.ColorSelector', caption: 'Other Nicks'},
 					
 				]},
 			]},
@@ -116,7 +121,12 @@ enyo.kind({
 		this.$.fullscreen.setState(this.prefs.fullscreen);
 		
 		// messages
-		this.$.colorTest.setValue('#ff0000');
+		this.$.colorNotice.setValue(this.prefs.colorNotice);
+		this.$.colorAction.setValue(this.prefs.colorAction);
+		this.$.colorStatus.setValue(this.prefs.colorStatus);
+		this.$.colorText.setValue(this.prefs.colorText);
+		this.$.colorOwnNick.setValue(this.prefs.colorOwnNick);
+		this.$.colorOtherNicks.setValue(this.prefs.colorOtherNicks);
 		
 		// keybinds
 		this.$.mainListUp.setValue(this.prefs.mainListUp);
@@ -159,6 +169,14 @@ enyo.kind({
 		// general
 		this.prefs.fullscreen = this.$.fullscreen.getState();
 		enyo.setFullScreen(this.prefs.fullscreen);
+		
+		// messages
+		this.prefs.colorNotice = this.$.colorNotice.getValue();
+		this.prefs.colorAction = this.$.colorAction.getValue();
+		this.prefs.colorStatus = this.$.colorStatus.getValue();
+		this.prefs.colorText = this.$.colorText.getValue();
+		this.prefs.colorOwnNick = this.$.colorOwnNick.getValue();
+		this.prefs.colorOtherNicks = this.$.colorOtherNicks.getValue();
 				
 		// keybinds
 		this.prefs.mainListUp = this.$.mainListUp.getValue();
