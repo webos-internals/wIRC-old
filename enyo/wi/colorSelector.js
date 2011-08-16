@@ -82,7 +82,7 @@ enyo.kind({
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					onfocus: 'showKeyboard', onblur: 'hideKeyboard', // this keyboard crap is because wirc is in manual mode
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
-					changeOnInput: true, onkeydown: 'keyDown'},
+					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp'},
 			]},
 		]},
 	],
@@ -158,6 +158,7 @@ enyo.kind({
 	hideManual: function() {
 		this.manualShowing = false;
 		this.$.manual.hide();
+		this.$.manualButton.setDepressed(false);
 	},
 	showManual: function() {
 		this.manualShowing = true;
@@ -166,14 +167,33 @@ enyo.kind({
 	},
 	
 	keyDown: function(inSender, inEvent) {
+		var text = this.$.manualInput.getValue();
 		if (inEvent.keyCode === 13) {
 			inEvent.preventDefault();
-			var text = this.$.manualInput.getValue();
 			if (text) {
 				this.doColorSelect(text);
 				this.close();
 			}
 		}
+	},
+	keyUp: function(inSender, inEvent) {
+		var text = this.$.manualInput.getValue();
+		if (this.isValidColorString(text))
+			this.$.manualInput.$.input.applyStyle('color', '#000');
+		else 
+			this.$.manualInput.$.input.applyStyle('color', '#666');
+	},
+	
+	isValidColorString: function(string) {
+		if (colorWords.indexOf(string) > -1) return true;
+		if (string.match(/#([0-9A-Fa-f]{3,6})/)) return true;
+		if (string.match(/rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\)/)) return true;
+		if (string.match(/rgba\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*([0-9]+(?:\.[0-9]+)?|\.[0-9]+)\s*\)/)) return true;
+		if (string.match(/rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)/)) return true;
+		if (string.match(/rgba\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*([0-9]+(?:\.[0-9]+)?|\.[0-9]+)\s*\)/)) return true;
+		if (string.match(/hsl\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-9][0-9]|3[0-5][0-9]|360)\b\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)/)) return true;
+		if (string.match(/hsla\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-9][0-9]|3[0-5][0-9]|360)\b\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*([0-9]+(?:\.[0-9]+)?|\.[0-9]+)\s*\)/)) return true;
+		return false;
 	},
 	
 	rgbToHex: function(t) {
@@ -195,3 +215,145 @@ enyo.kind({
 	},
 	
 });
+
+var colorWords = [
+	'aliceblue',
+	'antiquewhite',
+	'aqua',
+	'aquamarine',
+	'azure',
+	'beige',
+	'bisque',
+	'black',
+	'blanchedalmond',
+	'blue',
+	'blueviolet',
+	'brown',
+	'burlywood',
+	'cadetblue',
+	'chartreuse',
+	'chocolate',
+	'coral',
+	'cornflowerblue',
+	'cornsilk',
+	'crimson',
+	'cyan',
+	'darkblue',
+	'darkcyan',
+	'darkgoldenrod',
+	'darkgray',
+	'darkgreen',
+	'darkkhaki',
+	'darkmagenta',
+	'darkolivegreen',
+	'darkorange',
+	'darkorchid',
+	'darkred',
+	'darksalmon',
+	'darkseagreen',
+	'darkslateblue',
+	'darkslategray',
+	'darkturquoise',
+	'darkviolet',
+	'deeppink',
+	'deepskyblue',
+	'dimgray',
+	'dodgerblue',
+	'firebrick',
+	'floralwhite',
+	'forestgreen',
+	'fuchsia',
+	'gainsboro',
+	'ghostwhite',
+	'gold',
+	'goldenrod',
+	'gray',
+	'green',
+	'greenyellow',
+	'honeydew',
+	'hotpink',
+	'indianred',
+	'indigo',
+	'ivory',
+	'khaki',
+	'lavender',
+	'lavenderblush',
+	'lawngreen',
+	'lemonchiffon',
+	'lightblue',
+	'lightcoral',
+	'lightcyan',
+	'lightgoldenrodyellow',
+	'lightgreen',
+	'lightpink',
+	'lightsalmon',
+	'lightseagreen',
+	'lightskyblue',
+	'lightslategray',
+	'lightsteelblue',
+	'lightyellow',
+	'lime',
+	'limegreen',
+	'linen',
+	'magenta',
+	'maroon',
+	'mediumaquamarine',
+	'mediumblue',
+	'mediumorchid',
+	'mediumpurple',
+	'mediumseagreen',
+	'mediumslateblue',
+	'mediumspringgreen',
+	'mediumturquoise',
+	'mediumvioletred',
+	'midnightblue',
+	'mintcream',
+	'mistyrose',
+	'moccasin',
+	'navajowhite',
+	'navy',
+	'oldlace',
+	'olive',
+	'olivedrab',
+	'orange',
+	'orangered',
+	'orchid',
+	'palegoldenrod',
+	'palegreen',
+	'paleturquoise',
+	'palevioletred',
+	'papayawhip',
+	'peachpuff',
+	'peru',
+	'pink',
+	'plum',
+	'powderblue',
+	'purple',
+	'red',
+	'rosybrown',
+	'royalblue',
+	'saddlebrown',
+	'salmon',
+	'sandybrown',
+	'seagreen',
+	'seashell',
+	'sienna',
+	'silver',
+	'skyblue',
+	'slateblue',
+	'slategray',
+	'snow',
+	'springgreen',
+	'steelblue',
+	'tan',
+	'teal',
+	'thistle',
+	'tomato',
+	'turquoise',
+	'violet',
+	'wheat',
+	'white',
+	'whitesmoke',
+	'yellow',
+	'yellowgreen'
+];
