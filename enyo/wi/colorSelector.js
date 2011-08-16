@@ -159,12 +159,14 @@ enyo.kind({
 	},
 	hideManual: function() {
 		this.manualShowing = false;
+		this.$.canvas.applyStyle('opacity', '1');
 		this.$.manual.hide();
 		this.$.manualButton.setDepressed(false);
 	},
 	showManual: function() {
 		this.manualShowing = true;
 		this.keyUp();
+		this.$.canvas.applyStyle('opacity', '0.3');
 		this.$.manual.show();
 		this.$.manualInput.forceFocus();
 	},
@@ -187,8 +189,8 @@ enyo.kind({
 	},
 	keyUp: function(inSender, inEvent) {
 		var text = this.$.manualInput.getValue();
-		this.$.preview.applyStyle('background-color', text);
 		if (this.isValidColorString(text)) {
+			this.$.preview.applyStyle('background-color', text);
 			this.$.manualInput.$.input.applyStyle('color', '#000');
 			this.$.manualSave.setDisabled(false);
 		}
@@ -200,7 +202,7 @@ enyo.kind({
 	
 	isValidColorString: function(string) {
 		if (colorWords.indexOf(string) > -1) return true;
-		if (string.match(/#([0-9A-Fa-f]{3,6})/)) return true;
+		if (string.match(/#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/)) return true;
 		if (string.match(/rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\)/)) return true;
 		if (string.match(/rgba\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*([0-9]+(?:\.[0-9]+)?|\.[0-9]+)\s*\)/)) return true;
 		if (string.match(/rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)/)) return true;
