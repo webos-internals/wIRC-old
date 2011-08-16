@@ -2,6 +2,8 @@ enyo.kind({
 	name: 'wirc.connectionManager',
 	kind: enyo.Control,
 	
+	state: null,
+	
 	initComponents: function() {
 		this.inherited(arguments);
 		this.createComponent({
@@ -9,10 +11,11 @@ enyo.kind({
 		  	kind: "PalmService",
 		  	service: "palm://com.palm.connectionmanager/",
 		  	method: "getStatus",
+		  	subscribe: true,
 		  	onSuccess: "gotConnections",
 		  	onFailure: "failure"
 		});
-		this.$.connectionManager.call({subscribe:true});
+		this.$.connectionManager.call();
 	},
 	
 	failure: function(inSender, inEvent, inMessage) {
@@ -20,7 +23,14 @@ enyo.kind({
 	},
 	
 	gotConnections: function(inSender, inMessage, inType) {
-		this.warn(enyo.json.stringify(inMessage));
+		this.state = inMessage;
+	},
+	
+	isInternetConnectionAvailable: function() {
+		if (this.state)
+			return this.state.isInternetConnectionAvailable
+		else
+			return false
 	},
 	
 });
