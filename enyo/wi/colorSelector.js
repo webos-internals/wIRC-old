@@ -82,7 +82,9 @@ enyo.kind({
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					onfocus: 'showKeyboard', onblur: 'hideKeyboard', // this keyboard crap is because wirc is in manual mode
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
-					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp'},
+					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp', components: [
+					{name: 'manualSave', kind: 'Button', onclick: 'manualSave', content: ' ', style: 'margin: -5px;'},
+					]},
 			]},
 		]},
 	],
@@ -162,15 +164,22 @@ enyo.kind({
 	},
 	showManual: function() {
 		this.manualShowing = true;
+		this.keyUp();
 		this.$.manual.show();
 		this.$.manualInput.forceFocus();
+	},
+	
+	manualSave: function(inSender, inEvent) {
+		var text = this.$.manualInput.getValue();
+		this.doColorSelect(text);
+		this.close();
 	},
 	
 	keyDown: function(inSender, inEvent) {
 		var text = this.$.manualInput.getValue();
 		if (inEvent.keyCode === 13) {
 			inEvent.preventDefault();
-			if (text) {
+			if (text && this.isValidColorString(text)) {
 				this.doColorSelect(text);
 				this.close();
 			}
@@ -178,10 +187,15 @@ enyo.kind({
 	},
 	keyUp: function(inSender, inEvent) {
 		var text = this.$.manualInput.getValue();
-		if (this.isValidColorString(text))
+		this.$.preview.applyStyle('background-color', text);
+		if (this.isValidColorString(text)) {
 			this.$.manualInput.$.input.applyStyle('color', '#000');
-		else 
+			this.$.manualSave.setDisabled(false);
+		}
+		else {
 			this.$.manualInput.$.input.applyStyle('color', '#666');
+			this.$.manualSave.setDisabled(true);
+		}
 	},
 	
 	isValidColorString: function(string) {
