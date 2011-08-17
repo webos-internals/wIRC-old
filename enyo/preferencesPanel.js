@@ -44,12 +44,12 @@ enyo.kind({
 				
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
-					{name: 'colorNotice', kind: 'wi.ColorSelector', caption: 'Notice'},
-					{name: 'colorAction', kind: 'wi.ColorSelector', caption: 'Action'},
-					{name: 'colorStatus', kind: 'wi.ColorSelector', caption: 'Status'},
-					{name: 'colorText', kind: 'wi.ColorSelector', caption: 'Text'},
-					{name: 'colorOwnNick', kind: 'wi.ColorSelector', caption: 'Own Nick'},
-					{name: 'colorOtherNicks', kind: 'wi.ColorSelector', caption: 'Other Nicks'},
+					{name: 'colorNotice', kind: 'wi.InputColor', caption: 'Notice'},
+					{name: 'colorAction', kind: 'wi.InputColor', caption: 'Action'},
+					{name: 'colorStatus', kind: 'wi.InputColor', caption: 'Status'},
+					{name: 'colorText', kind: 'wi.InputColor', caption: 'Text'},
+					{name: 'colorOwnNick', kind: 'wi.InputColor', caption: 'Own Nick'},
+					{name: 'colorOtherNicks', kind: 'wi.InputColor', caption: 'Other Nicks'},
 					
 				]},
 			]},
@@ -81,9 +81,9 @@ enyo.kind({
 			{name: 'keybindsTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 				{kind: 'RowGroup', width: '400px', caption: 'General', components: [
 				
-					{name: 'mainListUp', kind: 'wi.KeyInput', caption: 'Main List Up'},
-					{name: 'mainListDown', kind: 'wi.KeyInput', caption: 'Main List Down'},
-					{name: 'nickCompletion', kind: 'wi.KeyInput', caption: 'Nick Completion'},
+					{name: 'mainListUp', kind: 'wi.InputKey', caption: 'Main List Up'},
+					{name: 'mainListDown', kind: 'wi.InputKey', caption: 'Main List Down'},
+					{name: 'nickCompletion', kind: 'wi.InputKey', caption: 'Nick Completion'},
 					
 				]},
 			]},
