@@ -27,10 +27,6 @@ enyo.kind({
 				enyo.application.e.dispatch('main-list-down');
 				return true;
 			}
-			if (this.testMatch(enyo.application.p.get('nickCompletion'), inEvent)) {
-				enyo.application.e.dispatch('nick-completion');
-				return true;
-			}
 			
 		}
 		return false;

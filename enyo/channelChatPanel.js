@@ -94,14 +94,18 @@ enyo.kind({
 	
 	keyDown: function(inSender, inEvent) {
 		if (!enyo.application.k.keyDown(inSender, inEvent)) {
-			this.completionText = false;
-			this.text = false;
-			this.nick = false;
-			if (inEvent.keyCode === 13) {
-				inEvent.preventDefault();
-				var text = this.$.input.getValue();
-				if (text) this.channel.newCommand(text);
-				this.$.input.setValue('');
+			if (enyo.application.k.testMatch(enyo.application.p.get('nickCompletion'), inEvent) && this.$.input.getValue().length>0) {
+				this.completeNick();
+			} else {
+				this.completionText = false;
+				this.text = false;
+				this.nick = false;
+				if (inEvent.keyCode === 13) {
+					inEvent.preventDefault();
+					var text = this.$.input.getValue();
+					if (text) this.channel.newCommand(text);
+					this.$.input.setValue('');
+				}
 			}
 		}
 	},
