@@ -230,6 +230,18 @@ enyo.kind({
 		
 		switch(event) {
 			
+			case 353: // RPL_NAMREPLY
+				var chan = server.getOrCreateChannel(params[2]);
+				if (chan) {
+					this.warn(params)
+					var nicks = params[3].split(' ');
+					for (i in nicks)
+						chan.setup.nicks.push(nicks[i])
+				} else {
+					this.error('Oh Shit!')
+				}
+				break;
+			
 			case 372: // MOTD
 			case 375: // MOTDSTART
 			case 376: // MOTDEND

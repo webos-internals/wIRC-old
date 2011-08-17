@@ -26,6 +26,7 @@ enyo.depends(
 	"enyo/mainPanel.js",
 	"enyo/mainServerItem.js",
 	"enyo/mainChannelItem.js",
+	"enyo/nicklist.js",
   	"enyo/css/main.css"
 	
 	

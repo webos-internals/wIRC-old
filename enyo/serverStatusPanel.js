@@ -19,7 +19,7 @@ enyo.kind({
 		{name: 'header', kind: 'Header', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
-			{kind: 'Button', caption: 'X', onclick: 'closeButton', className: 'enyo-button-negative close'},
+			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', className: 'wirc-tool-button', onclick: 'closeButton'},
 		]},
 		{kind: 'HeaderShadow'},
 		
