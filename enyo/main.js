@@ -51,6 +51,7 @@ enyo.kind({
 			enyo.application.e.dispatch('secondary-panel');
 			this.$.sp.createComponent(component, {owner: this});
 			this.$.sp.render();
+			//this.$.sp.selectViewByName(this.secondary); // use at pre3 res
 		}
 		else {
 			this.error('no component name', component);
@@ -64,6 +65,7 @@ enyo.kind({
 			this.createBlankPanel();
 			this.$.sp.render();
 		}
+		//this.$.sp.selectViewByName('main'); // use at pre3 res
 	},
 	
 	createBlankPanel: function() {

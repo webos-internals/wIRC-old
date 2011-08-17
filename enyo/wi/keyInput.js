@@ -1,7 +1,6 @@
 enyo.kind({
 	name: 'wi.KeyInput',
 	kind: 'Item',
-	layoutKind: 'HFlexLayout',
 	
 	recording: false,
 	lastValue: {},
@@ -13,44 +12,51 @@ enyo.kind({
 	},
 	
 	components: [
-	
-		{kind: 'ApplicationEvents', onKeydown: 'keyDown'},
 		
-		{name: 'button', kind: 'Button', style: 'margin-top: -5px; margin-bottom: -5px; margin-right: 10px;', onclick: 'buttonClick', components: [
-			{name: 'record', style: 'width: 15px; height: 15px; background: #c33; margin-top: 2px; border-radius: 15px;'},
-			{name: 'stop', style: 'width: 15px; height: 15px; background: #666; margin-top: 2px;'},
+		{name: 'container', className: 'enyo-input', components: [
+		
+			{className: 'position', kind: 'HFlexBox', components: [
+				{className: 'record'},
+				{name: 'display', flex: 1},
+				{name: 'input', kind: 'Input', className: 'hidden-input', onblur: 'stopRecording', onfocus: 'startRecording', onkeydown: 'keyDown'},
+				{name: 'caption'},
+			]},
+			
 		]},
-		{name: 'display', flex: 1},
-		{name: 'caption'},
+		
 		
 	],
 	
 	create: function () {
 	    this.inherited(arguments);
+		this.addClass('wi-key-input');
 		this.$.caption.setContent(this.caption);
 		this.updateDisplay(this.value);
-		this.$.stop.hide();
 	},
 	
-	buttonClick: function(inSender, inEvent) {
+	doClick: function(inSender, inEvent) {
 		if (!this.recording) {
-			this.currentValue = this.value;
-			this.lastValue = this.value;
-			this.updateDisplay(this.currentValue);
-			this.$.record.hide();
-			this.$.stop.show();
-			this.recording = true;
+			this.$.input.forceFocus();
 		}
-		else {
-			if (this.validValue(this.currentValue)) this.value = this.currentValue;
-			else this.value = this.lastValue;
-			this.updateDisplay(this.value);
-			this.currentValue = {};
-			this.lastValue = {};
-			this.$.stop.hide();
-			this.$.record.show();
-			this.recording = false;
-		}
+	},
+	
+	startRecording: function() {
+		this.showKeyboard(); // this keyboard crap is because wirc is in manual mode
+		this.$.container.addClass('enyo-input-focus');
+		this.currentValue = this.value;
+		this.lastValue = this.value;
+		this.updateDisplay(this.currentValue);
+		this.recording = true;
+	},
+	stopRecording: function() {
+		this.hideKeyboard(); // this keyboard crap is because wirc is in manual mode
+		this.$.container.removeClass('enyo-input-focus')
+		if (this.validValue(this.currentValue)) this.value = this.currentValue;
+		else this.value = this.lastValue;
+		this.updateDisplay(this.value);
+		this.currentValue = {};
+		this.lastValue = {};
+		this.recording = false;
 	},
 	
 	setValue: function(value) {
@@ -62,11 +68,19 @@ enyo.kind({
 	},
 	
 	keyDown: function(inSender, inEvent) {
+		inEvent.preventDefault();
 		if (this.recording) {
 			this.currentValue = this.getValueFromEvent(inEvent);
 			this.updateDisplay(this.currentValue);
-			//enyo.application.k.logEvent(inEvent);
+			enyo.application.k.logEvent(inEvent);
 		}
+		return false;
+	},
+	
+	fakeKeyDown: function(inSender, inEvent) {
+		this.log(inSender, inEvent);
+		inEvent.preventDefault();
+		return false;
 	},
 	
 	getValueFromEvent: function(event) {
@@ -103,6 +117,7 @@ enyo.kind({
 			value.keyCode != 13) {	// enter
 			return true;
 		}
+		else if (value.keyCode == 9) return true // actually, we'll let tab pass without any mods
 		else return false;
 	},
 	
@@ -132,6 +147,13 @@ enyo.kind({
 			else pretty = 'None';
 		}
 		return pretty;
+	},
+	
+	showKeyboard: function() {
+		enyo.keyboard.show(0);
+	},
+	hideKeyboard: function() {
+		enyo.keyboard.hide();
 	},
 	
 });

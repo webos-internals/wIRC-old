@@ -198,11 +198,11 @@ enyo.kind({
 		var text = this.$.manualInput.getValue();
 		if (this.isValidColorString(text)) {
 			this.$.preview.applyStyle('background-color', text);
-			this.$.manualInput.$.input.applyStyle('color', '#000');
+			this.$.manualInput.$.input.applyStyle('color', null);
 			this.$.manualSave.setDisabled(false);
 		}
 		else {
-			this.$.manualInput.$.input.applyStyle('color', '#666');
+			this.$.manualInput.$.input.applyStyle('color', 'rgba(0, 0, 0, 0.4)');
 			this.$.manualSave.setDisabled(true);
 		}
 	},
