@@ -9,6 +9,7 @@ enyo.depends(
 	"enyo/wi/input.js",
 	
 	"enyo/wi/keyInput.js",
+	"enyo/wi/css/keyInput.css",
 	
 	"enyo/wi/colorSelector.js",
 	"enyo/wi/css/colorSelector.css",
