@@ -16,8 +16,7 @@ enyo.kind({
 		{name: 'container', className: 'enyo-input', components: [
 		
 			{className: 'position', kind: 'HFlexBox', components: [
-				{className: 'record'},
-				{name: 'display', flex: 1},
+				{name: 'display', allowHtml: true, flex: 1},
 				{name: 'input', kind: 'Input', className: 'hidden-input', onblur: 'stopRecording', onfocus: 'startRecording', onkeydown: 'keyDown'},
 				{name: 'caption'},
 			]},
@@ -91,8 +90,8 @@ enyo.kind({
 	
 	updateDisplay: function(value) {
 		this.$.display.setContent(this.getStringFromValue(value));
-		if (this.validValue(value)) this.$.display.applyStyle('color', null);
-		else this.$.display.applyStyle('color', 'rgba(0, 0, 0, 0.4)');
+		if (this.validValue(value)) this.$.display.applyStyle('opacity', null);
+		else this.$.display.applyStyle('opacity', '0.6');
 	},
 	
 	validValue: function(value) {
@@ -117,23 +116,23 @@ enyo.kind({
 	
 	getStringFromValue: function(value) {
 		var used = [];
-		if (value.ctrlKey)	used.push('Ctrl');
-		if (value.altKey)	used.push('Alt');
-		if (value.shiftKey)	used.push('Shft');
-		if (value.metaKey)	used.push('Meta');
+		if (value.ctrlKey)	used.push('<span class="key">Ctrl</span>');
+		if (value.altKey)	used.push('<span class="key">Alt</span>');
+		if (value.shiftKey)	used.push('<span class="key">Shft</span>');
+		if (value.metaKey)	used.push('<span class="key">Meta</span>');
 		if (value.keyCode &&		// this list probably needs more
 			value.keyCode != 8 &&	// backspace
 			value.keyCode != 17 &&	// ctrl
 			value.keyCode != 129 &&	// alt
 			value.keyCode != 16 &&	// shift
 			value.keyCode != 13) {	// enter
-			if (value.keyCode == 9) used.push('Tab');
-			else if (value.keyCode >= 37 && value.keyCode <= 40) used.push(value.keyIdentifier);
-			else used.push(String.fromCharCode(value.keyCode));
+			if (value.keyCode == 9) used.push('<span class="key">Tab</span>');
+			else if (value.keyCode >= 37 && value.keyCode <= 40) used.push('<span class="key">' + value.keyIdentifier + '</span>');
+			else used.push('<span class="key">' + String.fromCharCode(value.keyCode) + '</span>');
 			//used.push('(' + value.keyCode + ') ' + value.keyIdentifier);
 		}
 		else
-			used.push('...');
+			used.push('<span class="key" style="opacity: 0.3;">&nbsp;</span>');
 		
 		var pretty = used.join(' + ');
 		if (pretty == '') {

@@ -202,7 +202,7 @@ enyo.kind({
 			this.$.manualSave.setDisabled(false);
 		}
 		else {
-			this.$.manualInput.$.input.applyStyle('color', 'rgba(0, 0, 0, 0.4)');
+			this.$.manualInput.$.input.applyStyle('color', 'rgba(0, 0, 0, 0.6)');
 			this.$.manualSave.setDisabled(true);
 		}
 	},
