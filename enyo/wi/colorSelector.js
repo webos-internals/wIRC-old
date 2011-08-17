@@ -65,7 +65,9 @@ enyo.kind({
 		{kind: 'VFlexBox', className: 'left-container', components: [
 			{name: 'original', className: 'original', flex: 1},
 			{name: 'preview', className: 'preview', flex: 1},
-			{name: 'manualButton', kind: 'Button', className: 'manual-toggle', content: '#', toggling: true, onclick: 'toggleManual'}
+			{name: 'manualButton', kind: 'Button', className: 'manual-toggle', toggling: true, onclick: 'toggleManual', components: [
+				{className: 'icon'}
+			]}
 		]},
 		{
 			name: 'canvas',
