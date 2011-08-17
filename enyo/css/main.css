@@ -205,3 +205,6 @@ body {
 .messages-panel .message-row .text {
 	padding: 1px 0px 3px 0px;
 }
+.messages-panel .message-row .timestamp {
+	padding: 1px 0px 3px 0px;
+}

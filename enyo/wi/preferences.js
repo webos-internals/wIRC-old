@@ -10,6 +10,8 @@ enyo.kind({
 			fullscreen: false,
 			
 			// messages
+			showTimeStamps: true,
+			
 			colorNotice: '#FF4500',
 			colorAction: '#B22222',
 			colorStatus: '#9370DB',

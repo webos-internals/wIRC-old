@@ -8,11 +8,28 @@ enyo.kind({
 	    this.inherited(arguments);
 		//this.log(setup);
 		this.setup = setup;
+		this.setup.timestamp = new Date();
+	},
+	
+	formatTimeStamp: function(currentTime) {
+		var hours = currentTime.getHours();
+		var minutes = currentTime.getMinutes();
+		if (hours < 10)
+			hours = "0" + hours;
+		if (minutes < 10)
+  			minutes = "0" + minutes;
+  		return "["+hours+":"+minutes+"]"
 	},
 	
 	setupItem: function(item) {
 		
 		// reset?
+		if (enyo.application.p.get('showTimeStamps')) {
+			item.$.timestamp.setContent(this.formatTimeStamp(this.setup.timestamp));
+			item.$.timestamp.show();
+		} else {
+			item.$.timestamp.hide();
+		}
 		item.$.seperator.show();
 		item.$.nick.setContent('');
 		item.$.text.setContent('');
@@ -56,6 +73,7 @@ enyo.kind({
 	},*/
 	
 	components: [
+		{name: 'timestamp', className: 'timestamp', width: '45px', fixedWidth: true},
         {name: 'nick', className: 'nick', width: '100px', fixedWidth: true},
 		{name: 'seperator', className: 'seperator'},
         {name: 'text', className: 'text', flex: 1},

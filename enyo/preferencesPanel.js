@@ -37,6 +37,11 @@ enyo.kind({
 			]},
 			
 			{name: 'messagesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
+			
+				{kind: 'RowGroup', width: '400px', caption: 'Timestamps', components: [
+					{name: 'showTimeStamps', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Show Timestamps'}]},
+				]},
+				
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
 					{name: 'colorNotice', kind: 'wi.ColorSelector', caption: 'Notice'},
@@ -121,6 +126,8 @@ enyo.kind({
 		this.$.fullscreen.setState(this.prefs.fullscreen);
 		
 		// messages
+		this.$.showTimeStamps.setState(this.prefs.showTimeStamps);
+		
 		this.$.colorNotice.setValue(this.prefs.colorNotice);
 		this.$.colorAction.setValue(this.prefs.colorAction);
 		this.$.colorStatus.setValue(this.prefs.colorStatus);
@@ -171,6 +178,8 @@ enyo.kind({
 		enyo.setFullScreen(this.prefs.fullscreen);
 		
 		// messages
+		this.prefs.showTimeStamps = this.$.showTimeStamps.getState();
+		
 		this.prefs.colorNotice = this.$.colorNotice.getValue();
 		this.prefs.colorAction = this.$.colorAction.getValue();
 		this.prefs.colorStatus = this.$.colorStatus.getValue();
