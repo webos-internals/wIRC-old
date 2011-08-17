@@ -1,3 +1,22 @@
-.wi-key-input {
-	
+.wi-key-input .enyo-input .position {
+	margin: -3px -5px -3px -3px;
+}
+.wi-key-input .enyo-input .record {
+	background: url(../images/key-record.png) top center no-repeat;
+	margin: -2px 8px -5px -4px;
+	width: 32px;
+	height: 32px;
+}
+.wi-key-input .enyo-input.enyo-input-focus .record {
+	margin-top: -3px;
+	margin-bottom: -4px;
+	background-position-y: bottom;
+}
+.wi-key-input .enyo-input .hidden-input {
+	width: 1px;
+	height: -0px;
+	margin: 0px;
+	padding: 0px;
+	border-width: 0px;
+	opacity: 0;
 }
