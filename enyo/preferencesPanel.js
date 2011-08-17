@@ -83,6 +83,7 @@ enyo.kind({
 				
 					{name: 'mainListUp', kind: 'wi.KeyInput', caption: 'Main List Up'},
 					{name: 'mainListDown', kind: 'wi.KeyInput', caption: 'Main List Down'},
+					{name: 'nickCompletion', kind: 'wi.KeyInput', caption: 'Nick Completion'},
 					
 				]},
 			]},
@@ -138,6 +139,7 @@ enyo.kind({
 		// keybinds
 		this.$.mainListUp.setValue(this.prefs.mainListUp);
 		this.$.mainListDown.setValue(this.prefs.mainListDown);
+		this.$.nickCompletion.setValue(this.prefs.nickCompletion);
 	},
 	
 	tabToggle: function(inSender, inValue) {
@@ -190,6 +192,7 @@ enyo.kind({
 		// keybinds
 		this.prefs.mainListUp = this.$.mainListUp.getValue();
 		this.prefs.mainListDown = this.$.mainListDown.getValue();
+		this.prefs.nickCompletion = this.$.nickCompletion.getValue();
 		
 		
 		// actually save

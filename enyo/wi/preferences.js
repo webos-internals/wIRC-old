@@ -22,6 +22,7 @@ enyo.kind({
 			// keybinds
 			mainListUp: {keyCode: 38, keyIdentifier: 'Up', ctrlKey: true, altKey: false, shiftKey: false, metaKey: false},
 			mainListDown: {keyCode: 40, keyIdentifier: 'Down', ctrlKey: true, altKey: false, shiftKey: false, metaKey: false},
+			nickCompletion: {keyCode: 9, keyIdentifier: 'Tab', ctrlKey: false, altKey: false, shiftKey: false, metaKey: false},
 			
 		}
 	},
