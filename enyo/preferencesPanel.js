@@ -43,7 +43,7 @@ enyo.kind({
 				]},
 				
 				{kind: 'RowGroup', width: '400px', caption: 'Nick Completion', components: [
-					{name: 'complectionSeparator', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Separator'}]},
+					{name: 'complectionSeparator', hint: 'Optional', kind: 'Input', components: [{content: 'Separator'}]},
 				]},
 				
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
