@@ -88,7 +88,6 @@ enyo.kind({
 		{name: 'manual', className: 'manual-container', showing: false, components: [
 			{kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
-					onfocus: 'showKeyboard', onblur: 'hideKeyboard', // this keyboard crap is because wirc is in manual mode
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
 					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp', components: [
 						{name: 'manualSave', kind: 'CustomButton', className: 'manual-save', onclick: 'manualSave', content: ' '},
@@ -233,13 +232,6 @@ enyo.kind({
 		 n = Math.max(0, Math.min(n,255));
 		 return "0123456789ABCDEF".charAt((n-n%16)/16)
 		      + "0123456789ABCDEF".charAt(n%16);
-	},
-	
-	showKeyboard: function() {
-		enyo.keyboard.show(0);
-	},
-	hideKeyboard: function() {
-		enyo.keyboard.hide();
 	},
 	
 });

@@ -30,7 +30,7 @@ enyo.kind({
 		{kind: 'ToolbarShadow'},
 		{name: 'toolbar', kind: 'Toolbar', className: 'enyo-toolbar-light toolbar message-toolbar', components: [
 			{kind: 'GrabButton'},
-			{name: 'input', kind: 'wirc.MessageRichText', flex: 1, onkeydown: 'keyDown', onfocus: 'showKeyboard'},
+			{name: 'input', kind: 'wirc.MessageRichText', flex: 1, onkeydown: 'keyDown'},
 		]},
 		
 	],
@@ -50,7 +50,6 @@ enyo.kind({
 	rendered: function() {
 	    this.inherited(arguments);
 		this.$.headerText.setContent((this.server.setup.alias ? this.server.setup.alias : this.server.setup.address) + ': Server Messages');
-		if (enyo.keyboard.isShowing()) this.$.input.forceFocus();
 	},
 	
 	
@@ -106,9 +105,5 @@ enyo.kind({
 		if (!showing)
 			this.owner.destroySecondary(true);
 	},
-	
-	showKeyboard: function() {
-		enyo.keyboard.show(0);
-	}
 	
 });

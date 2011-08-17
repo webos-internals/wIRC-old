@@ -31,7 +31,6 @@ enyo.kind({
 		this.createBlankPanel();
 		enyo.application.m.setController(this);
 		enyo.setFullScreen(enyo.application.p.get('fullscreen'));
-		enyo.keyboard.setManualMode(true)
 	},
 	
 	wakeup: function() {

@@ -6,8 +6,6 @@ enyo.depends(
 	"enyo/wi/popup.js",
 	"enyo/wi/css/popup.css",
 	
-	"enyo/wi/input.js",
-	
 	"enyo/wi/keyInput.js",
 	"enyo/wi/css/keyInput.css",
 	

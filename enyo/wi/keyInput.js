@@ -40,7 +40,6 @@ enyo.kind({
 	},
 	
 	startRecording: function() {
-		this.showKeyboard(); // this keyboard crap is because wirc is in manual mode
 		this.$.container.addClass('enyo-input-focus');
 		this.currentValue = this.value;
 		this.lastValue = this.value;
@@ -48,7 +47,6 @@ enyo.kind({
 		this.recording = true;
 	},
 	stopRecording: function() {
-		this.hideKeyboard(); // this keyboard crap is because wirc is in manual mode
 		this.$.container.removeClass('enyo-input-focus')
 		if (this.validValue(this.currentValue)) this.value = this.currentValue;
 		else this.value = this.lastValue;
@@ -140,13 +138,6 @@ enyo.kind({
 			else pretty = 'None';
 		}
 		return pretty;
-	},
-	
-	showKeyboard: function() {
-		enyo.keyboard.show(0);
-	},
-	hideKeyboard: function() {
-		enyo.keyboard.hide();
 	},
 	
 });
