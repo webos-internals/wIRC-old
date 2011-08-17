@@ -1,7 +1,7 @@
-.wi-key-input .enyo-input .position {
+.wi-input-key .enyo-input .position {
 	margin: -3px -5px -3px -5px;
 }
-.wi-key-input .enyo-input .hidden-input {
+.wi-input-key .enyo-input .hidden-input {
 	width: 1px;
 	height: -0px;
 	margin: 0px;
@@ -9,7 +9,7 @@
 	border-width: 0px;
 	opacity: 0;
 }
-.wi-key-input .enyo-input .key {
+.wi-input-key .enyo-input .key {
 	display: inline-block;
 	line-height: 1em;
 	border-width: 6px 4px 8px;

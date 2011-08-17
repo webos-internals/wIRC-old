@@ -6,11 +6,13 @@ enyo.depends(
 	"enyo/wi/popup.js",
 	"enyo/wi/css/popup.css",
 	
-	"enyo/wi/keyInput.js",
-	"enyo/wi/css/keyInput.css",
+	"enyo/wi/inputColor.js",
+	"enyo/wi/css/inputColor.css",
 	
-	"enyo/wi/colorSelector.js",
-	"enyo/wi/css/colorSelector.css",
+	"enyo/wi/inputKey.js",
+	"enyo/wi/css/inputKey.css",
+	
+	"enyo/wi/inputList.js",
 	
 	"enyo/wi/preferences.js",
 	
