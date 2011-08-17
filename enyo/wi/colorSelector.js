@@ -14,7 +14,10 @@ enyo.kind({
 		{name: 'popup', kind: 'wi.ColorSelector.Popup', onColorSelect: 'colorSelected'},
 		
 		{flex: 1, components: [
-			{name: 'display', className: 'value-display', onclick: 'openPopup'},
+			{name: 'display', className: 'value-display', onclick: 'openPopup', components: [
+				{name: 'displayText1', className: 'value-display-text-1'},
+				{name: 'displayText2', className: 'value-display-text-2'}
+			]},
 		]},
 		{name: 'caption'},
 	],
@@ -36,6 +39,8 @@ enyo.kind({
 	
 	updateDisplay: function() {
 		this.$.display.applyStyle('background-color', this.value);
+		this.$.displayText1.setContent(this.value);
+		this.$.displayText2.setContent(this.value);
 	},
 	
 	openPopup: function() {
@@ -43,8 +48,8 @@ enyo.kind({
 	},
 	
 	colorSelected: function(inSender, inColor) {
-		this.$.display.applyStyle('background-color', inColor);
 		this.value = inColor;
+		this.updateDisplay();
 	},
 	
 });
@@ -80,7 +85,7 @@ enyo.kind({
 			},
 			onclick: 'canvasClick',
 		},
-		{name: 'manual', className: 'manual-container', components: [
+		{name: 'manual', className: 'manual-container', showing: false, components: [
 			{kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					onfocus: 'showKeyboard', onblur: 'hideKeyboard', // this keyboard crap is because wirc is in manual mode
