@@ -1,0 +1,53 @@
+.wi-color-item .value-display {
+	width: 80px;
+	height: 30px;
+	background-color: #000;
+	border-radius: 5px;
+}
+
+.wi-color-popup .left-container {
+	height: 200px;
+	width: 40px;
+	float: left;
+	margin-right: 15px;
+}
+.wi-color-popup .left-container .original {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.wi-color-popup .left-container .preview {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.wi-color-popup .left-container .manual-toggle {
+	margin: 15px 0 0 0;
+}
+
+.wi-color-popup .canvas {
+	border-radius: 5px;
+	margin-bottom: -5px;
+}
+
+.wi-color-popup .manual-container {
+	position: absolute;
+	width: 340px;
+	bottom: -8px;
+	right: 0;
+	background: #ccc;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+.wi-color-popup .manual-container .manual-group {
+	margin: 10px 5px 7px 5px;
+}
+.wi-color-popup .manual-container .manual-save {
+	background: url(../images/color-arrow.png) center center no-repeat;
+	width: 32px;
+	height: 26px;
+	margin: -10px 0;
+	padding: 0;
+	opacity: 1;
+}
+.wi-color-popup .manual-container .manual-save.enyo-button-disabled {
+	opacity: 0.5;
+}
