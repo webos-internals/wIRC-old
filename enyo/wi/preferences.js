@@ -11,6 +11,7 @@ enyo.kind({
 			
 			// messages
 			showTimeStamps: true,
+			complectionSeparator: ':',
 			
 			colorNotice: '#FF4500',
 			colorAction: '#B22222',

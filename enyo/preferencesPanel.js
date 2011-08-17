@@ -42,6 +42,10 @@ enyo.kind({
 					{name: 'showTimeStamps', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Show Timestamps'}]},
 				]},
 				
+				{kind: 'RowGroup', width: '400px', caption: 'Nick Completion', components: [
+					{name: 'complectionSeparator', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Separator'}]},
+				]},
+				
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
 					{name: 'colorNotice', kind: 'wi.ColorSelector', caption: 'Notice'},
@@ -128,6 +132,7 @@ enyo.kind({
 		
 		// messages
 		this.$.showTimeStamps.setState(this.prefs.showTimeStamps);
+		this.$.complectionSeparator.setValue(this.prefs.complectionSeparator)
 		
 		this.$.colorNotice.setValue(this.prefs.colorNotice);
 		this.$.colorAction.setValue(this.prefs.colorAction);
@@ -181,6 +186,7 @@ enyo.kind({
 		
 		// messages
 		this.prefs.showTimeStamps = this.$.showTimeStamps.getState();
+		this.prefs.complectionSeparator = this.$.complectionSeparator.getValue();
 		
 		this.prefs.colorNotice = this.$.colorNotice.getValue();
 		this.prefs.colorAction = this.$.colorAction.getValue();

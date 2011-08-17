@@ -10,10 +10,9 @@ enyo.kind({
 		channel: false,
 	},
 	
-	nickCompletion: {
-		prefix: '',
-		base: ''
-	},
+	completionText: false,
+	text: false,
+	nick: false,
 	
 	components: [
 	
@@ -95,6 +94,9 @@ enyo.kind({
 	
 	keyDown: function(inSender, inEvent) {
 		if (!enyo.application.k.keyDown(inSender, inEvent)) {
+			this.completionText = false;
+			this.text = false;
+			this.nick = false;
 			if (inEvent.keyCode === 13) {
 				inEvent.preventDefault();
 				var text = this.$.input.getValue();
@@ -120,17 +122,23 @@ enyo.kind({
 		this.$.nicklist.setCount(this.channel.setup.nicks.length);
 	},
 	
-	clearNickCompletion: function() {
-		this.nickCompletion = {prefix: '', base: ''}
-	},
-	
 	completeNick: function() {
-		if (!this.nickCompletion.prefix) {
-			this.nickCompletion.base = this.$.input.getValue()
-			this.nickCompletion.prefix = this.nickCompletion.base.split(' ');
-			this.nickCompletion.prefix = this.nickCompletion.prefix[this.nickCompletion.prefix.length-1];	
+		if (!this.completionText) {
+			this.completionText = this.$.input.getValue();
+			var tmpText = this.completionText.match(/^(.*)[\s]{1}(.*)$/);
+			if (tmpText) {
+				this.text = tmpText[1];
+				this.completionText = tmpText[2];
+			}
+			this.warn(this.completionText, this.text)
 		}
-		this.error(this.nickCompletion)
+		this.nick = this.channel.completeNick(this.completionText, this.nick);
+		if (this.nick) {
+			if (this.text)
+				this.$.input.setValue(this.text + " " + this.nick + "&nbsp;");
+			else
+				this.$.input.setValue(this.nick + enyo.application.p.get('complectionSeparator') + "&nbsp;");
+		}
 	},
 	
 });

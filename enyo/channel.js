@@ -123,5 +123,25 @@ enyo.kind({
 		enyo.application.e.dispatch('main-crud'); // refresh main list
 	},
 	
+	completeNick: function(completionText, oldNick) {
+		var nicks = [];
+		var start = 0;
+		for (i in this.setup.nicks) {
+			var nick = this.setup.nicks[i]
+			var c = nick[0];
+			if (c === '!' || c === '.' || c === '@' || c === '%' || c === '+')
+				nick = nick.substring(1);
+			if (nick.toLowerCase().indexOf(completionText.toLowerCase()) === 0) {
+				nicks.push(nick)
+				if (nick.toLowerCase() === oldNick)
+					start = nicks.length
+			}
+		}
+		if (nicks.length > 0) {
+			if (start >= nicks.length)
+				start = 0;
+			return nicks[start]
+		}
+	}
 	
 });

@@ -91,11 +91,15 @@ enyo.kind({
 	name: 'wirc.MessageRichText',
 	kind: 'RichText',
 	
-	richContent: false,
+	richContent: true,
 	alwaysLooksFocused: true,
 	hint: '',
 	maxTextHeight: '68px',
-	
+	autocorrect: false,
 	autoCapitalize: 'lowercase',
+	
+	getValue: function() {
+		return this.getText().replace(/&nbsp;/g, ' ');
+	}
 	
 });
