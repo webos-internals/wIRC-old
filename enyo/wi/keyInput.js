@@ -72,14 +72,8 @@ enyo.kind({
 		if (this.recording) {
 			this.currentValue = this.getValueFromEvent(inEvent);
 			this.updateDisplay(this.currentValue);
-			enyo.application.k.logEvent(inEvent);
+			//enyo.application.k.logEvent(inEvent);
 		}
-		return false;
-	},
-	
-	fakeKeyDown: function(inSender, inEvent) {
-		this.log(inSender, inEvent);
-		inEvent.preventDefault();
 		return false;
 	},
 	
