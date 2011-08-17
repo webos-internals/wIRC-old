@@ -1,5 +1,5 @@
 enyo.kind({
-	name: 'wi.ColorSelector',
+	name: 'wi.InputColor',
 	kind: 'Item',
 	layoutKind: 'HFlexLayout',
 	align: 'center',
@@ -11,7 +11,7 @@ enyo.kind({
 	
 	components: [
 		
-		{name: 'popup', kind: 'wi.ColorSelector.Popup', onColorSelect: 'colorSelected'},
+		{name: 'popup', kind: 'wi.InputColor.Popup', onColorSelect: 'colorSelected'},
 		
 		{flex: 1, components: [
 			{name: 'display', className: 'value-display', onclick: 'openPopup', components: [
@@ -24,7 +24,7 @@ enyo.kind({
 	
 	create: function () {
 	    this.inherited(arguments);
-		this.addClass('wi-color-item');
+		this.addClass('wi-input-color-item');
 		this.$.caption.setContent(this.caption);
 		this.updateDisplay();
 	},
@@ -55,7 +55,7 @@ enyo.kind({
 });
 
 enyo.kind({
-	name: 'wi.ColorSelector.Popup',
+	name: 'wi.InputColor.Popup',
 	kind: 'Popup',
 	scrim: true,
 	
@@ -98,7 +98,7 @@ enyo.kind({
 	
 	componentsReady: function() {
 	    this.inherited(arguments);
-		this.addClass('wi-color-popup');
+		this.addClass('wi-input-color-popup');
 	},
 	
 	doOpen: function() {

@@ -1,5 +1,5 @@
 enyo.kind({
-	name: 'wi.KeyInput',
+	name: 'wi.InputKey',
 	kind: 'Item',
 	
 	recording: false,
@@ -28,7 +28,7 @@ enyo.kind({
 	
 	create: function () {
 	    this.inherited(arguments);
-		this.addClass('wi-key-input');
+		this.addClass('wi-input-key');
 		this.$.caption.setContent(this.caption);
 		this.updateDisplay(this.value);
 	},

@@ -1,4 +1,4 @@
-.wi-color-item .value-display {
+.wi-input-color-item .value-display {
 	border-width: 0px 7px 0px 7px;
 	-webkit-border-image: url(../images/color-display.png) 0 7 stretch;
     -webkit-box-sizing: border-box;
@@ -14,33 +14,33 @@
 	font-weight: bold;
 	margin-bottom: -2px;
 }
-.wi-color-item .value-display .value-display-text-1 {
+.wi-input-color-item .value-display .value-display-text-1 {
 	color: rgba(0, 0, 0, 0.5);
 }
-.wi-color-item .value-display .value-display-text-2 {
+.wi-input-color-item .value-display .value-display-text-2 {
 	color: #fff;
 	margin-top: -35px;
 	margin-left: -2px;
 }
 
-.wi-color-popup .left-container {
+.wi-input-color-popup .left-container {
 	height: 200px;
 	width: 40px;
 	float: left;
 	margin-right: 15px;
 }
-.wi-color-popup .left-container .original {
+.wi-input-color-popup .left-container .original {
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
-.wi-color-popup .left-container .preview {
+.wi-input-color-popup .left-container .preview {
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
-.wi-color-popup .left-container .manual-toggle {
+.wi-input-color-popup .left-container .manual-toggle {
 	margin: 15px 0 0 0;
 }
-.wi-color-popup .left-container .manual-toggle .icon {
+.wi-input-color-popup .left-container .manual-toggle .icon {
 	background: url(../images/color-input.png) top center no-repeat;
 	width: 24px;
 	height: 24px;
@@ -48,17 +48,17 @@
 	margin-top: 2px;
 	
 }
-.wi-color-popup .left-container .manual-toggle.enyo-button-down .icon,
-.wi-color-popup .left-container .manual-toggle.enyo-button-depressed .icon {
+.wi-input-color-popup .left-container .manual-toggle.enyo-button-down .icon,
+.wi-input-color-popup .left-container .manual-toggle.enyo-button-depressed .icon {
 	background-position-y: bottom;
 }
 
-.wi-color-popup .canvas {
+.wi-input-color-popup .canvas {
 	border-radius: 5px;
 	margin-bottom: -5px;
 }
 
-.wi-color-popup .manual-container {
+.wi-input-color-popup .manual-container {
 	position: absolute;
 	width: 340px;
 	bottom: -8px;
@@ -67,10 +67,10 @@
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 }
-.wi-color-popup .manual-container .manual-group {
+.wi-input-color-popup .manual-container .manual-group {
 	margin: 10px 5px 7px 5px;
 }
-.wi-color-popup .manual-container .manual-save {
+.wi-input-color-popup .manual-container .manual-save {
 	background: url(../images/color-arrow.png) center center no-repeat;
 	width: 32px;
 	height: 26px;
@@ -78,6 +78,6 @@
 	padding: 0;
 	opacity: 1;
 }
-.wi-color-popup .manual-container .manual-save.enyo-button-disabled {
+.wi-input-color-popup .manual-container .manual-save.enyo-button-disabled {
 	opacity: 0.5;
 }
