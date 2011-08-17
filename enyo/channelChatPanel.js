@@ -10,6 +10,11 @@ enyo.kind({
 		channel: false,
 	},
 	
+	nickCompletion: {
+		prefix: '',
+		base: ''
+	},
+	
 	components: [
 	
 		/*{kind: 'ApplicationEvents', onResize:'doResize',
@@ -43,6 +48,7 @@ enyo.kind({
 		this.addClass('messages-panel');
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
+		enyo.application.e.listen('nick-completion', enyo.bind(this, 'completeNick'))
 	},
 	
 	destroy: function() {
@@ -112,6 +118,19 @@ enyo.kind({
 		this.$.nicklist.openAroundControl(this.$.nicklistButton);
 		this.error(this.channel.nicks)
 		this.$.nicklist.setCount(this.channel.setup.nicks.length);
-	}
+	},
+	
+	clearNickCompletion: function() {
+		this.nickCompletion = {prefix: '', base: ''}
+	},
+	
+	completeNick: function() {
+		if (!this.nickCompletion.prefix) {
+			this.nickCompletion.base = this.$.input.getValue()
+			this.nickCompletion.prefix = this.nickCompletion.base.split(' ');
+			this.nickCompletion.prefix = this.nickCompletion.prefix[this.nickCompletion.prefix.length-1];	
+		}
+		this.error(this.nickCompletion)
+	},
 	
 });

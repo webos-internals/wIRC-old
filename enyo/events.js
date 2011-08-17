@@ -11,7 +11,8 @@ channel-message{name}: called to update chat messages display
 
 ** Keybind Events
 main-list-up: 
-main-list-down: 
+main-list-down:
+nick-completion: 
 
 */
 

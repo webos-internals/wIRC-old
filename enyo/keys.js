@@ -27,6 +27,10 @@ enyo.kind({
 				enyo.application.e.dispatch('main-list-down');
 				return true;
 			}
+			if (this.testMatch(enyo.application.p.get('nickCompletion'), inEvent)) {
+				enyo.application.e.dispatch('nick-completion');
+				return true;
+			}
 			
 		}
 		return false;
@@ -35,7 +39,7 @@ enyo.kind({
 	testMatch: function(one, two) {
 		//this.log(one, two);
 		if (one.keyCode			!== two.keyCode)		return false;
-		if (one.keyIdentifier	!== two.keyIdentifier)	return false;
+		//if (one.keyIdentifier	!== two.keyIdentifier)	return false;
 		if (one.ctrlKey			!== two.ctrlKey)		return false;
 		if (one.altKey			!== two.altKey)			return false;
 		if (one.shiftKey		!== two.shiftKey)		return false;
