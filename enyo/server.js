@@ -24,6 +24,7 @@ enyo.kind({
 			realname:   	'',
 			ssl:			false,
 			autoconnect:	false,
+			autoreconnect:	false,
 		},
 		
 		//stateServiceUnavailable:	-3,
@@ -37,6 +38,7 @@ enyo.kind({
 		stateDisconnecting:			4,
 		stateDisrupted:				5,
 		stateError:					6,
+		stateNoInternet:			7,
 	},
 	
 	constructor: function(setup) {
@@ -55,17 +57,23 @@ enyo.kind({
 		this.state = state;
 		var message = '';
 		switch (state) {
-			case wirc.Server.statePifaceUnavailable:	message = "Preferred interface is not avaliable!";	break;
-			case wirc.Server.stateMaxRetries:			message = "Exceeded max retries, not connecting!";	break;
-			case wirc.Server.stateDisconnecting:		message = "Disconnecting...";						break;
-			case wirc.Server.stateDisconnected:			message = "Disconnected!";							break;
-			case wirc.Server.stateConnecting:			message = "Connecting...";							break;
-			case wirc.Server.stateConnected:			message = "Connected!";								break;
-			case wirc.Server.stateTimeout:				message = "Connection timed out!";					break;
-			case wirc.Server.stateError:				message = "Connection failed (" + e + ")";			break;
+			case wirc.Server.statePifaceUnavailable:	message = "Preferred interface is not avaliable!";			break;
+			case wirc.Server.stateMaxRetries:			message = "Exceeded max retries, not connecting!";			break;
+			case wirc.Server.stateDisconnecting:		message = "Disconnecting...";								break;
+			case wirc.Server.stateDisconnected:			message = "Disconnected!";									break;
+			case wirc.Server.stateConnecting:			message = "Connecting...";									break;
+			case wirc.Server.stateConnected:			message = "Connected!";										break;
+			case wirc.Server.stateTimeout:				message = "Connection timed out!";							break;
+			case wirc.Server.stateError:				message = "Connection failed (" + e + ")";					break;
+			case wirc.Server.stateNoInternet:			message = "Connection failed, no internet connection";		break;
+			case wirc.Server.stateDisrupted:			message = "Connection disrupted, no internet connection";	break;
 		}
 		if (message) this.newMessage('status', false, message);
 		enyo.application.e.dispatch('server-status' + this.setup.id);
+	},
+	
+	getState: function() {
+		return this.state;
 	},
 	
 	getSetup: function() {
@@ -197,33 +205,50 @@ enyo.kind({
 	},
 	
 	connect: function() {
-		this.setState(wirc.Server.stateConnecting);
-		this.error(this.setup.ssl)
-		try {
-	  		return enyo.application.pm.call(
-	  			'connect',
-	  			this.setup.id,
-	  			this.setup.address,
-	  			this.setup.port||6667,
-	  			this.setup.ssl ? 1 : 0,
-	  			this.setup.user||'wircer',
-	  			this.setup.password,
-	  			this.setup.nicks[0],
-	  			this.setup.realname||'wIRCer on HP Touchpad'
-			);
-		} catch (e) {
-			this.setState(wirc.Server.stateError, e);
-			return false;
+		if (enyo.application.cm.isInternetConnectionAvailable()) {
+			this.setState(wirc.Server.stateConnecting);
+			try {
+		  		return enyo.application.pm.call(
+		  			'connect',
+		  			this.setup.id,
+		  			this.setup.address,
+		  			this.setup.port||6667,
+		  			this.setup.ssl ? 1 : 0,
+		  			this.setup.user||'wircer',
+		  			this.setup.password,
+		  			this.setup.nicks[0],
+		  			this.setup.realname||'wIRCer on HP Touchpad'
+				);
+			} catch (e) {
+				this.setState(wirc.Server.stateError, e);
+			}
+		} else {
+			this.setState(wirc.Server.stateNoInternet);
 		}
 	},
 	connected: function() {
 		this.setState(wirc.Server.stateConnected);
 	},
 	disconnect: function() {
+		/*
+		 * This is called when a user clicks the "disconnect" button while
+		 * a internet connection is still valid. It sends the quit command
+		 * to the IRC server and users will see a quit reason.
+		 */
 		var reason = "BECAUSE I'M TESTING!";
 		this.setState(wirc.Server.stateDisconnecting);
 		enyo.application.pm.call('cmd_quit', this.setup.id, reason);
 		this.setState(wirc.Server.stateDisconnected);
+	},
+	disrupt: function() {
+		/*
+		 * This is called when there is no valid internet connection and you
+		 * want to cleanup the connection on the plugin/client side. This does
+		 * not send any commands to the IRC server.
+		 */
+		var reason = "BECAUSE I'M TESTING!";
+		enyo.application.pm.call('disconnect', this.setup.id);
+		this.setState(wirc.Server.stateDisrupted);
 	},
 	
 });

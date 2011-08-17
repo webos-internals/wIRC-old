@@ -29,9 +29,7 @@ enyo.kind({
   	pluginReady: function(inSender, inResponse, inRequest) {
   		this.log('~~~~~ wIRC Plugin Ready ~~~~~');
 		enyo.application.pm.setup(this.$.plugin);
-		for (i in enyo.application.s.list)
-			if (enyo.application.s.list[i].setup.autoconnect)
-				enyo.application.s.list[i].connect();
+		enyo.application.cm = new wirc.connectionManager();
   	},
   	pluginConnected: function(inSender, inResponse, inRequest) {
   		this.log('~~~~~ wIRC Plugin Connected ~~~~~');
@@ -50,7 +48,6 @@ enyo.kind({
 	plugin: false,
 	
   	call: function() {
-		//this.log(arguments);
 		if (this.plugin)
 			return this.plugin.callPluginMethod.apply(this.plugin, arguments);
   	},

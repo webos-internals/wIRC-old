@@ -65,7 +65,7 @@ enyo.kind({
 		// row button clicks
 		inEvent.stopPropagation();
 		if (this.server != undefined) {
-			if (inSender.hasClass('connect')) {
+			if (inSender.hasClass('connect') || inSender.hasClass('error')) {
 				this.server.connect();
 			}
 			if (inSender.hasClass('disconnect')) {
@@ -102,7 +102,7 @@ enyo.kind({
 		
 		switch(this.server.state) {
 			case wirc.Server.stateDisconnected:
-			case wirc.Server.stateError:
+			case wirc.Server.stateReady:
 				this.$.button1.setClassName(this.defaultButtonClass + ' connect');
 				break;
 				
@@ -114,6 +114,15 @@ enyo.kind({
 			case wirc.Server.stateConnected:
 				this.$.button2.setClassName(this.defaultButtonClass + ' menu');
 				this.$.button1.setClassName(this.defaultButtonClass + ' disconnect');
+				break;
+				
+			case wirc.Server.stateError:
+				this.$.button1.setClassName(this.defaultButtonClass + ' error');
+					break;
+					
+			case wirc.Server.stateNoInternet:
+			case wirc.Server.stateDisrupted:
+				this.$.button1.setClassName(this.defaultButtonClass + ' noInternet');
 				break;
 		}
 	},

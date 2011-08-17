@@ -18,29 +18,6 @@
 
 #include "wIRC.h"
 
-typedef enum {
-	msg_,
-	me_,
-	notice_,
-	join_,
-	part_,
-	invite_,
-	names_,
-	list_,
-	topic_,
-	channel_mode_,
-	kick_,
-	nick_,
-	quit_,
-	whois_,
-	user_mode_,
-	ping_,
-	away_,
-	disconnect_,
-	raw_,
-	ip_,
-} irc_cmd;
-
 char* substring(const char* str, size_t begin, size_t len) {
 	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || strlen(str)
 			< (begin + len))
@@ -222,6 +199,11 @@ PDL_bool client_cmd_nick(PDL_JSParameters *params) {
 PDL_bool client_cmd_quit(PDL_JSParameters *params) {
 	return irc_cmd_quit(servers[PDL_GetJSParamInt(params, 0)].session,
 			PDL_GetJSParamString(params, 1));
+}
+
+PDL_bool client_cmd_disconnect(PDL_JSParameters *params) {
+	irc_disconnect(servers[PDL_GetJSParamInt(params, 0)].session);
+	return PDL_TRUE;
 }
 
 PDL_bool client_cmd_whois(PDL_JSParameters *params) {
@@ -467,6 +449,7 @@ int plugin_client_init() {
 	ret += PDL_RegisterJSHandler("cmd_kick", client_cmd_kick);
 	ret += PDL_RegisterJSHandler("cmd_nick", client_cmd_nick);
 	ret += PDL_RegisterJSHandler("cmd_quit", client_cmd_quit);
+	ret += PDL_RegisterJSHandler("disconnect", client_cmd_disconnect);
 	ret += PDL_RegisterJSHandler("cmd_whois", client_cmd_whois);
 	ret += PDL_RegisterJSHandler("cmd_user_mode", client_cmd_user_mode);
 	ret += PDL_RegisterJSHandler("cmd_ping", client_cmd_ping);

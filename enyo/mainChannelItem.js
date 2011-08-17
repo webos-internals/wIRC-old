@@ -82,22 +82,7 @@ enyo.kind({
 			this.$.title.setClassName('title')
 		
 		this.$.button.setClassName(this.defaultButtonClass + ' menu');
-		
-		/*switch(this.server.state) {
-			case wirc.Server.stateDisconnected:
-				this.$.button2.setClassName(this.defaultButtonClass + ' connect');
-				break;
-				
-			case wirc.Server.stateConnecting:
-				this.$.button2.setClassName(this.defaultButtonClass + ' connecting');
-				this.$.button2spin.show();
-				break;
-				
-			case wirc.Server.stateConnected:
-				this.$.button1.setClassName(this.defaultButtonClass + ' menu');
-				this.$.button2.setClassName(this.defaultButtonClass + ' disconnect');
-				break;
-		}*/
+
 	},
 	
 });

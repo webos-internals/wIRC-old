@@ -3,6 +3,7 @@ enyo.kind({
 	kind: enyo.Control,
 	
 	state: null,
+	init: false,
 	
 	initComponents: function() {
 		this.inherited(arguments);
@@ -15,7 +16,7 @@ enyo.kind({
 		  	onSuccess: "gotConnections",
 		  	onFailure: "failure"
 		});
-		this.$.connectionManager.call();
+		enyo.asyncMethod(this.$.connectionManager, 'call');
 	},
 	
 	failure: function(inSender, inEvent, inMessage) {
@@ -24,6 +25,26 @@ enyo.kind({
 	
 	gotConnections: function(inSender, inMessage, inType) {
 		this.state = inMessage;
+		if (!this.init) {
+			this.init = true;
+			for (i in enyo.application.s.list)
+				if (enyo.application.s.list[i].setup.autoconnect)
+					enyo.asyncMethod(enyo.application.s.list[i], 'connect');
+		} else {
+			if (this.isInternetConnectionAvailable()) {
+				for (i in enyo.application.s.list) {
+					if (enyo.application.s.list[i].getState() == wirc.Server.stateDisrupted && enyo.application.s.list[i].setup.autoreconnect)
+						enyo.asyncMethod(enyo.application.s.list[i], 'connect');
+					else if (enyo.application.s.list[i].getState() == wirc.Server.stateNoInternet)
+						enyo.application.s.list[i].setState(wirc.Server.stateReady);
+				}
+			} else {
+				for (i in enyo.application.s.list)
+					if (enyo.application.s.list[i].setup.autoconnect &&
+						enyo.application.s.list[i].getState() == wirc.Server.stateConnected)
+						enyo.asyncMethod(enyo.application.s.list[i], 'disrupt');
+			}
+		}
 	},
 	
 	isInternetConnectionAvailable: function() {
@@ -34,5 +55,3 @@ enyo.kind({
 	},
 	
 });
-
-enyo.application.cm = new wirc.connectionManager();

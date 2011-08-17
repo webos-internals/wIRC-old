@@ -30,7 +30,6 @@ enyo.kind({
 					{name: 'user', hint: 'Optional', kind: 'wi.Input', components: [{content: 'User'}]},
 					{name: 'password', hint: 'Optional', kind: 'wi.PasswordInput', components: [{content: 'Password'}]},
 					{name: 'ssl', kind: 'ToggleButton', components: [{flex: 1}, {content: 'SSL'}]},
-					{name: 'autoconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Connect'}]},
 				]},
 				
 				{kind: 'RowGroup', width: '400px', caption: 'User Information', components: [
@@ -45,7 +44,8 @@ enyo.kind({
 			
 			{name: 'advancedTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 				{kind: 'RowGroup', width: '400px', caption: 'foo', components: [
-					{kind: 'Item', content: 'bar'}
+					{name: 'autoconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Connect'}]},
+					{name: 'autoreconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Reconnect'}]}
 				]},
 			]},
 			
@@ -89,6 +89,7 @@ enyo.kind({
 		this.$.realname.setValue(this.setup.realname);
 		this.$.ssl.setState(this.setup.ssl);
 		this.$.autoconnect.setState(this.setup.autoconnect);
+		this.$.autoreconnect.setState(this.setup.autoreconnect);
 	},
 	
 	tabToggle: function(inSender, inValue) {
@@ -123,6 +124,7 @@ enyo.kind({
 		this.setup.realname = this.$.realname.getValue();
 		this.setup.ssl = this.$.ssl.getState();
 		this.setup.autoconnect = this.$.autoconnect.getState();
+		this.setup.autoreconnect = this.$.autoreconnect.getState();
 		
 		if (this.setup.id === false) {
 			var saved = enyo.application.s.add(this.setup);

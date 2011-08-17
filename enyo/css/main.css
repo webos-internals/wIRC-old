@@ -94,6 +94,12 @@ body {
 .main-row .button.connect .icon {
 	background-image: url(../images/button-disconnected.png);
 }
+.main-row .button.error .icon {
+	background-image: url(../images/button-error.png);
+}
+.main-row .button.noInternet .icon {
+	background-image: url(../images/button-warning.png);
+}
 .main-row .button.connecting .icon {
 	display: none;
 }
