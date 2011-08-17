@@ -14,13 +14,14 @@ enyo.kind({
 		{name: 'popup', kind: 'wi.ColorSelector.Popup', onColorSelect: 'colorSelected'},
 		
 		{flex: 1, components: [
-			{name: 'display', style: 'width: 80px; height: 30px; background-color: #000; border-radius: 5px;', onclick: 'openPopup'},
+			{name: 'display', className: 'value-display', onclick: 'openPopup'},
 		]},
 		{name: 'caption'},
 	],
 	
 	create: function () {
 	    this.inherited(arguments);
+		this.addClass('wi-color-item');
 		this.$.caption.setContent(this.caption);
 		this.updateDisplay();
 	},
@@ -51,7 +52,7 @@ enyo.kind({
 enyo.kind({
 	name: 'wi.ColorSelector.Popup',
 	kind: 'Popup',
-	scrim: false,
+	scrim: true,
 	
 	popupBorderWidth: 24, // so says the css for the popup
 	previewWidth: 55, // the width+marginright of the preview element
@@ -61,41 +62,45 @@ enyo.kind({
 	},
 	
 	components: [
-		{kind: 'VFlexBox', style: 'height: 200px; width: 40px; float: left; margin-right: 15px;', components: [
-			{name: 'original', style: 'border-top-left-radius: 5px; border-top-right-radius: 5px;', flex: 1},
-			{name: 'preview', style: 'border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;', flex: 1},
-			{name: 'manualButton', kind: 'Button', style: 'margin: 15px 0 0 0;', content: '#', toggling: true, onclick: 'toggleManual'}
+		{kind: 'VFlexBox', className: 'left-container', components: [
+			{name: 'original', className: 'original', flex: 1},
+			{name: 'preview', className: 'preview', flex: 1},
+			{name: 'manualButton', kind: 'Button', className: 'manual-toggle', content: '#', toggling: true, onclick: 'toggleManual'}
 		]},
 		{
 			name: 'canvas',
 			kind: enyo.Control,
+			className: 'canvas',
 			nodeTag: 'canvas',
 			domAttributes: {
 				width: '340px',
 				height: '200px',
 			},
-			style: 'border-radius: 5px; margin-bottom: -5px;',
 			onclick: 'canvasClick',
 		},
-		{name: 'manual', style: 'position: absolute; width: 340px; bottom: -8px; right: 0; background: #ccc; border-top-left-radius: 10px; border-top-right-radius: 10px;', components: [
-			{kind: 'RowGroup', caption: 'Manual Color Entry', style: 'margin: 15 0 0 0;', components: [
+		{name: 'manual', className: 'manual-container', components: [
+			{kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					onfocus: 'showKeyboard', onblur: 'hideKeyboard', // this keyboard crap is because wirc is in manual mode
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
 					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp', components: [
-					{name: 'manualSave', kind: 'Button', onclick: 'manualSave', content: ' ', style: 'margin: -5px;'},
-					]},
+						{name: 'manualSave', kind: 'CustomButton', className: 'manual-save', onclick: 'manualSave', content: ' '},
+				]},
 			]},
 		]},
 	],
 	
+	componentsReady: function() {
+	    this.inherited(arguments);
+		this.addClass('wi-color-popup');
+	},
 	
 	doOpen: function() {
 		this.$.canvas.hasNode();
 		this.ctx = this.$.canvas.node.getContext('2d');
 		
 		this.img = new Image();
-		this.img.src = 'enyo/images/colors.png';
+		this.img.src = 'enyo/wi/images/colors.png';
 		this.img.onload = enyo.bind(this, 'drawImage');
 		
 		this.$.original.applyStyle('background-color', this.owner.value);
