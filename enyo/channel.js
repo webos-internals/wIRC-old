@@ -142,6 +142,40 @@ enyo.kind({
 				start = 0;
 			return nicks[start]
 		}
+	},
+	
+	sortByNick: function(a,b) {
+		if (a > b)
+			return 1
+		else if (a < b)
+			return -1
+		else
+			return 0
+	},
+	
+	sortByMode: function(a,b) {
+		if (a[0] == '@' && b[0] != '@')
+			return -1
+		else if (a[0] != '@' && b[0] == '@')
+			return 1
+		else {
+			if (a[0] == '%' && b[0] != '%')
+				return -1
+			else if (a[0] != '%' && b[0] == '%')
+				return 1
+			else {
+				if (a[0] == '+' && b[0] != '+')
+					return -1
+				else if (a[0] != '+' && b[0] == '+')
+					return 1
+				else
+					return this.sortByNick(a.substring(1).toLowerCase(),b.substring(1).toLowerCase())
+			}
+		}
+	},
+	
+	sortNicks: function() {
+		this.setup.nicks.sort(enyo.bind(this, 'sortByMode'));
 	}
 	
 });
