@@ -10,31 +10,37 @@ enyo.kind({
 		//this.log(setup);
 		this.setup = setup;
 		this.setup.timestamp = new Date();
+		this._cache = '';
 	},
 	
 	generateCache: function() {
 		if (this._cache == '') {
 			this._cache = {
+				classes:	['message-row'],
 				rowStyle:	{},
-				nick:		this.setup.nick,
+				nick:		(this.setup.nick ? this.setup.nick : ''),
 				nickStyle:	{},
-				text:		this.setup.text,
+				text:		(this.setup.text ? this.setup.text : ''),
 				textCopy:	'',
 				textStyle:	{},
 			};
 			
-			if (this.setup.num%2==0)
-				item.applyStyle('background','#EBEBEB');
-			else
-				item.applyStyle('background','#f5f5f5');
+			if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
+				this._cache.rowStyle['background-color'] = '#EBEBEB';
 			
 			switch(this.setup.type) {
 				
+				case 'status':
+					this._cache.rowStyle['color'] = enyo.application.p.get('colorStatus');
+					break;
+					
 				case 'notice':
+					if (!this._cache.nick) this._cache.classes.push('no-sep');
 					this._cache.rowStyle['color'] = enyo.application.p.get('colorNotice');
 					break;
 				
 				case 'action':
+					this._cache.classes.push('no-sep');
 					this._cache.nick = '*';
 					this._cache.text = this.setup.nick + ' ' + this.setup.text;
 					this._cache.rowStyle['color'] = enyo.application.p.get('colorAction');
@@ -58,7 +64,7 @@ enyo.kind({
 		
 		this.generateCache();
 		
-		item.addClass('message-row');
+		item.addClass(this._cache.classes.join(' '));
 		
 		for (var s in this._cache.rowStyle)	 item.applyStyle(s, this._cache.rowStyle[s]);
 		for (var s in this._cache.nickStyle) item.$.nick.applyStyle(s, this._cache.nickStyle[s]);
@@ -102,7 +108,6 @@ enyo.kind({
 	components: [
 		{name: 'timestamp', className: 'timestamp'},
         {name: 'nick', className: 'nick'},
-		{name: 'seperator', className: 'seperator'},
         {name: 'text', className: 'text', flex: 1},
 	],
 	

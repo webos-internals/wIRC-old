@@ -21,6 +21,21 @@ body {
 	background: transparent url('../images/toolbar-shadow.png') top repeat-x;
 }
 
+.main-panel .enyo-sliding-view-shadow {
+	right: -22px;
+	background-image: url(../images/sliding-blank-shadow.png);
+}
+.blank-slider .enyo-sliding-view-shadow {
+	left: 0;
+	background-image: url(../images/sliding-blank-shadow.png);
+}
+.blank-slider .enyo-vflexbox {
+	background: #666 url(../images/blank-icon.png) center center no-repeat;
+}
+.blank-slider .enyo-vflexbox .text {
+	font-size: 0.7em;
+	color: #999;
+}
 
 .main-list {
 	background: #ccc;
@@ -126,7 +141,15 @@ body {
 }
 
 
+
+
+.messages-panel .fixed-splitter {
+	display: none;
+	z-index: 1;
+	pointer-events: none;
+}
 .messages-panel .messages {
+	z-index: 0;
 }
 
 .messages-panel .message-row {
@@ -134,32 +157,57 @@ body {
 	padding: 0px 10px 0px 10px;
 	font-size: 0.7em;
 }
+.messages-panel .message-row .nick {
+	padding-right: 10px;
+	padding-left: 45px;
+}
+.messages-panel .message-row .timestamp {
+	position: absolute;
+	left: 3px;
+	color: #666;
+}
 
-.messages-panel .message-row.notice {
+
+.messages-panel.fixed .fixed-splitter {
+	display: block;
+	position: absolute;
+	left: 0px;
+	width: 175px;
+	height: 100%;
+	border-right: 1px solid #000;
 }
-.messages-panel .message-row.status {
+.messages-panel.fixed .message-row .nick {
+	width: 115px;
+	text-align: right;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
-.messages-panel .message-row.action {
+
+.messages-panel.left .message-row .nick {
+	padding-right: 5px;
 }
-.messages-panel .message-row.self {
+.messages-panel.left .message-row:not(.no-sep) .nick:after {
+	content: ':';
 }
 
 
-.main-panel .enyo-sliding-view-shadow {
-	right: -22px;
-	background-image: url(../images/sliding-blank-shadow.png);
+
+.message-toolbar {
+	max-height: 192px;
+	z-index: 50;
 }
-.blank-slider .enyo-sliding-view-shadow {
-	left: 0;
-	background-image: url(../images/sliding-blank-shadow.png);
+.message-toolbar .enyo-grabbutton {
+	bottom: 0px;
 }
-.blank-slider .enyo-vflexbox {
-	background: #666 url(../images/blank-icon.png) center center no-repeat;
+.message-toolbar .enyo-input {
+	margin: 1px 0 2px 50px;
 }
-.blank-slider .enyo-vflexbox .text {
-	font-size: 0.7em;
-	color: #999;
-}
+
+
+
+
+
 
 
 .enyo-button-negative.close {
@@ -170,15 +218,6 @@ body {
 	padding: 0px 10px;
 }
 
-.message-toolbar {
-	max-height: 192px;
-}
-.message-toolbar .enyo-grabbutton {
-	bottom: 0px;
-}
-.message-toolbar .enyo-input {
-	margin: 1px 0 2px 50px;
-}
 
 
 

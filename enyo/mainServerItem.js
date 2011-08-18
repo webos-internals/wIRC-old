@@ -62,10 +62,12 @@ enyo.kind({
 		
 		
 		// for testing
-		this.server.newMessage('action', 'actionnick', 'actiontext');
+		/*this.server.newMessage('action', 'actionnick', 'actiontext');
 		this.server.newMessage('privmsg', 'privmsgnick', 'privmsgtext');
 		this.server.newMessage('notice', '', 'noticetext');
+		this.server.newMessage('notice', false, 'noticetext');
 		this.server.newMessage('notice', 'noticenick', 'noticetext');
+		this.server.newMessage('privmsg', 'reallylongokthisisajokerightprivmsgnick', 'privmsgtext');*/
 		
 	},
 	

@@ -21,7 +21,7 @@ enyo.kind({
 		]},
 		{kind: 'HeaderShadow'},
 		
-		//{style: 'border-right-style: solid; border-right-width: 1px; color: black; position: absolute; left: 58px; height: 100%;'},
+		{className: 'fixed-splitter'},
 		
 		{name: 'messages', kind: 'FlyweightList', height: '100%', bottomUp: true, onSetupRow: 'setupMessage', className: 'messages', components: [
 			{name: 'message', kind: 'wirc.MessageItem'}
@@ -38,6 +38,7 @@ enyo.kind({
 	initComponents: function() {
 	    this.inherited(arguments);
 		this.addClass('messages-panel');
+		this.addClass(enyo.application.p.get('listStyle'));
 		this.$.client.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		enyo.application.e.listen('server-message' + this.server.setup.id, this.messageListener);
