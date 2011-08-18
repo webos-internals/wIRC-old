@@ -31,6 +31,7 @@ enyo.kind({
 			switch(this.setup.type) {
 				
 				case 'status':
+					this._cache.classes.push('no-sep');
 					this._cache.rowStyle['color'] = enyo.application.p.get('colorStatus');
 					break;
 					
