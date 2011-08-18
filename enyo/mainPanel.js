@@ -30,8 +30,8 @@ enyo.kind({
 		
 		{kind: 'ToolbarShadow'},
 		{name: 'toolbar', kind: 'Toolbar', className: 'enyo-toolbar-light', components: [
-			{icon: 'enyo/images/toolbar-server-add-down.png', className: 'wirc-tool-button', onclick: 'addServerButton'},
-			{icon: 'enyo/images/toolbar-prefs-down.png', className: 'wirc-tool-button', onclick: 'preferencesButton'}
+			{icon: 'enyo/images/toolbar-server-add-down.png', onclick: 'addServerButton'},
+			{icon: 'enyo/images/toolbar-prefs-down.png', onclick: 'preferencesButton'}
 		]}
 		
 	],
