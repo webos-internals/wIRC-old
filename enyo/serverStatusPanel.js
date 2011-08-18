@@ -23,6 +23,8 @@ enyo.kind({
 		]},
 		{kind: 'HeaderShadow'},
 		
+		{style: 'border-right-style: solid; border-right-width: 1px; color: black; position: absolute; left: 58px; height: 100%;'},
+		
 		{name: 'messages', kind: 'FlyweightList', height: '100%', bottomUp: true, onSetupRow: 'setupMessage', className: 'messages', components: [
 			{name: 'message', kind: 'wirc.MessageItem'}
 	    ]},

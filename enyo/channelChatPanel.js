@@ -21,14 +21,16 @@ enyo.kind({
 			onWindowActivated: 'windowActivatedHandler', onWindowDeactivated: 'windowDeactivatedHandler'},*/
 	
 		{kind: 'wirc.NickList', name: 'nicklist'},
-	
-		{name: 'header', kind: 'Header', components: [
+		
+		{name: 'header', kind: 'Header', style: 'z-axis: 1;', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
 			{kind: enyo.ToolButton, icon: 'enyo/images/buddies-down.png', className: 'wirc-tool-button', onclick: 'showNickList', name: 'nicklistButton'},
 			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', className: 'wirc-tool-button', onclick: 'closeButton'},
 		]},
 		{kind: 'HeaderShadow'},
+		
+		{style: 'border-right-style: solid; border-right-width: 1px; color: black; position: absolute; left: 158px; height: 100%;'},
 		
 		{name: 'messages', kind: 'FlyweightList', height: '100%', bottomUp: true, onSetupRow: 'setupMessage', className: 'messages', components: [
 			{name: 'message', kind: 'wirc.MessageItem'}
