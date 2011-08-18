@@ -13,6 +13,7 @@ enyo.depends(
 	"enyo/wi/css/inputKey.css",
 	
 	"enyo/wi/inputList.js",
+	"enyo/wi/css/inputList.css",
 	
 	"enyo/wi/preferences.js",
 	

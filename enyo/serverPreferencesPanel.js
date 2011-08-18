@@ -43,10 +43,16 @@ enyo.kind({
 			]},
 			
 			{name: 'advancedTab', layoutKind: 'VFlexLayout', align: 'center', components: [
+			
 				{kind: 'RowGroup', width: '400px', caption: 'foo', components: [
 					{name: 'autoconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Connect'}]},
 					{name: 'autoreconnect', kind: 'ToggleButton', components: [{flex: 1}, {content: 'Auto Reconnect'}]}
 				]},
+				
+				{kind: 'Group', width: '400px', caption: 'Perform On Connect', components: [
+					{name: 'onconnect', kind: 'wi.InputList', inputHint: '/Command'},
+				]},
+				
 			]},
 			
 		]},
@@ -90,6 +96,7 @@ enyo.kind({
 		this.$.ssl.setState(this.setup.ssl);
 		this.$.autoconnect.setState(this.setup.autoconnect);
 		this.$.autoreconnect.setState(this.setup.autoreconnect);
+		this.$.onconnect.setValue(this.setup.onconnect);
 	},
 	
 	tabToggle: function(inSender, inValue) {
@@ -125,6 +132,7 @@ enyo.kind({
 		this.setup.ssl = this.$.ssl.getState();
 		this.setup.autoconnect = this.$.autoconnect.getState();
 		this.setup.autoreconnect = this.$.autoreconnect.getState();
+		this.setup.onconnect = this.$.onconnect.getValue();
 		
 		if (this.setup.id === false) {
 			var saved = enyo.application.s.add(this.setup);

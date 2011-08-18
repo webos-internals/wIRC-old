@@ -25,6 +25,7 @@ enyo.kind({
 			ssl:			false,
 			autoconnect:	false,
 			autoreconnect:	false,
+			onconnect:		[],
 		},
 		
 		//stateServiceUnavailable:	-3,
