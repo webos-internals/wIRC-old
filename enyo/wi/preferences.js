@@ -13,6 +13,10 @@ enyo.kind({
 			showTimeStamps: true,
 			complectionSeparator: ':',
 			
+			listStyle: 'fixed',
+			listBackground: 'alt',
+			
+			colorBackground: '#f5f5f5',
 			colorNotice: '#FF4500',
 			colorAction: '#B22222',
 			colorStatus: '#9370DB',

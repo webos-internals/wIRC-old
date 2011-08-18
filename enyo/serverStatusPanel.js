@@ -38,6 +38,7 @@ enyo.kind({
 	initComponents: function() {
 	    this.inherited(arguments);
 		this.addClass('messages-panel');
+		this.$.client.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		enyo.application.e.listen('server-message' + this.server.setup.id, this.messageListener);
 	},

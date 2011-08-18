@@ -126,10 +126,6 @@ body {
 }
 
 
-.messages-panel .enyo-bg {
-	background: #f5f5f5;
-}
-
 .messages-panel .messages {
 }
 
@@ -189,6 +185,7 @@ body {
 	padding: 0px 10px;
 }
 
+
 .messages-panel .message-row .seperator {
 	border-right-style: solid;
 	border-right-width: 1px;
@@ -209,6 +206,7 @@ body {
 	padding: 1px 0px 3px 0px;
 	color: black;
 }
+
 
 .folder-count {
 	position: relative;
