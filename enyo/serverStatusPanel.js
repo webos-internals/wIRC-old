@@ -17,11 +17,11 @@ enyo.kind({
 		{name: 'header', kind: 'Header', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
-			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', className: 'wirc-tool-button', onclick: 'closeButton'},
+			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', onclick: 'closeButton'},
 		]},
 		{kind: 'HeaderShadow'},
 		
-		{style: 'border-right-style: solid; border-right-width: 1px; color: black; position: absolute; left: 58px; height: 100%;'},
+		//{style: 'border-right-style: solid; border-right-width: 1px; color: black; position: absolute; left: 58px; height: 100%;'},
 		
 		{name: 'messages', kind: 'FlyweightList', height: '100%', bottomUp: true, onSetupRow: 'setupMessage', className: 'messages', components: [
 			{name: 'message', kind: 'wirc.MessageItem'}

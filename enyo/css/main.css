@@ -136,16 +136,12 @@ body {
 }
 
 .messages-panel .message-row.notice {
-	color: orangered;
 }
 .messages-panel .message-row.status {
-	color: mediumpurple;
 }
 .messages-panel .message-row.action {
-	color: firebrick;
 }
 .messages-panel .message-row.self {
-	color: blue;
 }
 
 
@@ -169,6 +165,10 @@ body {
 .enyo-button-negative.close {
 	margin: -10px 0px;
 }
+.enyo-tool-button {
+	cursor: pointer;
+	padding: 0px 10px;
+}
 
 .message-toolbar {
 	max-height: 192px;
@@ -180,32 +180,8 @@ body {
 	margin: 1px 0 2px 50px;
 }
 
-.wirc-tool-button {
-	cursor: pointer;
-	padding: 0px 10px;
-}
 
 
-.messages-panel .message-row .seperator {
-	border-right-style: solid;
-	border-right-width: 1px;
-	margin-left: 3px;
-	margin-right: 3px;
-	color: black;
-}
-.messages-panel .message-row .nick {
-	text-align: right;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	padding: 1px 0px 3px 0px;
-}
-.messages-panel .message-row .text {
-	padding: 1px 0px 3px 0px;
-}
-.messages-panel .message-row .timestamp {
-	padding: 1px 0px 3px 0px;
-	color: black;
-}
 
 
 .folder-count {

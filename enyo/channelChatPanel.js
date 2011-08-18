@@ -27,8 +27,8 @@ enyo.kind({
 		{name: 'header', kind: 'Header', style: 'z-axis: 1;', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
-			{kind: enyo.ToolButton, icon: 'enyo/images/buddies-down.png', className: 'wirc-tool-button', onclick: 'showNickList', name: 'nicklistButton'},
-			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', className: 'wirc-tool-button', onclick: 'closeButton'},
+			{kind: enyo.ToolButton, icon: 'enyo/images/buddies-down.png', onclick: 'showNickList', name: 'nicklistButton'},
+			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', onclick: 'closeButton'},
 		]},
 		{kind: 'HeaderShadow'},
 		
@@ -49,6 +49,7 @@ enyo.kind({
 	initComponents: function() {
 	    this.inherited(arguments);
 		this.addClass('messages-panel');
+		this.$.client.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		enyo.application.e.listen('nick-completion', enyo.bind(this, 'completeNick'))
