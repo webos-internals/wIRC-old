@@ -1,14 +1,15 @@
 enyo.kind({
 	name: 'wi.ListSelector',
-	kind: 'ListSelector',
+	kind: enyo.ListSelector,
 	
 	popupAlign: 'left',
-	chrome: [
+	/*chrome: [
 		{name: 'arrow', className: 'enyo-listselector-arrow', style: 'margin-right: 10px;'},
 		{kind: 'HFlexBox', flex: 1, components: [
 			{name: 'itemContainer'},
 			{name: 'client'}
 		]},
 		{name: 'label'},
-	],
+	],*/
+	
 });
