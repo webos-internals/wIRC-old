@@ -67,11 +67,11 @@ enyo.kind({
 			]},
 			
 			{name: 'notificationsTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-				{kind: 'RowGroup', width: '400px', caption: 'row heading', components: [
-				
-					{kind: 'Item', content: 'notifications'}
-					
+			
+				{kind: 'Group', width: '400px', caption: 'Alert Words', components: [
+					{name: 'alertWords', kind: 'wi.InputList', inputHint: ''},
 				]},
+				
 			]},
 			
 			{name: 'dccTab', layoutKind: 'VFlexLayout', align: 'center', components: [
@@ -141,6 +141,9 @@ enyo.kind({
 		this.$.colorOwnNick.setValue(this.prefs.colorOwnNick);
 		this.$.colorOtherNicks.setValue(this.prefs.colorOtherNicks);
 		
+		// notifications
+		this.$.alertWords.setValue(this.prefs.alertWords);
+		
 		// keybinds
 		this.$.mainListUp.setValue(this.prefs.mainListUp);
 		this.$.mainListDown.setValue(this.prefs.mainListDown);
@@ -194,6 +197,9 @@ enyo.kind({
 		this.prefs.colorText = this.$.colorText.getValue();
 		this.prefs.colorOwnNick = this.$.colorOwnNick.getValue();
 		this.prefs.colorOtherNicks = this.$.colorOtherNicks.getValue();
+		
+		// notifications
+		this.prefs.alertWords = this.$.alertWords.getValue();
 				
 		// keybinds
 		this.prefs.mainListUp = this.$.mainListUp.getValue();
