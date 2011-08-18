@@ -18,7 +18,11 @@ enyo.kind({
 			onWindowHidden: 'windowHiddenHandler', onWindowShown: 'windowShownHandler',
 			onWindowActivated: 'windowActivatedHandler', onWindowDeactivated: 'windowDeactivatedHandler'},*/
 	
-		{kind: 'wirc.NickList', name: 'nicklist'},
+		{name: "nicklist", kind: "Pullout", style: "width: 180px; top: 64px; bottom: 0;", className: "enyo-bg", flyInFrom: "right", onOpen: "pulloutToggle", onClose: "closeRightPullout", components: [
+			{name: 'nicks', kind: 'FlyweightList', height: '100%', onSetupRow: 'setupNick', className: 'messages', components: [
+				{kind: 'Item', name: 'nick'}
+		    ]},
+		]},
 		
 		{name: 'header', kind: 'Header', style: 'z-axis: 1;', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
@@ -92,6 +96,14 @@ enyo.kind({
 		return false;
 	},
 	
+	setupNick: function(inSender, inIndex) {
+		if (this.channel.setup.nicks[inIndex]) {
+			this.$.nick.setContent(this.channel.setup.nicks[inIndex]);
+			return true;
+		}
+		return false;
+	},
+	
 	keyDown: function(inSender, inEvent) {
 		if (!enyo.application.k.keyDown(inSender, inEvent)) {
 			if (enyo.application.k.testMatch(enyo.application.p.get('nickCompletion'), inEvent) && this.$.input.getValue().length>0) {
@@ -121,9 +133,12 @@ enyo.kind({
 	},
 	
 	showNickList: function() {
-		this.$.nicklist.openAroundControl(this.$.nicklistButton);
-		this.error(this.channel.nicks)
-		this.$.nicklist.setCount(this.channel.setup.nicks.length);
+		if (this.$.nicklist.showing)
+			this.$.nicklist.close();
+		else {
+			this.$.nicklist.open();
+			this.$.nicks.render();
+		}
 	},
 	
 	completeNick: function() {

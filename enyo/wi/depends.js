@@ -19,6 +19,8 @@ enyo.depends(
 	
 	"enyo/wi/sql.js",
 	
-	"enyo/wi/misc.js"
+	"enyo/wi/misc.js",
+	
+	"enyo/wi/pullout.js"
 	
 );
