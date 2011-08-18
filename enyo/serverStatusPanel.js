@@ -1,9 +1,7 @@
 enyo.kind({
 	name: 'wirc.ServerStatusPanel',
-	kind: 'SlidingView',
+	kind: 'wirc.SlidingView',
 	
-	/*peekWidth: 64,*/
-	dragAnywhere: false,
 	dismissible: true,
 	
 	published: {
@@ -51,6 +49,7 @@ enyo.kind({
 	
 	rendered: function() {
 	    this.inherited(arguments);
+		this.applySize(true); // dont resize weirdly
 		this.$.headerText.setContent((this.server.setup.alias ? this.server.setup.alias : this.server.setup.address) + ': Server Messages');
 	},
 	

@@ -1,9 +1,6 @@
 enyo.kind({
 	name: 'wirc.ServerPreferencesPanel',
-	kind: 'SlidingView',
-	
-	/*peekWidth: 64,*/
-	dragAnywhere: false,
+	kind: 'wirc.SlidingView',
 	
 	published: {
 		setup: ''

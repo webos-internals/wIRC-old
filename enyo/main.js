@@ -19,7 +19,7 @@ enyo.kind({
 		
 		//{name: 'prefs', kind: 'wirc.Preferences'},
 		
-		{name: 'sp', kind: 'SlidingPane', flex: 1, wideWidth: 800, components: [
+		{name: 'sp', kind: 'enyo.SlidingPane', flex: 1, wideWidth: 800, components: [
 		
 			{name: 'main', kind: 'wirc.MainPanel'},
 			
@@ -86,4 +86,3 @@ enyo.kind({
 	},
 	
 });
-

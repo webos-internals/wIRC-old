@@ -1,9 +1,7 @@
 enyo.kind({
 	name: 'wirc.ChannelChatPanel',
-	kind: 'SlidingView',
+	kind: 'wirc.SlidingView',
 	
-	/*peekWidth: 64,*/
-	dragAnywhere: false,
 	dismissible: true,
 	
 	published: {

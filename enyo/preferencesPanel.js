@@ -1,9 +1,6 @@
 enyo.kind({
 	name: 'wirc.PreferencesPanel',
-	kind: 'SlidingView',
-	
-	/*peekWidth: 64,*/
-	dragAnywhere: false,
+	kind: 'wirc.SlidingView',
 	
 	prefs: {
 		fullscreen: false,

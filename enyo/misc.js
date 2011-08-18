@@ -8,3 +8,17 @@ enyo.kind({
 	kind: enyo.Control,
 	className: 'toolbar-shadow',
 });
+
+enyo.kind({
+	name: 'wirc.SlidingView',
+	kind: 'SlidingView',
+	
+	/*peekWidth: 64,*/
+	dragAnywhere: false,
+	
+	rendered: function() {
+		this.inherited(arguments);
+		this.applySize(true);
+	},
+});
+
