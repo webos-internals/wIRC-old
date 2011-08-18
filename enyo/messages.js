@@ -25,9 +25,6 @@ enyo.kind({
 				textStyle:	{},
 			};
 			
-			if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
-				this._cache.rowStyle['background-color'] = '#EBEBEB';
-			
 			switch(this.setup.type) {
 				
 				case 'status':
@@ -73,6 +70,9 @@ enyo.kind({
 		
 		item.$.nick.setContent(this._cache.nick);
 		item.$.text.setContent(this._cache.text);
+		
+		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
+			item.applyStyle('background-color', '#EBEBEB');
 		
 		if (enyo.application.p.get('showTimeStamps')) {
 			item.$.timestamp.setContent(this.formatTimeStamp(this.setup.timestamp));
