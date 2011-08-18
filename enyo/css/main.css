@@ -208,12 +208,25 @@ body {
 	margin: 1px 0 2px 50px;
 }
 
+.nick-item {
+}
 
-
-
-
-
-
+.nick-item .nick {
+	font-size: 80%;
+	margin-top: -2px;
+}
+.nick-item .mode {
+	width: 16px;
+	height: 16px;
+	padding-right: 8px;
+}
+.nick-item .mode.icon {
+	background-image: url(../images/user-modes.png);
+	background-repeat: no-repeat;
+}
+.nick-item .mode.icon.op {background-position: 0px -0px;}
+.nick-item .mode.icon.halfop {background-position: 0px -16px;}
+.nick-item .mode.icon.voice {background-position: 0px -32px;}
 
 .enyo-button-negative.close {
 	margin: -10px 0px;

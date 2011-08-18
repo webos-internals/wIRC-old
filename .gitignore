@@ -1,5 +1,6 @@
 *.ipk
 *.o
 *~
+.DS_Store
 plugin/libpdl/libpdl.so
 plugin/wirc
