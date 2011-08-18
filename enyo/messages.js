@@ -3,6 +3,7 @@ enyo.kind({
 	kind: enyo.Control,
 	
 	setup: {},
+	_styles: '',
 	
 	constructor: function(setup) {
 	    this.inherited(arguments);
@@ -21,7 +22,33 @@ enyo.kind({
   		return "["+hours+":"+minutes+"]"
 	},
 	
+	generateStyles: function() {
+		if (this._styles == '') {
+			this._styles = {};
+			
+			switch(this.setup.type) {
+				
+				case 'notice':
+					
+					break;
+				
+				case 'action':
+					
+					break;
+				
+				case 'privmsg':
+					
+					break;
+				
+				default:
+					break;
+			}
+		}
+	},
+	
 	setupItem: function(item) {
+		
+		this.generateStyles();
 		
 		// reset?
 		if (enyo.application.p.get('showTimeStamps')) {

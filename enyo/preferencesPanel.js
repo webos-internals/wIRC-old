@@ -43,8 +43,22 @@ enyo.kind({
 					{name: 'complectionSeparator', hint: 'Optional', kind: 'Input', components: [{content: 'Separator'}]},
 				]},
 				
+				{kind: 'RowGroup', width: '400px', caption: 'List Format', components: [
+				
+					{name: 'listStyle', kind: 'wi.ListSelector', label: 'Style', items: [
+				        {caption: 'Fixed Width', value: 'fixed'},
+				        {caption: 'Left Aligned', value: 'left'},
+				    ]},
+					{name: 'listBackground', kind: 'wi.ListSelector', label: 'Background', items: [
+				        {caption: 'Solid', value: 'solid'},
+				        {caption: 'Alternate', value: 'alt'},
+				    ]},
+					
+				]},
+				
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
+					{name: 'colorBackground', kind: 'wi.InputColor', caption: 'Background'},
 					{name: 'colorNotice', kind: 'wi.InputColor', caption: 'Notice'},
 					{name: 'colorAction', kind: 'wi.InputColor', caption: 'Action'},
 					{name: 'colorStatus', kind: 'wi.InputColor', caption: 'Status'},
@@ -131,6 +145,10 @@ enyo.kind({
 		this.$.showTimeStamps.setState(this.prefs.showTimeStamps);
 		this.$.complectionSeparator.setValue(this.prefs.complectionSeparator)
 		
+		this.$.listStyle.setValue(this.prefs.listStyle);
+		this.$.listBackground.setValue(this.prefs.listBackground);
+		
+		this.$.colorBackground.setValue(this.prefs.colorBackground);
 		this.$.colorNotice.setValue(this.prefs.colorNotice);
 		this.$.colorAction.setValue(this.prefs.colorAction);
 		this.$.colorStatus.setValue(this.prefs.colorStatus);
@@ -188,6 +206,10 @@ enyo.kind({
 		this.prefs.showTimeStamps = this.$.showTimeStamps.getState();
 		this.prefs.complectionSeparator = this.$.complectionSeparator.getValue();
 		
+		this.prefs.listStyle = this.$.listStyle.getValue();
+		this.prefs.listBackground = this.$.listBackground.getValue();
+		
+		this.prefs.colorBackground = this.$.colorBackground.getValue();
 		this.prefs.colorNotice = this.$.colorNotice.getValue();
 		this.prefs.colorAction = this.$.colorAction.getValue();
 		this.prefs.colorStatus = this.$.colorStatus.getValue();
