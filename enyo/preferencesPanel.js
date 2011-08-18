@@ -49,7 +49,7 @@ enyo.kind({
 				        {caption: 'Fixed Width', value: 'fixed'},
 				        {caption: 'Left Aligned', value: 'left'},
 				    ]},
-					{name: 'listBackground', kind: 'wi.ListSelector', label: 'Background', items: [
+					{name: 'listBackground', kind: 'wi.ListSelector', label: 'Background', onChange: 'listBackgroundChanged', items: [
 				        {caption: 'Solid', value: 'solid'},
 				        {caption: 'Alternate', value: 'alt'},
 				    ]},
@@ -59,6 +59,7 @@ enyo.kind({
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
 					{name: 'colorBackground', kind: 'wi.InputColor', caption: 'Background'},
+					{name: 'colorBackgroundAlt', kind: 'wi.InputColor', caption: 'Alternate Background'},
 					{name: 'colorNotice', kind: 'wi.InputColor', caption: 'Notice'},
 					{name: 'colorAction', kind: 'wi.InputColor', caption: 'Action'},
 					{name: 'colorStatus', kind: 'wi.InputColor', caption: 'Status'},
@@ -147,8 +148,10 @@ enyo.kind({
 		
 		this.$.listStyle.setValue(this.prefs.listStyle);
 		this.$.listBackground.setValue(this.prefs.listBackground);
+		this.listBackgroundChanged();
 		
 		this.$.colorBackground.setValue(this.prefs.colorBackground);
+		this.$.colorBackgroundAlt.setValue(this.prefs.colorBackgroundAlt);
 		this.$.colorNotice.setValue(this.prefs.colorNotice);
 		this.$.colorAction.setValue(this.prefs.colorAction);
 		this.$.colorStatus.setValue(this.prefs.colorStatus);
@@ -210,6 +213,7 @@ enyo.kind({
 		this.prefs.listBackground = this.$.listBackground.getValue();
 		
 		this.prefs.colorBackground = this.$.colorBackground.getValue();
+		this.prefs.colorBackgroundAlt = this.$.colorBackgroundAlt.getValue();
 		this.prefs.colorNotice = this.$.colorNotice.getValue();
 		this.prefs.colorAction = this.$.colorAction.getValue();
 		this.prefs.colorStatus = this.$.colorStatus.getValue();
@@ -235,6 +239,13 @@ enyo.kind({
 			this.log('Not Saved!?');
 		}
 	},
+	
+	listBackgroundChanged: function(inSender) {
+		if (this.$.listBackground.getValue() == 'alt')
+			this.$.colorBackgroundAlt.show();
+		else
+			this.$.colorBackgroundAlt.hide();
+	}
 	
 });
 

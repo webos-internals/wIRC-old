@@ -200,9 +200,14 @@ body {
 .message-toolbar .enyo-grabbutton {
 	bottom: 0px;
 }
+.message-toolbar .enyo-input.enyo-input-focus {
+	-webkit-border-image: url(../images/input-focus-transparent.png) 14 14;
+	border-radius: 10px;
+}
 .message-toolbar .enyo-input {
 	margin: 1px 0 2px 50px;
 }
+
 
 
 

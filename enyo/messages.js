@@ -72,7 +72,9 @@ enyo.kind({
 		item.$.text.setContent(this._cache.text);
 		
 		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
-			item.applyStyle('background-color', '#EBEBEB');
+			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
+		else
+			item.applyStyle('background-color', null);
 		
 		if (enyo.application.p.get('showTimeStamps')) {
 			item.$.timestamp.setContent(this.formatTimeStamp(this.setup.timestamp));
@@ -130,6 +132,12 @@ enyo.kind({
 	maxTextHeight: '68px',
 	autocorrect: false,
 	autoCapitalize: 'lowercase',
+	
+	create: function() {
+	    this.inherited(arguments);
+		this.applyStyle('background-color', enyo.application.p.get('colorBackground'));
+		this.applyStyle('color', enyo.application.p.get('colorText'));
+	},
 	
 	getValue: function() {
 		return this.getText().replace(/&nbsp;/g, ' ');

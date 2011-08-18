@@ -17,6 +17,7 @@ enyo.kind({
 			listBackground: 'alt',
 			
 			colorBackground: '#f5f5f5',
+			colorBackgroundAlt: '#EBEBEB',
 			colorNotice: '#FF4500',
 			colorAction: '#B22222',
 			colorStatus: '#9370DB',
@@ -50,16 +51,22 @@ enyo.kind({
 			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
 		}
 		else this.error('no localStorage?');
+		this.set();
 	},
 	save: function(prefs) {
 		this.prefs = prefs;
 		if (localStorage) {
 			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
+			this.set();
 			return true;
 		} else {
 			this.error('no localStorage?');
 			return false;
 		}
+	},
+	
+	set: function() {
+		
 	},
 	
 	get: function(item) {

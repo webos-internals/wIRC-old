@@ -6,7 +6,7 @@ enyo.kind({
 	
 	published: {
 		caption: '',
-		value: {}
+		value: 'rgba(0, 0, 0, 0)'
 	},
 	
 	components: [
