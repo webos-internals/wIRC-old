@@ -229,6 +229,15 @@ enyo.kind({
 	},
 	connected: function() {
 		this.setState(wirc.Server.stateConnected);
+		if (this.setup.onconnect && this.setup.onconnect.length > 0) {
+			for (var c = 0; c < this.setup.onconnect.length; c++) {
+				if (this.setup.onconnect[c].charAt(0) != '/') 
+					var ocjob = enyo.bind(this, 'newCommand', '/' + this.setup.onconnect[c]);
+				else
+					var ocjob = enyo.bind(this, 'newCommand', this.setup.onconnect[c]);
+				enyo.job('onconnect-' + this.setup.id + '-' + c, ocjob, 1);
+			}
+		}
 	},
 	disconnect: function() {
 		/*

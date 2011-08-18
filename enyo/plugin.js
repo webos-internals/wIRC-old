@@ -55,7 +55,7 @@ enyo.kind({
 	setup: function(plugin) {
 		this.plugin = plugin;
   		this.plugin.addCallback('retry_connection',			enyo.bind(this, 'retryConnection')); // , defer (true/false)?
-  		this.plugin.addCallback('event_connect',			enyo.bind(this, 'eventConnect'));
+  		this.plugin.addCallback('event_connect',			enyo.bind(this, 'eventConnect'), true);
   		this.plugin.addCallback('event_nick',				enyo.bind(this, 'eventNick'));
   		this.plugin.addCallback('event_quit',				enyo.bind(this, 'eventQuit'));
   		this.plugin.addCallback('event_join',				enyo.bind(this, 'eventJoin'));
