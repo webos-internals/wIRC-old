@@ -87,7 +87,7 @@ enyo.kind({
 	},
 	
 	me: function(message) {
-		enyo.application.pm.call('cmd_me', this.server.setup.id, this.setup.name, message);
+		enyo.application.pm.call(null, 'cmd_me', this.server.setup.id, this.setup.name, message);
 		this.newMessage('action', this.server.setup.nick, message);
 	},
 	
@@ -101,7 +101,7 @@ enyo.kind({
 			else {
 				msg = message.substring(i * 255);
 			}
-			enyo.application.pm.call('cmd_msg', this.server.setup.id, this.setup.name, msg);
+			enyo.application.pm.call(null, 'cmd_msg', this.server.setup.id, this.setup.name, msg);
 			this.newMessage('privmsg', this.server.setup.nicks[0], msg);
 		}
 	},
@@ -109,15 +109,15 @@ enyo.kind({
 	join: function(join) {
 		/* This would only need to be called if joining a previously parted
 		channel that still shows up in the list. */ 
-		//enyo.application.pm.call('cmd_join', this.server.setup.id, this.setup.name, this.setup.key||null);
-		enyo.application.pm.call('cmd_channel_mode', this.server.setup.id, this.setup.name, null);
+		//enyo.application.pm.call(null, 'cmd_join', this.server.setup.id, this.setup.name, this.setup.key||null);
+		enyo.application.pm.call(null, 'cmd_channel_mode', this.server.setup.id, this.setup.name, null);
 		this.joined = true;
 		this.display = true;
 		enyo.application.e.dispatch('main-crud'); // refresh main list
 	},
 	
 	part: function(reason) {
-		enyo.application.pm.call('cmd_part', this.server.setup.id, this.setup.name, reason||'woo');
+		enyo.application.pm.call(null, 'cmd_part', this.server.setup.id, this.setup.name, reason||'woo');
 		this.joined = false;
 		this.display = false;
 		enyo.application.e.dispatch('main-crud'); // refresh main list

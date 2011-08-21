@@ -111,7 +111,7 @@ enyo.kind({
 					
 					case 'join': case 'j':
 						var vals = val.split(" ");
-						enyo.application.pm.call('cmd_join', this.setup.id, vals[0], vals[1]||null);
+						enyo.application.pm.call(null, 'cmd_join', this.setup.id, vals[0], vals[1]||null);
 						break;
 						
 					case 'nick':
@@ -209,7 +209,7 @@ enyo.kind({
 		if (enyo.application.cm.isInternetConnectionAvailable()) {
 			this.setState(wirc.Server.stateConnecting);
 			try {
-		  		return enyo.application.pm.call(
+		  		return enyo.application.pm.call(null, 
 		  			'connect',
 		  			this.setup.id,
 		  			this.setup.address,
@@ -247,7 +247,7 @@ enyo.kind({
 		 */
 		var reason = "BECAUSE I'M TESTING!";
 		this.setState(wirc.Server.stateDisconnecting);
-		enyo.application.pm.call('cmd_quit', this.setup.id, reason);
+		enyo.application.pm.call(null, 'cmd_quit', this.setup.id, reason);
 		this.setState(wirc.Server.stateDisconnected);
 	},
 	disrupt: function() {
@@ -257,7 +257,7 @@ enyo.kind({
 		 * not send any commands to the IRC server.
 		 */
 		var reason = "BECAUSE I'M TESTING!";
-		enyo.application.pm.call('disconnect', this.setup.id);
+		enyo.application.pm.call(null, 'disconnect', this.setup.id);
 		this.setState(wirc.Server.stateDisrupted);
 	},
 	
