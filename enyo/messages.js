@@ -9,6 +9,7 @@ enyo.kind({
 	    this.inherited(arguments);
 		//this.log(setup);
 		this.setup = setup;
+		this.last = false;
 		this.setup.timestamp = new Date();
 		this._cache = '';
 	},
@@ -82,6 +83,11 @@ enyo.kind({
 		} else {
 			item.$.timestamp.hide();
 		}
+		
+		if (this.setup.last)
+			item.applyStyle('border-bottom','1px solid red;');
+		else
+			item.applyStyle('border-bottom','none;');
 		
 	},
 	

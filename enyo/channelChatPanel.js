@@ -57,6 +57,11 @@ enyo.kind({
 	},
 	
 	destroy: function() {
+		if (this.channel.messages.length>0) {
+			for (i in this.channel.messages)
+				this.channel.messages[i].setup.last = false;
+			this.channel.messages[0].setup.last = true;
+		}
 		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		return this.inherited(arguments);
 	},
