@@ -69,7 +69,7 @@ void process_event(irc_session_t * session, const char * event,
 		payload[4] = 0;
 	}
 
-	syslog(LOG_ALERT, "irc-event: %s %s %s %s", payload[0], payload[1], payload[2], payload[3]);
+	//syslog(LOG_ALERT, "irc-event: %s %s %s %s", payload[0], payload[1], payload[2], payload[3]);
 
 	switch (type) {
 	case event_connect_:
