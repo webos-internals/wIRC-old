@@ -34,7 +34,7 @@ enyo.kind({
 	},
 	
 	newMessage: function(type, nick, text) {
-		var m = new wirc.Message({
+		var m = new wirc.BufferMessage({
 			type: type,
 			nick: nick,
 			text: text,
@@ -44,7 +44,7 @@ enyo.kind({
 		});
 		this.messages.unshift(m);
 		enyo.application.e.dispatch('channel-message' + this.getNameSimple());
-		var mm = new wirc.Message({
+		var mm = new wirc.PreviewMessage({
 			type: type,
 			nick: nick,
 			text: text,

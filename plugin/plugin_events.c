@@ -17,10 +17,16 @@
  =============================================================================*/
 
 #include "wIRC.h"
+#include <stdint.h>
 #include <time.h>
 
-int nevents = 0;
-clock_t start;
+uint64_t prev = 0;
+
+uint64_t ClockGetTime() {
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return (uint64_t)ts.tv_sec * 1000000LL + (uint64_t)ts.tv_nsec / 1000LL;
+}
 
 void process_event(irc_session_t * session, const char * event,
 		const char * origin, const char ** params, unsigned int count,
@@ -153,22 +159,13 @@ void process_event(irc_session_t * session, const char * event,
 	if (id)
 		free(id);
 
-	nevents += 1;
-	if (nevents == 1)
-		start = clock();
-	else {
-		double time = ((double) (clock() - start)) / CLOCKS_PER_SEC;
-		if (time>0) {
-			double rate = nevents/time;
-			syslog(LOG_ALERT, "%d events in %f seconds == %f.", nevents, time, rate);
-			if (rate>6000.0) {
-				usleep(1000);
-				nevents = 0;
-			} else if (rate<1000) {
-				nevents = 0;
-			}
-		}
+	/*uint64_t cur = ClockGetTime();
+	if (prev != 0) {
+		uint64_t diff = cur - prev;
+		syslog(LOG_ALERT, "Event delta: %llu, %llf", diff, 1000000.0/diff);
+		usleep(1000000.0/diff);
 	}
+	prev = cur;*/
 
 }
 

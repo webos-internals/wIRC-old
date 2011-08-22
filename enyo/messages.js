@@ -60,7 +60,7 @@ enyo.kind({
 		}
 	},
 	
-	setupItem: function(item, ignoreMarker) {
+	setupItem: function(item) {
 		
 		this.generateCache();
 		
@@ -82,22 +82,12 @@ enyo.kind({
 		item.$.nick.setContent(this._cache.nick);
 		item.$.text.setContent(this._cache.text);
 		
-		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
-			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
-		else
-			item.applyStyle('background-color', null);
-		
 		if (enyo.application.p.get('showTimeStamps')) {
 			item.$.timestamp.setContent(this.formatTimeStamp(this.setup.timestamp));
-			item.$.timestamp.show();
+			item.$.timestamp.setShowing(true);
 		} else {
-			item.$.timestamp.hide();
+			item.$.timestamp.setShowing(false);
 		}
-		
-		if (!ignoreMarker && this.setup.last)
-			item.applyStyle('border-bottom','1px solid red;');
-		else
-			item.applyStyle('border-bottom','none;');
 		
 	},
 	
@@ -113,6 +103,38 @@ enyo.kind({
   		return "["+hours+":"+minutes+"]"
 	},
 	
+});
+
+enyo.kind({
+	name: 'wirc.BufferMessage',
+	kind: 'wirc.Message',
+	
+	setupItem: function(item) {
+		this.inherited(arguments);
+		
+		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
+			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
+		else
+			item.applyStyle('background-color', null);
+		
+		if (this.setup.last)
+			item.applyStyle('border-bottom','1px solid red;');
+		else
+			item.applyStyle('border-bottom','none;');
+	}
+});
+
+enyo.kind({
+	name: 'wirc.PreviewMessage',
+	kind: 'wirc.Message',
+	
+	setupItem: function(item) {
+		this.inherited(arguments);
+		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
+			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
+		else
+			item.applyStyle('background-color', null);
+	}
 });
 
 enyo.kind({

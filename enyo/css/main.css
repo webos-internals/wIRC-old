@@ -21,6 +21,13 @@ body {
 	background: transparent url('../images/toolbar-shadow.png') top repeat-x;
 }
 
+.woot-shadow {
+	top: 0;
+	margin-bottom: -21px;
+	background: transparent url(../images/blank-shadow.png) top repeat-x;
+	z-index: 50;
+}
+
 .main-panel .enyo-sliding-view-shadow {
 	right: -22px;
 	background-image: url(../images/sliding-blank-shadow.png);

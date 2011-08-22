@@ -17,7 +17,7 @@ INCLUDES	:=	-I${ROOT}/include \
 								
 LIBDIRS		:=	-Larm -Li686 -L$(PDLLIB) -L$(ROOT)${prefix}/lib
 
-LIBS		:=	-lpdl -lpthread -lm $(LIBSSL)
+LIBS		:=	-lrt -lpdl -lpthread -lm $(LIBSSL)
 
 OBJECTS		:=	$(IRCLIB)/$(IRCLIB).o \
 				ping.o plugin_client.o plugin_events.o plugin.o \

@@ -25,10 +25,9 @@ enyo.kind({
 			
 		]},
 		
-		{name: 'previews', kind: 'FlyweightList', transitionKind: "enyo.transitions.Fade", height: '125px', bottomUp: true, onSetupRow: 'setupPreview', className: 'messages', components: [
+		{name: 'previews', kind: 'FlyweightList', transitionKind: "enyo.transitions.Fade", height: '125px', bottomUp: true, onSetupRow: 'setupPreview', className: 'woot-shadow messages', components: [
 			{name: 'preview', kind: 'wirc.MessageItem'}
 	    ]},
-	    
 	],
 	
 	initComponents: function() {
@@ -61,7 +60,7 @@ enyo.kind({
 	},
 	setupPreview: function(inSender, inIndex) {
 		if (enyo.application.m.messages[inIndex]) {
-			enyo.application.m.messages[inIndex].setupItem(this.$.preview, true, true);
+			enyo.application.m.messages[inIndex].setupItem(this.$.preview);
 			return true;
 		}
 		return false;
