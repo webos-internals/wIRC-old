@@ -39,11 +39,21 @@ enyo.kind({
 			nick: nick,
 			text: text,
 			self: (nick == this.server.setup.nicks[0]),
-			num: this.messages.length
+			num: this.messages.length,
+			chan: null,
 		});
-		this.messages.unshift(m); // for bottomUp flyweight
-		//this.messages.push(m); // for generating rows
+		this.messages.unshift(m);
 		enyo.application.e.dispatch('channel-message' + this.getNameSimple());
+		var mm = new wirc.Message({
+			type: type,
+			nick: nick,
+			text: text,
+			self: (nick == this.server.setup.nicks[0]),
+			num: enyo.application.m.messages.length,
+			chan: this.getNameSimple(),
+		}); 
+		enyo.application.m.messages.unshift(mm);
+		enyo.application.e.dispatch('channel-message');
 	},
 	
 	newCommand: function(command) {

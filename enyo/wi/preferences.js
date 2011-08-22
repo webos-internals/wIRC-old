@@ -8,6 +8,7 @@ enyo.kind({
 		defaults: {
 			// general
 			fullscreen: false,
+			showPreview: false,
 			
 			// messages
 			showTimeStamps: true,
@@ -57,7 +58,6 @@ enyo.kind({
 		this.prefs = prefs;
 		if (localStorage) {
 			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
-			this.set();
 			return true;
 		} else {
 			this.error('no localStorage?');
@@ -65,8 +65,13 @@ enyo.kind({
 		}
 	},
 	
-	set: function() {
-		
+	set: function(key, value) {
+		if (typeof(this.prefs[key]) != "undefined") {
+			this.prefs[key] = value;
+			return this.save(this.prefs);
+		} else {
+			return false;
+		}
 	},
 	
 	get: function(item) {

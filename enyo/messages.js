@@ -19,9 +19,10 @@ enyo.kind({
 			this._cache = {
 				classes:	['message-row'],
 				rowStyle:	{},
-				nick:		(this.setup.nick ? this.setup.nick : ''),
+				chan:		(this.setup.chan || ''),
+				nick:		(this.setup.nick || ''),
 				nickStyle:	{},
-				text:		(this.setup.text ? this.setup.text : ''),
+				text:		(this.setup.text || ''),
 				textCopy:	'',
 				textStyle:	{},
 			};
@@ -59,7 +60,7 @@ enyo.kind({
 		}
 	},
 	
-	setupItem: function(item) {
+	setupItem: function(item, ignoreMarker) {
 		
 		this.generateCache();
 		
@@ -68,6 +69,15 @@ enyo.kind({
 		for (var s in this._cache.rowStyle)	 item.applyStyle(s, this._cache.rowStyle[s]);
 		for (var s in this._cache.nickStyle) item.$.nick.applyStyle(s, this._cache.nickStyle[s]);
 		for (var s in this._cache.textStyle) item.$.text.applyStyle(s, this._cache.textStyle[s]);
+		
+		if (this._cache.chan) {
+			item.$.chan.setContent('<#'+this._cache.chan+'>');
+			item.$.nick.setClassName('preview');
+			//item.$.nick.setStyle('padding-left','3px');
+			item.$.chan.setShowing(true);
+		} else {
+			item.$.chan.setShowing(false);
+		}
 		
 		item.$.nick.setContent(this._cache.nick);
 		item.$.text.setContent(this._cache.text);
@@ -84,7 +94,7 @@ enyo.kind({
 			item.$.timestamp.hide();
 		}
 		
-		if (this.setup.last)
+		if (!ignoreMarker && this.setup.last)
 			item.applyStyle('border-bottom','1px solid red;');
 		else
 			item.applyStyle('border-bottom','none;');
@@ -116,6 +126,7 @@ enyo.kind({
 	
 	components: [
 		{name: 'timestamp', className: 'timestamp'},
+		{name: 'chan', classname: 'chan', showing: false},
         {name: 'nick', className: 'nick'},
         {name: 'text', className: 'text', flex: 1},
 	],

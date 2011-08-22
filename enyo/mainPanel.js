@@ -31,7 +31,8 @@ enyo.kind({
 		{kind: 'ToolbarShadow'},
 		{name: 'toolbar', kind: 'Toolbar', className: 'enyo-toolbar-light', components: [
 			{icon: 'enyo/images/toolbar-server-add-down.png', onclick: 'addServerButton'},
-			{icon: 'enyo/images/toolbar-prefs-down.png', onclick: 'preferencesButton'}
+			{icon: 'enyo/images/toolbar-prefs-down.png', onclick: 'preferencesButton'},
+			{icon: 'enyo/images/preview-down.png', onclick: 'previewButton'}
 		]}
 		
 	],
@@ -50,6 +51,9 @@ enyo.kind({
 	},
 	preferencesButton: function() {
 		this.owner.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
+	},
+	previewButton: function() {
+		enyo.application.m.controller.togglePreviewArea();
 	},
 	
 	buildList: function() {

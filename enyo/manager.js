@@ -4,6 +4,8 @@ enyo.kind({
 	
 	controller: false,
 	
+	messages: [],
+	
 	setController: function(c) {
 		this.controller = c;
 	},
@@ -16,6 +18,10 @@ enyo.kind({
 		if (this.controller)
 			return this.controller.destroySecondary.apply(this.controller, arguments);
 	},
+	
+	newMessage: function(m) {
+		this.messages.unshift(m);
+	}
 	
 });
 

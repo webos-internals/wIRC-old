@@ -24,6 +24,11 @@ enyo.kind({
 			{name: 'main', kind: 'wirc.MainPanel'},
 			
 		]},
+		
+		{name: 'previews', kind: 'FlyweightList', transitionKind: "enyo.transitions.Fade", height: '125px', bottomUp: true, onSetupRow: 'setupPreview', className: 'messages', components: [
+			{name: 'preview', kind: 'wirc.MessageItem'}
+	    ]},
+	    
 	],
 	
 	initComponents: function() {
@@ -31,6 +36,14 @@ enyo.kind({
 		this.createBlankPanel();
 		enyo.application.m.setController(this);
 		enyo.setFullScreen(enyo.application.p.get('fullscreen'));
+		this.addClass('messages-panel');
+		this.addClass(enyo.application.p.get('listStyle'));
+		this.applyStyle('background-color', enyo.application.p.get('colorBackground'));
+		this.previewListener = enyo.bind(this, 'previewRefresh');
+		this.previewAreaListener = enyo.bind(this, 'togglePreviewArea');
+		enyo.application.e.listen('channel-message', this.previewListener);
+		//enyo.application.e.listen('preview-toggle', this.previewAreaListener);
+		this.$.previews.setShowing(enyo.application.p.get('showPreview'));
 	},
 	
 	wakeup: function() {
@@ -38,6 +51,20 @@ enyo.kind({
 	},
 	sleep: function() {
 		this.visible = false;
+	},
+	
+	previewRefresh: function() {
+		enyo.job('refreshPreviewMessages', enyo.bind(this, 'refreshPreviewMessages'), 5);
+	},
+	refreshPreviewMessages: function() {
+		this.$.previews.refresh();
+	},
+	setupPreview: function(inSender, inIndex) {
+		if (enyo.application.m.messages[inIndex]) {
+			enyo.application.m.messages[inIndex].setupItem(this.$.preview, true, true);
+			return true;
+		}
+		return false;
 	},
 	
 	createPanel: function(component) {
@@ -81,8 +108,25 @@ enyo.kind({
 		if (this.$.blank) this.$.blank.destroy();
 	},
 	
+	destroy: function() {
+		enyo.application.e.stopListening('channel-message', this.previewListener);
+		enyo.application.e.stopListening('preview-toggle', this.previewAreaListener);
+		return this.inherited(arguments);
+	},
+	
 	menuPrefs: function() {
 		this.createPanel({name: 'preferences', kind: 'wirc.PreferencesPanel'});
 	},
+	
+	togglePreviewArea: function() {
+		if (this.$.previews.showing) {
+			this.$.previews.setShowing(false);
+			enyo.application.p.set('showPreview', false);
+		} else {
+			this.$.previews.setShowing(true);
+			enyo.application.e.dispatch('channel-message');
+			enyo.application.p.set('showPreview', true);
+		}
+	}
 	
 });

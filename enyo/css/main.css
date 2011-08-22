@@ -152,27 +152,35 @@ body {
 	z-index: 0;
 }
 
+
 .messages-panel .message-row {
 	border: 0;
 	padding: 0px 10px 0px 10px;
 	font-size: 0.7em;
 }
+.messages-panel .message-row .chan {
+	color: black;
+	padding-left: 3px;
+}
 .messages-panel .message-row .nick {
 	padding-right: 10px;
-	padding-left: 45px;
+	/*padding-left: 35px;*/
 }
 .messages-panel .message-row .timestamp {
-	position: absolute;
-	left: 3px;
+	/*position: absolute;
+	padding-right: 3px;*/
 	color: #666;
 }
-
+.messages-panel .message-row .preview {
+	padding-left: 3px;
+	padding-right: 3px;
+}
 
 .messages-panel.fixed .fixed-splitter {
 	display: block;
 	position: absolute;
 	left: 0px;
-	width: 175px;
+	width: 169px;
 	height: 100%;
 	border-right: 1px solid #000;
 }
