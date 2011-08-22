@@ -26,3 +26,6 @@ clobber: clean
 
 device:
 	${MAKE} DEVICE=1 SSL=1 build-package
+	
+device-install:
+	${MAKE} DEVICE=1 SSL=1 install

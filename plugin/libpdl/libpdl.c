@@ -80,6 +80,8 @@ PDL_Err PDL_EnableCompass(PDL_bool activate){return 0;}
 PDL_Err PDL_GetCompass(PDL_Compass *compass){return 0;}
 PDL_Err PDL_SetKeyboardState(PDL_bool bVisible){return 0;}
 
+int PDL_HandleJSCalls(void){return 0;}
+
 int SDL_WaitEvent(SDL_Event *event) {return 0;}
 int SDL_Init(Uint32 flags) {return 0;}
 void SDL_Quit(void) {}

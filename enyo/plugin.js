@@ -44,7 +44,7 @@ enyo.kind({
 	name: 'wirc.PluginManager',
 	kind: enyo.Control,
 	
-	dumpLog: true,
+	dumpLog: false,
 	plugin: false,
 	
   	call: function() {
@@ -110,7 +110,7 @@ enyo.kind({
   		
   		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
-		var params = this.parseJson(params_s);
+		var params = this.parseJson(params_s,'JOIN');
 		
 		var nick = server.getNick(origin);
 		if (nick == server.setup.nicks[0])
@@ -141,7 +141,7 @@ enyo.kind({
 		
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
-		var params = this.parseJson(params_s);
+		var params = this.parseJson(params_s,'CHANNEL');
 		
 		var chan = server.getOrCreateChannel(params[0]);
 		if (chan)
@@ -166,7 +166,7 @@ enyo.kind({
 		
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
-		var params = this.parseJson(params_s);
+		var params = this.parseJson(params_s,'NOTICE');
 		
 		server.newMessage('notice', origin, params[1]);
   	},
@@ -182,7 +182,7 @@ enyo.kind({
 		
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
-		var params = this.parseJson(params_s);
+		var params = this.parseJson(params_s,'ACTION');
 		
 		var nick = server.getNick(origin);
 		var chan = server.getChannel(params[0]);
@@ -210,7 +210,7 @@ enyo.kind({
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
 		var event = parseInt(event);
-		var params = this.parseJson(params_s);
+		var params = this.parseJson(params_s,'NUMERIC');
 		
 		var messageSetup = {
 			nick: false,
@@ -233,12 +233,9 @@ enyo.kind({
 			case 353: // RPL_NAMREPLY
 				var chan = server.getOrCreateChannel(params[2]);
 				if (chan) {
-					this.warn(params)
 					var nicks = params[3].split(' ');
 					for (i in nicks)
 						chan.setup.nicks.push(nicks[i])
-				} else {
-					this.error('Oh Shit!')
 				}
 				break;
 				
@@ -289,13 +286,13 @@ enyo.kind({
   		if (this.dumpLog) this.log(id, dcc_id, status, bitsIn, percent);
   	},
 	
-	parseJson: function(string) {
+	parseJson: function(string, src) {
 		try {
 			// attempt parser
 			return enyo.json.parse(string);
 		}
 		catch (e) {
-			this.log(e);
+			this.log(src, e);
 			// fall back to eval parser
 			return eval(string);
 		}

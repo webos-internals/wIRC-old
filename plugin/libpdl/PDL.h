@@ -44,7 +44,11 @@ typedef enum {
 
 #define PDL_GPS_UPDATE 0xE100  
 
-#define PDL_GPS_FAILURE 0xE101 
+#define PDL_GPS_FAILURE 0xE101
+
+#define PDL_COMPASS 0xE110
+
+#define PDL_PENDING_JSS 0xE120
 
 #define PDL_VERSION_STR_SIZE 256
 
@@ -199,5 +203,7 @@ PDL_Err PDL_Vibrate(int periodMS, int durationMS);
 PDL_Err PDL_EnableCompass(PDL_bool activate);
 PDL_Err PDL_GetCompass(PDL_Compass *compass);
 PDL_Err PDL_SetKeyboardState(PDL_bool bVisible);
+
+int PDL_HandleJSCalls(void);
 
 #endif /* LIBPDL_H_ */

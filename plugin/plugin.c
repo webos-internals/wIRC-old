@@ -40,7 +40,18 @@ PDL_Err plugin_initialize() {
 void plugin_start() {
 	SDL_Event Event;
 	int cont = 1;
-	do {
+	while (1) {
 		SDL_WaitEvent(&Event);
-	} while (Event.type != SDL_QUIT);
+		switch (Event.type) {
+		case SDL_QUIT:
+			return;
+		case SDL_USEREVENT:
+			switch (Event.user.code) {
+			case PDL_PENDING_JSS:
+				syslog(LOG_ALERT, "Handled JS Calls: %d", PDL_HandleJSCalls());
+				break;
+			}
+			break;
+		}
+	};
 }
