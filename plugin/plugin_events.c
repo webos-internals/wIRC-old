@@ -17,6 +17,10 @@
  =============================================================================*/
 
 #include "wIRC.h"
+#include <time.h>
+
+int nevents = 0;
+clock_t start;
 
 void process_event(irc_session_t * session, const char * event,
 		const char * origin, const char ** params, unsigned int count,
@@ -148,6 +152,23 @@ void process_event(irc_session_t * session, const char * event,
 		free(parms);
 	if (id)
 		free(id);
+
+	nevents += 1;
+	if (nevents == 1)
+		start = clock();
+	else {
+		double time = ((double) (clock() - start)) / CLOCKS_PER_SEC;
+		if (time>0) {
+			double rate = nevents/time;
+			syslog(LOG_ALERT, "%d events in %f seconds == %f.", nevents, time, rate);
+			if (rate>6000.0) {
+				usleep(1000);
+				nevents = 0;
+			} else if (rate<1000) {
+				nevents = 0;
+			}
+		}
+	}
 
 }
 

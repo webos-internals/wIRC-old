@@ -18,6 +18,8 @@
 
 #include "wIRC.h"
 
+#include <sys/resource.h>
+
 char* substring(const char* str, size_t begin, size_t len) {
 	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || strlen(str)
 			< (begin + len))
@@ -68,6 +70,8 @@ int irc_custom_cmd_away(irc_session_t *session, const char *reason) {
 }
 
 void *client_run(void *ptr) {
+
+	syslog(LOG_ALERT, "Thread Reniced: %d", setpriority(PRIO_PROCESS, getpid(), 19));
 
 	wIRCd_client_t *server = &servers[*(int*) ptr];
 
