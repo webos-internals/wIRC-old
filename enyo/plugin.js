@@ -49,7 +49,7 @@ enyo.kind({
 	
   	call: function() {
 		if (this.plugin)
-			return this.plugin.callPluginMethodDeferred.apply(this.plugin, arguments);
+			return this.plugin.callPluginMethod.apply(this.plugin, arguments);
   	},
 	
 	setup: function(plugin) {
