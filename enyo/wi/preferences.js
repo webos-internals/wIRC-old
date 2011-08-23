@@ -76,7 +76,81 @@ enyo.kind({
 	get: function(item) {
 		if (this.prefs[item]) return this.prefs[item];
 		else return false;
-	}
+	},
+	
+	
+	buildCss: function(dom) {
+		
+		var css = this.addCssRule(dom, '.messages-panel .messages');
+		if (css) css.style.backgroundColor = this.prefs.colorBackground;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.notice');
+		if (css) css.style.color = this.prefs.colorNotice;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.action');
+		if (css) css.style.color = this.prefs.colorAction;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.status');
+		if (css) css.style.color = this.prefs.colorStatus;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.privmsg');
+		if (css) css.style.color = this.prefs.colorText;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.self .nick');
+		if (css) css.style.color = this.prefs.colorOwnNick;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row .nick');
+		if (css) css.style.color = this.prefs.colorOtherNicks;
+		
+		
+	},
+	
+	// these functions comes from http://www.hunlock.com/blogs/Totally_Pwn_CSS_with_Javascript
+	// modified to accept a document variables
+	addCssRule: function(doc, ruleName) {
+		if (doc.styleSheets) {
+			if (!this.getCssRule(doc, ruleName)) {
+				if (doc.styleSheets[0].addRule)
+					doc.styleSheets[0].addRule(ruleName, null, 0);
+				else
+					docstyleSheets[0].insertRule(ruleName + ' { }', 0);
+			}
+		}
+		return this.getCssRule(doc, ruleName);
+	},
+	getCssRule: function(doc, ruleName, deleteFlag) {
+		ruleName = ruleName.toLowerCase();
+		if (doc.styleSheets) {
+			for (var i = 0; i < doc.styleSheets.length; i++) {
+				var styleSheet = doc.styleSheets[i];
+				var ii = 0;
+				var cssRule = false;
+				do {
+					if (styleSheet.cssRules)
+						cssRule = styleSheet.cssRules[ii];
+					else
+						cssRule = styleSheet.rules[ii]; 
+					if (cssRule) {
+						if (cssRule.selectorText &&
+							cssRule.selectorText.toLowerCase() == ruleName) {
+							if (deleteFlag == 'delete') {
+								if (styleSheet.cssRules)
+									styleSheet.deleteRule(ii);
+								else
+									styleSheet.removeRule(ii);
+								return true;
+							}
+							else {
+								return cssRule;
+							}
+						}
+					}
+					ii++;
+				} while (cssRule)
+			}
+		}
+		return false;
+	},
 	
 });
 

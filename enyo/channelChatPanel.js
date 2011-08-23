@@ -49,7 +49,7 @@ enyo.kind({
 	initComponents: function() {
 	    this.inherited(arguments);
 		this.addClass('messages-panel');
-		this.addClass(enyo.application.p.get('listStyle'));
+		this.addClass(enyo.application.p.get('listStyle'))
 		this.$.client.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		this.headerListener = enyo.bind(this, 'headerRefresh');
@@ -111,6 +111,7 @@ enyo.kind({
 	setupMessage: function(inSender, inIndex) {
 		if (this.channel.messages[inIndex]) {
 			this.channel.messages[inIndex].setupItem(this.$.message);
+			this.$.message.addClass('alt');
 			return true;
 		}
 		return false;

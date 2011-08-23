@@ -21,6 +21,7 @@ enyo.kind({
 	
 	initComponents: function() {
 	    this.inherited(arguments);
+		this.addClass('preview-panel');
 		this.addClass('messages-panel');
 		this.addClass(enyo.application.p.get('listStyle'));
 		this.$.messagesContainer.applyStyle('background-color', enyo.application.p.get('colorBackground'));
