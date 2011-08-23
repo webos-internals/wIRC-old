@@ -24,8 +24,8 @@ enyo.kind({
 		    ]},
 		]},
 		
-		{name: 'header', kind: 'Header', style: 'z-axis: 1;', components: [
-			{name: 'headerText', content: 'asdf', flex: 1},
+		{name: 'header', kind: 'Header', height: '73px', style: 'z-axis: 1;', components: [
+			{name: 'headerText', content: 'asdf', flex: 1, className: 'topic'},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
 			{kind: enyo.ToolButton, icon: 'enyo/images/buddies-down.png', onclick: 'showNickList', name: 'nicklistButton'},
 			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', onclick: 'closeButton'},
@@ -52,7 +52,9 @@ enyo.kind({
 		this.addClass(enyo.application.p.get('listStyle'));
 		this.$.client.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.messageListener = enyo.bind(this, 'queueRefresh');
+		this.topicListener = enyo.bind(this, 'topicRefresh');
 		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
+		enyo.application.e.listen('channel-topic' + this.channel.getNameSimple(), this.topicListener);
 		enyo.application.e.listen('nick-completion', enyo.bind(this, 'completeNick'))
 	},
 	
@@ -63,14 +65,18 @@ enyo.kind({
 			this.channel.messages[0].setup.last = true;
 		}
 		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
+		enyo.application.e.stopListening('channel-topic' + this.channel.getNameSimple(), this.topicListener);
 		return this.inherited(arguments);
 	},
 	
 	rendered: function() {
 	    this.inherited(arguments);
-		this.$.headerText.setContent(this.channel.setup.name);
+		this.topicRefresh();
 	},
 	
+	topicRefresh: function() {
+		this.$.headerText.setContent(this.channel.setup.topic || this.channel.setup.name);
+	},
 	
 	queueRefresh: function() {
 		enyo.job('refreshMessages', enyo.bind(this, 'refreshMessages'), 5);

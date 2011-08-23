@@ -14,7 +14,7 @@ enyo.kind({
 			onWindowHidden: 'windowHiddenHandler', onWindowShown: 'windowShownHandler',
 			onWindowActivated: 'windowActivatedHandler', onWindowDeactivated: 'windowDeactivatedHandler'},*/
 	
-		{name: 'header', kind: 'Header', components: [
+		{name: 'header', kind: 'Header', height: '73px', components: [
 			{name: 'headerText', content: 'asdf', flex: 1},
 			//{kind: 'Button', caption: 'o', onclick: 'test', className: 'close'},
 			{kind: enyo.ToolButton, icon: 'enyo/images/close-down.png', onclick: 'closeButton'},

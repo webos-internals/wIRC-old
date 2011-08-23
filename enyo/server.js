@@ -169,7 +169,7 @@ enyo.kind({
 		name = this.formatChannelName(name);
 		var tmp = this.getChannel(name);
 		if (!tmp){
-			tmp = new wirc.Channel({name: name, key: key, nicks: []}, this);
+			tmp = new wirc.Channel({name: name, key: key, nicks: [], topic: ''}, this);
 			this.channels.push(tmp);
 			enyo.application.e.dispatch('main-crud'); // refresh main list
 		}
