@@ -29,7 +29,8 @@ body {
 }
 
 .main-panel .enyo-sliding-view-shadow {
-	right: -22px;
+	left: auto;
+	right: -20px;
 	background-image: url(../images/sliding-blank-shadow.png);
 }
 .blank-slider .enyo-sliding-view-shadow {
