@@ -208,8 +208,11 @@ body {
 }
 
 .topic {
-	font-size: 65%;
+	font-size: 85%;
 	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .message-toolbar {

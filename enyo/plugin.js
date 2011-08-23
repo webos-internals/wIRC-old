@@ -230,11 +230,20 @@ enyo.kind({
 		
 		switch(event) {
 			
+			case 324: // RPL_CHANNELMODEIS
+				var chan = server.getOrCreateChannel(params[1]);
+				if (chan) {
+					chan.setup.mode = params[2];
+					enyo.application.e.dispatch('channel-mode' + chan.getNameSimple());
+				}
+				break;
+				
 			case 332: // RPL_TOPIC
 				var chan = server.getOrCreateChannel(params[1]);
-				if (chan)
+				if (chan) {
 					chan.setup.topic = params[2];
 					enyo.application.e.dispatch('channel-topic' + chan.getNameSimple());
+				}
 				break;
 			
 			case 353: // RPL_NAMREPLY

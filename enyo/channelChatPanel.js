@@ -52,9 +52,9 @@ enyo.kind({
 		this.addClass(enyo.application.p.get('listStyle'));
 		this.$.client.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.messageListener = enyo.bind(this, 'queueRefresh');
-		this.topicListener = enyo.bind(this, 'topicRefresh');
+		this.headerListener = enyo.bind(this, 'headerRefresh');
 		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
-		enyo.application.e.listen('channel-topic' + this.channel.getNameSimple(), this.topicListener);
+		enyo.application.e.listen('channel-topic' + this.channel.getNameSimple(), this.headerListener);
 		enyo.application.e.listen('nick-completion', enyo.bind(this, 'completeNick'))
 	},
 	
@@ -65,17 +65,24 @@ enyo.kind({
 			this.channel.messages[0].setup.last = true;
 		}
 		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
-		enyo.application.e.stopListening('channel-topic' + this.channel.getNameSimple(), this.topicListener);
+		enyo.application.e.stopListening('channel-topic' + this.channel.getNameSimple(), this.headerListener);
+		enyo.application.e.stopListening('channel-mode' + this.channel.getNameSimple(), this.headerListener);
 		return this.inherited(arguments);
 	},
 	
 	rendered: function() {
 	    this.inherited(arguments);
-		this.topicRefresh();
+		this.headerRefresh();
 	},
 	
-	topicRefresh: function() {
-		this.$.headerText.setContent(this.channel.setup.topic || this.channel.setup.name);
+	headerRefresh: function() {
+		var mode = this.channel.setup.mode ? ',' + this.channel.setup.mode : '';
+		this.$.headerText.setContent(
+			this.channel.setup.name + ' (' + 
+			this.channel.setup.nicks.length + 
+			mode +
+			') ' + this.channel.setup.topic
+		);
 	},
 	
 	queueRefresh: function() {
