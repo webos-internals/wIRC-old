@@ -143,6 +143,8 @@ enyo.kind({
 		if (this.$.nicklist.showing)
 			this.$.nicklist.close();
 		else {
+			this.error(enyo.application.m.previewHeight())
+			this.$.nicklist.domStyles['margin-bottom'] = enyo.application.m.previewHeight() + 54 + 'px'
 			this.$.nicklist.open();
 			this.$.nicks.render();
 		}
