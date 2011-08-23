@@ -230,6 +230,19 @@ body {
 	margin: 1px 0 2px 50px;
 }
 
+.op {
+	background-color: rgba(255,128,128,.15);
+}
+.halfop {
+	background-color: rgba(128,255,128,.15);
+}
+.voiced {
+	background-color: rgba(255,255,128,.15);
+}
+.member {
+	background-color: rgba(128,128,255,.15);
+}
+
 .nick-item {
 }
 

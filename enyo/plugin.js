@@ -274,8 +274,15 @@ enyo.kind({
 				var chan = server.getOrCreateChannel(params[2]);
 				if (chan) {
 					var nicks = params[3].split(' ');
-					for (i in nicks)
-						chan.setup.nicks.push(nicks[i])
+					for (i in nicks) {
+						var nick = nicks[i];
+						var c = nick[0];
+						if (c === '!' || c === '.' || c === '@' || c === '%' || c === '+')
+							nick = nick.substring(1);
+						else
+							c = '';
+						chan.setup.nicks.push({mode:c,nick:nick});
+					}
 				}
 				break;
 				

@@ -139,13 +139,10 @@ enyo.kind({
 		var nicks = [];
 		var start = 0;
 		for (i in this.setup.nicks) {
-			var nick = this.setup.nicks[i]
-			var c = nick[0];
-			if (c === '!' || c === '.' || c === '@' || c === '%' || c === '+')
-				nick = nick.substring(1);
-			if (nick.toLowerCase().indexOf(completionText.toLowerCase()) === 0) {
-				nicks.push(nick)
-				if (nick.toLowerCase() === oldNick)
+			var n = this.setup.nicks[i]
+			if (n.nick.toLowerCase().indexOf(completionText.toLowerCase()) === 0) {
+				nicks.push(n.nick)
+				if (n.nick.toLowerCase() === oldNick)
 					start = nicks.length
 			}
 		}
@@ -166,22 +163,22 @@ enyo.kind({
 	},
 	
 	sortByMode: function(a,b) {
-		if (a[0] == '@' && b[0] != '@')
+		if (a.mode == '@' && b.mode != '@')
 			return -1
-		else if (a[0] != '@' && b[0] == '@')
+		else if (a.mode != '@' && b.mode == '@')
 			return 1
 		else {
-			if (a[0] == '%' && b[0] != '%')
+			if (a.mode == '%' && b.mode != '%')
 				return -1
-			else if (a[0] != '%' && b[0] == '%')
+			else if (a.mode != '%' && b.mode == '%')
 				return 1
 			else {
-				if (a[0] == '+' && b[0] != '+')
+				if (a.mode == '+' && b.mode != '+')
 					return -1
-				else if (a[0] != '+' && b[0] == '+')
+				else if (a.mode != '+' && b.mode == '+')
 					return 1
 				else
-					return this.sortByNick(a.substring(1).toLowerCase(),b.substring(1).toLowerCase())
+					return this.sortByNick(a.nick.toLowerCase(),b.nick.toLowerCase())
 			}
 		}
 	},

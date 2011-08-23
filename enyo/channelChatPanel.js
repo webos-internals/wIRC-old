@@ -18,7 +18,7 @@ enyo.kind({
 			onWindowHidden: 'windowHiddenHandler', onWindowShown: 'windowShownHandler',
 			onWindowActivated: 'windowActivatedHandler', onWindowDeactivated: 'windowDeactivatedHandler'},*/
 	
-		{name: "nicklist", kind: "Pullout", style: "width: 180px; top: 64px; bottom: 0; margin-bottom: 54px;", className: "enyo-bg", flyInFrom: "right", onOpen: "pulloutToggle", onClose: "closeRightPullout", components: [
+		{name: "nicklist", kind: "Pullout", style: "width: 180px; top: 73px; bottom: 0; margin-bottom: 54px;", className: "enyo-bg", flyInFrom: "right", onOpen: "pulloutToggle", onClose: "closeRightPullout", components: [
 			{name: 'nicks', kind: 'FlyweightList', height: '100%', onSetupRow: 'setupNick', className: 'messages', components: [
 				{kind: 'wirc.NickItem', name: 'nick'}
 		    ]},
@@ -118,7 +118,7 @@ enyo.kind({
 	
 	setupNick: function(inSender, inIndex) {
 		if (this.channel.setup.nicks[inIndex]) {
-			this.$.nick.setupItem(this.channel.setup.nicks[inIndex]);
+			this.$.nick.setupItem(this.channel.setup.nicks,inIndex);
 			return true;
 		}
 		return false;
