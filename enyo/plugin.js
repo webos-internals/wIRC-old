@@ -234,18 +234,42 @@ enyo.kind({
 				var chan = server.getOrCreateChannel(params[1]);
 				if (chan) {
 					chan.setup.mode = params[2];
+					chan.newMessage('status', null, 'Mode: ' + params[2]);
 					enyo.application.e.dispatch('channel-mode' + chan.getNameSimple());
 				}
 				break;
-				
+
+			case 329: // RPL_CREATIONTIME
+				var chan = server.getOrCreateChannel(params[1]);
+				if (chan) {
+					this.error(params)
+					var newDate = new Date();
+					newDate.setTime(params[2]*1000);
+					dateString = newDate.toUTCString();
+					chan.newMessage('status', null, 'Channel ' + params[1] + ' created on ' + dateString);
+					enyo.application.e.dispatch('channel-mode' + chan.getNameSimple());
+				}
+				break;
+
 			case 332: // RPL_TOPIC
 				var chan = server.getOrCreateChannel(params[1]);
 				if (chan) {
 					chan.setup.topic = params[2];
+					chan.newMessage('status', null, 'Topic for ' + params[1] + ' is "' + params[2] + '"');
 					enyo.application.e.dispatch('channel-topic' + chan.getNameSimple());
 				}
 				break;
-			
+
+			case 333:
+				var chan = server.getOrCreateChannel(params[1]);
+				if (chan) {
+					var newDate = new Date();
+					newDate.setTime(params[3]*1000);
+					dateString = newDate.toUTCString();
+					chan.newMessage('status', null, 'Topic set by ' + params[2] + ' on ' + dateString);
+				}
+				break;
+
 			case 353: // RPL_NAMREPLY
 				var chan = server.getOrCreateChannel(params[2]);
 				if (chan) {

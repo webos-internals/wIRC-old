@@ -45,15 +45,17 @@ enyo.kind({
 		this.messages.unshift(m);
 		enyo.application.e.dispatch('channel-message' + this.getNameSimple());
 		
-		var mm = new wirc.PreviewMessage({
-			type: type,
-			nick: nick,
-			text: text,
-			self: (nick == this.server.setup.nicks[0]),
-			num: 0,
-			chan: this.getNameSimple(),
-		});
-		enyo.application.e.dispatch('preview-message', mm);
+		if (type != 'status') {
+			var mm = new wirc.PreviewMessage({
+				type: type,
+				nick: nick,
+				text: text,
+				self: (nick == this.server.setup.nicks[0]),
+				num: 0,
+				chan: this.getNameSimple(),
+			});
+			enyo.application.e.dispatch('preview-message', mm);
+		}
 	},
 	
 	newCommand: function(command) {
