@@ -44,16 +44,16 @@ enyo.kind({
 		});
 		this.messages.unshift(m);
 		enyo.application.e.dispatch('channel-message' + this.getNameSimple());
+		
 		var mm = new wirc.PreviewMessage({
 			type: type,
 			nick: nick,
 			text: text,
 			self: (nick == this.server.setup.nicks[0]),
-			num: enyo.application.m.messages.length,
+			num: 0,
 			chan: this.getNameSimple(),
-		}); 
-		enyo.application.m.messages.unshift(mm);
-		enyo.application.e.dispatch('channel-message');
+		});
+		enyo.application.e.dispatch('preview-message', mm);
 	},
 	
 	newCommand: function(command) {

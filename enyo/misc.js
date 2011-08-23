@@ -8,6 +8,11 @@ enyo.kind({
 	kind: enyo.Control,
 	className: 'toolbar-shadow',
 });
+enyo.kind({
+	name: 'enyo.PreviewShadow',
+	kind: enyo.Control,
+	className: 'preview-shadow',
+});
 
 enyo.kind({
 	name: 'wirc.SlidingView',

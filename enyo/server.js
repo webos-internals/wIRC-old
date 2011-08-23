@@ -70,7 +70,7 @@ enyo.kind({
 			case wirc.Server.stateDisrupted:			message = "Connection disrupted, no internet connection";	break;
 		}
 		if (message) this.newMessage('status', false, message);
-		//enyo.application.e.dispatch('server-status' + this.setup.id);
+		enyo.application.e.dispatch('server-status' + this.setup.id);
 	},
 	
 	getState: function() {
@@ -82,7 +82,7 @@ enyo.kind({
 	},
 	
 	newMessage: function(type, nick, text) {
-		var m = new wirc.Message({
+		var m = new wirc.BufferMessage({
 			type: type,
 			nick: nick,
 			text: text,

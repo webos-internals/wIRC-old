@@ -3,7 +3,8 @@ body {
 }
 
 .header-shadow,
-.toolbar-shadow {
+.toolbar-shadow,
+.preview-shadow {
 	position: relative; 
 	z-index: 100;
 	height: 3px;
@@ -20,12 +21,11 @@ body {
 	margin-top: -3px;
 	background: transparent url('../images/toolbar-shadow.png') top repeat-x;
 }
-
-.woot-shadow {
+.preview-shadow {
 	top: 0;
+	height: 21px;
 	margin-bottom: -21px;
 	background: transparent url(../images/blank-shadow.png) top repeat-x;
-	z-index: 50;
 }
 
 .main-panel .enyo-sliding-view-shadow {

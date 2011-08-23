@@ -8,11 +8,11 @@ server-message{id}: called to update server messages display
 
 channel-status{name}: called to update the channel item in the main list
 channel-message{name}: called to update chat messages display
+preview-message: called when any channel has a new message, the message item is sent to the callback
 
 ** Keybind Events
 main-list-up: 
 main-list-down:
-nick-completion: 
 
 */
 

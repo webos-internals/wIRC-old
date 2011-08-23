@@ -52,7 +52,6 @@ enyo.kind({
 			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
 		}
 		else this.error('no localStorage?');
-		this.set();
 	},
 	save: function(prefs) {
 		this.prefs = prefs;
