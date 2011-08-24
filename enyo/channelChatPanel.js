@@ -101,6 +101,7 @@ enyo.kind({
 	nicklistRefresh: function() {
 		this.error('nick list refresh!!!');
 		this.nicks = this.channel.getListNicks();
+		this.nicks.sort(ircNick.sortByMode);
 		this.headerRefresh();
 	},
 	

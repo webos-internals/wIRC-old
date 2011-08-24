@@ -9,7 +9,6 @@ function ircNick (params) {
 			if (this.channels.indexOf(channel) === -1 || !channel.containsNick(this)) {
 				if (!channel.containsNick(this)) {
 					channel.addNick(this);
-					enyo.log('adding nick',this.name,channel)
 				}
 				if(this.channels.indexOf(channel) === -1)
 					this.channels.push(channel);
@@ -87,4 +86,22 @@ ircNick.getModeNum = function(mode) {
 		case 'v':	return 6;
 		default:	return 7;
 	}
+};
+
+ircNick.sortByName = function(a,b) {
+	if (a > b)
+		return 1;
+	else if (a < b)
+		return -1;
+	else
+		return 0;
+};
+	
+ircNick.sortByMode = function(a,b) {
+	if (ircNick.getModeNum(a.mode) < ircNick.getModeNum(b.mode))
+		return -1;
+	if (ircNick.getModeNum(a.mode) > ircNick.getModeNum(b.mode))
+		return 1;
+	else
+		return ircNick.sortByName(a.name.toLowerCase(),b.name.toLowerCase())
 };

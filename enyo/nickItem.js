@@ -22,11 +22,11 @@ enyo.kind({
 		
 		this.$.nick.setContent(n.name);
 		
-		if (n.mode == '@')
+		if (n.prefix == '@')
 			this.addClass('op');
-		else if (n.mode == '%')
+		else if (n.prefix == '%')
 			this.addClass('halfop');
-		else if (n.mode == '+')
+		else if (n.prefix == '+')
 			this.addClass('voiced');
 		else
 			this.addClass('member');
@@ -36,11 +36,11 @@ enyo.kind({
 			this.$.divider.domStyles["border-bottom"] = "none"
 			this.$.divider.domStyles["border-top"] = "none"
 			this.$.nick.domStyles["border-top"] = "none"
-			if (n.mode == '@')
+			if (n.prefix == '@')
 				this.$.divider.setContent('Ops');
-			else if (n.mode == '%')
+			else if (n.prefix == '%')
 				this.$.divider.setContent('Half-Ops');
-			else if (n.mode == '+')
+			else if (n.prefix == '+')
 				this.$.divider.setContent('Voiced');
 			else
 				this.$.divider.setContent('Members');
