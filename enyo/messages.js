@@ -59,6 +59,7 @@ enyo.kind({
 		
 		this.generateCache();
 		
+		item.setClassName(item.defaultClassName);
 		item.addClass(this._cache.classes.join(' '));
 		item.addRemoveClass('alt', (this.setup.num % 2) == 0);
 		item.addRemoveClass('last', this.setup.last);
@@ -98,6 +99,8 @@ enyo.kind({
 	name: 'wirc.MessageItem',
 	kind: enyo.Item,
 	layoutKind: 'HFlexLayout',
+	
+	defaultClassName: 'enyo-item',
 	
 	/*published: {
 		message: ''

@@ -75,10 +75,15 @@ enyo.kind({
 	
 	test: function() {
 		this.log();	
-		for (var x = 0; x < 100; x++) {
-			this.server.newMessage('status', false, 'test - '+x);
-		}
-		this.queueRefresh();
+		/*
+		this.server.newMessage('action', 'actionnick', 'actiontext');
+		this.server.newMessage('privmsg', 'privmsgnick', 'privmsgtext');
+		this.server.newMessage('privmsg', 'privmsgnick', 'privmsgtext');
+		this.server.newMessage('notice', '', 'noticetext');
+		this.server.newMessage('notice', false, 'noticetext');
+		this.server.newMessage('notice', 'noticenick', 'noticetext');
+		this.server.newMessage('privmsg', 'reallylongokthisisajokerightprivmsgnick', 'privmsgtext');
+		*/
 	},
 	
 	setupMessage: function(inSender, inIndex) {

@@ -92,7 +92,10 @@ enyo.kind({
 		if (css) css.style.backgroundColor = this.prefs.colorBackground;
 		
 		var css = this.addCssRule(dom, '.messages-panel .message-row');
-		if (css) css.style.fontSize = this.prefs.fontSize;
+		if (css) {
+			css.style.color = this.prefs.colorText;
+			css.style.fontSize = this.prefs.fontSize;
+		}
 		
 		var css = this.addCssRule(dom, '.messages-panel .message-row.alt');
 		if (css) {
@@ -109,13 +112,10 @@ enyo.kind({
 		var css = this.addCssRule(dom, '.messages-panel .message-row.status');
 		if (css) css.style.color = this.prefs.colorStatus;
 		
-		var css = this.addCssRule(dom, '.messages-panel .message-row.privmsg');
-		if (css) css.style.color = this.prefs.colorText;
-		
-		var css = this.addCssRule(dom, '.messages-panel .message-row.self .nick');
+		var css = this.addCssRule(dom, '.messages-panel .message-row.privmsg.self .nick');
 		if (css) css.style.color = this.prefs.colorOwnNick;
 		
-		var css = this.addCssRule(dom, '.messages-panel .message-row .nick');
+		var css = this.addCssRule(dom, '.messages-panel .message-row.privmsg .nick');
 		if (css) css.style.color = this.prefs.colorOtherNicks;
 		
 		var css = this.addCssRule(dom, '.messages-panel .message-row.last');
