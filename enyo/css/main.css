@@ -250,16 +250,16 @@ body {
 }
 
 .op {
-	background-color: rgba(255,128,128,.15);
+	background: -webkit-gradient(linear, left top, right top, from(rgba(255,128,128,.15)), to(#fff), color-stop(0.7, #fff));
 }
 .halfop {
-	background-color: rgba(128,255,128,.15);
+	background: -webkit-gradient(linear, left top, right top, from(rgba(128,255,128,.15)), to(#fff), color-stop(0.7, #fff));
 }
 .voiced {
-	background-color: rgba(255,255,128,.15);
+	background: -webkit-gradient(linear, left top, right top, from(rgba(255,255,128,.15)), to(#fff), color-stop(0.7, #fff));
 }
 .member {
-	background-color: rgba(128,128,255,.15);
+	background: -webkit-gradient(linear, left top, right top, from(rgba(128,128,255,.15)), to(#fff), color-stop(0.7, #fff));
 }
 
 .nick-divider {
