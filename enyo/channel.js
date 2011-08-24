@@ -34,7 +34,7 @@ enyo.kind({
 	},
 	
 	newMessage: function(type, nick, text) {
-		var m = new wirc.BufferMessage({
+		var m = new wirc.Message({
 			type: type,
 			nick: nick,
 			text: text,
@@ -46,7 +46,7 @@ enyo.kind({
 		enyo.application.e.dispatch('channel-message' + this.getNameSimple());
 		
 		if (type != 'status') {
-			var mm = new wirc.PreviewMessage({
+			var mm = new wirc.Message({
 				type: type,
 				nick: nick,
 				text: text,

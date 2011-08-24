@@ -17,6 +17,8 @@ enyo.kind({
 			listStyle: 'fixed',
 			listBackground: 'alt',
 			
+			fontSize: '14px',
+			
 			colorBackground: '#f5f5f5',
 			colorBackgroundAlt: '#EBEBEB',
 			colorNotice: '#FF4500',
@@ -25,6 +27,7 @@ enyo.kind({
 			colorText: '#000000',
 			colorOwnNick: '#000000',
 			colorOtherNicks: '#008000',
+			colorMarkerLine: '#ff0000',
 			
 			// notifications
 			alertWords: [],
@@ -57,6 +60,7 @@ enyo.kind({
 		this.prefs = prefs;
 		if (localStorage) {
 			localStorage[this.lsvar] = enyo.json.stringify(this.prefs);
+			enyo.application.e.dispatch('preferences-saved');
 			return true;
 		} else {
 			this.error('no localStorage?');
@@ -81,8 +85,20 @@ enyo.kind({
 	
 	buildCss: function(dom) {
 		
+		var css = this.addCssRule(dom, '.fixed-splitter');
+		if (css) css.style.fontSize = this.prefs.fontSize;
+		
 		var css = this.addCssRule(dom, '.messages-panel .messages');
 		if (css) css.style.backgroundColor = this.prefs.colorBackground;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row');
+		if (css) css.style.fontSize = this.prefs.fontSize;
+		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.alt');
+		if (css) {
+			if (this.prefs.listBackground == 'alt') css.style.backgroundColor = this.prefs.colorBackgroundAlt;
+			else css.style.backgroundColor = null;
+		}
 		
 		var css = this.addCssRule(dom, '.messages-panel .message-row.notice');
 		if (css) css.style.color = this.prefs.colorNotice;
@@ -102,6 +118,8 @@ enyo.kind({
 		var css = this.addCssRule(dom, '.messages-panel .message-row .nick');
 		if (css) css.style.color = this.prefs.colorOtherNicks;
 		
+		var css = this.addCssRule(dom, '.messages-panel .message-row.last');
+		if (css) css.style.borderBottomColor = this.prefs.colorMarkerLine;
 		
 	},
 	

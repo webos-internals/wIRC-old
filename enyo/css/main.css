@@ -162,49 +162,68 @@ body {
 
 
 .messages-panel .message-row {
+	position: relative;
 	border: 0;
-	padding: 0px 10px 0px 10px;
-	font-size: 0.7em;
-}
-.messages-panel .message-row .chan {
-	color: black;
-	padding-left: 3px;
-}
-.messages-panel .message-row .nick {
-	padding-right: 10px;
-	/*padding-left: 35px;*/
+	padding: 0.1em 0.8em 0.1em 0.4em;
 }
 .messages-panel .message-row .timestamp {
-	/*position: absolute;
-	padding-right: 3px;*/
+	padding-right: 0.4em;
 	color: #666;
 }
-.messages-panel .message-row .preview {
-	padding-left: 3px;
-	padding-right: 3px;
+.messages-panel .message-row .chan {
+	display: none;
 }
+.preview-panel .message-row .chan {
+	display: block;
+	color: black;
+	padding-right: 0.4em;
+}
+.messages-panel .message-row .nick {
+}
+.messages-panel .message-row .text {
+}
+.messages-panel .message-row.last {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+.preview-panel .message-row.last {
+	border: 0;
+}
+
 
 .messages-panel.fixed .fixed-splitter {
 	display: block;
 	position: absolute;
-	left: 0px;
-	width: 169px;
+	left: 0em;
+	width: 12em;
 	height: 100%;
 	border-right: 1px solid #000;
 }
-.messages-panel.fixed .message-row .nick {
-	width: 115px;
-	text-align: right;
+.preview-panel.fixed .fixed-splitter {
+	width: 20.4em;
+}
+.messages-panel.fixed .message-row .timestamp {
+	width: 3em;
+}
+.preview-panel.fixed .message-row .chan {
+	width: 8em;
+	text-align: left;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-
-.messages-panel.left .message-row .nick {
-	padding-right: 5px;
+.messages-panel.fixed .message-row .nick {
+	width: 8em;
+	text-align: right;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-right: 0.6em;
 }
+
 .messages-panel.left .message-row:not(.no-sep) .nick:after {
 	content: ':';
+	margin-right: 0.4em;
 }
 
 .topic {
@@ -294,3 +313,5 @@ body {
 	font-size: 16px;
 	font-weight: bold;
 }
+
+

@@ -56,6 +56,21 @@ enyo.kind({
 					
 				]},
 				
+				{kind: 'RowGroup', width: '400px', caption: 'Text', components: [
+				
+					{name: 'fontSize', kind: 'wi.ListSelector', label: 'Font Size', items: [
+				        {caption: '10px', value: '10px'},
+				        {caption: '12px', value: '12px'},
+				        {caption: '14px', value: '14px'},
+				        {caption: '16px', value: '16px'},
+				        {caption: '18px', value: '18px'},
+				        {caption: '20px', value: '20px'},
+				        {caption: '22px', value: '22px'},
+				        {caption: '24px', value: '24px'},
+				    ]},
+					
+				]},
+				
 				{kind: 'RowGroup', width: '400px', caption: 'Color Scheme', components: [
 				
 					{name: 'colorBackground', kind: 'wi.InputColor', caption: 'Background'},
@@ -66,6 +81,7 @@ enyo.kind({
 					{name: 'colorText', kind: 'wi.InputColor', caption: 'Text'},
 					{name: 'colorOwnNick', kind: 'wi.InputColor', caption: 'Own Nick'},
 					{name: 'colorOtherNicks', kind: 'wi.InputColor', caption: 'Other Nicks'},
+					{name: 'colorMarkerLine', kind: 'wi.InputColor', caption: 'Marker Line'},
 					
 				]},
 			]},
@@ -150,6 +166,8 @@ enyo.kind({
 		this.$.listBackground.setValue(this.prefs.listBackground);
 		this.listBackgroundChanged();
 		
+		this.$.fontSize.setValue(this.prefs.fontSize);
+		
 		this.$.colorBackground.setValue(this.prefs.colorBackground);
 		this.$.colorBackgroundAlt.setValue(this.prefs.colorBackgroundAlt);
 		this.$.colorNotice.setValue(this.prefs.colorNotice);
@@ -158,6 +176,7 @@ enyo.kind({
 		this.$.colorText.setValue(this.prefs.colorText);
 		this.$.colorOwnNick.setValue(this.prefs.colorOwnNick);
 		this.$.colorOtherNicks.setValue(this.prefs.colorOtherNicks);
+		this.$.colorMarkerLine.setValue(this.prefs.colorMarkerLine);
 		
 		// notifications
 		this.$.alertWords.setValue(this.prefs.alertWords);
@@ -212,6 +231,8 @@ enyo.kind({
 		this.prefs.listStyle = this.$.listStyle.getValue();
 		this.prefs.listBackground = this.$.listBackground.getValue();
 		
+		this.prefs.fontSize = this.$.fontSize.getValue();
+		
 		this.prefs.colorBackground = this.$.colorBackground.getValue();
 		this.prefs.colorBackgroundAlt = this.$.colorBackgroundAlt.getValue();
 		this.prefs.colorNotice = this.$.colorNotice.getValue();
@@ -220,6 +241,7 @@ enyo.kind({
 		this.prefs.colorText = this.$.colorText.getValue();
 		this.prefs.colorOwnNick = this.$.colorOwnNick.getValue();
 		this.prefs.colorOtherNicks = this.$.colorOtherNicks.getValue();
+		this.prefs.colorMarkerLine = this.$.colorMarkerLine.getValue();
 		
 		// notifications
 		this.prefs.alertWords = this.$.alertWords.getValue();

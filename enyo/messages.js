@@ -19,7 +19,7 @@ enyo.kind({
 			this._cache = {
 				classes:	['message-row', this.setup.type],
 				rowStyle:	{},
-				chan:		(this.setup.chan || ''),
+				chan:		(this.setup.chan ? '<#' + this.setup.chan + '>' : ''),
 				nick:		(this.setup.nick || ''),
 				nickStyle:	{},
 				text:		(this.setup.text || ''),
@@ -39,7 +39,7 @@ enyo.kind({
 				
 				case 'action':
 					this._cache.classes.push('no-sep');
-					this._cache.nick = '*';
+					this._cache.nick = '*&nbsp;';
 					this._cache.text = this.setup.nick + ' ' + this.setup.text;
 					break;
 				
@@ -60,20 +60,14 @@ enyo.kind({
 		this.generateCache();
 		
 		item.addClass(this._cache.classes.join(' '));
+		item.addRemoveClass('alt', (this.setup.num % 2) == 0);
+		item.addRemoveClass('last', this.setup.last);
 		
 		for (var s in this._cache.rowStyle)	 item.applyStyle(s, this._cache.rowStyle[s]);
 		for (var s in this._cache.nickStyle) item.$.nick.applyStyle(s, this._cache.nickStyle[s]);
 		for (var s in this._cache.textStyle) item.$.text.applyStyle(s, this._cache.textStyle[s]);
 		
-		if (this._cache.chan) {
-			item.$.chan.setContent('<#'+this._cache.chan+'>');
-			item.$.nick.setClassName('preview');
-			//item.$.nick.setStyle('padding-left','3px');
-			item.$.chan.setShowing(true);
-		} else {
-			item.$.chan.setShowing(false);
-		}
-		
+		item.$.chan.setContent(this._cache.chan);
 		item.$.nick.setContent(this._cache.nick);
 		item.$.text.setContent(this._cache.text);
 		
@@ -101,41 +95,6 @@ enyo.kind({
 });
 
 enyo.kind({
-	name: 'wirc.BufferMessage',
-	kind: 'wirc.Message',
-	
-	setupItem: function(item) {
-		this.inherited(arguments);
-		
-		/*
-		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
-			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
-		else
-			item.applyStyle('background-color', null);
-		*/
-		if (this.setup.last)
-			item.applyStyle('border-bottom','1px solid red;');
-		else
-			item.applyStyle('border-bottom','none;');
-	}
-});
-
-enyo.kind({
-	name: 'wirc.PreviewMessage',
-	kind: 'wirc.Message',
-	
-	setupItem: function(item) {
-		this.inherited(arguments);
-		/*
-		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
-			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
-		else
-			item.applyStyle('background-color', null);
-			*/
-	}
-});
-
-enyo.kind({
 	name: 'wirc.MessageItem',
 	kind: enyo.Item,
 	layoutKind: 'HFlexLayout',
@@ -146,9 +105,9 @@ enyo.kind({
 	
 	components: [
 		{name: 'timestamp', className: 'timestamp'},
-		{name: 'chan', classname: 'chan', showing: false},
-        {name: 'nick', className: 'nick'},
-        {name: 'text', className: 'text', flex: 1},
+		{name: 'chan', className: 'chan', allowHtml: true},
+        {name: 'nick', className: 'nick', allowHtml: true},
+        {name: 'text', className: 'text', allowHtml: true, flex: 1},
 	],
 	
 	/*

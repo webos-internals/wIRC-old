@@ -11,9 +11,9 @@ enyo.kind({
 		
 		{kind: 'PreviewShadow'},
 		
-		//{className: 'fixed-splitter'},
+		{className: 'fixed-splitter'},
 		
-		{name: 'messagesContainer', height: '100%', style: 'position: relative; overflow: hidden;', components: [
+		{name: 'messagesContainer', className: 'messages', height: '100%', style: 'position: relative; overflow: hidden;', components: [
 			{name: 'messages', className: 'messages', style: 'position: absolute; bottom: 0; right: 0; left: 0'},
 		]},
 		
@@ -21,24 +21,30 @@ enyo.kind({
 	
 	initComponents: function() {
 	    this.inherited(arguments);
-		this.addClass('preview-panel');
-		this.addClass('messages-panel');
-		this.addClass(enyo.application.p.get('listStyle'));
-		this.$.messagesContainer.applyStyle('background-color', enyo.application.p.get('colorBackground'));
-		this.$.messages.applyStyle('background-color', enyo.application.p.get('colorBackground'));
+		
+		this.addClass('preview-panel messages-panel');
+		this.updateClasses();
+		
 		this.messageListener = enyo.bind(this, 'queueRefresh');
+		this.classesListener = enyo.bind(this, 'updateClasses');
 		enyo.application.e.listen('preview-message', this.messageListener);
+		enyo.application.e.listen('preferences-saved', this.classesListener);
 	},
 	
 	destroy: function() {
 		enyo.application.e.stopListening('preview-message', this.messageListener);
+		enyo.application.e.stopListening('preferences-saved', this.classesListener);
 		return this.inherited(arguments);
+	},
+	
+	updateClasses: function() {
+		this.removeClass('fixed'); this.removeClass('left');
+		this.addClass(enyo.application.p.get('listStyle'));
 	},
 	
 	queueRefresh: function(msg) {
 		msg.setup.num = this.messageNum;
 		this.messageNum++;
-		this.log(msg);
 		this.messages.push(msg);
 		if (this.messages.length > this.messagesToShow) this.messages.shift();
 		enyo.job('refreshPreviewMessages', enyo.bind(this, 'refreshMessages'), 5);
@@ -49,7 +55,6 @@ enyo.kind({
 	},
 	
 	updateList: function() {
-		this.log(this.messages.length);
 		this.$.messages.destroyControls();
 		for (var m = 0; m < this.messages.length; m++) {
 			this.$.messages.createComponent({name: 'message-' + m, kind: 'wirc.MessageItem'}, {owner: this});

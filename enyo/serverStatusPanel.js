@@ -37,8 +37,10 @@ enyo.kind({
 	
 	initComponents: function() {
 	    this.inherited(arguments);
+		
 		this.addClass('messages-panel');
 		this.addClass(enyo.application.p.get('listStyle'));
+		
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		enyo.application.e.listen('server-message' + this.server.setup.id, this.messageListener);
 	},

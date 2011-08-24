@@ -82,7 +82,7 @@ enyo.kind({
 	},
 	
 	newMessage: function(type, nick, text) {
-		var m = new wirc.BufferMessage({
+		var m = new wirc.Message({
 			type: type,
 			nick: nick,
 			text: text,
@@ -91,14 +91,15 @@ enyo.kind({
 		this.messages.unshift(m); // for bottomUp flyweight
 		//this.messages.push(m); // for generating rows
 		enyo.application.e.dispatch('server-message' + this.setup.id);
-		/* // used to test
-		var mm = new wirc.PreviewMessage({
+		
+		/*// used to test
+		var mm = new wirc.Message({
 			type: type,
 			nick: nick,
 			text: text,
 			self: false,
 			num: 0,
-			chan: 'wooo',
+			chan: this.setup.alias,
 		});
 		enyo.application.e.dispatch('preview-message', mm);*/
 	},
