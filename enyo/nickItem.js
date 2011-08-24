@@ -1,15 +1,19 @@
 enyo.kind({
 	name: 'wirc.NickItem',
-	kind: enyo.Item,
+	kind: enyo.Control,
+	tapHighlight: true,
+	
 	
 	components: [
-		{kind: 'Divider', name: 'divider', showing: false},
-		{
-			layoutKind: 'HFlexLayout', className: 'nick-item', components: [
-				//{name: 'mode', className: 'mode'},
-        		{name: 'nick', className: 'nick', flex: 1}
-			]
-		}
+		{kind: 'Item', name: 'divider', showing: false, className: 'nick-divider'},
+		{kind: enyo.Item, tapHighlight: true, components: [
+			{
+				layoutKind: 'HFlexLayout', className: 'nick-item', components: [
+					//{name: 'mode', className: 'mode'},
+	        		{name: 'nick', className: 'nick', flex: 1}
+				]
+			}
+		]}
 	],
 	
 	setupItem: function(nicks, inIndex) {
@@ -29,15 +33,17 @@ enyo.kind({
 		
 		if (inIndex==0 || n.mode != nicks[inIndex-1].mode) {
 			this.$.divider.setShowing(true);
+			this.$.divider.domStyles["border-bottom"] = "none"
+			this.$.divider.domStyles["border-top"] = "none"
 			this.$.nick.domStyles["border-top"] = "none"
 			if (n.mode == '@')
-				this.$.divider.setCaption('Ops');
+				this.$.divider.setContent('Ops');
 			else if (n.mode == '%')
-				this.$.divider.setCaption('Half-Ops');
+				this.$.divider.setContent('Half-Ops');
 			else if (n.mode == '+')
-				this.$.divider.setCaption('Voiced');
+				this.$.divider.setContent('Voiced');
 			else
-				this.$.divider.setCaption('Members');
+				this.$.divider.setContent('Members');
 		} else {
 			this.$.divider.setShowing(false);
 		}
