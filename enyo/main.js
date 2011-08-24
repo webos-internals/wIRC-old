@@ -32,6 +32,7 @@ enyo.kind({
 	    this.inherited(arguments);
 		this.createBlankPanel();
 		enyo.application.m.setController(this);
+		enyo.application.p.buildCss(document);
 		enyo.setFullScreen(enyo.application.p.get('fullscreen'));
 		this.$.preview.setShowing(enyo.application.p.get('showPreview'));
 	},

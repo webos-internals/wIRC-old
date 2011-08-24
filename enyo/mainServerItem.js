@@ -61,8 +61,8 @@ enyo.kind({
 			enyo.application.m.createPanel({name: 'server-status-' + this.server.setup.id, kind: 'wirc.ServerStatusPanel', server: this.server});
 		
 		
-		// for testing
-		/*this.server.newMessage('action', 'actionnick', 'actiontext');
+		/* // for testing
+		this.server.newMessage('action', 'actionnick', 'actiontext');
 		this.server.newMessage('privmsg', 'privmsgnick', 'privmsgtext');
 		this.server.newMessage('privmsg', 'privmsgnick', 'privmsgtext');
 		this.server.newMessage('notice', '', 'noticetext');

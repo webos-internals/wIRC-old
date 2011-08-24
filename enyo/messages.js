@@ -17,7 +17,7 @@ enyo.kind({
 	generateCache: function() {
 		if (this._cache == '') {
 			this._cache = {
-				classes:	['message-row'],
+				classes:	['message-row', this.setup.type],
 				rowStyle:	{},
 				chan:		(this.setup.chan || ''),
 				nick:		(this.setup.nick || ''),
@@ -31,27 +31,22 @@ enyo.kind({
 				
 				case 'status':
 					this._cache.classes.push('no-sep');
-					this._cache.rowStyle['color'] = enyo.application.p.get('colorStatus');
 					break;
 					
 				case 'notice':
 					if (!this._cache.nick) this._cache.classes.push('no-sep');
-					this._cache.rowStyle['color'] = enyo.application.p.get('colorNotice');
 					break;
 				
 				case 'action':
 					this._cache.classes.push('no-sep');
 					this._cache.nick = '*';
 					this._cache.text = this.setup.nick + ' ' + this.setup.text;
-					this._cache.rowStyle['color'] = enyo.application.p.get('colorAction');
 					break;
 				
 				case 'privmsg':
-					this._cache.rowStyle['color'] = enyo.application.p.get('colorText');
-					if (this.setup.self)
-						this._cache.nickStyle['color'] = enyo.application.p.get('colorOwnNick');
-					else
-						this._cache.nickStyle['color'] = enyo.application.p.get('colorOtherNicks');
+					if (this.setup.self) this._cache.classes.push('self');
+					// else if (random) get the nicks color and set it with nickStyle like below
+					//	this._cache.nickStyle['color'] = enyo.application.p.get('colorOtherNicks');
 					break;
 				
 				default:
@@ -112,11 +107,12 @@ enyo.kind({
 	setupItem: function(item) {
 		this.inherited(arguments);
 		
+		/*
 		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
 			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
 		else
 			item.applyStyle('background-color', null);
-		
+		*/
 		if (this.setup.last)
 			item.applyStyle('border-bottom','1px solid red;');
 		else
@@ -130,10 +126,12 @@ enyo.kind({
 	
 	setupItem: function(item) {
 		this.inherited(arguments);
+		/*
 		if (enyo.application.p.get('listBackground') == 'alt' && (this.setup.num % 2) == 0)
 			item.applyStyle('background-color', enyo.application.p.get('colorBackgroundAlt'));
 		else
 			item.applyStyle('background-color', null);
+			*/
 	}
 });
 
@@ -174,6 +172,7 @@ enyo.kind({
 	
 	create: function() {
 	    this.inherited(arguments);
+		// move this to be handled by prefs css color setting code
 		this.applyStyle('background-color', enyo.application.p.get('colorBackground'));
 		this.applyStyle('color', enyo.application.p.get('colorText'));
 	},

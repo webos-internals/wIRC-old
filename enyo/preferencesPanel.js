@@ -233,6 +233,7 @@ enyo.kind({
 		// actually save
 		var saved = enyo.application.p.save(this.prefs);
 		if (saved) {
+			enyo.application.p.buildCss(document);
 			this.owner.destroySecondary(true);
 		}
 		else {
