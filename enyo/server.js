@@ -110,6 +110,7 @@ enyo.kind({
 			this.commands.push(command);
 			
 			var cmdRegExp = new RegExp(/^\/([^\s]*)[\s]*(.*)$/); // move this
+			var twoValRegExp = new RegExp(/^([^\s]*)[\s]{0,1}(.*)$/); // move this
 			
 			var m = cmdRegExp.exec(command);
 			if (m) {
@@ -123,6 +124,30 @@ enyo.kind({
 					case 'join': case 'j':
 						var vals = val.split(" ");
 						enyo.application.pm.call('cmd_join', this.setup.id, vals[0], vals[1]||null);
+						break;
+						
+					case 'msg':
+						var tmpMatch = twoValRegExp.exec(val);
+						if (tmpMatch) {
+							var n = Math.ceil(tmpMatch[2].length / 255);
+							var i = 0;
+							var msg = '';
+							for (;i<n;i++) {
+								if (i < (n - 1))
+									msg = tmpMatch[2].substring(i * 255, (i + 1) * 255)
+								else
+									msg = tmpMatch[2].substring(i * 255);
+								enyo.application.pm.call('cmd_msg', this.setup.id, tmpMatch[1], msg||null);
+								this.newMessage('privmsg', this.setup.nicks[0], msg); // Fix, dont use nicks directly
+								/*
+								 * We need to direct the above message to the correct query window if necessary
+								 */
+							}
+						}
+						break;
+						
+					case 'quote':
+						enyo.application.pm.call('send_raw', this.setup.id, val);
 						break;
 						
 					case 'nick':
