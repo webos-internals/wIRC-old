@@ -293,15 +293,15 @@ enyo.kind({
 				if (chan) {
 					var nicks = params[3].split(' ');
 					for (i in nicks) {
-						var nick = nicks[i];
-						var c = nick[0];
-						if (c === '!' || c === '.' || c === '@' || c === '%' || c === '+')
-							nick = nick.substring(1);
-						else
-							c = '';
-						tmpNick = server.getNick(nick);
+						var prefixNick = '';
+						var onlyNick = nicks[i];
+						if (ircNick.hasPrefix(onlyNick)) {
+							prefixNick = nicks[i].substr(0, 1);
+							onlyNick = nicks[i].substr(1);
+						}
+						tmpNick = server.getNick(onlyNick);
 						if (tmpNick)
-							tmpNick.addChannel(chan,c);
+							tmpNick.addChannel(chan, ircNick.getPrefixMode(prefixNick));
 					}
 				}
 				break;
