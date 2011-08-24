@@ -113,11 +113,29 @@ enyo.kind({
 		var params = this.parseJson(params_s,'JOIN');
 		
 		var nick = server.getNick(origin);
-		if (nick == server.setup.nicks[0])
+		if (nick == server.setup.nicks[0]) // Need to not use nicks
   			enyo.nextTick(function() {server.joinChannel(params[0])});
+		enyo.nextTick(function() {
+			var chan = server.getOrCreateChannel(params[0]);
+			if (chan) {
+				chan.newMessage('status', '-->', nick + ' (' + origin.split("!")[1] + ') has joined ' + params[0]);
+			}
+		});
+		
   	},
   	eventPart: function(id, event, origin, params_s) {
   		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		
+  		var id = parseInt(id);
+		var server = enyo.application.s.getFromId(id);
+		var params = this.parseJson(params_s,'PART');
+		
+		var nick = server.getNick(origin);
+		// Remove channel from server list or something?
+		var chan = server.getOrCreateChannel(params[0]);
+		if (chan) {
+			chan.newMessage('status', '<--', nick + ' (' + origin.split("!")[1] + ') has left ' + params[0] + ' (' + params[1] + ')');
+		}
   	},
   	
 	eventInvite: function(id, event, origin, params_s) {
