@@ -177,6 +177,8 @@ enyo.kind({
 	getNick: function(string) {
 		var nickParser = new RegExp(/^([^\s]*)!(.*)$/);
 		
+		this.log(this.nicks)
+		
 		if (string.substr(0, 1) == '#')
 			return false;
 		var m = nickParser.exec(string);

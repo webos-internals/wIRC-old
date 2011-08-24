@@ -213,7 +213,9 @@ enyo.kind({
 	getListNicks: function() {
 		var returnArray = [];
 		if (this.server.nicks.length > 0) {
+			//this.warn(this.server.nicks.length, this.server.nicks);
 			for (var n = 0; n < this.server.nicks.length; n++){
+				//this.warn(this.server.nicks[n], this.server.nicks[n].channels);
 				if (this.server.nicks[n].channels.indexOf(this) > -1)
 					returnArray.push(this.server.nicks[n].getListObject(this));
 			}

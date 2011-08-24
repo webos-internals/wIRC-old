@@ -307,9 +307,9 @@ enyo.kind({
 				break;
 				
 			case 366: // RPL_ENDOFNAMES
-				/*var chan = server.getOrCreateChannel(params[1]);
+				var chan = server.getOrCreateChannel(params[1]);
 				if (chan)
-					chan.sortNicks();*/
+					chan.updateUserCount();
 				break;
 			
 			case 372: // MOTD

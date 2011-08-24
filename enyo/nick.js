@@ -7,8 +7,10 @@ function ircNick (params) {
 	this.addChannel = function(channel, mode) {
 		if (channel) {
 			if (this.channels.indexOf(channel) === -1 || !channel.containsNick(this)) {
-				if (!channel.containsNick(this))
+				if (!channel.containsNick(this)) {
 					channel.addNick(this);
+					enyo.log('adding nick',this.name,channel)
+				}
 				if(this.channels.indexOf(channel) === -1)
 					this.channels.push(channel);
 				if (mode) this.channelModes[channel.name] = [mode];

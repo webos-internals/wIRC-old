@@ -20,7 +20,7 @@ enyo.kind({
 		
 		var n = nicks[inIndex];
 		
-		this.$.nick.setContent(n.nick);
+		this.$.nick.setContent(n.name);
 		
 		if (n.mode == '@')
 			this.addClass('op');

@@ -12,6 +12,8 @@ enyo.kind({
 	text: false,
 	nick: false,
 	
+	nicks: [],
+	
 	components: [
 	
 		/*{kind: 'ApplicationEvents', onResize:'doResize',
@@ -54,9 +56,12 @@ enyo.kind({
 		
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		this.headerListener = enyo.bind(this, 'headerRefresh');
+		this.nickListListener = enyo.bind(this, 'nicklistRefresh');
 		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		enyo.application.e.listen('channel-topic' + this.channel.getNameSimple(), this.headerListener);
 		enyo.application.e.listen('nick-completion', enyo.bind(this, 'completeNick'))
+		enyo.application.e.listen('update-user-count' + this.channel.getNameSimple(), this.nickListListener);
+		this.nicklistRefresh();
 	},
 	
 	destroy: function() {
@@ -68,6 +73,7 @@ enyo.kind({
 		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		enyo.application.e.stopListening('channel-topic' + this.channel.getNameSimple(), this.headerListener);
 		enyo.application.e.stopListening('channel-mode' + this.channel.getNameSimple(), this.headerListener);
+		enyo.application.e.stopListening('update-user-count' + this.channel.getNameSimple(), this.nickListListener);
 		return this.inherited(arguments);
 	},
 	
@@ -80,7 +86,7 @@ enyo.kind({
 		var mode = this.channel.setup.mode ? ',' + this.channel.setup.mode : '';
 		this.$.headerText.setContent(
 			this.channel.setup.name + ' (' + 
-			this.channel.setup.nicks.length + 
+			this.nicks.length + 
 			mode +
 			') ' + this.channel.setup.topic
 		);
@@ -91,6 +97,11 @@ enyo.kind({
 	},
 	refreshMessages: function() {
 		this.$.messages.refresh();
+	},
+	nicklistRefresh: function() {
+		this.error('nick list refresh!!!');
+		this.nicks = this.channel.getListNicks();
+		this.headerRefresh();
 	},
 	
 	resizeHandler: function() { // application resize (orientation change/keyboard pop)
@@ -118,8 +129,8 @@ enyo.kind({
 	},
 	
 	setupNick: function(inSender, inIndex) {
-		if (this.channel.setup.nicks[inIndex]) {
-			this.$.nick.setupItem(this.channel.setup.nicks,inIndex);
+		if (this.nicks[inIndex]) {
+			this.$.nick.setupItem(this.nicks,inIndex);
 			return true;
 		}
 		return false;
