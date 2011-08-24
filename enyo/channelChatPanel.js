@@ -99,7 +99,6 @@ enyo.kind({
 		this.$.messages.refresh();
 	},
 	nicklistRefresh: function() {
-		this.error('nick list refresh!!!');
 		this.nicks = this.channel.getListNicks();
 		this.nicks.sort(ircNick.sortByMode);
 		this.headerRefresh();
@@ -169,7 +168,6 @@ enyo.kind({
 		if (this.$.nicklist.showing)
 			this.$.nicklist.close();
 		else {
-			this.error(enyo.application.m.previewHeight())
 			this.$.nicklist.domStyles['margin-bottom'] = enyo.application.m.previewHeight() + 54 + 'px'
 			this.$.nicklist.open();
 			this.$.nicks.render();

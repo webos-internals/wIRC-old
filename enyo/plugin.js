@@ -174,8 +174,7 @@ enyo.kind({
 		}
   	},
   	eventPrivmsg: function(id, event, origin, params_s) {
-  		//if (this.dumpLog) this.log(id, event, origin, params_s);
-  		this.log(id, event, origin, params_s);
+  		if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventNotice: function(id, event, origin, params_s) {
   		if (this.dumpLog) this.log(id, event, origin, params_s);
