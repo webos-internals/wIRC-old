@@ -242,7 +242,6 @@ enyo.kind({
 			case 329: // RPL_CREATIONTIME
 				var chan = server.getOrCreateChannel(params[1]);
 				if (chan) {
-					this.error(params)
 					var newDate = new Date();
 					newDate.setTime(params[2]*1000);
 					dateString = newDate.toUTCString();
