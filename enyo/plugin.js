@@ -113,12 +113,12 @@ enyo.kind({
 		var params = this.parseJson(params_s,'JOIN');
 		
 		var nick = server.getNick(origin);
-		if (nick == server.setup.nicks[0]) // Need to not use nicks
+		if (nick.name == server.setup.nicks[0]) // Need to not use nicks
   			enyo.nextTick(function() {server.joinChannel(params[0])});
 		enyo.nextTick(function() {
 			var chan = server.getOrCreateChannel(params[0]);
 			if (chan) {
-				chan.newMessage('status', '-->', nick + ' (' + origin.split("!")[1] + ') has joined ' + params[0]);
+				chan.newMessage('status', '-->', nick.name + ' (' + origin.split("!")[1] + ') has joined ' + params[0]);
 			}
 		});
 		
@@ -134,7 +134,7 @@ enyo.kind({
 		// Remove channel from server list or something?
 		var chan = server.getOrCreateChannel(params[0]);
 		if (chan) {
-			chan.newMessage('status', '<--', nick + ' (' + origin.split("!")[1] + ') has left ' + params[0] + ' (' + params[1] + ')');
+			chan.newMessage('status', '<--', nick.name + ' (' + origin.split("!")[1] + ') has left ' + params[0] + ' (' + params[1] + ')');
 		}
   	},
   	
@@ -166,7 +166,7 @@ enyo.kind({
 		{
 			var nick = server.getNick(origin);
 			//tmpNick.addChannel(tmpChan);
-			chan.newMessage('privmsg', nick, params[1]);
+			chan.newMessage('privmsg', nick.name, params[1]);
 			if (enyo.application.m.controller.secondary != 'channel-chat-' + chan.getNameSimple()) {
 				chan.unread = chan.unread + 1
 				enyo.application.e.dispatch('main-crud'); // refresh main list
@@ -206,7 +206,7 @@ enyo.kind({
 		var nick = server.getNick(origin);
 		var chan = server.getChannel(params[0]);
 		if (chan)
-			chan.newMessage('action', nick, params[1]);
+			chan.newMessage('action', nick.name, params[1]);
 		else
 		{
   			if (this.dumpLog) this.log(id, event, origin, params_s);
@@ -299,15 +299,18 @@ enyo.kind({
 							nick = nick.substring(1);
 						else
 							c = '';
-						chan.setup.nicks.push({mode:c,nick:nick});
+						tmpNick = server.getNick(nick);
+						if (tmpNick)
+							tmpNick.addChannel(chan,c);
 					}
 				}
 				break;
 				
 			case 366: // RPL_ENDOFNAMES
-				var chan = server.getOrCreateChannel(params[1]);
+				/*var chan = server.getOrCreateChannel(params[1]);
 				if (chan)
-					chan.sortNicks();
+					chan.sortNicks();*/
+				break;
 			
 			case 372: // MOTD
 			case 375: // MOTDSTART

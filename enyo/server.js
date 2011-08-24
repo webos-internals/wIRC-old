@@ -9,6 +9,8 @@ enyo.kind({
 	commands: '',
 	
 	channels: '',
+	nicks: [],
+	nickHash: {},
 	
 	unread: 0,
 	
@@ -183,22 +185,19 @@ enyo.kind({
 		else
 			var nick = string;
 		
-		/*
-		if (this.nicks.length > 0)
-		{
-			var nickNum = this.nickHash.get(getNick.toLowerCase());
-			if (nickNum != undefined)
-			{
-				this.nicks[nickNum-1].name = getNick;
+		if (this.nicks.length > 0) {
+			var nickNum = this.nickHash[nick.toLowerCase()];
+			if (nickNum != undefined) {
+				this.nicks[nickNum-1].name = nick;
 				return this.nicks[nickNum-1];
 			}
 		}
 		
-		var tmpNick = new ircNick({name:getNick});
+		var tmpNick = new ircNick({name:nick});
 		this.nicks.push(tmpNick);
-		this.nickHash.set(getNick.toLowerCase(), this.nicks.length);
-		*/
-		return nick;
+		this.nickHash[nick.toLowerCase()] = this.nicks.length;
+
+		return tmpNick;
 	},
 	
 	getOrCreateChannel:function(name, key) {

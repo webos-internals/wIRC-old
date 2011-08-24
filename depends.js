@@ -4,6 +4,8 @@ enyo.depends(
 	
 	"enyo/wi/depends.js",
 	
+	"enyo/nick.js",
+	
 	"enyo/misc.js",
 	"enyo/preferencesPanel.js",
 	"enyo/server.js",

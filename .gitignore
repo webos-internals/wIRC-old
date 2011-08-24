@@ -2,5 +2,5 @@
 *.o
 *~
 .DS_Store
+.settings
 plugin/libpdl/libpdl.so
-plugin/wirc

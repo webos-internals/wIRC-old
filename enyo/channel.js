@@ -185,6 +185,40 @@ enyo.kind({
 	
 	sortNicks: function() {
 		this.setup.nicks.sort(enyo.bind(this, 'sortByMode'));
+	},
+	
+	addNick: function(nick) {
+		if (this.setup.nicks.indexOf(nick) === -1) {
+			this.setup.nicks.push(nick);
+			this.updateUserCount();
+		}
+	},
+
+	removeNick: function(nick) {
+		if (this.setup.nicks.indexOf(nick) !== -1) {
+			this.setup.nicks = this.setup.nicks.without(nick);
+			if (!nick.me)
+				this.updateUserCount();
+		}
+	},
+	
+	containsNick: function(nick) {
+		return (this.setup.nicks.indexOf(nick) !== -1);
+	},
+	
+	updateUserCount: function() {
+		enyo.application.e.dispatch('update-user-count' + this.getNameSimple());
+	},
+	
+	getListNicks: function() {
+		var returnArray = [];
+		if (this.server.nicks.length > 0) {
+			for (var n = 0; n < this.server.nicks.length; n++){
+				if (this.server.nicks[n].channels.indexOf(this) > -1)
+					returnArray.push(this.server.nicks[n].getListObject(this));
+			}
+		}
+		return returnArray;
 	}
 	
 });
