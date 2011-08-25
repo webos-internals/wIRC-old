@@ -8,6 +8,8 @@ enyo.kind({
 	joined: false,
 	display: false,
 	
+	nicks: [],
+
 	messages: '',
 	commands: '',
 	
@@ -138,8 +140,8 @@ enyo.kind({
 	completeNick: function(completionText, oldNick) {
 		var nicks = [];
 		var start = 0;
-		for (i in this.setup.nicks) {
-			var n = this.setup.nicks[i]
+		for (i in this.nicks) {
+			var n = this.nicks[i]
 			if (n.nick.toLowerCase().indexOf(completionText.toLowerCase()) === 0) {
 				nicks.push(n.nick)
 				if (n.nick.toLowerCase() === oldNick)
@@ -154,31 +156,23 @@ enyo.kind({
 	},
 	
 	sortNicks: function() {
-		this.setup.nicks.sort(enyo.bind(this, 'sortByMode'));
+		this.nicks.sort(enyo.bind(this, 'sortByMode'));
 	},
 	
 	addNick: function(nick) {
-		if (this.setup.nicks.indexOf(nick) === -1) {
-			this.setup.nicks.push(nick);
-			this.warn('nick added', nick.name)
-			this.updateUserCount();
-		}
+		if (!this.nicks[nick.name])
+			this.nicks[nick.name] = nick;
+		enyo.asyncMethod(this, 'updateUserCount');
 	},
 
 	removeNick: function(nick) {
-		this.error(nick.name)
-		var idx = this.setup.nicks.indexOf(nick);
-		if (idx !== -1) {
-			this.error('REMOVING',idx,nick,this.setup.nicks)
-			this.setup.nicks.splice(idx,1);
-			this.warn('nick removed', nick)
-			//if (!nick.me)
-				this.updateUserCount();
-		}
+		if (this.nicks[nick.name])
+			delete this.nicks[nick.name];
+		enyo.asyncMethod(this, 'updateUserCount');
 	},
 	
 	containsNick: function(nick) {
-		return (this.setup.nicks.indexOf(nick) !== -1);
+		return this.nicks[nick.name] ? true :  false;
 	},
 	
 	updateUserCount: function() {
@@ -187,13 +181,9 @@ enyo.kind({
 	
 	getListNicks: function() {
 		var returnArray = [];
-		if (this.server.nicks.length > 0) {
-			//this.warn(this.server.nicks.length, this.server.nicks);
-			for (var n = 0; n < this.server.nicks.length; n++){
-				//this.warn(this.server.nicks[n], this.server.nicks[n].channels);
-				if (this.server.nicks[n].channels.indexOf(this) > -1)
-					returnArray.push(this.server.nicks[n].getListObject(this));
-			}
+		for (var nick in this.server.nicks) {
+			if (this.server.nicks[nick].channels[this.name])
+				returnArray.push(this.server.nicks[nick].getListObject(this));
 		}
 		return returnArray;
 	}

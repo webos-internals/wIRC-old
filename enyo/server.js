@@ -10,7 +10,6 @@ enyo.kind({
 	
 	channels: '',
 	nicks: [],
-	nickHash: {},
 	
 	unread: 0,
 	
@@ -173,38 +172,28 @@ enyo.kind({
 		}
 	},
 	
-	
 	getNick: function(string) {
 		var nickParser = new RegExp(/^([^\s]*)!(.*)$/);
 		
-		if (string.substr(0, 1) == '#')
-			return false;
 		var m = nickParser.exec(string);
 		if (m)
 			var nick = m[1];
 		else
 			var nick = string;
 		
-		if (this.nicks.length > 0) {
-			var nickNum = this.nickHash[nick.toLowerCase()];
-			if (nickNum != undefined) {
-				this.nicks[nickNum-1].name = nick;
-				return this.nicks[nickNum-1];
-			}
-		}
+		if (this.nicks[nick])
+			return this.nicks[nick];
 		
-		var tmpNick = new ircNick({name:nick});
-		this.nicks.push(tmpNick);
-		this.nickHash[nick.toLowerCase()] = this.nicks.length;
+		this.nicks[nick] = new ircNick({name:nick});
 
-		return tmpNick;
+		return this.nicks[nick];
 	},
 	
 	getOrCreateChannel:function(name, key) {
 		name = this.formatChannelName(name);
 		var tmp = this.getChannel(name);
 		if (!tmp){
-			tmp = new wirc.Channel({name: name, key: key, nicks: [], topic: '', mode: ''}, this);
+			tmp = new wirc.Channel({name: name, key: key, topic: '', mode: ''}, this);
 			this.channels.push(tmp);
 			enyo.application.e.dispatch('main-crud'); // refresh main list
 		}
@@ -244,7 +233,7 @@ enyo.kind({
 		if (enyo.application.cm.isInternetConnectionAvailable()) {
 			this.setState(wirc.Server.stateConnecting);
 			try {
-				this.nicks = [] // XXX: WHY THE FUCK IS THIS NEEDED?
+				this.nicks = {}; // XXX: WHY THE FUCK IS THIS NEEDED?
 		  		return enyo.application.pm.call(
 		  			'connect',
 		  			this.setup.id,

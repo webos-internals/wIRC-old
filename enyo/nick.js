@@ -1,19 +1,17 @@
 function ircNick (params) {
 	
 	this.name = params.name;
-	this.channels = [];
+	this.channels = {};
 	this.channelModes = [];
-	
-}
-	
+};
+
 ircNick.prototype.addChannel = function(channel, mode) {
 	if (channel) {
-		if (this.channels.indexOf(channel) === -1 || !channel.containsNick(this)) {
-			if (!channel.containsNick(this)) {
+		if (!this.channels[channel.name] || !channel.containsNick(this)) {
+			if (!channel.containsNick(this))
 				channel.addNick(this);
-			}
-			if(this.channels.indexOf(channel) === -1)
-				this.channels.push(channel);
+			if(!this.channels[channel.name])
+				this.channels[channel.name] = channel;
 			if (mode) this.channelModes[channel.name] = [mode];
 			else this.channelModes[channel.name] = [];
 		}
@@ -22,9 +20,8 @@ ircNick.prototype.addChannel = function(channel, mode) {
 
 ircNick.prototype.removeChannel = function(channel) {
 	if (channel) {
-		enyo.log(this)
 		channel.removeNick(this);
-		this.channels = this.channels.without(channel);
+		delete this.channels[channel.name];
 		this.channelModes[channel.name] = null;
 	}
 };

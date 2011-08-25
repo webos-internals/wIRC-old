@@ -56,12 +56,11 @@ enyo.kind({
 		
 		this.messageListener = enyo.bind(this, 'queueRefresh');
 		this.headerListener = enyo.bind(this, 'headerRefresh');
-		this.nickListListener = enyo.bind(this, 'nicklistRefresh');
+		this.nicklistListener = enyo.bind(this, 'nicklistRefresh');
 		enyo.application.e.listen('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		enyo.application.e.listen('channel-topic' + this.channel.getNameSimple(), this.headerListener);
 		enyo.application.e.listen('nick-completion', enyo.bind(this, 'completeNick'))
-		enyo.application.e.listen('update-user-count' + this.channel.getNameSimple(), this.nickListListener);
-		this.nicklistRefresh();
+		enyo.application.e.listen('update-user-count' + this.channel.getNameSimple(), this.nicklistListener);
 	},
 	
 	destroy: function() {
@@ -73,13 +72,13 @@ enyo.kind({
 		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		enyo.application.e.stopListening('channel-topic' + this.channel.getNameSimple(), this.headerListener);
 		enyo.application.e.stopListening('channel-mode' + this.channel.getNameSimple(), this.headerListener);
-		enyo.application.e.stopListening('update-user-count' + this.channel.getNameSimple(), this.nickListListener);
+		enyo.application.e.stopListening('update-user-count' + this.channel.getNameSimple(), this.nickListlistener);
 		return this.inherited(arguments);
 	},
 	
 	rendered: function() {
 	    this.inherited(arguments);
-		this.headerRefresh();
+		this.nicklistRefresh();
 	},
 	
 	headerRefresh: function() {
