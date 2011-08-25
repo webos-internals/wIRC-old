@@ -149,7 +149,17 @@ enyo.kind({
   		if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventTopic: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
+  		var id = parseInt(id);
+		var server = enyo.application.s.getFromId(id);
+		var params = this.parseJson(params_s,'EVENT_TOPIC');
+  		var chan = server.getOrCreateChannel(params[0]);
+		if (chan) {
+			var nick = server.getNick(origin);
+			chan.setup.topic = params[1];
+			chan.newMessage('status', null, nick.name + ' changed the topic to: \"' + params[1] + '\"');
+			enyo.application.e.dispatch('channel-topic' + chan.getNameSimple());
+		}
   	},
   	eventKick: function(id, event, origin, params_s) {
   		if (this.dumpLog) this.log(id, event, origin, params_s);
