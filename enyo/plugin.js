@@ -118,6 +118,7 @@ enyo.kind({
 		enyo.nextTick(function() {
 			var chan = server.getOrCreateChannel(params[0]);
 			if (chan) {
+				nick.addChannel(chan,'');
 				chan.newMessage('status', '-->', nick.name + ' (' + origin.split("!")[1] + ') has joined ' + params[0]);
 			}
 		});
@@ -131,9 +132,9 @@ enyo.kind({
 		var params = this.parseJson(params_s,'PART');
 		
 		var nick = server.getNick(origin);
-		// Remove channel from server list or something?
 		var chan = server.getOrCreateChannel(params[0]);
 		if (chan) {
+			nick.removeChannel(chan,'');
 			chan.newMessage('status', '<--', nick.name + ' (' + origin.split("!")[1] + ') has left ' + params[0] + ' (' + params[1] + ')');
 		}
   	},

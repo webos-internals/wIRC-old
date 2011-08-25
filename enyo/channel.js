@@ -160,14 +160,19 @@ enyo.kind({
 	addNick: function(nick) {
 		if (this.setup.nicks.indexOf(nick) === -1) {
 			this.setup.nicks.push(nick);
+			this.warn('nick added', nick.name)
 			this.updateUserCount();
 		}
 	},
 
 	removeNick: function(nick) {
-		if (this.setup.nicks.indexOf(nick) !== -1) {
-			this.setup.nicks = this.setup.nicks.without(nick);
-			if (!nick.me)
+		this.error(nick.name)
+		var idx = this.setup.nicks.indexOf(nick);
+		if (idx !== -1) {
+			this.error('REMOVING',idx,nick,this.setup.nicks)
+			this.setup.nicks.splice(idx,1);
+			this.warn('nick removed', nick)
+			//if (!nick.me)
 				this.updateUserCount();
 		}
 	},
