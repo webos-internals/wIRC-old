@@ -98,17 +98,23 @@ enyo.kind({
   	},
   	
 	eventNick: function(id, event, origin, params_s) {
-  		//if (this.dumpLog) this.log(id, event, origin, params_s);
+		if (this.dumpLog) this.log(id, event, origin, params_s);
   		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
 		var params = this.parseJson(params_s,'EVENT NICK');
 		var nick = server.getNick(origin);
-		
 		if (nick) {
+			if (nick.name == server.self)
+				server.self = params[0]
 			server.newMessage('status', null, nick.name + ' is now known as ' + params[0]);
-			for (var i in nick.channels)
+			for (var i in nick.channels) {
+				nick.channels[i].nicks[nick.name] = params[0]
+				this.error(nick.channels[i].name)
 				nick.channels[i].newMessage('status', null, nick.name + ' is now known as ' + params[0]);
-			nick.updateNickName(params[0]);
+			}
+			nick.name = params[0];
+			server.nicks[params[0]] = nick;
+			delete server.nicks[nick.name];
 		}
   	},
 	
@@ -128,14 +134,15 @@ enyo.kind({
   	},
   	
 	eventJoin: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+		//if (this.dumpLog) this.log(id, event, origin, params_s);
   		
   		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
 		var params = this.parseJson(params_s,'JOIN');
 		
 		var nick = server.getNick(origin);
-		if (nick.name == server.setup.nicks[0]) // Need to not use nicks
+
+		if (nick.name == server.self) // Need to not use nicks
   			enyo.nextTick(function() {server.joinChannel(params[0])});
 		enyo.nextTick(function() {
 			var chan = server.getOrCreateChannel(params[0]);
@@ -147,7 +154,7 @@ enyo.kind({
 		
   	},
   	eventPart: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   		
   		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
@@ -162,13 +169,13 @@ enyo.kind({
   	},
   	
 	eventInvite: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventMode: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventUmode: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventTopic: function(id, event, origin, params_s) {
   		//if (this.dumpLog) this.log(id, event, origin, params_s);
@@ -184,11 +191,11 @@ enyo.kind({
 		}
   	},
   	eventKick: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	
 	eventChannel: function(id, event, origin, params_s) {
-  		//if (this.dumpLog) this.log(id, event, origin, params_s);
+  		if (this.dumpLog) this.log(id, event, origin, params_s);
 		
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
@@ -207,13 +214,13 @@ enyo.kind({
 		}
   	},
   	eventPrivmsg: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventNotice: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventChannelNotice: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
 		
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);
@@ -256,7 +263,7 @@ enyo.kind({
   		if (this.dumpLog) this.log(id, event, origin, params_s);
   	},
   	eventNumeric: function(id, event, origin, params_s) {
-  		//if (this.dumpLog) this.log(id, event, origin, params_s);
+  		if (this.dumpLog) this.log(id, event, origin, params_s);
 		
 		var id = parseInt(id);
 		var server = enyo.application.s.getFromId(id);

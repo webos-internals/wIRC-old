@@ -82,14 +82,15 @@ enyo.kind({
 	},
 	
 	headerRefresh: function() {
-		this.warn(this.channel.name)
-		var mode = this.channel.setup.mode ? ',' + this.channel.setup.mode : '';
-		this.$.headerText.setContent(
-			this.channel.setup.name + ' (' + 
-			this.nicks.length + 
-			mode +
-			') ' + this.channel.setup.topic
-		);
+		if (this.$.header) {
+			var mode = this.channel.setup.mode ? ',' + this.channel.setup.mode : '';
+			this.$.headerText.setContent(
+				this.channel.setup.name + ' (' +
+				this.nicks.length +
+				mode +
+				') ' + this.channel.setup.topic
+			);
+		}
 	},
 	
 	queueRefresh: function() {

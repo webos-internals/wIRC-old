@@ -40,7 +40,7 @@ enyo.kind({
 			type: type,
 			nick: nick,
 			text: text,
-			self: (nick == this.server.setup.nicks[0]),
+			self: (nick == this.server.self),
 			num: this.messages.length,
 			chan: null,
 		});
@@ -52,7 +52,7 @@ enyo.kind({
 				type: type,
 				nick: nick,
 				text: text,
-				self: (nick == this.server.setup.nicks[0]),
+				self: (nick == this.server.self),
 				num: 0,
 				chan: this.getNameSimple(),
 			});
@@ -116,7 +116,7 @@ enyo.kind({
 				msg = message.substring(i * 255);
 			}
 			enyo.application.pm.call('cmd_msg', this.server.setup.id, this.setup.name, msg);
-			this.newMessage('privmsg', this.server.setup.nicks[0], msg);
+			this.newMessage('privmsg', this.server.self, msg);
 		}
 	},
 	

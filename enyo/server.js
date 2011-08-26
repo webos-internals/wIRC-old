@@ -11,6 +11,8 @@ enyo.kind({
 	channels: '',
 	nicks: [],
 	
+	self: null,
+	
 	unread: 0,
 	
 	statics: {
@@ -139,7 +141,7 @@ enyo.kind({
 								else
 									msg = tmpMatch[2].substring(i * 255);
 								enyo.application.pm.call('cmd_msg', this.setup.id, tmpMatch[1], msg||null);
-								this.newMessage('privmsg', this.setup.nicks[0], msg); // Fix, dont use nicks directly
+								this.newMessage('privmsg', this.self, msg); // Fix, dont use nicks directly
 								/*
 								 * We need to direct the above message to the correct query window if necessary
 								 */
@@ -234,6 +236,7 @@ enyo.kind({
 			this.setState(wirc.Server.stateConnecting);
 			try {
 				this.nicks = {}; // XXX: WHY THE FUCK IS THIS NEEDED?
+				this.self = this.setup.nicks[0];
 		  		return enyo.application.pm.call(
 		  			'connect',
 		  			this.setup.id,
@@ -242,7 +245,7 @@ enyo.kind({
 		  			this.setup.ssl ? 1 : 0,
 		  			this.setup.user||'wircer',
 		  			this.setup.password,
-		  			this.setup.nicks[0],
+		  			this.self,
 		  			this.setup.realname||'wIRCer on HP Touchpad'
 				);
 			} catch (e) {

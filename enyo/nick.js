@@ -5,10 +5,6 @@ function ircNick (params) {
 	this.channelModes = [];
 };
 
-ircNick.prototype.updateNickName = function(newName) {
-	this.name = newName;
-};
-
 ircNick.prototype.addChannel = function(channel, mode) {
 	if (channel) {
 		if (!this.channels[channel.name] || !channel.containsNick(this)) {
