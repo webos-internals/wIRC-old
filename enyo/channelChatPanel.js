@@ -72,7 +72,7 @@ enyo.kind({
 		enyo.application.e.stopListening('channel-message' + this.channel.getNameSimple(), this.messageListener);
 		enyo.application.e.stopListening('channel-topic' + this.channel.getNameSimple(), this.headerListener);
 		enyo.application.e.stopListening('channel-mode' + this.channel.getNameSimple(), this.headerListener);
-		enyo.application.e.stopListening('update-user-count' + this.channel.getNameSimple(), this.nickListlistener);
+		enyo.application.e.stopListening('update-user-count' + this.channel.getNameSimple(), this.nicklistlistener);
 		return this.inherited(arguments);
 	},
 	
@@ -82,6 +82,7 @@ enyo.kind({
 	},
 	
 	headerRefresh: function() {
+		this.warn(this.channel.name)
 		var mode = this.channel.setup.mode ? ',' + this.channel.setup.mode : '';
 		this.$.headerText.setContent(
 			this.channel.setup.name + ' (' + 

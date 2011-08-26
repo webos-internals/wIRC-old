@@ -286,4 +286,9 @@ enyo.kind({
 		this.setState(wirc.Server.stateDisrupted);
 	},
 	
+	removeNick: function(nick) {
+		for (var i in this.channels)
+			this.channels[i].removeNick(nick);
+	}
+	
 });

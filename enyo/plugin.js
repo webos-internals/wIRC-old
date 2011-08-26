@@ -98,11 +98,33 @@ enyo.kind({
   	},
   	
 	eventNick: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
+  		var id = parseInt(id);
+		var server = enyo.application.s.getFromId(id);
+		var params = this.parseJson(params_s,'EVENT NICK');
+		var nick = server.getNick(origin);
+		
+		if (nick) {
+			server.newMessage('status', null, nick.name + ' is now known as ' + params[0]);
+			for (var i in nick.channels)
+				nick.channels[i].newMessage('status', null, nick.name + ' is now known as ' + params[0]);
+			nick.updateNickName(params[0]);
+		}
   	},
 	
   	eventQuit: function(id, event, origin, params_s) {
-  		if (this.dumpLog) this.log(id, event, origin, params_s);
+  		//if (this.dumpLog) this.log(id, event, origin, params_s);
+  		
+  		var id = parseInt(id);
+		var params = this.parseJson(params_s,'EVENT QUIT');
+		var server = enyo.application.s.getFromId(id);
+		var nick = server.getNick(origin);
+
+		if (nick) {
+			for (var i in nick.channels)
+				nick.channels[i].newMessage('status', null, nick.name + ' has quit (' + params + ')');
+			server.removeNick(nick);
+		}
   	},
   	
 	eventJoin: function(id, event, origin, params_s) {
