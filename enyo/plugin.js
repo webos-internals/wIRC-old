@@ -106,15 +106,12 @@ enyo.kind({
 		if (nick) {
 			if (nick.name == server.self)
 				server.self = params[0]
-			server.newMessage('status', null, nick.name + ' is now known as ' + params[0]);
-			for (var i in nick.channels) {
-				nick.channels[i].nicks[nick.name] = params[0]
-				this.error(nick.channels[i].name)
-				nick.channels[i].newMessage('status', null, nick.name + ' is now known as ' + params[0]);
+			if (nick.name != params[0]) {
+				server.newMessage('status', null, nick.name + ' is now known as ' + params[0]);								
+				server.nicks[params[0]] = server.nicks[nick.name];
+				delete server.nicks[nick.name];
+				server.nicks[params[0]].updateNickName(params[0]);
 			}
-			nick.name = params[0];
-			server.nicks[params[0]] = nick;
-			delete server.nicks[nick.name];
 		}
   	},
 	

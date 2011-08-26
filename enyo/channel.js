@@ -186,6 +186,12 @@ enyo.kind({
 				returnArray.push(this.server.nicks[nick].getListObject(this));
 		}
 		return returnArray;
+	},
+	
+	updateNickName: function(oldName, newName) {
+		this.nicks[newName] = this.nicks[oldName]
+		delete this.nicks[oldName];
+		this.newMessage('status', null, oldName + ' is now known as ' + newName);
 	}
 	
 });
