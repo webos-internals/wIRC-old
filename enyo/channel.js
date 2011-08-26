@@ -192,7 +192,7 @@ enyo.kind({
 	updateNickName: function(oldName, newName) {
 		this.nicks[newName] = this.nicks[oldName]
 		delete this.nicks[oldName];
-		this.newMessage('status', null, oldName + ' is now known as ' + newName);
+		this.newMessage('status', '<->', oldName + ' is now known as ' + newName);
 		enyo.asyncMethod(this, 'updateUserCount');
 	}
 	

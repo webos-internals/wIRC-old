@@ -107,7 +107,7 @@ enyo.kind({
 			if (nick.name == server.self)
 				server.self = params[0]
 			if (nick.name != params[0]) {
-				server.newMessage('status', null, nick.name + ' is now known as ' + params[0]);								
+				server.newMessage('status', '<->', nick.name + ' is now known as ' + params[0]);
 				server.nicks[params[0]] = server.nicks[nick.name];
 				delete server.nicks[nick.name];
 				server.nicks[params[0]].updateNickName(params[0]);
@@ -125,7 +125,7 @@ enyo.kind({
 
 		if (nick) {
 			for (var i in nick.channels)
-				nick.channels[i].newMessage('status', null, nick.name + ' has quit (' + params + ')');
+				nick.channels[i].newMessage('status', '<--', nick.name + ' has quit (' + params + ')');
 			server.removeNick(nick);
 		}
   	},
@@ -183,7 +183,7 @@ enyo.kind({
 		if (chan) {
 			var nick = server.getNick(origin);
 			chan.setup.topic = params[1];
-			chan.newMessage('status', null, nick.name + ' changed the topic to: \"' + params[1] + '\"');
+			chan.newMessage('status', '*', nick.name + ' changed the topic to: \"' + params[1] + '\"');
 			enyo.application.e.dispatch('channel-topic' + chan.getNameSimple());
 		}
   	},
@@ -289,7 +289,7 @@ enyo.kind({
 				var chan = server.getOrCreateChannel(params[1]);
 				if (chan) {
 					chan.setup.mode = params[2];
-					chan.newMessage('status', null, 'Mode: ' + params[2]);
+					chan.newMessage('status', '***', 'Mode: ' + params[2]);
 					enyo.application.e.dispatch('channel-mode' + chan.getNameSimple());
 				}
 				break;
@@ -300,7 +300,7 @@ enyo.kind({
 					var newDate = new Date();
 					newDate.setTime(params[2]*1000);
 					dateString = newDate.toUTCString();
-					chan.newMessage('status', null, 'Channel ' + params[1] + ' created on ' + dateString);
+					chan.newMessage('status', '*', 'Channel ' + params[1] + ' created on ' + dateString);
 					enyo.application.e.dispatch('channel-mode' + chan.getNameSimple());
 				}
 				break;
@@ -309,7 +309,7 @@ enyo.kind({
 				var chan = server.getOrCreateChannel(params[1]);
 				if (chan) {
 					chan.setup.topic = params[2];
-					chan.newMessage('status', null, 'Topic for ' + params[1] + ' is "' + params[2] + '"');
+					chan.newMessage('status', '*', 'Topic for ' + params[1] + ' is "' + params[2] + '"');
 					enyo.application.e.dispatch('channel-topic' + chan.getNameSimple());
 				}
 				break;
@@ -320,7 +320,7 @@ enyo.kind({
 					var newDate = new Date();
 					newDate.setTime(params[3]*1000);
 					dateString = newDate.toUTCString();
-					chan.newMessage('status', null, 'Topic set by ' + params[2] + ' on ' + dateString);
+					chan.newMessage('status', '*', 'Topic set by ' + params[2] + ' on ' + dateString);
 				}
 				break;
 
