@@ -192,6 +192,7 @@ enyo.kind({
 		this.nicks[newName] = this.nicks[oldName]
 		delete this.nicks[oldName];
 		this.newMessage('status', null, oldName + ' is now known as ' + newName);
+		enyo.asyncMethod(this, 'updateUserCount');
 	}
 	
 });
