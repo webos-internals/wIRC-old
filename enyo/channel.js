@@ -138,13 +138,14 @@ enyo.kind({
 	},
 	
 	completeNick: function(completionText, oldNick) {
+		this.error(completionText, oldNick);
 		var nicks = [];
 		var start = 0;
 		for (i in this.nicks) {
 			var n = this.nicks[i]
-			if (n.nick.toLowerCase().indexOf(completionText.toLowerCase()) === 0) {
-				nicks.push(n.nick)
-				if (n.nick.toLowerCase() === oldNick)
+			if (n.name.toLowerCase().indexOf(completionText.toLowerCase()) === 0) {
+				nicks.push(n.name)
+				if (n.name.toLowerCase() === oldNick)
 					start = nicks.length
 			}
 		}

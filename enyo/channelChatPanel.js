@@ -102,7 +102,7 @@ enyo.kind({
 	nicklistRefresh: function() {
 		this.nicks = this.channel.getListNicks();
 		this.nicks.sort(ircNick.sortByMode);
-		if (this.$.nicklist.showing)
+		if (this.$.nicklist && this.$.nicklist.showing)
 			this.$.nicks.refresh();
 		this.headerRefresh();
 	},
