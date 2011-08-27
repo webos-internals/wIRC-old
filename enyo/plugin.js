@@ -160,8 +160,9 @@ enyo.kind({
 		var nick = server.getNick(origin);
 		var chan = server.getOrCreateChannel(params[0]);
 		if (chan) {
-			nick.removeChannel(chan,'');
 			chan.newMessage('status', '<--', nick.name + ' (' + origin.split("!")[1] + ') has left ' + params[0] + ' (' + params[1] + ')');
+			nick.removeChannel(chan,'');
+			chan.updateUserCount();
 		}
   	},
   	
@@ -189,6 +190,21 @@ enyo.kind({
   	},
   	eventKick: function(id, event, origin, params_s) {
   		//if (this.dumpLog) this.log(id, event, origin, params_s);
+		var id = parseInt(id);
+		var server = enyo.application.s.getFromId(id);
+		var params = this.parseJson(params_s,'EVENT_KICK');
+		var chan = server.getOrCreateChannel(params[0]);
+		if (chan) {
+			var tmpNick = server.getNick(params[1]);
+			var tmpNick2 = server.getNick(origin);
+			if (tmpNick) {
+				tmpNick.removeChannel(chan);
+				if (tmpNick.name == server.self) {
+					server.removeChannel(chan);
+				}
+				chan.newMessage('status', '<-*', tmpNick2.name + ' has kicked ' + tmpNick.name + ' from ' + params[0] + ' (' + params[2] + ')');
+			}
+		}
   	},
   	
 	eventChannel: function(id, event, origin, params_s) {
