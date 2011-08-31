@@ -250,16 +250,16 @@ body {
 }
 
 .op {
-	background: -webkit-gradient(linear, left top, right top, from(rgba(255,128,128,.15)), to(#fff), color-stop(0.7, #fff));
+	background: -webkit-gradient(linear, left top, left top, from(rgba(255,128,128,.15)), to(rgba(255,255,255,0)), color-stop(1, rgba(255,255,255,0)));
 }
 .halfop {
-	background: -webkit-gradient(linear, left top, right top, from(rgba(128,255,128,.15)), to(#fff), color-stop(0.7, #fff));
+	background: -webkit-gradient(linear, left top, right top, from(rgba(128,255,128,.15)), to(rgba(255,255,255,0)), color-stop(1, rgba(255,255,255,0)));
 }
 .voiced {
-	background: -webkit-gradient(linear, left top, right top, from(rgba(255,255,128,.15)), to(#fff), color-stop(0.7, #fff));
+	background: -webkit-gradient(linear, left top, right top, from(rgba(255,255,128,.15)), to(rgba(255,255,255,0)), color-stop(1, rgba(255,255,255,0)));
 }
 .member {
-	background: -webkit-gradient(linear, left top, right top, from(rgba(128,128,255,.15)), to(#fff), color-stop(0.7, #fff));
+	background: -webkit-gradient(linear, left top, right top, from(rgba(128,128,255,.15)), to(rgba(255,255,255,0)), color-stop(1, rgba(255,255,255,0)));
 }
 
 .nick-divider {
