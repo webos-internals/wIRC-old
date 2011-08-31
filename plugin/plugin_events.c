@@ -31,7 +31,7 @@ uint64_t ClockGetTime() {
 void process_event(irc_session_t * session, const char * event,
 		const char * origin, const char ** params, unsigned int count,
 		irc_callbacks type) {
-
+			
 	wIRCd_client_t *client = (wIRCd_client_t*) irc_get_ctx(session);
 
 	client->established = 1;
@@ -159,13 +159,19 @@ void process_event(irc_session_t * session, const char * event,
 	if (id)
 		free(id);
 
-	/*uint64_t cur = ClockGetTime();
+	uint64_t cur = ClockGetTime();
 	if (prev != 0) {
 		uint64_t diff = cur - prev;
-		syslog(LOG_ALERT, "Event delta: %llu, %llf", diff, 1000000.0/diff);
-		usleep(1000000.0/diff);
+		int i;
+		for (i=0; i<(int)20000.0/diff+2; i++)
+			sched_yield();
 	}
-	prev = cur;*/
+	prev = cur;
+	
+	/*sched_yield();
+	sched_yield();
+	sched_yield();
+	sched_yield();*/
 
 }
 
