@@ -1,5 +1,7 @@
 body {
-	background: #666;
+	background: #666 url(../images/blank-icon.png) center center no-repeat;
+	background-position: 68% 50%;
+	/*background-position: 75% 50%;*/
 }
 
 .header-shadow,
@@ -32,17 +34,6 @@ body {
 	left: auto;
 	right: -20px;
 	background-image: url(../images/sliding-blank-shadow.png);
-}
-.blank-slider .enyo-sliding-view-shadow {
-	left: 0;
-	background-image: url(../images/sliding-blank-shadow.png);
-}
-.blank-slider .enyo-vflexbox {
-	background: #666 url(../images/blank-icon.png) center center no-repeat;
-}
-.blank-slider .enyo-vflexbox .text {
-	font-size: 0.7em;
-	color: #999;
 }
 
 .main-list {

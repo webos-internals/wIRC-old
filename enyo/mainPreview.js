@@ -6,6 +6,7 @@ enyo.kind({
 	messagesToShow: 10,
 	messages: [],
 	messageNum: 0,
+	isDisplaying: false,
 	
 	components: [
 		
@@ -29,6 +30,8 @@ enyo.kind({
 		this.classesListener = enyo.bind(this, 'updateClasses');
 		enyo.application.e.listen('preview-message', this.messageListener);
 		enyo.application.e.listen('preferences-saved', this.classesListener);
+		
+		this.applyStyle('-webkit-transition', 'height 0.8s ease-out');
 	},
 	
 	destroy: function() {
@@ -50,7 +53,7 @@ enyo.kind({
 		enyo.job('refreshPreviewMessages', enyo.bind(this, 'refreshMessages'), 5);
 	},
 	refreshMessages: function() {
-		if (this.showing)
+		if (this.isDisplaying)
 			this.updateList();
 	},
 	
@@ -63,6 +66,22 @@ enyo.kind({
 			this.messages[m].setupItem(this.$['message-' + m]);
 		}
 		this.$.messages.render();
+	},
+	
+	setDisplay: function(value) {
+		this.isDisplaying = !value;
+		this.toggleDisplay();
+	},
+	toggleDisplay: function() {
+		if (this.isDisplaying) {
+			this.isDisplaying = false;
+			this.applyStyle('height', '125px');
+			enyo.application.p.set('showPreview', false);
+		} else {
+			this.isDisplaying = true;
+			this.applyStyle('height', '0px');
+			enyo.application.p.set('showPreview', true);
+		}
 	},
 	
 });

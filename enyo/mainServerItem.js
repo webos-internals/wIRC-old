@@ -30,6 +30,10 @@ enyo.kind({
 			]},
 			{name: 'button2', kind: 'Button', className: 'button', onclick: 'clickButton', components: [
 				{name: 'button2icon', className: 'icon'},
+			]},
+			{name: 'menu', kind: 'Menu', components: [
+				{caption: 'Join Channel'},
+				{caption: 'Preferences', className: 'prefs', icon: 'enyo/images/button-prefs.png', onclick: 'clickButton'},
 			]}
 		]},
 	],
@@ -72,18 +76,37 @@ enyo.kind({
 		
 	},
 	
+	test: function(a, b, c) {
+		this.log(a, b, c);
+	},
+
 	clickButton: function(inSender, inEvent) {
 		// row button clicks
 		inEvent.stopPropagation();
 		if (this.server != undefined) {
-			if (inSender.hasClass('connect') || inSender.hasClass('error')) {
-				this.server.connect();
-			}
-			if (inSender.hasClass('disconnect')) {
-				this.server.disconnect();
-			}
-			else if (inSender.hasClass('prefs')) {
-				enyo.application.m.createPanel({name: 'server-edit-' + this.server.setup.id, kind: 'wirc.ServerPreferencesPanel', setup: this.server.getSetup()});
+			var classes = inSender.getClassName().split(' ');
+			for (var c = 0; c < classes.length; c++) {
+				switch(classes[c]) {
+
+					case 'connect':
+					case 'error':
+						this.server.connect();
+						break;
+
+					case 'disconnect':
+						this.server.disconnect();
+						break;
+					
+					case 'prefs':
+						enyo.application.m.createPanel({name: 'server-edit-' + this.server.setup.id, kind: 'wirc.ServerPreferencesPanel', setup: this.server.getSetup()});
+						break;
+
+					case 'menu':
+						this.$.menu.openAtControl(inSender);
+						break;
+
+					default: break;
+				}
 			}
 		}
 	},

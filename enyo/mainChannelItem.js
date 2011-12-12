@@ -16,9 +16,9 @@ enyo.kind({
 	components: [
 		{name: 'title', className: 'title'},
 		{className: 'buttons', components: [
-			{name: 'button', kind: 'Button', className: 'button', onclick: 'clickButton', components: [
+			/*{name: 'button', kind: 'Button', className: 'button', onclick: 'clickButton', components: [
 				{name: 'buttonicon', className: 'icon'}
-			]},
+			]},*/
 		]},
 	],
 	
@@ -54,18 +54,8 @@ enyo.kind({
 	
 	clickButton: function(inSender, inEvent) {
 		// row button clicks
-		/*inEvent.stopPropagation();
-		if (this.server != undefined) {
-			if (inSender.hasClass('connect')) {
-				this.server.connect();
-			}
-			if (inSender.hasClass('disconnect')) {
-				this.server.disconnect();
-			}
-			else if (inSender.hasClass('prefs')) {
-				enyo.application.m.createPanel({name: 'server-edit-' + this.server.setup.id, kind: 'wirc.ServerPreferencesPanel', setup: this.server.getSetup()});
-			}
-		}*/
+		inEvent.stopPropagation();
+
 	},
 	
 	update: function() {
@@ -81,7 +71,7 @@ enyo.kind({
 		else
 			this.$.title.setClassName('title')
 		
-		this.$.button.setClassName(this.defaultButtonClass + ' menu');
+		//this.$.button.setClassName(this.defaultButtonClass + ' menu');
 
 	},
 	

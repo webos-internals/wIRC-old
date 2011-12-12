@@ -186,7 +186,7 @@ enyo.kind({
 		if (this.nicks[nick])
 			return this.nicks[nick];
 		
-		this.nicks[nick] = new ircNick({name:nick});
+		this.nicks[nick] = new wirc.Nick({name:nick});
 
 		return this.nicks[nick];
 	},

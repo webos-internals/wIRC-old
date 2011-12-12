@@ -21,6 +21,13 @@ enyo.kind({
 	/*peekWidth: 64,*/
 	dragAnywhere: false,
 	
+	dismissible: true,
+	setShowing: function(showing) {
+		this.inherited(arguments);
+		if (!showing)
+			this.owner.destroySecondary(true);
+	},
+	
 	rendered: function() {
 		this.inherited(arguments);
 		this.applySize(true);

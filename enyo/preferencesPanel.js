@@ -95,11 +95,11 @@ enyo.kind({
 			]},
 			
 			{name: 'notificationsTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-			
 				{kind: 'Group', width: '400px', caption: 'Alert Words', components: [
+
 					{name: 'alertWords', kind: 'wi.InputList', inputHint: ''},
+
 				]},
-				
 			]},
 			
 			{name: 'dccTab', layoutKind: 'VFlexLayout', align: 'center', components: [
@@ -146,7 +146,6 @@ enyo.kind({
 			{name: 'saveButton',   kind: 'Button', width: '200px', caption: 'Save',   onclick: 'saveButton',   className: 'enyo-button-affirmative'},
 			{kind: 'Spacer'},
 		]},
-		
 	],
 	
 	create: function() {
@@ -205,6 +204,8 @@ enyo.kind({
 		for (var c = 0; c < controls.length; c++) this.$[controls[c].value + 'Tab'].hide();
 		this.$[show].show();
 		
+		this.$.scroller.scrollIntoView(0, 0);
+
 		// stop keycapture on keybinds tab
 		if (show == 'keybindsTab') enyo.application.k.stopCapture();
 		else enyo.application.k.startCapture();

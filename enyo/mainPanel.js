@@ -33,7 +33,7 @@ enyo.kind({
 			{icon: 'enyo/images/toolbar-server-add-down.png', onclick: 'addServerButton'},
 			{icon: 'enyo/images/toolbar-prefs-down.png', onclick: 'preferencesButton'},
 			{icon: 'enyo/images/preview-down.png', onclick: 'previewButton'}
-		]}
+		]},
 		
 	],
 	

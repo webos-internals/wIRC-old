@@ -2,8 +2,6 @@ enyo.kind({
 	name: 'wirc.ChannelChatPanel',
 	kind: 'wirc.SlidingView',
 	
-	dismissible: true,
-	
 	published: {
 		channel: false,
 	},
@@ -159,12 +157,6 @@ enyo.kind({
 	
 	closeButton: function() {
 		this.setShowing(false)
-	},
-	
-	setShowing: function(showing) {
-		this.inherited(arguments);
-		if (!showing)
-			this.owner.destroySecondary(true);
 	},
 	
 	showNickList: function() {

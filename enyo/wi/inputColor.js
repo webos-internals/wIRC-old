@@ -59,8 +59,8 @@ enyo.kind({
 	kind: 'Popup',
 	scrim: true,
 	
-	popupBorderWidth: 24, // so says the css for the popup
-	previewWidth: 55, // the width+marginright of the preview element
+	popupBorderWidth:	24,	// so says the css for the popup
+	previewWidth:		55,	// the width+marginright of the preview element
 	
 	events: {
 		onColorSelect: ''
@@ -85,7 +85,7 @@ enyo.kind({
 			},
 			onclick: 'canvasClick',
 		},
-		{name: 'manual', className: 'manual-container', showing: false, components: [
+		{name: 'manual', className: 'manual-container'/*, showing: false*/, components: [
 			{kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
@@ -99,6 +99,10 @@ enyo.kind({
 	componentsReady: function() {
 	    this.inherited(arguments);
 		this.addClass('wi-input-color-popup');
+		//this.parent.applyStyle('-webkit-perspective', '768px'); // Y U NO WORK?
+		//this.applyStyle('-webkit-transform-style', 'preserve-3d');
+		//this.applyStyle('-webkit-transition', '-webkit-transform 0.3s ease');
+		this.$.canvas.applyStyle('-webkit-transition', 'opacity 0.6s linear');
 	},
 	
 	doOpen: function() {
@@ -165,8 +169,14 @@ enyo.kind({
 	},
 	
 	toggleManual: function(inSender, inEvent) {
-		if (this.manualShowing) this.hideManual();
-		else this.showManual()
+		if (this.manualShowing) {
+			this.hideManual();
+			//this.applyStyle('-webkit-transform', 'rotateY(0deg)');
+		}
+		else {
+			this.showManual();
+			//this.applyStyle('-webkit-transform', 'rotateY(180deg)');
+		}
 	},
 	hideManual: function() {
 		this.manualShowing = false;
