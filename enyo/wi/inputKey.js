@@ -125,6 +125,7 @@ enyo.kind({
 			value.keyCode != 16 &&	// shift
 			value.keyCode != 13) {	// enter
 			if (value.keyCode == 9) used.push('<span class="key">Tab</span>');
+			else if (value.keyCode == 32) used.push('<span class="key">Space</span>');
 			else if (value.keyCode >= 37 && value.keyCode <= 40) used.push('<span class="key">' + value.keyIdentifier + '</span>');
 			else used.push('<span class="key">' + String.fromCharCode(value.keyCode) + '</span>');
 			//used.push('(' + value.keyCode + ') ' + value.keyIdentifier);

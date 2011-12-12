@@ -147,7 +147,7 @@ enyo.kind({
 				this.nick = false;
 				if (inEvent.keyCode === 13) {
 					inEvent.preventDefault();
-					var text = this.$.input.getValue();
+					var text = this.$.input.getValue().trim();
 					if (text) this.channel.newCommand(text);
 					this.$.input.setValue('');
 				}
