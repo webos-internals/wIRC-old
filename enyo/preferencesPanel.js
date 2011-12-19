@@ -121,11 +121,9 @@ enyo.kind({
 			]},
 			
 			{name: 'aliasesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
-				{kind: 'RowGroup', width: '400px', caption: 'row heading', components: [
-				
-					{kind: 'Item', content: 'aliases'}
-					
-				]},
+				{kind: 'wi.Group', width: '400px', caption: ['Alias','Command'], components: [
+					{name: 'aliases', kind: 'wi.InputList', inputHint: '/Command'},
+				]}
 			]},
 			
 			{name: 'otherTab', layoutKind: 'VFlexLayout', align: 'center', components: [
@@ -176,6 +174,7 @@ enyo.kind({
 		this.$.colorOwnNick.setValue(this.prefs.colorOwnNick);
 		this.$.colorOtherNicks.setValue(this.prefs.colorOtherNicks);
 		this.$.colorMarkerLine.setValue(this.prefs.colorMarkerLine);
+		this.$.aliases.setValue(this.prefs.aliases);
 		
 		// notifications
 		this.$.alertWords.setValue(this.prefs.alertWords);
@@ -243,6 +242,7 @@ enyo.kind({
 		this.prefs.colorOwnNick = this.$.colorOwnNick.getValue();
 		this.prefs.colorOtherNicks = this.$.colorOtherNicks.getValue();
 		this.prefs.colorMarkerLine = this.$.colorMarkerLine.getValue();
+		this.prefs.aliases = this.$.aliases.getValue();
 		
 		// notifications
 		this.prefs.alertWords = this.$.alertWords.getValue();

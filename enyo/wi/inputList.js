@@ -11,11 +11,12 @@ enyo.kind({
 	    {name: 'list', kind: 'VirtualRepeater', onSetupRow: 'getItem', components: [
 	        {name: 'item', kind: 'SwipeableItem', allowLeft: true, onConfirm: 'inputSwiped', components: [
 				{name: 'input', kind: 'Input', autocorrect: false, autoCapitalize: 'lowercase',
-					autoWordComplete: false, selectAllOnFocus: true, onkeyup: 'inputChanged'}
+					autoWordComplete: false, selectAllOnFocus: true, onkeyup: 'inputChanged',
+					components: [{name: 'caption', content: ''}]}
 	        ]}
 	    ]},
 		{name: 'addrow', kind: 'Item', className: 'enyo-single', tapHighlight: true, onclick: 'addClicked', components: [
-			{content: 'Add'}
+			{content: '+Add', style: 'text-align:center;'},
 		]},
 	],
 	
@@ -27,7 +28,12 @@ enyo.kind({
 	getItem: function(inSender, inIndex) {
 		if (!enyo.isArray(this.value)) this.value = [];
 	    if (inIndex < this.value.length) {
-			this.$.input.setValue(this.value[inIndex]);
+	    	if (this.value[inIndex] instanceof Array) {
+	    		this.$.input.setValue(this.value[inIndex][0]);
+	    		this.$.caption.setContent(this.value[inIndex][1]);
+	    	} else {
+				this.$.input.setValue(this.value[inIndex]);
+			}
 			this.$.input.setHint(this.inputHint);
 			if (inIndex == 0)	this.$.item.addClass('enyo-first');
 			else				this.$.item.addClass('enyo-middle');

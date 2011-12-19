@@ -29,6 +29,17 @@ enyo.kind({
 			colorOtherNicks: '#008000',
 			colorMarkerLine: '#ff0000',
 			
+			aliases: [
+				['j','join &2'],
+				['leave','part &2'],
+				['m','msg &2'],
+				['raw','quote &2'],
+				['ns','msg NickServ &2'],
+				['cs','msg ChanServ &2'],
+				['as','msg AuthServ &2'],
+				['bip','quote bip &2']
+			],
+			
 			// notifications
 			alertWords: [],
 			

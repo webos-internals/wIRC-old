@@ -21,6 +21,9 @@ enyo.depends(
 	
 	"enyo/wi/misc.js",
 	
-	"enyo/wi/pullout.js"
+	"enyo/wi/pullout.js",
+	
+	"enyo/wi/group.js",
+	"enyo/wi/css/group.css"
 	
 );
