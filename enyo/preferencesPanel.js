@@ -122,7 +122,7 @@ enyo.kind({
 			
 			{name: 'aliasesTab', layoutKind: 'VFlexLayout', align: 'center', components: [
 				{kind: 'wi.Group', width: '400px', caption: ['Alias','Command'], components: [
-					{name: 'aliases', kind: 'wi.InputList', inputHint: '/Command'},
+					{name: 'aliases', kind: 'wi.InputList', inputHint: '/Command', onAdd: 'showAddAliasDlg'},
 				]}
 			]},
 			
@@ -144,6 +144,22 @@ enyo.kind({
 			{name: 'saveButton',   kind: 'Button', width: '200px', caption: 'Save',   onclick: 'saveButton',   className: 'enyo-button-affirmative'},
 			{kind: 'Spacer'},
 		]},
+		
+		{kind: 'ModalDialog', name: 'addAlias', width: '640px', components: [
+			{layout: 'HFlexLayout', components: [
+				{layout: 'VFlexLayout', components: [
+					{kind: 'RowGroup', width: '400px', caption: 'Alias', components: [
+						{name: 'newAlias', kind: 'Input'},
+					]},
+					{kind: 'RowGroup', width: '400px', caption: 'Command', components: [
+						{name: 'newCommand', kind: 'Input'}
+					]},
+				]},
+				{layout: 'VFlexLayout', components: [
+					{allowHtml: true, content: '<b>Replacements:</b><br>%c = current channel<br>%e = current network<br>%n = your nick<br>%t =  time/date'},
+				]},
+			]}
+		]}
 	],
 	
 	create: function() {
@@ -269,6 +285,11 @@ enyo.kind({
 			this.$.colorBackgroundAlt.show();
 		else
 			this.$.colorBackgroundAlt.hide();
+	},
+	
+	showAddAliasDlg: function(inSender, inEvent, inMessage) {
+		this.$.addAlias.openAtCenter()
+		this.log("SHIT")
 	}
 	
 });

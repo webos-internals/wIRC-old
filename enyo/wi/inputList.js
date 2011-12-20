@@ -7,6 +7,10 @@ enyo.kind({
 		inputHint: ''
 	},
 	
+	events: {
+		'onAdd': ''
+	},
+	
 	components: [
 	    {name: 'list', kind: 'VirtualRepeater', onSetupRow: 'getItem', components: [
 	        {name: 'item', kind: 'SwipeableItem', allowLeft: true, onConfirm: 'inputSwiped', components: [
@@ -16,7 +20,7 @@ enyo.kind({
 	        ]}
 	    ]},
 		{name: 'addrow', kind: 'Item', className: 'enyo-single', tapHighlight: true, onclick: 'addClicked', components: [
-			{content: '+Add', style: 'text-align:center;'},
+			{content: 'Add', style: 'text-align:center;'},
 		]},
 	],
 	
@@ -55,8 +59,10 @@ enyo.kind({
 	},
 	
 	addClicked: function(inSender, inEvent) {
-		this.value.push('');
-		this.$.list.render();
+		if (this.doAdd)
+			this.doAdd();
+		else
+			this.addValue('');
 	},
 	
 	setValue: function(value) {
@@ -65,6 +71,11 @@ enyo.kind({
 	getValue: function() {
 		return this.value;
 	},
+	
+	addValue: function(value) {
+		this.value.push(value);
+		this.$.list.render();
+	}
 	
 });
 
