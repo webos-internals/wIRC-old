@@ -145,20 +145,22 @@ enyo.kind({
 			{kind: 'Spacer'},
 		]},
 		
-		{kind: 'ModalDialog', name: 'addAlias', width: '640px', components: [
-			{layout: 'HFlexLayout', components: [
-				{layout: 'VFlexLayout', components: [
-					{kind: 'RowGroup', width: '400px', caption: 'Alias', components: [
-						{name: 'newAlias', kind: 'Input'},
-					]},
-					{kind: 'RowGroup', width: '400px', caption: 'Command', components: [
-						{name: 'newCommand', kind: 'Input'}
-					]},
-				]},
-				{layout: 'VFlexLayout', components: [
-					{allowHtml: true, content: '<b>Replacements:</b><br>%c = current channel<br>%e = current network<br>%n = your nick<br>%t =  time/date'},
-				]},
-			]}
+		{kind: 'ModalDialog', name: 'addAlias', width: '580px', components: [
+			{kind: 'RowGroup', flex: 1, caption: 'Alias', components: [
+				{name: 'newAlias', kind: 'Input', changeOnInput: true, onchange: 'newAliasChanged', },
+			]},
+			{kind: 'RowGroup', flex: 1, caption: 'Command', components: [
+				{name: 'newCommand', kind: 'Input', changeOnInput: true, onchange: 'newAliasChanged'}
+			]},
+			{allowHtml: true, style: 'padding-top: 4px; font-size: 80%',
+				content: '<b>Replacements:</b> %c = current channel, %e = current network, %n = your nick,<br>%t =  time/date, %2 = word 2, %3 = word 3, &2 = word 2 to the end, &3 = word 3 to the end<br><br><b>Example:</b> "/alias foo bar", %2 = foo, &2 = foo bar'
+			},
+	    {layoutKind: "HFlexLayout", style: 'padding-top: 16px', components: [
+	    		{flex: 1},
+	        {kind: 'Button', caption: 'Cancel', width: '150px', className: 'enyo-button-negative', onclick: 'closeAddAlias'},
+	        {kind: 'Button', name: 'addAliasButton', caption: 'Add', disabled:true, width: '150px', onclick: 'addAddAlias', className: 'enyo-button-affirmative'},
+	        {flex: 1}
+	    ]}
 		]}
 	],
 	
@@ -287,9 +289,25 @@ enyo.kind({
 			this.$.colorBackgroundAlt.hide();
 	},
 	
-	showAddAliasDlg: function(inSender, inEvent, inMessage) {
+	showAddAliasDlg: function() {
 		this.$.addAlias.openAtCenter()
+		this.$.newAlias.setValue('')
+		this.$.newCommand.setValue('')
+		this.$.addAliasButton.setDisabled(true)
 		this.log("SHIT")
+	},
+	
+	closeAddAlias: function() {
+		this.$.addAlias.close()
+	},
+	
+	addAddAlias: function() {
+		this.$.aliases.addValue([this.$.newAlias.value,this.$.newCommand.value])
+		this.$.addAlias.close()
+	},
+	
+	newAliasChanged: function() {
+		this.$.addAliasButton.setDisabled(!(this.$.newAlias.value && this.$.newCommand.value));
 	}
 	
 });
