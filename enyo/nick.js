@@ -66,6 +66,10 @@ enyo.kind({
 			}
 		}
 	},
+
+	addChannel: function() {
+		
+	},
 	
 	
     statics: {

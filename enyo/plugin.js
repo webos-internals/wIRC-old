@@ -347,13 +347,13 @@ enyo.kind({
 					for (i in nicks) {
 						var prefixNick = '';
 						var onlyNick = nicks[i];
-						if (ircNick.hasPrefix(onlyNick)) {
+						if (wirc.Nick.hasPrefix(onlyNick)) {
 							prefixNick = nicks[i].substr(0, 1);
 							onlyNick = nicks[i].substr(1);
 						}
 						tmpNick = server.getNick(onlyNick);
 						if (tmpNick)
-							tmpNick.addChannel(chan, ircNick.getPrefixMode(prefixNick));
+							tmpNick.addChannel(chan, wirc.Nick.getPrefixMode(prefixNick));
 					}
 				}
 				break;
