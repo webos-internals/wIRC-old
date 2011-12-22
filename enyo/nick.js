@@ -17,8 +17,8 @@ enyo.kind({
 	},
 	
 	setupItem: function(item) {
-		
 		this.generateCache();
+		this.log(item, this._cache);
 		
 	},
 	
@@ -67,8 +67,45 @@ enyo.kind({
 		}
 	},
 
-	addChannel: function() {
-		
+	addChannel: function(channel, mode) {
+		if (channel) {
+			if (!this.channels[channel.setup.name] || !channel.containsNick(this)) {
+				if (!channel.containsNick(this))
+					channel.addNick(this);
+				if(!this.channels[channel.setup.name])
+					this.channels[channel.setup.name] = channel;
+				if (mode) this.channelModes[channel.setup.name] = [mode];
+				else this.channelModes[channel.setup.name] = [];
+			}
+		}
+	},
+
+	removeChannel: function(channel) {
+		if (channel) {
+			channel.removeNick(this);
+			delete this.channels[channel.setup.name];
+			this.channelModes[channel.setup.name] = null;
+		}
+	},
+
+	getHighestMode: function(channel) {
+		if (this.channelModes[channel.setup.name].length < 1)
+			return '';
+		if (this.channelModes[channel.setup.name].length > 1)
+			this.channelModes[channel.setup.name].sort(function(a, b) {
+				return wirc.Nick.getModeNum(a) - wirc.Nick.getModeNum(b);
+			});
+		return this.channelModes[channel.name][0];
+	},
+
+	getListObject: function(channel) {
+		var objMode = this.getHighestMode(channel);
+		var obj = {
+			name:	this.name,
+			prefix:	(channel.setup.name ? wirc.Nick.getModePrefix(objMode) : ''),
+			mode:	(channel.setup.name ? objMode : '')
+		};
+		return obj;
 	},
 	
 	
@@ -134,47 +171,3 @@ enyo.kind({
     },
 	
 });
-
-/*
-ircNick.prototype.addChannel = function(channel, mode) {
-	if (channel) {
-		if (!this.channels[channel.name] || !channel.containsNick(this)) {
-			if (!channel.containsNick(this))
-				channel.addNick(this);
-			if(!this.channels[channel.name])
-				this.channels[channel.name] = channel;
-			if (mode) this.channelModes[channel.name] = [mode];
-			else this.channelModes[channel.name] = [];
-		}
-	}
-};
-
-ircNick.prototype.removeChannel = function(channel) {
-	if (channel) {
-		channel.removeNick(this);
-		delete this.channels[channel.name];
-		this.channelModes[channel.name] = null;
-	}
-};
-
-ircNick.prototype.getHighestMode = function(channel) {
-	if (this.channelModes[channel.name].length < 1)
-		return '';
-	if (this.channelModes[channel.name].length > 1)
-		this.channelModes[channel.name].sort(function(a, b) {
-			return ircNick.getModeNum(a) - ircNick.getModeNum(b);
-		});
-	return this.channelModes[channel.name][0];
-};
-
-ircNick.prototype.getListObject = function(channel) {
-	var objMode = this.getHighestMode(channel);
-	var obj = {
-		name:	this.name,
-		prefix:	(channel.name ? ircNick.getModePrefix(objMode) : ''),
-		mode:	(channel.name ? objMode : '')
-	};
-	return obj;
-};
-
-*/

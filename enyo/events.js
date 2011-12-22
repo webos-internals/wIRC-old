@@ -12,9 +12,8 @@ preview-message: called when any channel has a new message, the message item is 
 
 preferences-saved: called when preferences are saved.
 
-** Keybind Events
-main-list-up: 
-main-list-down:
+main-list-up: keyboard event
+main-list-down: keyboard event
 
 */
 

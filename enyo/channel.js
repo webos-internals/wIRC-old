@@ -161,19 +161,19 @@ enyo.kind({
 	},
 	
 	addNick: function(nick) {
-		if (!this.nicks[nick.name])
-			this.nicks[nick.name] = nick;
+		if (!this.nicks[nick.setup.name])
+			this.nicks[nick.setup.name] = nick;
 		enyo.asyncMethod(this, 'updateUserCount');
 	},
 
 	removeNick: function(nick) {
-		if (this.nicks[nick.name])
-			delete this.nicks[nick.name];
+		if (this.nicks[nick.setup.name])
+			delete this.nicks[nick.setup.name];
 		enyo.asyncMethod(this, 'updateUserCount');
 	},
 	
 	containsNick: function(nick) {
-		return this.nicks[nick.name] ? true :  false;
+		return this.nicks[nick.setup.name] ? true :  false;
 	},
 	
 	updateUserCount: function() {
