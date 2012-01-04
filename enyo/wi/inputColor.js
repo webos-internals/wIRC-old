@@ -5,9 +5,19 @@ enyo.kind({
 	align: 'center',
 	
 	published: {
+		// caption of the row
 		caption: '',
-		value: 'rgba(0, 0, 0, 0)'
+
+		// initial value
+		value: 'rgba(0, 0, 0, 0)',
+
+		// allow user to manually enter a value?
+		manualInput: true
 	},
+
+	// format is automatically set when you initially set the value at creation or through setValue.
+	// valid formats: any valid css color string, an array [r, g, b], or an object {r: 0, g: 0, b: 0}
+	format: 'string',
 	
 	components: [
 		
@@ -38,9 +48,35 @@ enyo.kind({
 	},
 	
 	updateDisplay: function() {
-		this.$.display.applyStyle('background-color', this.value);
-		this.$.displayText1.setContent(this.value);
-		this.$.displayText2.setContent(this.value);
+		if (enyo.isString(this.value)) {
+			this.format = 'string';
+			this.$.display.applyStyle('background-color', this.value);
+			this.$.displayText1.setContent(this.value);
+			this.$.displayText2.setContent(this.value);
+		}
+		else if (enyo.isArray(this.value)) {
+			if (this.value.length == 3 && this.value[0] >= 0 && this.value[1] >= 0 && this.value[2] >= 0) {
+				this.format = 'array';
+				this.$.display.applyStyle('background-color', 'rgb(' + this.value[0] + ', ' + this.value[1] + ', ' + this.value[2] + ')');
+				this.$.displayText1.setContent(this.value[0] + ' / ' + this.value[1] + ' / ' + this.value[2]);
+				this.$.displayText2.setContent(this.value[0] + ' / ' + this.value[1] + ' / ' + this.value[2]);
+			}
+		}
+		else if (typeof(this.value) == 'object') {
+			if (this.value.r >= 0 && this.value.g >= 0 && this.value.b >= 0) {
+				this.format = 'object';
+				this.$.display.applyStyle('background-color', 'rgb(' + this.value.r + ', ' + this.value.g + ', ' + this.value.b + ')');
+				this.$.displayText1.setContent(this.value.r + ' / ' + this.value.g + ' / ' + this.value.b);
+				this.$.displayText2.setContent(this.value.r + ' / ' + this.value.g + ' / ' + this.value.b);
+			}
+		}
+		else {
+			this.log('unknown', typeof(this.value), this.value);
+			this.format = 'unknown';
+			this.$.display.applyStyle('background-color', '#FF0000');
+			this.$.displayText1.setContent('[ERR]');
+			this.$.displayText2.setContent('[ERR]');
+		}
 	},
 	
 	openPopup: function() {
@@ -48,6 +84,7 @@ enyo.kind({
 	},
 	
 	colorSelected: function(inSender, inColor) {
+		this.log(inColor);
 		this.value = inColor;
 		this.updateDisplay();
 	},
@@ -86,18 +123,36 @@ enyo.kind({
 			onclick: 'canvasClick',
 		},
 		{name: 'manual', className: 'manual-container'/*, showing: false*/, components: [
-			{kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
+			{name: 'stringFormat', showing: false, kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
 					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp', components: [
 						{name: 'manualSave', kind: 'CustomButton', className: 'manual-save', onclick: 'manualSave', content: ' '},
-				]},
+				]}
+			]},
+			{name: 'tripFormat', showing: false, kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
+				{content: '...some sort of rgb 0-255 selector...'}
+				//{kind: "IntegerPicker", label: "rating", min: 0, max: 255, onChange: "pickerChange"}
 			]},
 		]},
 	],
 	
 	componentsReady: function() {
-	    this.inherited(arguments);
+		this.inherited(arguments);
+		if (this.owner.manualInput) {
+			switch (this.owner.format) {
+				case 'string':
+					this.$.stringFormat.setShowing(true);
+					break;
+				case 'array':
+				case 'object':
+					this.$.tripFormat.setShowing(true);
+					break;
+			}
+		}
+		else {
+			this.$.manualButton.setShowing(false);
+		}
 		this.addClass('wi-input-color-popup');
 		//this.parent.applyStyle('-webkit-perspective', '768px'); // Y U NO WORK?
 		//this.applyStyle('-webkit-transform-style', 'preserve-3d');
@@ -113,9 +168,21 @@ enyo.kind({
 		this.img.src = 'enyo/wi/images/colors.png';
 		this.img.onload = enyo.bind(this, 'drawImage');
 		
-		this.$.original.applyStyle('background-color', this.owner.value);
-		this.$.preview.applyStyle('background-color', this.owner.value);
-		this.$.manualInput.setValue(this.owner.value);
+		switch (this.owner.format) {
+			case 'string':
+				this.$.original.applyStyle('background-color', this.owner.value);
+				this.$.preview.applyStyle('background-color',  this.owner.value);
+				this.$.manualInput.setValue(this.owner.value);
+				break;
+			case 'array':
+				this.$.original.applyStyle('background-color', 'rgb(' + this.owner.value[0] + ', ' + this.owner.value[1] + ', ' + this.owner.value[2] + ')');
+				this.$.preview.applyStyle('background-color',  'rgb(' + this.owner.value[0] + ', ' + this.owner.value[1] + ', ' + this.owner.value[2] + ')');
+				break;
+			case 'object':
+				this.$.original.applyStyle('background-color', 'rgb(' + this.owner.value.r + ', ' + this.owner.value.g + ', ' + this.owner.value.b + ')');
+				this.$.preview.applyStyle('background-color',  'rgb(' + this.owner.value.r + ', ' + this.owner.value.g + ', ' + this.owner.value.b + ')');
+				break;
+		}
 		this.$.manualButton.setDepressed(false);
 		this.hideManual();
 	},
@@ -128,7 +195,18 @@ enyo.kind({
 	
 	canvasClick: function(inSender, inEvent) {
 		if (!this.manualShowing) {
-			var c = this.rgbToHex(this.canvasGetColorFromPosition(this.canvasCursorClickPosition(inEvent)));
+			var d = this.canvasGetColorFromPosition(this.canvasCursorClickPosition(inEvent));
+			switch (this.owner.format) {
+				case 'string':
+					var c = this.rgbToHex(d);
+					break;
+				case 'array':
+					var c = [d.r, d.g, d.b];
+					break;
+				case 'object':
+					var c = {r: d.r, g: d.g, b: d.b};
+					break;
+			}
 			this.doColorSelect(c);
 			this.close();
 		}
@@ -163,6 +241,18 @@ enyo.kind({
 	},
 	dragfinishHandler: function(inSender, inEvent) {
 		if (!this.manualShowing) {
+			var d = this.canvasGetColorFromPosition(this.canvasCursorClickPosition(inEvent));
+			switch (this.owner.format) {
+				case 'string':
+					var c = this.rgbToHex(d);
+					break;
+				case 'array':
+					var c = [d.r, d.g, d.b];
+					break;
+				case 'object':
+					var c = {r: d.r, g: d.g, b: d.b};
+					break;
+			}
 			var c = this.rgbToHex(this.canvasGetColorFromPosition(this.dragGetCanvasPosition(inSender, inEvent)));
 			this.doColorSelect(c);
 		}
