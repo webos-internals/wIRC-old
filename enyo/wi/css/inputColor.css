@@ -81,3 +81,12 @@
 .wi-input-color-popup .manual-container .manual-save.enyo-button-disabled {
 	opacity: 0.5;
 }
+.wi-input-color-popup .manual-container .trip-container {
+	margin: -8px;
+}
+.wi-input-color-popup .manual-container .trip-container .enyo-picker-button {
+	font-weight: bold;
+}
+.wi-input-color-popup .manual-container .trip-container .red   { color: red;   }
+.wi-input-color-popup .manual-container .trip-container .green { color: green; }
+.wi-input-color-popup .manual-container .trip-container .blue  { color: blue;  }

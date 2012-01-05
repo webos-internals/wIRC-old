@@ -9,16 +9,30 @@ enyo.kind({
 		caption: '',
 
 		// initial value
-		value: 'rgba(0, 0, 0, 0)',
+		value: '',
 
 		// allow user to manually enter a value?
-		manualInput: true
+		manualInput: true,
+
+		/*
+		// format you want the results in
+		format: 'css',
+		// css:    any valid css3 color unit
+		// hex:    return hex only
+		// array:  returns [r, g, b]
+		// object: returns {r:#, g:#, b:#}
+		*/
 	},
 
 	// format is automatically set when you initially set the value at creation or through setValue.
 	// valid formats: any valid css color string, an array [r, g, b], or an object {r: 0, g: 0, b: 0}
+	// if you use a string, manual input is in a string format, array and object get the triplet selectors
 	format: 'string',
 	
+	events: {
+		onChange: ''
+	},
+
 	components: [
 		
 		{name: 'popup', kind: 'wi.InputColor.Popup', onColorSelect: 'colorSelected'},
@@ -84,9 +98,9 @@ enyo.kind({
 	},
 	
 	colorSelected: function(inSender, inColor) {
-		this.log(inColor);
 		this.value = inColor;
 		this.updateDisplay();
+		this.doChange(this.value);
 	},
 	
 });
@@ -127,16 +141,20 @@ enyo.kind({
 				{name: 'manualInput', kind: 'Input', hint: 'Any Valid CSS3 Color Unit...',
 					autocorrect: false, autoCapitalize: 'lowercase', autoWordComplete: false, selectAllOnFocus: true,
 					changeOnInput: true, onkeydown: 'keyDown', onkeyup: 'keyUp', components: [
-						{name: 'manualSave', kind: 'CustomButton', className: 'manual-save', onclick: 'manualSave', content: ' '},
+						{name: 'manualInputSave', kind: 'CustomButton', className: 'manual-save', onclick: 'manualInputSave', content: ' '},
 				]}
 			]},
 			{name: 'tripFormat', showing: false, kind: 'RowGroup', className: 'manual-group', caption: 'Manual Color Entry', components: [
-				{content: '...some sort of rgb 0-255 selector...'}
-				//{kind: "IntegerPicker", label: "rating", min: 0, max: 255, onChange: "pickerChange"}
+				{kind: 'HFlexBox', className: 'trip-container', align: 'center', components: [
+					{name: 'manualRed',   className: 'red',   kind: 'Picker', flex: 1, value: '0', items: ['0'], onChange: 'tripChanged'},
+					{name: 'manualGreen', className: 'green', kind: 'Picker', flex: 1, value: '0', items: ['0'], onChange: 'tripChanged'},
+					{name: 'manualBlue',  className: 'blue',  kind: 'Picker', flex: 1, value: '0', items: ['0'], onChange: 'tripChanged'},
+					{name: 'manualTripSave', kind: 'CustomButton', className: 'manual-save', onclick: 'manualTripSave', content: ' '},
+				]}
 			]},
 		]},
 	],
-	
+
 	componentsReady: function() {
 		this.inherited(arguments);
 		if (this.owner.manualInput) {
@@ -146,6 +164,11 @@ enyo.kind({
 					break;
 				case 'array':
 				case 'object':
+					var zt = [];
+					for (var n = 0; n <= 255; n++) zt.push(n.toString());
+					this.$.manualRed.setItems(zt);
+					this.$.manualGreen.setItems(zt);
+					this.$.manualBlue.setItems(zt);
 					this.$.tripFormat.setShowing(true);
 					break;
 			}
@@ -177,16 +200,23 @@ enyo.kind({
 			case 'array':
 				this.$.original.applyStyle('background-color', 'rgb(' + this.owner.value[0] + ', ' + this.owner.value[1] + ', ' + this.owner.value[2] + ')');
 				this.$.preview.applyStyle('background-color',  'rgb(' + this.owner.value[0] + ', ' + this.owner.value[1] + ', ' + this.owner.value[2] + ')');
+				this.$.manualRed.setValue(this.owner.value[0]);
+				this.$.manualGreen.setValue(this.owner.value[1]);
+				this.$.manualBlue.setValue(this.owner.value[2]);
 				break;
 			case 'object':
 				this.$.original.applyStyle('background-color', 'rgb(' + this.owner.value.r + ', ' + this.owner.value.g + ', ' + this.owner.value.b + ')');
 				this.$.preview.applyStyle('background-color',  'rgb(' + this.owner.value.r + ', ' + this.owner.value.g + ', ' + this.owner.value.b + ')');
+				this.$.manualRed.setValue(this.owner.value.r);
+				this.$.manualGreen.setValue(this.owner.value.g);
+				this.$.manualBlue.setValue(this.owner.value.b);
 				break;
 		}
 		this.$.manualButton.setDepressed(false);
 		this.hideManual();
 	},
 	doClose: function() {
+		this.hideManual();
 	},
 	
 	drawImage: function() {
@@ -282,7 +312,7 @@ enyo.kind({
 		this.$.manualInput.forceFocus();
 	},
 	
-	manualSave: function(inSender, inEvent) {
+	manualInputSave: function(inSender, inEvent) {
 		var text = this.$.manualInput.getValue();
 		this.doColorSelect(text);
 		this.close();
@@ -303,12 +333,28 @@ enyo.kind({
 		if (this.isValidColorString(text)) {
 			this.$.preview.applyStyle('background-color', text);
 			this.$.manualInput.$.input.applyStyle('color', null);
-			this.$.manualSave.setDisabled(false);
+			this.$.manualInputSave.setDisabled(false);
 		}
 		else {
 			this.$.manualInput.$.input.applyStyle('color', 'rgba(0, 0, 0, 0.6)');
-			this.$.manualSave.setDisabled(true);
+			this.$.manualInputSave.setDisabled(true);
 		}
+	},
+
+	tripChanged: function(inSender, inValue) {
+		this.$.preview.applyStyle('background-color', 'rgb(' + this.$.manualRed.getValue() + ', ' + this.$.manualGreen.getValue() + ', ' + this.$.manualBlue.getValue() + ')');
+	},
+	manualTripSave: function(inSender, inEvent) {
+		switch (this.owner.format) {
+			case 'array':
+				var r = [this.$.manualRed.getValue(), this.$.manualGreen.getValue(), this.$.manualBlue.getValue()];
+				break;
+			case 'object':
+				var r = {r: this.$.manualRed.getValue(), g: this.$.manualGreen.getValue(), b: this.$.manualBlue.getValue()};
+				break;
+		}
+		this.doColorSelect(r);
+		this.close();
 	},
 	
 	isValidColorString: function(string) {
@@ -322,7 +368,7 @@ enyo.kind({
 		if (string.match(/hsla\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-9][0-9]|3[0-5][0-9]|360)\b\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*([0-9]+(?:\.[0-9]+)?|\.[0-9]+)\s*\)/)) return true;
 		return false;
 	},
-	
+
 	rgbToHex: function(t) {
 		return '#' + this.toHex(t.r) + this.toHex(t.g) + this.toHex(t.b);
 	},
